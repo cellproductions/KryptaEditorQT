@@ -7,15 +7,40 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+# Project Files
+*.sdf
+*.sln
+*.suo
+*.vcxproj
+*.filters
+*.user
+*.opensf
+*.tlog
+*.pdb
+*.idb
+*.lastbuildstate
+*.opensdf
+
+# Resource Files
+*.wav
+*.mp3
+*.ogg
+*.bmp
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+Debug/
+Release/
