@@ -3,17 +3,19 @@
 #include "prjsetupdialog.h"
 #include "ui_prjsetupdialog.h"
 #include "envbrowserdialog.h"
+#include "layerbrowserdialog.h"
 #include "configuration.h"
 #include "map.h"
 #include "assets.h"
 #include <QToolButton>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDebug>
 
 static const QString mainTitle("Krypta Map Editor");
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), prjsetupDialog(new PrjSetupDialog(this)),
-    envbrowseDialog(new EnvBrowserDialog(this))
+	envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this))
 {
     ui->setupUi(this);
 /*
@@ -45,6 +47,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             ui->lEnv->setPixmap(envbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEnv->size()));
         }
     });
+	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
+	{
+		if (layerbrowseDialog->showDialog() == DialogResult::OK)
+		{
+
+		}
+	});
+
+	void(QComboBox:: *cbLayersSignal)(int) = &QComboBox::currentIndexChanged;
+	connect(ui->cbLayers, cbLayersSignal, [this](int index)
+	{
+		if (Map::getMap())
+			if (index < 0 || index >= Map::getMap()->getLayers().size())
+				return;
+		Map::getMap()->setCurrentLayer(index);
+		ui->glWidget->resetCamera();
+		ui->glWidget->updateCanvas();
+	});
 }
 
 MainWindow::~MainWindow()
@@ -79,6 +99,9 @@ void MainWindow::onNewTrigger()
             if (Map::getMap())
                 Map::getMap()->resetMap();
             auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(), { Assets::getTiles()[0].get(), kry::Graphics::Sprite() }, prjsetupDialog->getUI()->lbLayers);
+			ui->cbLayers->clear();
+			for (auto& layer : map->getLayers())
+				ui->cbLayers->addItem(layer->description);
             ui->layerProperties->setItem(0, 1, new QTableWidgetItem(map->getCurrentLayer()->description));
             ui->layerProperties->setItem(1, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[0])));
             ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));

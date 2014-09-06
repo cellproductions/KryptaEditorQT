@@ -160,9 +160,12 @@
           <property name="title">
            <string>Layer</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0">
            <item>
-            <layout class="QVBoxLayout" name="layerLayout">
+            <widget class="QComboBox" name="cbLayers"/>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="layerLayout" stretch="0,0">
              <property name="spacing">
               <number>3</number>
              </property>

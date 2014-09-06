@@ -185,7 +185,7 @@ Makefile: ..\KryptaEditor\KryptaEditor.pro ..\..\..\5.3\msvc2013_opengl\mkspecs\
 		..\..\..\5.3\msvc2013_opengl\mkspecs\features\lex.prf \
 		..\KryptaEditor\KryptaEditor.pro \
 		C:/Qt5.3.1/5.3/msvc2013_opengl/lib/qtmaind.prl \
-		C:/Qt/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Cored.prl \
+		C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Cored.prl \
 		C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5OpenGL.prl \
 		C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Widgets.prl \
 		C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Gui.prl \
@@ -303,7 +303,7 @@ Makefile: ..\KryptaEditor\KryptaEditor.pro ..\..\..\5.3\msvc2013_opengl\mkspecs\
 ..\..\..\5.3\msvc2013_opengl\mkspecs\features\lex.prf:
 ..\KryptaEditor\KryptaEditor.pro:
 C:/Qt5.3.1/5.3/msvc2013_opengl/lib/qtmaind.prl:
-C:/Qt/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Cored.prl:
+C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Cored.prl:
 C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5OpenGL.prl:
 C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Widgets.prl:
 C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Gui.prl:

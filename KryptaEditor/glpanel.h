@@ -16,6 +16,7 @@ namespace Kryed
             inline kry::Graphics::Canvas& getCanvas();
             void updateCanvas();
             void setGrid(bool gridon);
+			void resetCamera();
 
         protected:
             void initializeGL();

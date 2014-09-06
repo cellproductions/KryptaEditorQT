@@ -25,17 +25,19 @@ namespace Kryed
         empty = false;
 
         canvas.clear();
-        kry::Util::Vector2f pos;
+		kry::Util::Vector2f pos;
         auto& size = Map::getMap()->getCurrentLayer()->size;
         auto& tiles = Map::getMap()->getCurrentLayer()->tiles;
         auto dim = tiles[0].asset->resource->rawresource->getDimensions();
         auto halfdim = dim / 2;
+		kry::Util::Vector2f startPos = { -(dim[0] * static_cast<float>(size[0]) * 0.5f),
+										0.0f};
         float ylimit = halfdim[1] * static_cast<float>(size[1]);
 kry::Util::Vector4f col(0.0f, 0.0f, 0.0f, 1.0f);
 int coli = 0;
         for (int y = 0; y < size[1]; ++y)
         {
-            pos = halfdim * y;
+			pos = startPos + (halfdim * y);
             //pos[0] = halfdim[0] * y;
             //pos[1] = ylimit - halfdim[1] * y;
 
@@ -69,6 +71,7 @@ int coli = 0;
                 pos[1] -= halfdim[1];
             }
         }
+		paintGL();
     }
 
     void GLPanel::setGrid(bool gridon)
@@ -76,6 +79,12 @@ int coli = 0;
         gridmode = gridon;
         updateCanvas();
     }
+
+	void GLPanel::resetCamera()
+	{
+		canvas.pan = 0.0f;
+		paintGL();
+	}
 
     void GLPanel::initializeGL()
     {

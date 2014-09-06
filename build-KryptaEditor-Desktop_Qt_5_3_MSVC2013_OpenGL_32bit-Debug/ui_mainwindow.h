@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
@@ -58,6 +59,7 @@ public:
     QPushButton *bBrowseEnv;
     QGroupBox *layerGroup;
     QVBoxLayout *verticalLayout_5;
+    QComboBox *cbLayers;
     QVBoxLayout *layerLayout;
     QTableWidget *layerProperties;
     QPushButton *bLayerMan;
@@ -193,6 +195,11 @@ public:
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        cbLayers = new QComboBox(layerGroup);
+        cbLayers->setObjectName(QStringLiteral("cbLayers"));
+
+        verticalLayout_5->addWidget(cbLayers);
+
         layerLayout = new QVBoxLayout();
         layerLayout->setSpacing(3);
         layerLayout->setObjectName(QStringLiteral("layerLayout"));

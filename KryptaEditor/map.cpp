@@ -1,5 +1,6 @@
 #include "map.h"
 #include "prjsetupdialog.h"
+#include "layeroptionsitem.h"
 
 std::shared_ptr<Map> Map::single;
 
@@ -19,9 +20,9 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 
     for (int i = 0; i < layerList->count(); ++i)
     {
-        if (layerList->item(i)->type() != LayerOptions::LayerOptionType)
+		if (layerList->item(i)->type() != LayerOptionsItem::LayerOptionType)
             continue;
-        LayerOptions* option = dynamic_cast<LayerOptions*>(layerList->item(i));
+		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(layerList->item(i));
         Layer* layer = new Layer { std::move(std::vector<Tile>(option->getWidth() * option->getHeight(), defaulttile)), option->getDescription(), {option->getWidth(), option->getHeight()} };
 
         single->layers.emplace_back(layer);

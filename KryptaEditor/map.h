@@ -24,6 +24,7 @@ class Map
             kry::Util::Vector2i size;
         };
 
+		inline void setCurrentLayer(size_t index);
         inline std::vector<Tile>& getTiles(size_t layerindex);
         inline const kry::Util::Vector2i& getSize(size_t layerindex) const;
         inline std::vector<std::shared_ptr<Layer> >& getLayers();
@@ -44,6 +45,11 @@ class Map
         static std::shared_ptr<Map> single;
 };
 
+
+void Map::setCurrentLayer(size_t index)
+{
+	currentLayer = layers[index];
+}
 
 std::vector<Tile>& Map::getTiles(size_t layerindex)
 {

@@ -16,9 +16,12 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -29,31 +32,124 @@ public:
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
-    QListWidget *listWidget;
+    QListWidget *lbLayers;
     QVBoxLayout *verticalLayout_2;
+    QLineEdit *tbDescription;
+    QLabel *label;
+    QHBoxLayout *horizontalLayout_3;
+    QVBoxLayout *verticalLayout_4;
+    QSpinBox *sbWidth;
+    QPushButton *bAdd;
+    QPushButton *bDelete;
+    QSpacerItem *verticalSpacer;
+    QVBoxLayout *verticalLayout_5;
+    QSpinBox *sbHeight;
+    QPushButton *bUp;
+    QPushButton *bDown;
+    QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout;
-    QPushButton *pushButton_2;
+    QPushButton *bSelect;
     QSpacerItem *horizontalSpacer;
-    QPushButton *pushButton;
+    QPushButton *bClose;
 
     void setupUi(QDialog *LayerBrowserDialog)
     {
         if (LayerBrowserDialog->objectName().isEmpty())
             LayerBrowserDialog->setObjectName(QStringLiteral("LayerBrowserDialog"));
-        LayerBrowserDialog->resize(640, 480);
+        LayerBrowserDialog->resize(340, 280);
         verticalLayout_3 = new QVBoxLayout(LayerBrowserDialog);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        listWidget = new QListWidget(LayerBrowserDialog);
-        listWidget->setObjectName(QStringLiteral("listWidget"));
+        lbLayers = new QListWidget(LayerBrowserDialog);
+        lbLayers->setObjectName(QStringLiteral("lbLayers"));
 
-        horizontalLayout_2->addWidget(listWidget);
+        horizontalLayout_2->addWidget(lbLayers);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        tbDescription = new QLineEdit(LayerBrowserDialog);
+        tbDescription->setObjectName(QStringLiteral("tbDescription"));
+
+        verticalLayout_2->addWidget(tbDescription);
+
+        label = new QLabel(LayerBrowserDialog);
+        label->setObjectName(QStringLiteral("label"));
+
+        verticalLayout_2->addWidget(label);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(1);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        sbWidth = new QSpinBox(LayerBrowserDialog);
+        sbWidth->setObjectName(QStringLiteral("sbWidth"));
+        sbWidth->setMinimum(10);
+        sbWidth->setMaximum(100);
+        sbWidth->setValue(50);
+
+        verticalLayout_4->addWidget(sbWidth);
+
+        bAdd = new QPushButton(LayerBrowserDialog);
+        bAdd->setObjectName(QStringLiteral("bAdd"));
+
+        verticalLayout_4->addWidget(bAdd);
+
+        bDelete = new QPushButton(LayerBrowserDialog);
+        bDelete->setObjectName(QStringLiteral("bDelete"));
+
+        verticalLayout_4->addWidget(bDelete);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_4->addItem(verticalSpacer);
+
+        verticalLayout_4->setStretch(0, 35);
+        verticalLayout_4->setStretch(1, 30);
+        verticalLayout_4->setStretch(2, 30);
+
+        horizontalLayout_3->addLayout(verticalLayout_4);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        sbHeight = new QSpinBox(LayerBrowserDialog);
+        sbHeight->setObjectName(QStringLiteral("sbHeight"));
+        sbHeight->setMinimum(10);
+        sbHeight->setMaximum(100);
+        sbHeight->setValue(50);
+
+        verticalLayout_5->addWidget(sbHeight);
+
+        bUp = new QPushButton(LayerBrowserDialog);
+        bUp->setObjectName(QStringLiteral("bUp"));
+
+        verticalLayout_5->addWidget(bUp);
+
+        bDown = new QPushButton(LayerBrowserDialog);
+        bDown->setObjectName(QStringLiteral("bDown"));
+
+        verticalLayout_5->addWidget(bDown);
+
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_5->addItem(verticalSpacer_3);
+
+        verticalLayout_5->setStretch(0, 5);
+        verticalLayout_5->setStretch(1, 5);
+        verticalLayout_5->setStretch(2, 5);
+        verticalLayout_5->setStretch(3, 74);
+
+        horizontalLayout_3->addLayout(verticalLayout_5);
+
+        horizontalLayout_3->setStretch(0, 50);
+        horizontalLayout_3->setStretch(1, 50);
+
+        verticalLayout_2->addLayout(horizontalLayout_3);
+
+        verticalLayout_2->setStretch(0, 5);
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
@@ -64,19 +160,19 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        pushButton_2 = new QPushButton(LayerBrowserDialog);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        bSelect = new QPushButton(LayerBrowserDialog);
+        bSelect->setObjectName(QStringLiteral("bSelect"));
 
-        horizontalLayout->addWidget(pushButton_2);
+        horizontalLayout->addWidget(bSelect);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        pushButton = new QPushButton(LayerBrowserDialog);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        bClose = new QPushButton(LayerBrowserDialog);
+        bClose->setObjectName(QStringLiteral("bClose"));
 
-        horizontalLayout->addWidget(pushButton);
+        horizontalLayout->addWidget(bClose);
 
         horizontalLayout->setStretch(0, 20);
         horizontalLayout->setStretch(1, 60);
@@ -98,8 +194,16 @@ public:
     void retranslateUi(QDialog *LayerBrowserDialog)
     {
         LayerBrowserDialog->setWindowTitle(QApplication::translate("LayerBrowserDialog", "Layer Browser", 0));
-        pushButton_2->setText(QApplication::translate("LayerBrowserDialog", "Select and Close", 0));
-        pushButton->setText(QApplication::translate("LayerBrowserDialog", "Close", 0));
+        tbDescription->setPlaceholderText(QApplication::translate("LayerBrowserDialog", "Layer description...", 0));
+        label->setText(QApplication::translate("LayerBrowserDialog", "Layer dimensions [w, h]:", 0));
+        sbWidth->setSuffix(QApplication::translate("LayerBrowserDialog", " tiles", 0));
+        bAdd->setText(QApplication::translate("LayerBrowserDialog", "Add", 0));
+        bDelete->setText(QApplication::translate("LayerBrowserDialog", "Delete", 0));
+        sbHeight->setSuffix(QApplication::translate("LayerBrowserDialog", " tiles", 0));
+        bUp->setText(QApplication::translate("LayerBrowserDialog", "Move Up", 0));
+        bDown->setText(QApplication::translate("LayerBrowserDialog", "Move Down", 0));
+        bSelect->setText(QApplication::translate("LayerBrowserDialog", "Select and Close", 0));
+        bClose->setText(QApplication::translate("LayerBrowserDialog", "Close", 0));
     } // retranslateUi
 
 };

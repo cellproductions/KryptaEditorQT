@@ -98,7 +98,7 @@ public:
 
         sbHeight = new QSpinBox(PrjWizard);
         sbHeight->setObjectName(QStringLiteral("sbHeight"));
-        sbHeight->setMinimum(20);
+        sbHeight->setMinimum(10);
         sbHeight->setMaximum(100);
         sbHeight->setValue(50);
 
@@ -106,7 +106,7 @@ public:
 
         sbWidth = new QSpinBox(PrjWizard);
         sbWidth->setObjectName(QStringLiteral("sbWidth"));
-        sbWidth->setMinimum(20);
+        sbWidth->setMinimum(10);
         sbWidth->setMaximum(100);
         sbWidth->setValue(50);
 

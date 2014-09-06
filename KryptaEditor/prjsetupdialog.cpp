@@ -1,5 +1,6 @@
 #include "ui_prjsetupdialog.h"
 #include "prjsetupdialog.h"
+#include "layeroptionsitem.h"
 #include <QShortcut>
 #include <QMessageBox>
 
@@ -26,7 +27,7 @@ PrjSetupDialog::PrjSetupDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Pr
 
     connect(ui->bAdd, &QPushButton::clicked, [this]()
     {
-        LayerOptions* option = new LayerOptions;
+		LayerOptionsItem* option = new LayerOptionsItem;
         option->setDescription(ui->tbDescr->text());
         option->setWidth(ui->sbWidth->value());
         option->setHeight(ui->sbHeight->value());
@@ -97,9 +98,4 @@ DialogResult PrjSetupDialog::showDialog()
 {
     this->exec();
     return lastresult;
-}
-
-
-LayerOptions::LayerOptions() : QListWidgetItem(nullptr, LayerOptionType), dim(50, 50)
-{
 }
