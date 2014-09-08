@@ -9,8 +9,10 @@ namespace Ui
 }
 
 class PrjSetupDialog;
+class EntBrowserDialog;
 class EnvBrowserDialog;
 class LayerBrowserDialog;
+class ConfigDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -31,8 +33,10 @@ class MainWindow : public QMainWindow
     private:
         Ui::MainWindow *ui;
         PrjSetupDialog* prjsetupDialog;
+		EntBrowserDialog* entbrowseDialog;
         EnvBrowserDialog* envbrowseDialog;
 		LayerBrowserDialog* layerbrowseDialog;
+		ConfigDialog* configDialog;
 };
 
 

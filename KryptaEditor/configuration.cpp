@@ -1,4 +1,4 @@
-#include "configuration.h"
+#include "Configuration.h"
 #include <Utilities/BasicString.h>
 #include <System/Filesystem.h>
 
@@ -21,11 +21,6 @@ void Configuration::saveToFile(const kry::Util::String& filename)
     }
 
     kry::System::writeAllLines(filename, lines);
-}
-
-kry::Media::Config& Configuration::getConfig()
-{
-    return config;
 }
 
 Configuration::Configuration()

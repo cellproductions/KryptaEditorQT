@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "assets.h"
+#include "Assets.h"
 #include <Graphics/Primitives.h>
 #include <Utilities/Vector.h>
 #include <QListWidget>
@@ -10,8 +10,9 @@
 
 struct Tile
 {
-    Asset<kry::Graphics::Texture>* asset;
-    kry::Graphics::Sprite sprite;
+	std::vector<Asset<kry::Graphics::Texture>*> objects;
+	kry::Graphics::Sprite sprite;
+	Asset<kry::Graphics::Texture>* asset;
 };
 
 class Map
@@ -22,6 +23,7 @@ class Map
             std::vector<Tile> tiles;
             QString description;
             kry::Util::Vector2i size;
+			kry::Util::Vector2i tilesize;
         };
 
 		inline void setCurrentLayer(size_t index);

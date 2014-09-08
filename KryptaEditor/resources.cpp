@@ -1,4 +1,4 @@
-#include "resources.h"
+#include "Resources.h"
 #include <System/Filesystem.h>
 #include <Media/ImageFactory.h>
 #include <Media/AudioFactory.h>

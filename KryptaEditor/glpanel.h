@@ -27,6 +27,8 @@ namespace Kryed
             void mouseReleaseEvent(QMouseEvent* event);
             void mouseMoveEvent(QMouseEvent* event);
             void keyPressEvent(QKeyEvent* event);
+			void enterEvent(QEvent* event);
+			void leaveEvent(QEvent* event);
 
         private:
             size_t coordToIndex(const kry::Util::Vector2f& coord);

@@ -15,6 +15,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -23,11 +24,14 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "ClickableLabel.h"
 #include "glpanel.h"
 
 QT_BEGIN_NAMESPACE
@@ -38,23 +42,28 @@ public:
     QAction *miFileNew;
     QAction *miFileExit;
     QAction *miFileOpen;
-    QAction *actionPreferences;
+    QAction *miPreferences;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
     QFrame *frameTool;
+    QVBoxLayout *verticalLayout_4;
+    QGridLayout *gridLayout;
+    QSpacerItem *verticalSpacer;
+    QToolButton *bPointer;
+    QToolButton *bPaint;
     Kryed::GLPanel *glWidget;
     QVBoxLayout *utilLayout;
     QGroupBox *entityGroup;
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *entityLayout;
-    QLabel *lEntity;
+    ClickableLabel *lEntity;
     QLabel *lEntityName;
     QPushButton *bBrowseEntities;
     QGroupBox *envGroup;
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *envLayout;
-    QLabel *lEnv;
+    ClickableLabel *lEnv;
     QLabel *lEnvName;
     QPushButton *bBrowseEnv;
     QGroupBox *layerGroup;
@@ -86,8 +95,8 @@ public:
         miFileExit->setObjectName(QStringLiteral("miFileExit"));
         miFileOpen = new QAction(MainWindow);
         miFileOpen->setObjectName(QStringLiteral("miFileOpen"));
-        actionPreferences = new QAction(MainWindow);
-        actionPreferences->setObjectName(QStringLiteral("actionPreferences"));
+        miPreferences = new QAction(MainWindow);
+        miPreferences->setObjectName(QStringLiteral("miPreferences"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -104,6 +113,44 @@ public:
         frameTool->setObjectName(QStringLiteral("frameTool"));
         frameTool->setFrameShape(QFrame::StyledPanel);
         frameTool->setFrameShadow(QFrame::Plain);
+        verticalLayout_4 = new QVBoxLayout(frameTool);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(3, 3, 3, 3);
+        gridLayout = new QGridLayout();
+        gridLayout->setSpacing(3);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout->addItem(verticalSpacer, 2, 0, 1, 1);
+
+        bPointer = new QToolButton(frameTool);
+        bPointer->setObjectName(QStringLiteral("bPointer"));
+        bPointer->setMinimumSize(QSize(40, 40));
+        QIcon icon;
+        icon.addFile(QStringLiteral("../build-KryptaEditor-Desktop_Qt_5_3_MSVC2013_OpenGL_32bit-Debug/editor/pointer.png"), QSize(), QIcon::Normal, QIcon::Off);
+        bPointer->setIcon(icon);
+
+        gridLayout->addWidget(bPointer, 0, 0, 1, 1);
+
+        bPaint = new QToolButton(frameTool);
+        bPaint->setObjectName(QStringLiteral("bPaint"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(bPaint->sizePolicy().hasHeightForWidth());
+        bPaint->setSizePolicy(sizePolicy1);
+        bPaint->setMinimumSize(QSize(40, 40));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral("../build-KryptaEditor-Desktop_Qt_5_3_MSVC2013_OpenGL_32bit-Debug/editor/paint.png"), QSize(), QIcon::Normal, QIcon::Off);
+        bPaint->setIcon(icon1);
+
+        gridLayout->addWidget(bPaint, 1, 0, 1, 1);
+
+
+        verticalLayout_4->addLayout(gridLayout);
+
 
         mainLayout->addWidget(frameTool);
 
@@ -126,8 +173,13 @@ public:
         entityLayout = new QVBoxLayout();
         entityLayout->setSpacing(3);
         entityLayout->setObjectName(QStringLiteral("entityLayout"));
-        lEntity = new QLabel(entityGroup);
+        lEntity = new ClickableLabel(entityGroup);
         lEntity->setObjectName(QStringLiteral("lEntity"));
+        QSizePolicy sizePolicy2(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(lEntity->sizePolicy().hasHeightForWidth());
+        lEntity->setSizePolicy(sizePolicy2);
         lEntity->setScaledContents(true);
         lEntity->setAlignment(Qt::AlignCenter);
 
@@ -162,8 +214,10 @@ public:
         envLayout = new QVBoxLayout();
         envLayout->setSpacing(3);
         envLayout->setObjectName(QStringLiteral("envLayout"));
-        lEnv = new QLabel(envGroup);
+        lEnv = new ClickableLabel(envGroup);
         lEnv->setObjectName(QStringLiteral("lEnv"));
+        sizePolicy2.setHeightForWidth(lEnv->sizePolicy().hasHeightForWidth());
+        lEnv->setSizePolicy(sizePolicy2);
         lEnv->setScaledContents(true);
         lEnv->setAlignment(Qt::AlignCenter);
 
@@ -257,9 +311,8 @@ public:
 
         mainLayout->addLayout(utilLayout);
 
-        mainLayout->setStretch(0, 15);
-        mainLayout->setStretch(1, 100);
-        mainLayout->setStretch(2, 20);
+        mainLayout->setStretch(1, 75);
+        mainLayout->setStretch(2, 15);
 
         horizontalLayout->addLayout(mainLayout);
 
@@ -274,6 +327,12 @@ public:
         MainWindow->setMenuBar(menuBar);
         toolMain = new QToolBar(MainWindow);
         toolMain->setObjectName(QStringLiteral("toolMain"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(toolMain->sizePolicy().hasHeightForWidth());
+        toolMain->setSizePolicy(sizePolicy3);
+        toolMain->setMinimumSize(QSize(0, 25));
         toolMain->setMovable(false);
         MainWindow->addToolBar(Qt::TopToolBarArea, toolMain);
         statusBar = new QStatusBar(MainWindow);
@@ -285,7 +344,7 @@ public:
         menuFile->addAction(miFileNew);
         menuFile->addAction(miFileOpen);
         menuFile->addAction(miFileExit);
-        menuEdit->addAction(actionPreferences);
+        menuEdit->addAction(miPreferences);
 
         retranslateUi(MainWindow);
 
@@ -298,7 +357,9 @@ public:
         miFileNew->setText(QApplication::translate("MainWindow", "New", 0));
         miFileExit->setText(QApplication::translate("MainWindow", "Exit", 0));
         miFileOpen->setText(QApplication::translate("MainWindow", "Open", 0));
-        actionPreferences->setText(QApplication::translate("MainWindow", "Preferences", 0));
+        miPreferences->setText(QApplication::translate("MainWindow", "Preferences", 0));
+        bPointer->setText(QApplication::translate("MainWindow", "...", 0));
+        bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));
         lEntity->setText(QString());
         lEntityName->setText(QApplication::translate("MainWindow", "None", 0));

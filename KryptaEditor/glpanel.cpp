@@ -1,9 +1,12 @@
 #include <glew.h>
-#include "glpanel.h"
-#include "map.h"
-#include "mainwindow.h"
+#include "GLPanel.h"
+#include "Map.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
-#include "resources.h"
+#include "Resources.h"
+#include "Tool.h"
+#include "AssetListItem.h"
+#include <Utilities/Math.h>
 #include <Graphics/Primitives.h>
 #include <QWheelEvent>
 #include <QDebug>
@@ -13,11 +16,13 @@
 namespace Kryed
 {
     QPoint dragPos;
+	kry::Graphics::Sprite follower;
 
     kry::Graphics::Renderer GLPanel::renderer;
 
     GLPanel::GLPanel(QWidget* parent) : QGLWidget(QGLFormat(QGL::FormatOption::SampleBuffers), parent), empty(true), gridmode(true), mouseDown(false)
     {
+		this->setMouseTracking(true);
     }
 
     void GLPanel::updateCanvas()
@@ -28,18 +33,16 @@ namespace Kryed
 		kry::Util::Vector2f pos;
         auto& size = Map::getMap()->getCurrentLayer()->size;
         auto& tiles = Map::getMap()->getCurrentLayer()->tiles;
-        auto dim = tiles[0].asset->resource->rawresource->getDimensions();
-        auto halfdim = dim / 2;
-		kry::Util::Vector2f startPos = { -(dim[0] * static_cast<float>(size[0]) * 0.5f),
-										0.0f};
-        float ylimit = halfdim[1] * static_cast<float>(size[1]);
-kry::Util::Vector4f col(0.0f, 0.0f, 0.0f, 1.0f);
+		//auto dim = tiles[0].asset->resource->rawresource->getDimensions();
+		auto dim = Map::getMap()->getCurrentLayer()->tilesize;
+		auto halfdim = dim / 2;
+		kry::Util::Vector2f startpos = { static_cast<float>(dim[0]), static_cast<float>(-halfdim[1]) };
+kry::Util::Vector4f col(0.0f, 1.0f, 0.0f, 1.0f);
 int coli = 0;
         for (int y = 0; y < size[1]; ++y)
         {
-			pos = startPos + (halfdim * y);
-            //pos[0] = halfdim[0] * y;
-            //pos[1] = ylimit - halfdim[1] * y;
+			pos = { static_cast<float>(halfdim[0] * y), static_cast<float>(-(halfdim[1] * y)) };
+			pos = startpos + pos;
 
             for (int x = 0; x < size[0]; ++x)
             {
@@ -67,10 +70,12 @@ int coli = 0;
                     // render a grid? iono
                 }
 
-                pos[0] += halfdim[0];
-                pos[1] -= halfdim[1];
+				pos[0] += halfdim[0];
+				pos[1] += halfdim[1];
             }
         }
+
+		canvas.addSprite(&follower);
 		paintGL();
     }
 
@@ -88,7 +93,7 @@ int coli = 0;
 
     void GLPanel::initializeGL()
     {
-        glewInit();
+		glewInit();
 
         renderer.addCanvas(&canvas);
     }
@@ -130,10 +135,10 @@ int coli = 0;
                 this->canvas.scale = 2.0f;
         }
         else
-        {
+		{
             this->canvas.scale *= kry::Util::Vector2f(0.9f);
-            if (this->canvas.scale[0] < 0.025f)
-                this->canvas.scale = 0.025f;
+			if (this->canvas.scale[0] < 0.025f)
+				this->canvas.scale = 0.025f;
         }
         auto newpos = this->canvas.getCoord({static_cast<float>(event->x()), static_cast<float>(event->y())});
         this->canvas.pan += this->canvas.scale * (newpos - oldpos);
@@ -145,34 +150,63 @@ int coli = 0;
     {
         if (empty)
             return;
-        mouseDown = true;
-        this->setFocus();
-        dragPos = event->pos();
+		if (event->button() == Qt::LeftButton)
+		{
+			mouseDown = true;
+			this->setFocus();
+			dragPos = event->pos();
 
-        Ui::MainWindow* mainwin = dynamic_cast<MainWindow*>(this->parent()->parent())->getUI();
-        //mainwin->lEnvName =
-        coordToIndex({(float)event->x(), (float)event->y()});
-        QGLWidget::mousePressEvent(event);
+			Ui::MainWindow* mainwin = dynamic_cast<MainWindow*>(this->parent()->parent())->getUI();
+			coordToIndex({(float)event->x(), (float)event->y()});
+		}
+		else if (event->button() == Qt::RightButton)
+		{
+			QMenu context(this);
+			// add the name of the thing that was clicked, then a separator
+			context.addAction("Copy");
+			context.addAction("Edit");
+			context.addAction("Remove");
+			context.exec(event->pos());
+		}
+		//QGLWidget::mousePressEvent(event);
     }
 
     void GLPanel::mouseReleaseEvent(QMouseEvent* event)
     {
         mouseDown = false;
 
-        QGLWidget::mouseReleaseEvent(event);
+		//QGLWidget::mouseReleaseEvent(event);
     }
 
     void GLPanel::mouseMoveEvent(QMouseEvent* event)
     {
+		bool redraw = false;
+
         if (mouseDown)
         {
             QPoint newpos = event->pos() - dragPos;
             this->canvas.pan += { static_cast<float>(newpos.x()), static_cast<float>(newpos.y()) };
             dragPos = event->pos();
-            this->paintGL();
+			redraw = true;
         }
 
-        //QGLWidget::mouseMoveEvent(event);
+		if (Tool<>::getTool()->getType() == ToolType::PAINT)
+		{
+			follower.position = {static_cast<float>(event->x()), static_cast<float>(event->y())};
+			follower.position = canvas.getCoord(follower.position);
+			follower.position[0] -= static_cast<int>(follower.position[0]) % (Map::getMap()->getCurrentLayer()->tilesize[0] / 2);
+			follower.position[1] -= static_cast<int>(follower.position[1]) % (Map::getMap()->getCurrentLayer()->tilesize[1] / 2);
+			if (Tool<PaintData>::getTool()->getData().assetitem != nullptr)
+			{
+				follower.dimensions = Tool<PaintData>::getTool()->getData().assetitem->asset->resource->rawresource->getDimensions();
+				follower.texture = Tool<PaintData>::getTool()->getData().assetitem->asset->resource->rawresource;
+			}
+			redraw = true;
+		}
+
+		if (redraw)
+			this->paintGL();
+		QGLWidget::mouseMoveEvent(event);
     }
 
     void GLPanel::keyPressEvent(QKeyEvent* event)
@@ -198,42 +232,28 @@ int coli = 0;
         }
     }
 
+	void GLPanel::enterEvent(QEvent* event)
+	{
+		//if (Tool<>::getTool()->getType() == ToolType::PAINT)
+		//	this->setCursor(QCursor(Qt::BlankCursor));
+	}
+
+	void GLPanel::leaveEvent(QEvent* event)
+	{
+		//if (Tool<>::getTool()->getType() == ToolType::PAINT)
+		//	this->setCursor(QCursor(Qt::ArrowCursor));
+	}
+
     size_t GLPanel::coordToIndex(const kry::Util::Vector2f& coord)
-    {
-        kry::Util::Vector2f pos = this->canvas.getCoord(coord);
+	{
+		auto& size = Map::getMap()->getCurrentLayer()->size;
+		kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
+		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
+		kry::Util::Vector2f screen = canvas.getCoord(coord);
 
-        auto& size = Map::getMap()->getCurrentLayer()->size;
-        auto& tiles = Map::getMap()->getCurrentLayer()->tiles;
-        auto dim = tiles[0].asset->resource->rawresource->getDimensions();
-        auto halfdim = dim / 2;
+		int x = static_cast<int>((screen[0] / halfdim[0] + screen[1] / halfdim[1]) * 0.5f) - 1;
+		int y = static_cast<int>((screen[1] / halfdim[1] - screen[0] / halfdim[0]) * 0.5f) * -1 - 1;
 
-        pos[1] = (pos[1] - halfdim[0]) / halfdim[1];
-        pos[0] = (pos[0] - halfdim[1]) / halfdim[0];
-
-        qDebug() << pos[0] << pos[1];
-
-
-        return 0;
-
-        //auto& size = Map::getMap()->getCurrentLayer()->size;
-        //auto dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
-        //auto pos = this->canvas.getCoord({coord[0], coord[1]});
-        //if (pos[0] < 0 || pos[1] < 0)
-        //    return -1;
-        //kry::Util::Vector2f iso = { pos[0] - pos[1] + dim[0] * 0.5f, (pos[0] + pos[1]) * 0.5f + dim[1] * 0.5f };
-        //QMessageBox::information(this, "coords", QString() + QString::number(iso[0]) + ", " + QString::number(iso[1]), QMessageBox::Ok);
-        /*float c = cos(-0.7853982f);
-        float s = sin(-0.7853982f);
-        pos[0] = (pos[0] * c) - (pos[1] * s);
-        pos[1] = (pos[0] * s) + (pos[1] * c);*/
-        //pos = (size * Map::getMap()->getTiles()[0].asset->resource->getDimensions()) / pos;
-
-        //pos /= Map::getMap()->getTiles()[0].asset->resource->getDimensions();
-
-        //return pos[1] * size[0] + pos[0];
-        //pos /= dim;
-        //kry::Util::Vector2f iso = { pos[0] - pos[1], (pos[0] + pos[1]) * 0.5f };
-        //QMessageBox::information(this, "coords", QString() + QString::number(iso[0]) + ", " + QString::number(iso[1]), QMessageBox::Ok);
-        //return pos[1] * size[0] + pos[1];
+		return y * size[1] + x;
     }
 }

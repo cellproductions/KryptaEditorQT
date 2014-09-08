@@ -58,6 +58,7 @@ public:
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         lbIcons = new QListWidget(EnvBrowserDialog);
         lbIcons->setObjectName(QStringLiteral("lbIcons"));
+        lbIcons->setMovement(QListView::Static);
         lbIcons->setViewMode(QListView::IconMode);
 
         verticalLayout_4->addWidget(lbIcons);
@@ -102,8 +103,8 @@ public:
         resProperties->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
         resProperties->setHorizontalHeaderItem(1, __qtablewidgetitem1);
-        if (resProperties->rowCount() < 3)
-            resProperties->setRowCount(3);
+        if (resProperties->rowCount() < 4)
+            resProperties->setRowCount(4);
         QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
         resProperties->setVerticalHeaderItem(0, __qtablewidgetitem2);
         QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
@@ -111,25 +112,31 @@ public:
         QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
         resProperties->setVerticalHeaderItem(2, __qtablewidgetitem4);
         QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
-        resProperties->setItem(0, 0, __qtablewidgetitem5);
+        resProperties->setVerticalHeaderItem(3, __qtablewidgetitem5);
         QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
-        __qtablewidgetitem6->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
-        resProperties->setItem(0, 1, __qtablewidgetitem6);
+        resProperties->setItem(0, 0, __qtablewidgetitem6);
         QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
-        resProperties->setItem(1, 0, __qtablewidgetitem7);
+        __qtablewidgetitem7->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
+        resProperties->setItem(0, 1, __qtablewidgetitem7);
         QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
-        __qtablewidgetitem8->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
-        resProperties->setItem(1, 1, __qtablewidgetitem8);
+        resProperties->setItem(1, 0, __qtablewidgetitem8);
         QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
-        resProperties->setItem(2, 0, __qtablewidgetitem9);
+        resProperties->setItem(1, 1, __qtablewidgetitem9);
         QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
-        __qtablewidgetitem10->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
-        resProperties->setItem(2, 1, __qtablewidgetitem10);
+        resProperties->setItem(2, 0, __qtablewidgetitem10);
+        QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
+        __qtablewidgetitem11->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
+        resProperties->setItem(2, 1, __qtablewidgetitem11);
+        QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
+        resProperties->setItem(3, 0, __qtablewidgetitem12);
+        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
+        __qtablewidgetitem13->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
+        resProperties->setItem(3, 1, __qtablewidgetitem13);
         resProperties->setObjectName(QStringLiteral("resProperties"));
         resProperties->setShowGrid(true);
         resProperties->setWordWrap(false);
         resProperties->setCornerButtonEnabled(false);
-        resProperties->setRowCount(3);
+        resProperties->setRowCount(4);
         resProperties->setColumnCount(2);
         resProperties->horizontalHeader()->setVisible(false);
         resProperties->horizontalHeader()->setStretchLastSection(true);
@@ -193,18 +200,22 @@ public:
         QTableWidgetItem *___qtablewidgetitem2 = resProperties->verticalHeaderItem(0);
         ___qtablewidgetitem2->setText(QApplication::translate("EnvBrowserDialog", "Path", 0));
         QTableWidgetItem *___qtablewidgetitem3 = resProperties->verticalHeaderItem(1);
-        ___qtablewidgetitem3->setText(QApplication::translate("EnvBrowserDialog", "Width", 0));
+        ___qtablewidgetitem3->setText(QApplication::translate("EnvBrowserDialog", "Type", 0));
         QTableWidgetItem *___qtablewidgetitem4 = resProperties->verticalHeaderItem(2);
-        ___qtablewidgetitem4->setText(QApplication::translate("EnvBrowserDialog", "Height", 0));
+        ___qtablewidgetitem4->setText(QApplication::translate("EnvBrowserDialog", "Width", 0));
+        QTableWidgetItem *___qtablewidgetitem5 = resProperties->verticalHeaderItem(3);
+        ___qtablewidgetitem5->setText(QApplication::translate("EnvBrowserDialog", "Height", 0));
 
         const bool __sortingEnabled = resProperties->isSortingEnabled();
         resProperties->setSortingEnabled(false);
-        QTableWidgetItem *___qtablewidgetitem5 = resProperties->item(0, 0);
-        ___qtablewidgetitem5->setText(QApplication::translate("EnvBrowserDialog", "Path:", 0));
-        QTableWidgetItem *___qtablewidgetitem6 = resProperties->item(1, 0);
-        ___qtablewidgetitem6->setText(QApplication::translate("EnvBrowserDialog", "Width:", 0));
-        QTableWidgetItem *___qtablewidgetitem7 = resProperties->item(2, 0);
-        ___qtablewidgetitem7->setText(QApplication::translate("EnvBrowserDialog", "Height:", 0));
+        QTableWidgetItem *___qtablewidgetitem6 = resProperties->item(0, 0);
+        ___qtablewidgetitem6->setText(QApplication::translate("EnvBrowserDialog", "Path:", 0));
+        QTableWidgetItem *___qtablewidgetitem7 = resProperties->item(1, 0);
+        ___qtablewidgetitem7->setText(QApplication::translate("EnvBrowserDialog", "Type:", 0));
+        QTableWidgetItem *___qtablewidgetitem8 = resProperties->item(2, 0);
+        ___qtablewidgetitem8->setText(QApplication::translate("EnvBrowserDialog", "Width:", 0));
+        QTableWidgetItem *___qtablewidgetitem9 = resProperties->item(3, 0);
+        ___qtablewidgetitem9->setText(QApplication::translate("EnvBrowserDialog", "Height:", 0));
         resProperties->setSortingEnabled(__sortingEnabled);
 
         bSelect->setText(QApplication::translate("EnvBrowserDialog", "Select and Close", 0));

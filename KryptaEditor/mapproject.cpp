@@ -1,5 +1,5 @@
-#include "mapproject.h"
-#include "map.h"
+#include "MapProject.h"
+#include "Map.h"
 
 MapProject::MapProject()
 {

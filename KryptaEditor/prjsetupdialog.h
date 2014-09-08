@@ -1,7 +1,7 @@
 #ifndef PRJWIZARD_H
 #define PRJWIZARD_H
 
-#include "dialogresult.h"
+#include "DialogResult.h"
 #include <QDialog>
 #include <QListWidgetItem>
 

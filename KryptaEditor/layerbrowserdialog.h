@@ -1,8 +1,8 @@
 #ifndef LAYERBROWSERDIALOG_H
 #define LAYERBROWSERDIALOG_H
 
-#include "dialogresult.h"
-#include "map.h"
+#include "DialogResult.h"
+#include "Map.h"
 #include <QDialog>
 
 namespace Ui

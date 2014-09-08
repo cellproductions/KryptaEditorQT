@@ -1,12 +1,16 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
-#include "prjsetupdialog.h"
+#include "PrjSetupDialog.h"
 #include "ui_prjsetupdialog.h"
-#include "envbrowserdialog.h"
-#include "layerbrowserdialog.h"
-#include "configuration.h"
-#include "map.h"
-#include "assets.h"
+#include "EntBrowserDialog.h"
+#include "EnvBrowserDialog.h"
+#include "LayerBrowserDialog.h"
+#include "ConfigDialog.h"
+#include "Configuration.h"
+#include "Map.h"
+#include "Assets.h"
+#include "Tool.h"
+#include <QGraphicsColorizeEffect>
 #include <QToolButton>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -15,7 +19,7 @@
 static const QString mainTitle("Krypta Map Editor");
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), prjsetupDialog(new PrjSetupDialog(this)),
-	envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this))
+	entbrowseDialog(new EntBrowserDialog(this)), envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this)), configDialog(new ConfigDialog(this))
 {
     ui->setupUi(this);
 /*
@@ -39,6 +43,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->miFileNew, SIGNAL(triggered()), this, SLOT(onNewTrigger()));
     connect(ui->miFileOpen, SIGNAL(triggered()), this, SLOT(onOpenTrigger()));
     connect(ui->miFileExit, SIGNAL(triggered()), this, SLOT(onExitTrigger()));
+	connect(ui->miPreferences, &QAction::triggered, [this]()
+	{
+		if (configDialog->showDialog() == DialogResult::OK)
+			Configuration::updateConfig(configDialog->getConfig());
+	});
+	connect(ui->bBrowseEntities, &QPushButton::clicked, [this]()
+	{
+		if (entbrowseDialog->showDialog() == DialogResult::OK)
+		{
+			ui->lEntityName->setText(entbrowseDialog->getSelectedAssetItem()->text());
+			ui->lEntity->setPixmap(entbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEntity->size()));
+		}
+	});
+	connect(ui->lEntity, &ClickableLabel::clicked, [this]()
+	{
+		QGraphicsColorizeEffect* effect = new QGraphicsColorizeEffect(ui->lEntity);
+		effect->setColor(QColor(255, 255, 0));
+		effect->setStrength(0.5f);
+		ui->lEntity->setGraphicsEffect(effect);
+		ui->lEnv->setGraphicsEffect(nullptr);
+	});
     connect(ui->bBrowseEnv, &QPushButton::clicked, [this]()
     {
         if (envbrowseDialog->showDialog() == DialogResult::OK)
@@ -47,6 +72,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             ui->lEnv->setPixmap(envbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEnv->size()));
         }
     });
+	connect(ui->lEnv, &ClickableLabel::clicked, [this]()
+	{
+		QGraphicsColorizeEffect* effect = new QGraphicsColorizeEffect(ui->lEnv);
+		effect->setColor(QColor(255, 255, 0));
+		effect->setStrength(0.5f);
+		ui->lEnv->setGraphicsEffect(effect);
+		ui->lEntity->setGraphicsEffect(nullptr);
+	});
 	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
 	{
 		if (layerbrowseDialog->showDialog() == DialogResult::OK)
@@ -65,19 +98,54 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->glWidget->resetCamera();
 		ui->glWidget->updateCanvas();
 	});
+
+	connect(ui->bPointer, &QToolButton::clicked, [this]()
+	{
+		//for (QObject* child : ui->toolMain->children())
+		//	dynamic_cast<QWidget*>(child)->setVisible(false);
+
+		Tool<>::switchTool(ToolType::POINTER);
+	});
+	connect(ui->bPaint, &QToolButton::clicked, [this]()
+	{
+		//for (QObject* child : ui->toolMain->children())
+		//	dynamic_cast<QWidget*>(child)->setVisible(false);
+
+		static QLabel* lSpin = nullptr;
+		static QSpinBox* spin = nullptr;
+		if (lSpin == nullptr)
+		{
+			lSpin = new QLabel("Brush size: ", ui->toolMain);
+			spin = new QSpinBox(ui->toolMain);
+			spin->setMaximum(10);
+			spin->setMinimum(1);
+			spin->setSuffix(" tiles");
+			ui->toolMain->addWidget(lSpin);
+			ui->toolMain->addWidget(spin);
+		}
+
+		Tool<>::switchTool(ToolType::PAINT);
+		PaintData data;
+		data.size = spin->value();
+		data.assetitem = envbrowseDialog->getSelectedAssetItem();
+		Tool<PaintData>::getTool()->setData(data);
+	});
 }
 
 MainWindow::~MainWindow()
 {
+	Configuration::saveToFile("editor.cfg");
+
     delete ui;
 }
 
 void MainWindow::init()
 {
     try
-    {
+	{
         if (Configuration::loadFromFile("editor.cfg")["editor"]["maximised"] == "true")
             this->showMaximized();
+		configDialog->setConfigData(Configuration::getConfig());
     }
     catch (const kry::Util::Exception&)
     {
@@ -98,7 +166,9 @@ void MainWindow::onNewTrigger()
 
             if (Map::getMap())
                 Map::getMap()->resetMap();
-            auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(), { Assets::getTiles()[0].get(), kry::Graphics::Sprite() }, prjsetupDialog->getUI()->lbLayers);
+			auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(),
+									{ std::vector<Asset<kry::Graphics::Texture>*>(), kry::Graphics::Sprite(), Assets::getTiles()[0].get() },
+									  prjsetupDialog->getUI()->lbLayers);
 			ui->cbLayers->clear();
 			for (auto& layer : map->getLayers())
 				ui->cbLayers->addItem(layer->description);

@@ -1,7 +1,7 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
-#include "assets.h"
+#include "Assets.h"
 #include <Graphics/Texture.h>
 #include <Audio/Buffer.h>
 #include <Audio/Source.h>

@@ -1,17 +1,9 @@
 #ifndef ENVBROWSERDIALOG_H
 #define ENVBROWSERDIALOG_H
 
-#include "assets.h"
-#include "dialogresult.h"
+#include "AssetListItem.h"
+#include "DialogResult.h"
 #include <QDialog>
-#include <QListWidgetItem>
-#include <QIcon>
-
-struct AssetListItem : public QListWidgetItem
-{
-    AssetListItem(Asset<kry::Graphics::Texture>* asset, const QIcon& icon, const QString& text);
-    Asset<kry::Graphics::Texture>* asset;
-};
 
 namespace Ui
 {

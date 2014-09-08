@@ -1,6 +1,6 @@
-#include "layerbrowserdialog.h"
+#include "LayerBrowserDialog.h"
 #include "ui_layerbrowserdialog.h"
-#include "layeroptionsitem.h"
+#include "LayerOptionsItem.h"
 #include <QMessageBox>
 #include <QShortcut>
 

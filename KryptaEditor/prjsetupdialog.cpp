@@ -1,6 +1,6 @@
 #include "ui_prjsetupdialog.h"
-#include "prjsetupdialog.h"
-#include "layeroptionsitem.h"
+#include "PrjSetupDialog.h"
+#include "LayerOptionsItem.h"
 #include <QShortcut>
 #include <QMessageBox>
 

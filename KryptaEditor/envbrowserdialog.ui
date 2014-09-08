@@ -25,6 +25,9 @@
         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="95">
          <item>
           <widget class="QListWidget" name="lbIcons">
+           <property name="movement">
+            <enum>QListView::Static</enum>
+           </property>
            <property name="viewMode">
             <enum>QListView::IconMode</enum>
            </property>
@@ -88,7 +91,7 @@
             <bool>false</bool>
            </property>
            <property name="rowCount">
-            <number>3</number>
+            <number>4</number>
            </property>
            <property name="columnCount">
             <number>2</number>
@@ -105,6 +108,11 @@
            <row>
             <property name="text">
              <string>Path</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Type</string>
             </property>
            </row>
            <row>
@@ -142,10 +150,20 @@
            </item>
            <item row="1" column="0">
             <property name="text">
-             <string>Width:</string>
+             <string>Type:</string>
             </property>
            </item>
            <item row="1" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="2" column="0">
+            <property name="text">
+             <string>Width:</string>
+            </property>
+           </item>
+           <item row="2" column="1">
             <property name="text">
              <string/>
             </property>
@@ -153,12 +171,12 @@
              <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
             </property>
            </item>
-           <item row="2" column="0">
+           <item row="3" column="0">
             <property name="text">
              <string>Height:</string>
             </property>
            </item>
-           <item row="2" column="1">
+           <item row="3" column="1">
             <property name="text">
              <string/>
             </property>
