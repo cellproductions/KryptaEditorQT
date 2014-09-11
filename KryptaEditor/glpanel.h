@@ -31,7 +31,11 @@ namespace Kryed
 			void leaveEvent(QEvent* event);
 
         private:
-            size_t coordToIndex(const kry::Util::Vector2f& coord);
+			size_t tileCoordToIndex(const kry::Util::Vector2i& coord);
+			kry::Util::Vector2i coordToTileCoord(const kry::Util::Vector2f& coord);
+			kry::Util::Vector2f tileCoordToCoord(const kry::Util::Vector2i& coord);
+			bool isValidTileCoord(const kry::Util::Vector2i& coord);
+			bool isValidIndex(size_t index);
 
             kry::Graphics::Canvas canvas;
             bool empty;

@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		{
 			ui->lEntityName->setText(entbrowseDialog->getSelectedAssetItem()->text());
 			ui->lEntity->setPixmap(entbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEntity->size()));
+
+			ui->lEntity->clicked();
 		}
 	});
 	connect(ui->lEntity, &ClickableLabel::clicked, [this]()
@@ -63,6 +65,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		effect->setStrength(0.5f);
 		ui->lEntity->setGraphicsEffect(effect);
 		ui->lEnv->setGraphicsEffect(nullptr);
+
+		if (Tool<>::getTool()->getType() == ToolType::PAINT)
+			Tool<PaintData>::getTool()->getData().assetitem = entbrowseDialog->getSelectedAssetItem();
 	});
     connect(ui->bBrowseEnv, &QPushButton::clicked, [this]()
     {
@@ -70,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         {
             ui->lEnvName->setText(envbrowseDialog->getSelectedAssetItem()->text());
             ui->lEnv->setPixmap(envbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEnv->size()));
+
+			ui->lEnv->clicked();
         }
     });
 	connect(ui->lEnv, &ClickableLabel::clicked, [this]()
@@ -79,6 +86,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		effect->setStrength(0.5f);
 		ui->lEnv->setGraphicsEffect(effect);
 		ui->lEntity->setGraphicsEffect(nullptr);
+
+		if (Tool<>::getTool()->getType() == ToolType::PAINT)
+			Tool<PaintData>::getTool()->getData().assetitem = envbrowseDialog->getSelectedAssetItem();
 	});
 	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
 	{
@@ -166,8 +176,9 @@ void MainWindow::onNewTrigger()
 
             if (Map::getMap())
                 Map::getMap()->resetMap();
-			auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(),
-									{ std::vector<Asset<kry::Graphics::Texture>*>(), kry::Graphics::Sprite(), Assets::getTiles()[0].get() },
+			Tile defaulttile;
+			defaulttile.asset = Assets::getTiles()[0].get();
+			auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(), defaulttile,
 									  prjsetupDialog->getUI()->lbLayers);
 			ui->cbLayers->clear();
 			for (auto& layer : map->getLayers())
@@ -175,6 +186,7 @@ void MainWindow::onNewTrigger()
             ui->layerProperties->setItem(0, 1, new QTableWidgetItem(map->getCurrentLayer()->description));
             ui->layerProperties->setItem(1, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[0])));
             ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));
+			ui->glWidget->resetCamera();
             ui->glWidget->updateCanvas();
         }
         catch (const kry::Util::Exception& e)

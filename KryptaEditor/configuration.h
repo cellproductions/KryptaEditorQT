@@ -26,7 +26,7 @@ kry::Media::Config& Configuration::getConfig()
 
 void Configuration::updateConfig(const kry::Media::Config& config)
 {
-	this->config = config;
+	Configuration::config = config;
 }
 
 #endif // CONFIGURATION_H

@@ -98,8 +98,9 @@ LayerBrowserDialog::~LayerBrowserDialog()
 DialogResult LayerBrowserDialog::showDialog()
 {
 	ui->lbLayers->clear();
-	for (auto& layer : Map::getMap()->getLayers())
-		ui->lbLayers->addItem(layer->description);
+	if (Map::getMap())
+		for (auto& layer : Map::getMap()->getLayers())
+			ui->lbLayers->addItem(layer->description);
 
 	this->exec();
 	return lastresult;

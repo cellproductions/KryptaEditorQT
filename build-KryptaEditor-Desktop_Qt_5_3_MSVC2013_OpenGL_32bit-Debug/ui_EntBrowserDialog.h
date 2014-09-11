@@ -189,7 +189,7 @@ public:
 
     void retranslateUi(QDialog *EntBrowserDialog)
     {
-        EntBrowserDialog->setWindowTitle(QApplication::translate("EntBrowserDialog", "Dialog", 0));
+        EntBrowserDialog->setWindowTitle(QApplication::translate("EntBrowserDialog", "Entity Browser", 0));
         lResName->setText(QString());
         lResImage->setText(QString());
         QTableWidgetItem *___qtablewidgetitem = resProperties->horizontalHeaderItem(0);

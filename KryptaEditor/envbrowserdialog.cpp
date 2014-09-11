@@ -28,12 +28,12 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 		ui->resProperties->item(1, 1)->setFlags(0);
 		ui->resProperties->item(2, 1)->setFlags(0);
 		ui->resProperties->item(3, 1)->setFlags(0);
-
-        selected = assetitem;
     });
     connect(ui->bSelect, &QPushButton::clicked, [this]()
     {
-        lastresult = DialogResult::OK;
+		selected = dynamic_cast<AssetListItem*>(ui->lbIcons->selectedItems().empty() ? nullptr :
+												ui->lbIcons->selectedItems()[0]);
+		lastresult = ui->lbIcons->selectedItems().size() <= 0 ? DialogResult::CANCEL : DialogResult::OK;
         close();
     });
     connect(ui->bClose, &QPushButton::clicked, [this]()

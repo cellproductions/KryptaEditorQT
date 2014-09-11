@@ -8,11 +8,16 @@
 #include <vector>
 #include <memory>
 
-struct Tile
+struct Object
 {
-	std::vector<Asset<kry::Graphics::Texture>*> objects;
+	kry::Media::Config properties;
 	kry::Graphics::Sprite sprite;
 	Asset<kry::Graphics::Texture>* asset;
+};
+
+struct Tile : public Object
+{
+	std::vector<std::shared_ptr<Object> > objects;
 };
 
 class Map

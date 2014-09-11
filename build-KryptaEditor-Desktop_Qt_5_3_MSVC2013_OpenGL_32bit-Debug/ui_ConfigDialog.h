@@ -96,7 +96,7 @@ public:
 
     void retranslateUi(QDialog *ConfigDialog)
     {
-        ConfigDialog->setWindowTitle(QApplication::translate("ConfigDialog", "Dialog", 0));
+        ConfigDialog->setWindowTitle(QApplication::translate("ConfigDialog", "Properties", 0));
         QTableWidgetItem *___qtablewidgetitem = settings->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("ConfigDialog", "Property", 0));
         QTableWidgetItem *___qtablewidgetitem1 = settings->horizontalHeaderItem(1);

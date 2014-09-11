@@ -6,12 +6,15 @@
 #include "Resources.h"
 #include "Tool.h"
 #include "AssetListItem.h"
+#include "ObjectAction.h"
+#include "Utilities.h"
 #include <Utilities/Math.h>
 #include <Graphics/Primitives.h>
 #include <QWheelEvent>
 #include <QDebug>
 #include <QMessageBox>
 #include <Windows.h>
+#include <functional>
 
 namespace Kryed
 {
@@ -32,13 +35,12 @@ namespace Kryed
         canvas.clear();
 		kry::Util::Vector2f pos;
         auto& size = Map::getMap()->getCurrentLayer()->size;
-        auto& tiles = Map::getMap()->getCurrentLayer()->tiles;
-		//auto dim = tiles[0].asset->resource->rawresource->getDimensions();
+		auto& tiles = Map::getMap()->getCurrentLayer()->tiles;
 		auto dim = Map::getMap()->getCurrentLayer()->tilesize;
 		auto halfdim = dim / 2;
 		kry::Util::Vector2f startpos = { static_cast<float>(dim[0]), static_cast<float>(-halfdim[1]) };
-kry::Util::Vector4f col(0.0f, 1.0f, 0.0f, 1.0f);
-int coli = 0;
+
+		std::map<kry::Util::Vector3f, Object*> zorder;
         for (int y = 0; y < size[1]; ++y)
         {
 			pos = { static_cast<float>(halfdim[0] * y), static_cast<float>(-(halfdim[1] * y)) };
@@ -49,22 +51,16 @@ int coli = 0;
                 auto& tile = tiles[y * size[0] + x];
                 tile.sprite.dimensions = dim;
                 tile.sprite.position = pos;
-                tile.sprite.texture = tile.asset->resource->rawresource;
-                tile.sprite.rgba = col;
-                col[coli] += 0.01f;
-                if (col[coli] >= 1.0f)
-                {
-                    coli += 1;
-                    if (coli > 2)
-                    {
-                        coli = 0;
-                        col[0] = 0.0f;
-                        col[1] = 0.0f;
-                        col[2] = 0.0f;
-                    }
-                }
+				tile.sprite.texture = tile.asset->resource->rawresource;
 
-                canvas.addSprite(&tile.sprite);
+				zorder.insert(std::pair<kry::Util::Vector3f, Object*>({pos[0], pos[1], 0.0f}, &tile));
+				for (auto& object : tile.objects)
+				{
+					auto& p = object->sprite.position;
+					zorder.insert(std::pair<kry::Util::Vector3f, Object*>({p[0], p[1], 1.0f},
+																		  object.get()));
+				}
+
                 if (gridmode)
                 {
                     // render a grid? iono
@@ -74,6 +70,9 @@ int coli = 0;
 				pos[1] += halfdim[1];
             }
         }
+
+		for (auto& pair : zorder)
+			canvas.addSprite(&pair.second->sprite);
 
 		canvas.addSprite(&follower);
 		paintGL();
@@ -87,7 +86,8 @@ int coli = 0;
 
 	void GLPanel::resetCamera()
 	{
-		canvas.pan = 0.0f;
+		canvas.pan = { -(static_cast<float>(Map::getMap()->getCurrentLayer()->size[0] *
+					   Map::getMap()->getCurrentLayer()->tilesize[0]) * 0.5f), 0.0f };
 		paintGL();
 	}
 
@@ -157,16 +157,110 @@ int coli = 0;
 			dragPos = event->pos();
 
 			Ui::MainWindow* mainwin = dynamic_cast<MainWindow*>(this->parent()->parent())->getUI();
-			coordToIndex({(float)event->x(), (float)event->y()});
+			auto coord = this->coordToTileCoord({(float)event->x(), (float)event->y()});
+
+			switch (Tool<>::getTool()->getType())
+			{
+				case ToolType::PAINT:
+					{
+						if (!isValidTileCoord(coord))
+							break;
+						size_t index = this->tileCoordToIndex(coord);
+						if (!isValidIndex(index))
+							break;
+
+						if (Tool<PaintData>::getTool()->getData().assetitem == nullptr)
+							break;
+						auto asset = Tool<PaintData>::getTool()->getData().assetitem->asset;
+						if (asset->type == AssetType::STATIC_TILE)
+						{
+							Map::getMap()->getCurrentLayer()->tiles[index].asset = asset;
+							Map::getMap()->getCurrentLayer()->tiles[index].sprite.texture = asset->resource->rawresource;
+							paintGL();
+						}
+						else
+						{
+							Object* object = new Object;
+							object->sprite.position = follower.position;//tileCoordToCoord(coord);
+							object->sprite.texture = asset->resource->rawresource;
+							object->sprite.dimensions = asset->resource->rawresource->getDimensions();
+							if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
+							{
+								kry::Util::Vector2f pos;
+								pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
+								pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
+								object->sprite.position -= object->sprite.dimensions * pos;
+							}
+							object->properties = asset->properties;
+							object->asset = asset;
+							Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
+							updateCanvas();
+						}
+
+					}
+					break;
+			}
 		}
 		else if (event->button() == Qt::RightButton)
 		{
+			if (Tool<>::getTool()->getType() == ToolType::PAINT)
+			{
+				Tool<>::switchTool(ToolType::POINTER);
+				follower.texture = nullptr;
+				follower.rgba = 0.0f;
+				//updateCanvas();
+				paintGL();
+				return;
+			}
+
+			auto coord = this->coordToTileCoord({(float)event->x(), (float)event->y()});
+			if (!isValidTileCoord(coord))
+				return;
+			size_t index = this->tileCoordToIndex(coord);
+			if (!isValidIndex(index))
+				return;
+
+			Tile& tile = Map::getMap()->getCurrentLayer()->tiles[index];
+
 			QMenu context(this);
+			ObjectAction* tileaction = new ObjectAction(&context);
+			tileaction->setText("Tile: " + kryToQString(tile.asset->properties["global"]["name"]));
+			tileaction->setEnabled(false);
+			tileaction->setObject(&tile);
+			connect(tileaction, &ObjectAction::hovered, [this, tileaction]()
+			{
+				tileaction->getObject()->sprite.rgba = {1.0f, 1.0f, 0.0f, 1.0f};
+				paintGL();
+			});
+			context.addAction(tileaction);
+			auto stack = context.addMenu("Objects");
+			for (auto& object : tile.objects)
+			{
+				ObjectAction* objectaction = new ObjectAction(stack);
+				objectaction->setText(kryToQString(object->asset->properties["global"]["name"]));
+				objectaction->setEnabled(false);
+				objectaction->setObject(object.get());
+				connect(objectaction, &ObjectAction::hovered, [this, stack, objectaction]()
+				{
+					for (QAction* action : stack->actions())
+						dynamic_cast<ObjectAction*>(action)->getObject()->sprite.rgba = 1.0f;
+					objectaction->getObject()->sprite.rgba = {1.0f, 1.0f, 0.0f, 1.0f};
+					paintGL();
+				});
+				stack->addAction(objectaction);
+			}
+			connect(stack, &QMenu::aboutToHide, [tileaction, stack]()
+			{
+				tileaction->getObject()->sprite.rgba = 1.0f;
+				for (QAction* action : stack->actions())
+					dynamic_cast<ObjectAction*>(action)->getObject()->sprite.rgba = 1.0f;
+			});
+			context.addSeparator();
 			// add the name of the thing that was clicked, then a separator
 			context.addAction("Copy");
 			context.addAction("Edit");
 			context.addAction("Remove");
-			context.exec(event->pos());
+			context.exec(event->globalPos());
 		}
 		//QGLWidget::mousePressEvent(event);
     }
@@ -182,26 +276,52 @@ int coli = 0;
     {
 		bool redraw = false;
 
-        if (mouseDown)
-        {
-            QPoint newpos = event->pos() - dragPos;
-            this->canvas.pan += { static_cast<float>(newpos.x()), static_cast<float>(newpos.y()) };
-            dragPos = event->pos();
-			redraw = true;
-        }
+		kry::Util::Vector2f canvascoord = {static_cast<float>(event->x()), static_cast<float>(event->y())};
+		canvascoord = canvas.getCoord(canvascoord);
 
-		if (Tool<>::getTool()->getType() == ToolType::PAINT)
+		if (mouseDown)
 		{
-			follower.position = {static_cast<float>(event->x()), static_cast<float>(event->y())};
-			follower.position = canvas.getCoord(follower.position);
-			follower.position[0] -= static_cast<int>(follower.position[0]) % (Map::getMap()->getCurrentLayer()->tilesize[0] / 2);
-			follower.position[1] -= static_cast<int>(follower.position[1]) % (Map::getMap()->getCurrentLayer()->tilesize[1] / 2);
-			if (Tool<PaintData>::getTool()->getData().assetitem != nullptr)
-			{
-				follower.dimensions = Tool<PaintData>::getTool()->getData().assetitem->asset->resource->rawresource->getDimensions();
-				follower.texture = Tool<PaintData>::getTool()->getData().assetitem->asset->resource->rawresource;
-			}
+			QPoint newpos = event->pos() - dragPos;
+			this->canvas.pan += { static_cast<float>(newpos.x()), static_cast<float>(newpos.y()) };
+			dragPos = event->pos();
 			redraw = true;
+		}
+
+		switch (Tool<>::getTool()->getType())
+		{
+			case ToolType::POINTER:
+				{
+					follower.texture = nullptr;
+					follower.rgba = 0.0f;
+				}
+				break;
+			case ToolType::PAINT:
+				{
+					follower.rgba = 1.0f;
+					follower.position = canvascoord;
+					follower.position[0] -= static_cast<int>(follower.position[0]) % (Map::getMap()->getCurrentLayer()->tilesize[0] / 2);
+					follower.position[1] -= static_cast<int>(follower.position[1]) % (Map::getMap()->getCurrentLayer()->tilesize[1] / 2);
+					if (Tool<PaintData>::getTool()->getData().assetitem != nullptr)
+					{
+						auto asset = Tool<PaintData>::getTool()->getData().assetitem->asset;
+						if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
+							follower.position = canvascoord;
+						follower.dimensions = asset->resource->rawresource->getDimensions();
+						follower.texture = asset->resource->rawresource;
+
+						if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
+						{
+							kry::Util::Vector2f pos;
+							pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
+							pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
+							follower.position -= follower.dimensions * pos;
+						}
+						else
+							follower.position -= asset->resource->rawresource->getDimensions() / 2;
+					}
+					redraw = true;
+				}
+				break;
 		}
 
 		if (redraw)
@@ -244,9 +364,15 @@ int coli = 0;
 		//	this->setCursor(QCursor(Qt::ArrowCursor));
 	}
 
-    size_t GLPanel::coordToIndex(const kry::Util::Vector2f& coord)
+	size_t GLPanel::tileCoordToIndex(const kry::Util::Vector2i& coord)
 	{
 		auto& size = Map::getMap()->getCurrentLayer()->size;
+
+		return coord[1] * size[1] + coord[0];
+    }
+
+	kry::Util::Vector2i GLPanel::coordToTileCoord(const kry::Util::Vector2f& coord)
+	{
 		kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
 		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
 		kry::Util::Vector2f screen = canvas.getCoord(coord);
@@ -254,6 +380,32 @@ int coli = 0;
 		int x = static_cast<int>((screen[0] / halfdim[0] + screen[1] / halfdim[1]) * 0.5f) - 1;
 		int y = static_cast<int>((screen[1] / halfdim[1] - screen[0] / halfdim[0]) * 0.5f) * -1 - 1;
 
-		return y * size[1] + x;
-    }
+		return {x, y};
+	}
+
+	kry::Util::Vector2f GLPanel::tileCoordToCoord(const kry::Util::Vector2i& coord)
+	{
+		kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
+		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
+
+		//float x = (coord[1] * halfdim[1] - coord[0] * halfdim[0]) * 2.0f + 1.0f;
+		//float y = ((coord[1] * halfdim[1] + coord[0] * halfdim[0]) * 2.0f) * -1.0f + 1.0f;
+		kry::Util::Vector2f pos = {coord[0] + 1.0f, coord[1] * -1.0f - 1.0f};
+		float x = (pos[0] - pos[1]) * halfdim[0];
+		float y = (pos[0] + pos[1]) * halfdim[1] - halfdim[1];
+
+		return {x, y};
+	}
+
+	bool GLPanel::isValidTileCoord(const kry::Util::Vector2i& coord)
+	{
+		auto& size = Map::getMap()->getCurrentLayer()->size;
+
+		return (coord[0] >= 0 && coord[0] < size[0]) && (coord[1] >= 0 && coord[1] < size[1]);
+	}
+
+	bool GLPanel::isValidIndex(size_t index)
+	{
+		return index >= 0 && index < Map::getMap()->getCurrentLayer()->tiles.size();
+	}
 }
