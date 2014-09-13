@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     PrjSetupDialog.cpp \
     Resources.cpp \
     ConfigDialog.cpp \
-    ObjectAction.cpp
+    ObjectAction.cpp \
+    ObjectSettingsDialog.cpp \
+    SaveDialog.cpp
 
 HEADERS  += \
     ClickableLabel.h \
@@ -50,44 +52,48 @@ HEADERS  += \
     Resources.h \
     Tool.h \
     ConfigDialog.h \
-    ObjectAction.h
+    ObjectAction.h \
+    ObjectSettingsDialog.h \
+    SaveDialog.h
 
 FORMS    += mainwindow.ui \
     prjsetupdialog.ui \
     envbrowserdialog.ui \
     layerbrowserdialog.ui \
     EntBrowserDialog.ui \
-    ConfigDialog.ui
+    ConfigDialog.ui \
+    ObjectSettingsDialog.ui \
+    SaveDialog.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Desktop/Krypta2D/release/ -lKrypta2D
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Desktop/Krypta2D/debug/ -lKrypta2D
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/release/ -lKrypta2D
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/debug/ -lKrypta2D
 
-INCLUDEPATH += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/include
-INCLUDEPATH += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include
-DEPENDPATH += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/include
+INCLUDEPATH += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/include
+INCLUDEPATH += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/include
+DEPENDPATH += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/include
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/release/libKrypta2D.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/debug/libKrypta2D.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/release/Krypta2D.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/debug/Krypta2D.lib
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/release/libKrypta2D.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/debug/libKrypta2D.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/release/Krypta2D.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/debug/Krypta2D.lib
 
-win32: LIBS += -L$$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/ -lglew32
+win32: LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/ -lglew32
 
-INCLUDEPATH += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL
-DEPENDPATH += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL
+INCLUDEPATH += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL
+DEPENDPATH += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/glew32.lib
-else:win32-g++: PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/libglew32.a
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/glew32.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/libglew32.a
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/ -lopenAL32
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/ -lopenAL32d
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/ -lopenAL32
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/ -lopenAL32d
 
 INCLUDEPATH += $$PWD/
 DEPENDPATH += $$PWD/
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/libopenAL32.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/libopenAL32d.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/openAL32.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Desktop/Krypta2D/Krypta2D/libs/openAL32d.lib
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/libopenAL32.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/libopenAL32d.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/openAL32.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../Users/Callum/Documents/Krypta2D/Krypta2D/libs/openAL32d.lib
 
 OTHER_FILES +=

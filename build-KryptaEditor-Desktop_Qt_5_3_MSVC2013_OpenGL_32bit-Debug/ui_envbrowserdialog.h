@@ -133,6 +133,7 @@ public:
         __qtablewidgetitem13->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
         resProperties->setItem(3, 1, __qtablewidgetitem13);
         resProperties->setObjectName(QStringLiteral("resProperties"));
+        resProperties->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         resProperties->setShowGrid(true);
         resProperties->setWordWrap(false);
         resProperties->setCornerButtonEnabled(false);

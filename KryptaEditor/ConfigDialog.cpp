@@ -3,7 +3,7 @@
 #include "Utilities.h"
 #include <QDebug>
 
-ConfigDialog::ConfigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ConfigDialog)
+ConfigDialog::ConfigDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ConfigDialog), lastresult(DialogResult::CANCEL)
 {
 	ui->setupUi(this);
 

@@ -3,6 +3,8 @@
 
 enum class DialogResult : char
 {
+	YES,
+	NO,
     OK,
     CANCEL
 };

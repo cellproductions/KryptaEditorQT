@@ -5,6 +5,8 @@
 #include <Graphics/Renderer.h>
 #include <Graphics/Canvas.h>
 
+class ObjectSettingsDialog;
+
 namespace Kryed
 {
     class GLPanel : public QGLWidget
@@ -38,6 +40,7 @@ namespace Kryed
 			bool isValidIndex(size_t index);
 
             kry::Graphics::Canvas canvas;
+			ObjectSettingsDialog* objsettingsDialog;
             bool empty;
             bool gridmode;
             bool mouseDown;

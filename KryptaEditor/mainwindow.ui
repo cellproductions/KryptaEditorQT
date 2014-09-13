@@ -368,6 +368,9 @@
     </property>
     <addaction name="miFileNew"/>
     <addaction name="miFileOpen"/>
+    <addaction name="separator"/>
+    <addaction name="miFileSave"/>
+    <addaction name="separator"/>
     <addaction name="miFileExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -424,6 +427,11 @@
   <action name="miPreferences">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="miFileSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

@@ -5,6 +5,8 @@
 #include "Map.h"
 #include <QDialog>
 
+class LayerOptionsItem;
+
 namespace Ui
 {
 	class LayerBrowserDialog;
@@ -22,6 +24,7 @@ class LayerBrowserDialog : public QDialog
 		std::shared_ptr<Map::Layer>& getSelectedLayer();
 
 	private:
+		std::vector<LayerOptionsItem*> todelete;
 		std::shared_ptr<Map::Layer> currlayer;
 		Ui::LayerBrowserDialog *ui;
 		DialogResult lastresult;

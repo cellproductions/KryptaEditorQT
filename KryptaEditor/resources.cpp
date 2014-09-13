@@ -8,7 +8,7 @@ std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > Resources::text
 std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > Resources::sounds;
 std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > Resources::music;
 
-void Resources::loadResources(const QString& rootdir)
+void Resources::loadResources(const QString& rootdir) /** #TODO(incomplete) add exception handling here (collect list of resources that failed to load, display them in message box) */
 {
     auto strrootdir = rootdir.toStdString();
     auto resources = strrootdir + "\\images";

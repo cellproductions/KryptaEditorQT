@@ -60,7 +60,7 @@ void ObjectAction::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
 }
 
 const QMetaObject ObjectAction::staticMetaObject = {
-    { &QAction::staticMetaObject, qt_meta_stringdata_ObjectAction.data,
+    { &QWidgetAction::staticMetaObject, qt_meta_stringdata_ObjectAction.data,
       qt_meta_data_ObjectAction,  qt_static_metacall, 0, 0}
 };
 
@@ -75,12 +75,12 @@ void *ObjectAction::qt_metacast(const char *_clname)
     if (!_clname) return 0;
     if (!strcmp(_clname, qt_meta_stringdata_ObjectAction.stringdata))
         return static_cast<void*>(const_cast< ObjectAction*>(this));
-    return QAction::qt_metacast(_clname);
+    return QWidgetAction::qt_metacast(_clname);
 }
 
 int ObjectAction::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QAction::qt_metacall(_c, _id, _a);
+    _id = QWidgetAction::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     return _id;

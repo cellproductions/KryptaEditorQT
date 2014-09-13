@@ -41,6 +41,7 @@ public:
     QSpinBox *sbWidth;
     QPushButton *bAdd;
     QPushButton *bDelete;
+    QPushButton *bChange;
     QSpacerItem *verticalSpacer;
     QVBoxLayout *verticalLayout_5;
     QSpinBox *sbHeight;
@@ -102,6 +103,11 @@ public:
         bDelete->setObjectName(QStringLiteral("bDelete"));
 
         verticalLayout_4->addWidget(bDelete);
+
+        bChange = new QPushButton(LayerBrowserDialog);
+        bChange->setObjectName(QStringLiteral("bChange"));
+
+        verticalLayout_4->addWidget(bChange);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -199,6 +205,7 @@ public:
         sbWidth->setSuffix(QApplication::translate("LayerBrowserDialog", " tiles", 0));
         bAdd->setText(QApplication::translate("LayerBrowserDialog", "Add", 0));
         bDelete->setText(QApplication::translate("LayerBrowserDialog", "Delete", 0));
+        bChange->setText(QApplication::translate("LayerBrowserDialog", "Change", 0));
         sbHeight->setSuffix(QApplication::translate("LayerBrowserDialog", " tiles", 0));
         bUp->setText(QApplication::translate("LayerBrowserDialog", "Move Up", 0));
         bDown->setText(QApplication::translate("LayerBrowserDialog", "Move Down", 0));

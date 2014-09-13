@@ -81,6 +81,9 @@
          </item>
          <item>
           <widget class="QTableWidget" name="resProperties">
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
            <property name="showGrid">
             <bool>true</bool>
            </property>

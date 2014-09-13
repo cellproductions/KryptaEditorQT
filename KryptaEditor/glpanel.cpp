@@ -7,10 +7,12 @@
 #include "Tool.h"
 #include "AssetListItem.h"
 #include "ObjectAction.h"
+#include "ObjectSettingsDialog.h"
 #include "Utilities.h"
 #include <Utilities/Math.h>
 #include <Graphics/Primitives.h>
 #include <QWheelEvent>
+#include <QCheckBox>
 #include <QDebug>
 #include <QMessageBox>
 #include <Windows.h>
@@ -23,7 +25,8 @@ namespace Kryed
 
     kry::Graphics::Renderer GLPanel::renderer;
 
-    GLPanel::GLPanel(QWidget* parent) : QGLWidget(QGLFormat(QGL::FormatOption::SampleBuffers), parent), empty(true), gridmode(true), mouseDown(false)
+	GLPanel::GLPanel(QWidget* parent) : QGLWidget(QGLFormat(QGL::FormatOption::SampleBuffers), parent), objsettingsDialog(new ObjectSettingsDialog(this)), empty(true),
+		gridmode(true), mouseDown(false)
     {
 		this->setMouseTracking(true);
     }
@@ -156,7 +159,6 @@ namespace Kryed
 			this->setFocus();
 			dragPos = event->pos();
 
-			Ui::MainWindow* mainwin = dynamic_cast<MainWindow*>(this->parent()->parent())->getUI();
 			auto coord = this->coordToTileCoord({(float)event->x(), (float)event->y()});
 
 			switch (Tool<>::getTool()->getType())
@@ -189,10 +191,18 @@ namespace Kryed
 								kry::Util::Vector2f pos;
 								pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
 								pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
-								object->sprite.position -= object->sprite.dimensions * pos;
+								object->sprite.position = canvas.getCoord({static_cast<float>(event->x()), static_cast<float>(event->y())}) - object->sprite.dimensions * pos;
 							}
 							object->properties = asset->properties;
 							object->asset = asset;
+							kry::Util::String section;
+							if (object->properties.sectionExists("object"))
+								section = "object";
+							else if (object->properties.sectionExists("entity"))
+								section = "entity";
+							object->properties[section]["posx"] = kry::Util::toString(follower.position[0]);
+							object->properties[section]["posy"] = kry::Util::toString(follower.position[1]);
+
 							Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
 							updateCanvas();
 						}
@@ -223,22 +233,39 @@ namespace Kryed
 			Tile& tile = Map::getMap()->getCurrentLayer()->tiles[index];
 
 			QMenu context(this);
+			QAction* copyaction = new QAction("Copy", &context);
+			QAction* editaction = new QAction("Edit", &context);
+			QAction* removeaction = new QAction("Remove", &context);
+
 			ObjectAction* tileaction = new ObjectAction(&context);
-			tileaction->setText("Tile: " + kryToQString(tile.asset->properties["global"]["name"]));
-			tileaction->setEnabled(false);
+			QCheckBox* tilecheck = new QCheckBox(&context);
+			tileaction->setDefaultWidget(tilecheck);
+			tilecheck->setText("Tile: " + kryToQString(tile.asset->properties["global"]["name"]));
+			tileaction->setCheckable(true);
 			tileaction->setObject(&tile);
+			context.addAction(tileaction);
+			auto stack = context.addMenu("Objects");
 			connect(tileaction, &ObjectAction::hovered, [this, tileaction]()
 			{
 				tileaction->getObject()->sprite.rgba = {1.0f, 1.0f, 0.0f, 1.0f};
 				paintGL();
 			});
-			context.addAction(tileaction);
-			auto stack = context.addMenu("Objects");
+			connect(tilecheck, &QCheckBox::clicked, [stack, editaction, removeaction](bool checked)
+			{
+				if (checked)
+					for (QAction* action : stack->actions())
+						dynamic_cast<QCheckBox*>(dynamic_cast<ObjectAction*>(action)->defaultWidget())->setChecked(false);
+
+				editaction->setEnabled(!checked);
+				removeaction->setEnabled(!checked);
+			});
 			for (auto& object : tile.objects)
 			{
 				ObjectAction* objectaction = new ObjectAction(stack);
-				objectaction->setText(kryToQString(object->asset->properties["global"]["name"]));
-				objectaction->setEnabled(false);
+				QCheckBox* objectcheck = new QCheckBox(&context);
+				objectaction->setDefaultWidget(objectcheck);
+				objectcheck->setText(kryToQString(object->asset->properties["global"]["name"]));
+				objectaction->setCheckable(true);
 				objectaction->setObject(object.get());
 				connect(objectaction, &ObjectAction::hovered, [this, stack, objectaction]()
 				{
@@ -247,25 +274,91 @@ namespace Kryed
 					objectaction->getObject()->sprite.rgba = {1.0f, 1.0f, 0.0f, 1.0f};
 					paintGL();
 				});
+				connect(objectcheck, &QCheckBox::clicked, [objectcheck, tileaction, stack](bool checked)
+				{
+					if (checked)
+					{
+						dynamic_cast<QCheckBox*>(dynamic_cast<ObjectAction*>(tileaction)->defaultWidget())->setChecked(false);
+						for (QAction* action : stack->actions())
+							dynamic_cast<QCheckBox*>(dynamic_cast<ObjectAction*>(action)->defaultWidget())->setChecked(false);
+						objectcheck->setChecked(true);
+					}
+				});
 				stack->addAction(objectaction);
 			}
-			connect(stack, &QMenu::aboutToHide, [tileaction, stack]()
+			connect(stack, &QMenu::aboutToHide, [this, tileaction, stack]()
 			{
 				tileaction->getObject()->sprite.rgba = 1.0f;
 				for (QAction* action : stack->actions())
 					dynamic_cast<ObjectAction*>(action)->getObject()->sprite.rgba = 1.0f;
+				paintGL();
 			});
 			context.addSeparator();
+
+			auto findSelected = [&context, tileaction, stack]()
+			{
+				ObjectAction* toremove = nullptr;
+				if (dynamic_cast<QCheckBox*>(dynamic_cast<ObjectAction*>(tileaction)->defaultWidget())->isChecked())
+					toremove = tileaction;
+				else
+				{
+					for (QAction* action : stack->actions())
+					{
+						if (dynamic_cast<QCheckBox*>(dynamic_cast<ObjectAction*>(action)->defaultWidget())->isChecked())
+						{
+							toremove = dynamic_cast<ObjectAction*>(action);
+							break;
+						}
+					}
+				}
+
+				return toremove;
+			};
+
 			// add the name of the thing that was clicked, then a separator
-			context.addAction("Copy");
-			context.addAction("Edit");
-			context.addAction("Remove");
+			connect(editaction, &QAction::triggered, [this, &findSelected, tileaction, index](bool)
+			{
+				auto toedit = findSelected();
+				if (toedit != nullptr)
+				{
+					if (toedit == tileaction)
+						QMessageBox::information(this, "Invalid Action", "You cannot edit a tile.", QMessageBox::Ok);
+					else
+						if (objsettingsDialog->showDialog(toedit->getObject()->properties["global"]["name"], toedit->getObject()->properties) == DialogResult::OK)
+							toedit->getObject()->properties = objsettingsDialog->getSettings();
+				}
+			});
+			connect(removeaction, &QAction::triggered, [this, &findSelected, tileaction, stack, index](bool)
+			{
+				auto toremove = findSelected();
+				if (toremove != nullptr)
+				{
+					if (toremove == tileaction)
+						QMessageBox::information(this, "Invalid Action", "You cannot remove a tile.", QMessageBox::Ok);
+					else
+					{
+						auto removeitr = Map::getMap()->getCurrentLayer()->tiles[index].objects.begin();
+						auto end = Map::getMap()->getCurrentLayer()->tiles[index].objects.end();
+						for (; removeitr != end; ++removeitr)
+							if ((*removeitr).get() == toremove->getObject())
+								break;
+						Map::getMap()->getCurrentLayer()->tiles[index].objects.erase(removeitr);
+						stack->removeAction(tileaction);
+
+						updateCanvas();
+					}
+				}
+			});
+			context.addAction(copyaction);
+			context.addAction(editaction);
+			context.addAction(removeaction);
+
 			context.exec(event->globalPos());
 		}
 		//QGLWidget::mousePressEvent(event);
     }
 
-    void GLPanel::mouseReleaseEvent(QMouseEvent* event)
+	void GLPanel::mouseReleaseEvent(QMouseEvent*)
     {
         mouseDown = false;
 
@@ -304,8 +397,6 @@ namespace Kryed
 					if (Tool<PaintData>::getTool()->getData().assetitem != nullptr)
 					{
 						auto asset = Tool<PaintData>::getTool()->getData().assetitem->asset;
-						if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
-							follower.position = canvascoord;
 						follower.dimensions = asset->resource->rawresource->getDimensions();
 						follower.texture = asset->resource->rawresource;
 
@@ -314,7 +405,16 @@ namespace Kryed
 							kry::Util::Vector2f pos;
 							pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
 							pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
-							follower.position -= follower.dimensions * pos;
+							follower.position = canvascoord - follower.dimensions * pos;
+						}
+						else if (asset->type == AssetType::STATIC_TILE_DECAL ||asset->type == AssetType::ANIM_TILE_DECAL)
+						{
+							kry::Util::Vector2f pos;
+							if (asset->properties["object"].keyExists("relativex"))
+								pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
+							if (asset->properties["object"].keyExists("relativey"))
+								pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
+							follower.position -= follower.dimensions * pos; // cant really test this sought of thing until walls are fixed
 						}
 						else
 							follower.position -= asset->resource->rawresource->getDimensions() / 2;
@@ -352,13 +452,13 @@ namespace Kryed
         }
     }
 
-	void GLPanel::enterEvent(QEvent* event)
+	void GLPanel::enterEvent(QEvent*)
 	{
 		//if (Tool<>::getTool()->getType() == ToolType::PAINT)
 		//	this->setCursor(QCursor(Qt::BlankCursor));
 	}
 
-	void GLPanel::leaveEvent(QEvent* event)
+	void GLPanel::leaveEvent(QEvent*)
 	{
 		//if (Tool<>::getTool()->getType() == ToolType::PAINT)
 		//	this->setCursor(QCursor(Qt::ArrowCursor));

@@ -1,11 +1,11 @@
 #ifndef OBJECTACTION_H
 #define OBJECTACTION_H
 
-#include <QAction>
+#include <QWidgetAction>
 
 struct Object;
 
-class ObjectAction : public QAction
+class ObjectAction : public QWidgetAction
 {
 		Q_OBJECT
 	public:

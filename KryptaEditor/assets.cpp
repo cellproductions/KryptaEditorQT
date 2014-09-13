@@ -1,6 +1,8 @@
 #include "Assets.h"
 #include "resources.h"
+#include "Utilities.h"
 #include <System/Filesystem.h>
+#include <QDebug>
 
 #define STRINGIFY(x) (#x)
 AssetType strToAssetType(const kry::Util::String& str);
@@ -17,7 +19,7 @@ void Assets::loadAssets(const QString& rootdir)
     for (kry::Util::String& path : kry::System::getAllFiles(kry::Util::String(assets.c_str(), assets.length())))
     {
         if (path[path.getLength() - 1] == '.')
-            continue;
+			continue;
 
 		Asset<kry::Graphics::Texture>* asset = new Asset<kry::Graphics::Texture>;
         asset->properties.fileToConfig(path);
@@ -25,7 +27,7 @@ void Assets::loadAssets(const QString& rootdir)
         kry::Util::String res = asset->properties["global"]["resource"];
         res = std::move(res.replace('/', '\\'));
         asset->properties["global"]["resource"] = std::move(res);
-        asset->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
+		asset->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
 
         tiles.emplace_back(asset);
     }
@@ -67,6 +69,33 @@ void Assets::loadAssets(const QString& rootdir)
 	Resources::loadAndAssignTextures(entities);
 
     loaded = true;
+}
+
+std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getTileByIni(const QString& path)
+{
+	//qDebug() << path;
+	for (auto& asset : tiles)
+	{
+		//qDebug() << asset->path;
+		if (asset->path == path)
+			return asset;
+	}
+	throw kry::Util::Exception("Tile ini does not exist! [path=" + qToKString(path) + ']', KRY_EXCEPTION_DATA);
+}
+
+std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getObjectByIni(const QString& path)
+{
+	for (auto& asset : objects)
+		if (asset->path == path)
+			return asset;
+	throw kry::Util::Exception("Object ini does not exist! [path=" + qToKString(path) + ']', KRY_EXCEPTION_DATA);
+}
+std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getEntityByIni(const QString& path)
+{
+	for (auto& asset : entities)
+		if (asset->path == path)
+			return asset;
+	throw kry::Util::Exception("Entity ini does not exist! [path=" + qToKString(path) + ']', KRY_EXCEPTION_DATA);
 }
 
 Assets::Assets()

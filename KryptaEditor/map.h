@@ -39,7 +39,11 @@ class Map
         inline const QString& getName() const;
         void resetMap();
 
+		inline static void setProjectName(const QString& name);
+		inline static const QString& getProjectName();
         static std::shared_ptr<Map> createMap(const QString& name, const Tile& defaulttile, QListWidget* layerList);
+		static std::shared_ptr<Map> loadFromFile(const QString& name);
+		static void saveToFile(const QString& name);
         static std::shared_ptr<Map> getMap();
 
     private:
@@ -50,6 +54,7 @@ class Map
         std::shared_ptr<Layer> currentLayer;
 
         static std::shared_ptr<Map> single;
+		static QString projectname;
 };
 
 
@@ -81,6 +86,16 @@ std::shared_ptr<Map::Layer>& Map::getCurrentLayer()
 const QString& Map::getName() const
 {
     return name;
+}
+
+void Map::setProjectName(const QString& name)
+{
+	projectname = name;
+}
+
+const QString& Map::getProjectName()
+{
+	return projectname;
 }
 
 #endif // MAP_H

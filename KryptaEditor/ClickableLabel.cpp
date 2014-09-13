@@ -8,7 +8,7 @@ ClickableLabel::ClickableLabel(const QString& text, QWidget *parent) : QLabel(te
 {
 }
 
-void ClickableLabel::mousePressEvent(QMouseEvent* event)
+void ClickableLabel::mousePressEvent(QMouseEvent*)
 {
 	emit clicked();
 }

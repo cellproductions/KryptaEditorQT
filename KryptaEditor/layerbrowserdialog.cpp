@@ -3,6 +3,8 @@
 #include "LayerOptionsItem.h"
 #include <QMessageBox>
 #include <QShortcut>
+#include <QItemSelectionModel>
+#include <QDebug>
 
 LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui::LayerBrowserDialog)
 {
@@ -20,9 +22,12 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 	{
 		ui->bDown->click();
 	});
-	connect(ui->lbLayers, &QListWidget::currentRowChanged, [this](int index)
+	connect(ui->lbLayers->selectionModel(), &QItemSelectionModel::selectionChanged, [this](const QItemSelection&, const QItemSelection&)
 	{
-		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->item(index));
+		if (ui->lbLayers->count() <= 0)
+			return;
+
+		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->selectedItems()[0]);
 		ui->tbDescription->setText(option->getDescription());
 		ui->sbWidth->setValue(option->getWidth());
 		ui->sbHeight->setValue(option->getHeight());
@@ -42,10 +47,21 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 	connect(ui->bDelete, &QPushButton::clicked, [this](bool)
 	{
 		if (QMessageBox::warning(this, "Delete Layer", "Are you sure you would like to delete ''?", QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
-			delete ui->lbLayers->currentItem();
+			todelete.push_back(dynamic_cast<LayerOptionsItem*>(ui->lbLayers->takeItem(ui->lbLayers->currentRow())));
+	});
+	connect(ui->bChange, &QPushButton::clicked, [this](bool)
+	{
+		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->selectedItems()[0]);
+		option->setDescription(ui->tbDescription->text());
+		option->setWidth(ui->sbWidth->value());
+		option->setHeight(ui->sbHeight->value());
+		option->setText(ui->tbDescription->text() + ": " + QString::number(ui->sbWidth->value()) + 'x' + QString::number(ui->sbHeight->value()) + " tiles");
 	});
 	connect(ui->bUp, &QPushButton::clicked, [this]()
 	{
+		if (ui->lbLayers->count() <= 1)
+			return;
+
 		auto row = ui->lbLayers->currentRow();
 		auto item = ui->lbLayers->takeItem(row);
 		if (row == 0)
@@ -56,6 +72,9 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 	});
 	connect(ui->bDown, &QPushButton::clicked, [this]()
 	{
+		if (ui->lbLayers->count() <= 1)
+			return;
+
 		auto row = ui->lbLayers->currentRow();
 		auto item = ui->lbLayers->takeItem(row);
 		if (row == ui->lbLayers->count())
@@ -70,6 +89,7 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 	});
 	connect(ui->bClose, &QPushButton::clicked, [this](bool)
 	{
+		todelete.clear();
 		lastresult = DialogResult::CANCEL;
 		this->close();
 	});
@@ -81,10 +101,17 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 			return;
 		}
 
-		// remove layers that are no longer in the list
+		/** #TODO(change) maybe move this to the MainWindow connect? */
+		// delete layers in todelete, remove them from the current map
 		// add layers that are new to the list
 		// resize layers who's dimensions have been changed
+		for (int i = 0; i < ui->lbLayers->count(); ++i)
+		{
+			LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->item(i));
+			option->getLayer()->description = option->getDescription();
+		}
 
+		todelete.clear();
 		lastresult = DialogResult::OK;
 		this->close();
 	});
@@ -99,8 +126,21 @@ DialogResult LayerBrowserDialog::showDialog()
 {
 	ui->lbLayers->clear();
 	if (Map::getMap())
+	{
 		for (auto& layer : Map::getMap()->getLayers())
-			ui->lbLayers->addItem(layer->description);
+		{
+			LayerOptionsItem* option = new LayerOptionsItem;
+			option->setDescription(layer->description);
+			option->setWidth(layer->size[0]);
+			option->setHeight(layer->size[1]);
+			option->setLayer(layer.get());
+			option->setText(option->getDescription() + ": " + QString::number(option->getWidth()) + 'x' + QString::number(option->getHeight()) + " tiles");
+			ui->lbLayers->addItem(option);
+		}
+
+		if (ui->lbLayers->count() > 0)
+			ui->lbLayers->item(0)->setSelected(true);
+	}
 
 	this->exec();
 	return lastresult;

@@ -43,6 +43,7 @@ public:
     QAction *miFileExit;
     QAction *miFileOpen;
     QAction *miPreferences;
+    QAction *miFileSave;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -97,6 +98,8 @@ public:
         miFileOpen->setObjectName(QStringLiteral("miFileOpen"));
         miPreferences = new QAction(MainWindow);
         miPreferences->setObjectName(QStringLiteral("miPreferences"));
+        miFileSave = new QAction(MainWindow);
+        miFileSave->setObjectName(QStringLiteral("miFileSave"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -343,6 +346,9 @@ public:
         menuBar->addAction(menuEdit->menuAction());
         menuFile->addAction(miFileNew);
         menuFile->addAction(miFileOpen);
+        menuFile->addSeparator();
+        menuFile->addAction(miFileSave);
+        menuFile->addSeparator();
         menuFile->addAction(miFileExit);
         menuEdit->addAction(miPreferences);
 
@@ -358,6 +364,7 @@ public:
         miFileExit->setText(QApplication::translate("MainWindow", "Exit", 0));
         miFileOpen->setText(QApplication::translate("MainWindow", "Open", 0));
         miPreferences->setText(QApplication::translate("MainWindow", "Preferences", 0));
+        miFileSave->setText(QApplication::translate("MainWindow", "Save", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));

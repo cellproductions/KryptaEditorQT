@@ -28,15 +28,19 @@ class MainWindow : public QMainWindow
     public slots:
         void onNewTrigger();
         void onOpenTrigger();
+		void onSaveTrigger();
         void onExitTrigger();
 
     private:
+		void closeEvent(QCloseEvent*);
+
         Ui::MainWindow *ui;
         PrjSetupDialog* prjsetupDialog;
 		EntBrowserDialog* entbrowseDialog;
         EnvBrowserDialog* envbrowseDialog;
 		LayerBrowserDialog* layerbrowseDialog;
 		ConfigDialog* configDialog;
+		bool saved;
 };
 
 

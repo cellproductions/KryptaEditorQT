@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectfile>
+    <project>
+        <name>lol</name>
+        <layercount>1</layercount>
+    </project>
+    <layers>
+        <layer id="0">
+            <description>10</description>
+            <width>10</width>
+            <height>10</height>
+            <tilewidth>1677</tilewidth>
+            <tileheight>961</tileheight>
+        </layer>
+    </layers>
+    <tiledata>
+        <tile id="0">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="1">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="2">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="3">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="4">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="5">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="6">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="7">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="8">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="9">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="10">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="11">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="12">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="13">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="14">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="15">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="16">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="17">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="18">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="19">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="20">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="21">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="22">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="23">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="24">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="25">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="26">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="27">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="28">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="29">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="30">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="31">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="32">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="33">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="34">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="35">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="36">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="37">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="38">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="39">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="40">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="41">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="42">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="43">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="44">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="45">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\tile2.ini</asset>
+            <objectcount>2</objectcount>
+            <properties sections="0"/>
+            <objects>
+                <object id="0">
+                    <tileid>T45</tileid>
+                    <asset>assets\entities\zombie.ini</asset>
+                    <properties sections="2">
+                        <entity keys="4">
+                            <posx>9783.7</posx>
+                            <posy>-668.224</posy>
+                            <relativex>0.4</relativex>
+                            <relativey>1.0</relativey>
+                        </entity>
+                        <global keys="3">
+                            <name>Zombie</name>
+                            <resource>assets\resources\images\zombie1.png</resource>
+                            <type>ANIM_ENTITY</type>
+                        </global>
+                    </properties>
+                </object>
+                <object id="1">
+                    <tileid>T45</tileid>
+                    <asset>assets\entities\bat.ini</asset>
+                    <properties sections="2">
+                        <entity keys="4">
+                            <posx>9693.02</posx>
+                            <posy>273.03</posy>
+                            <relativex>0.75</relativex>
+                            <relativey>1.0</relativey>
+                        </entity>
+                        <global keys="3">
+                            <name>Bat</name>
+                            <resource>assets\resources\images\bat1.png</resource>
+                            <type>ANIM_ENTITY</type>
+                        </global>
+                    </properties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="46">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="47">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="48">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="49">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="50">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="51">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="52">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="53">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="54">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\tile2.ini</asset>
+            <objectcount>2</objectcount>
+            <properties sections="0"/>
+            <objects>
+                <object id="0">
+                    <tileid>T54</tileid>
+                    <asset>assets\entities\zombie.ini</asset>
+                    <properties sections="2">
+                        <entity keys="4">
+                            <posx>9799.81</posx>
+                            <posy>-1699.4</posy>
+                            <relativex>0.4</relativex>
+                            <relativey>1.0</relativey>
+                        </entity>
+                        <global keys="3">
+                            <name>Zombie</name>
+                            <resource>assets\resources\images\zombie1.png</resource>
+                            <type>ANIM_ENTITY</type>
+                        </global>
+                    </properties>
+                </object>
+                <object id="1">
+                    <tileid>T54</tileid>
+                    <asset>assets\entities\bat.ini</asset>
+                    <properties sections="2">
+                        <entity keys="4">
+                            <posx>9628.57</posx>
+                            <posy>-790.374</posy>
+                            <relativex>0.75</relativex>
+                            <relativey>1.0</relativey>
+                        </entity>
+                        <global keys="3">
+                            <name>Bat</name>
+                            <resource>assets\resources\images\bat1.png</resource>
+                            <type>ANIM_ENTITY</type>
+                        </global>
+                    </properties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="55">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="56">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="57">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="58">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="59">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="60">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="61">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="62">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="63">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="64">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="65">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="66">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="67">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="68">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="69">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="70">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="71">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="72">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="73">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="74">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="75">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="76">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="77">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="78">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="79">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="80">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="81">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="82">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="83">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="84">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="85">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="86">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="87">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="88">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="89">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="90">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="91">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="92">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="93">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="94">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="95">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="96">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="97">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="98">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="99">
+            <layerid>L0</layerid>
+            <asset>assets\tiles\brick1.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+    </tiledata>
+</projectfile>

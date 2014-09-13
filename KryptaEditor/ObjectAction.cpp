@@ -1,5 +1,5 @@
 #include "ObjectAction.h"
 
-ObjectAction::ObjectAction(QObject *parent) : QAction(parent), object(nullptr)
+ObjectAction::ObjectAction(QObject *parent) : QWidgetAction(parent), object(nullptr)
 {
 }
