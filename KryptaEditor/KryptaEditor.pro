@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     ConfigDialog.cpp \
     ObjectAction.cpp \
     ObjectSettingsDialog.cpp \
-    SaveDialog.cpp
+    SaveDialog.cpp \
+    PrjSettingsDialog.cpp \
+    CSDialog.cpp
 
 HEADERS  += \
     ClickableLabel.h \
@@ -54,7 +56,9 @@ HEADERS  += \
     ConfigDialog.h \
     ObjectAction.h \
     ObjectSettingsDialog.h \
-    SaveDialog.h
+    SaveDialog.h \
+    PrjSettingsDialog.h \
+    CSDialog.h
 
 FORMS    += mainwindow.ui \
     prjsetupdialog.ui \
@@ -63,7 +67,8 @@ FORMS    += mainwindow.ui \
     EntBrowserDialog.ui \
     ConfigDialog.ui \
     ObjectSettingsDialog.ui \
-    SaveDialog.ui
+    SaveDialog.ui \
+    PrjSettingsDialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/release/ -lKrypta2D
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../Users/Callum/Documents/Krypta2D/debug/ -lKrypta2D

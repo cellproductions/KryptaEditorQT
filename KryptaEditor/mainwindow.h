@@ -13,6 +13,7 @@ class EntBrowserDialog;
 class EnvBrowserDialog;
 class LayerBrowserDialog;
 class ConfigDialog;
+class PrjSettingsDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -29,6 +30,7 @@ class MainWindow : public QMainWindow
         void onNewTrigger();
         void onOpenTrigger();
 		void onSaveTrigger();
+		void onSaveAsTrigger();
         void onExitTrigger();
 
     private:
@@ -40,6 +42,7 @@ class MainWindow : public QMainWindow
         EnvBrowserDialog* envbrowseDialog;
 		LayerBrowserDialog* layerbrowseDialog;
 		ConfigDialog* configDialog;
+		PrjSettingsDialog* prjsettingsDialog;
 		bool saved;
 };
 

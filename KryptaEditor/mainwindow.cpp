@@ -7,6 +7,7 @@
 #include "LayerBrowserDialog.h"
 #include "ConfigDialog.h"
 #include "SaveDialog.h"
+#include "PrjSettingsDialog.h"
 #include "Configuration.h"
 #include "Map.h"
 #include "Assets.h"
@@ -22,7 +23,7 @@ static const QString mainTitle("Krypta Map Editor");
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), prjsetupDialog(new PrjSetupDialog(this)),
 	entbrowseDialog(new EntBrowserDialog(this)), envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this)), configDialog(new ConfigDialog(this)),
-	saved(true)
+	prjsettingsDialog(new PrjSettingsDialog(this)), saved(true)
 {
 	ui->setupUi(this);
 
@@ -38,11 +39,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->miFileNew, SIGNAL(triggered()), this, SLOT(onNewTrigger()));
     connect(ui->miFileOpen, SIGNAL(triggered()), this, SLOT(onOpenTrigger()));
 	connect(ui->miFileSave, SIGNAL(triggered()), this, SLOT(onSaveTrigger()));
+	connect(ui->miFileSaveAs, SIGNAL(triggered()), this, SLOT(onSaveAsTrigger()));
     connect(ui->miFileExit, SIGNAL(triggered()), this, SLOT(onExitTrigger()));
 	connect(ui->miPreferences, &QAction::triggered, [this]()
 	{
 		if (configDialog->showDialog() == DialogResult::OK)
 			Configuration::updateConfig(configDialog->getConfig());
+	});
+	connect(ui->miProjectSettings, &QAction::triggered, [this]()
+	{
+		if (!Map::getMap())
+			return;
+		if (prjsettingsDialog->showDialog() == DialogResult::OK)
+		{
+
+		}
 	});
 	connect(ui->bBrowseEntities, &QPushButton::clicked, [this]()
 	{
@@ -186,6 +197,7 @@ void MainWindow::onNewTrigger()
 			auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(), defaulttile,
 									  prjsetupDialog->getUI()->lbLayers);
 			saved = false;
+			prjsettingsDialog->resetSettings();
 			ui->cbLayers->clear();
 			for (auto& layer : map->getLayers())
 				ui->cbLayers->addItem(layer->description);
@@ -205,6 +217,8 @@ void MainWindow::onNewTrigger()
 void MainWindow::onOpenTrigger()
 {
 	QString file = QFileDialog::getOpenFileName(this, "Open Project", QApplication::applicationDirPath(), "Project files (*.kryprj)");
+	if (file.isNull())
+		return;
 	int index = file.lastIndexOf('/') + 1;
 	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
 	this->setWindowTitle(mainTitle + " - " + prjname);
@@ -214,6 +228,7 @@ void MainWindow::onOpenTrigger()
 	{
 		Map::setProjectName(prjname);
 		auto map = Map::loadFromFile(file);
+		prjsettingsDialog->resetSettings();
 		ui->cbLayers->clear();
 		for (auto& layer : map->getLayers())
 			ui->cbLayers->addItem(layer->description);
@@ -231,7 +246,25 @@ void MainWindow::onOpenTrigger()
 
 void MainWindow::onSaveTrigger()
 {
+	if (!Map::getMap())
+		return;
 	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj");
+	saved = true;
+}
+
+void MainWindow::onSaveAsTrigger()
+{
+	if (!Map::getMap())
+		return;
+	QString file = QFileDialog::getSaveFileName(this, "Save Project", QApplication::applicationDirPath(), "Project files (*.kryprj)");
+	if (file.isNull())
+		return;
+	int index = file.lastIndexOf('/') + 1;
+	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
+	this->setWindowTitle(mainTitle + " - " + prjname);
+	Map::setProjectName(prjname);
+	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj");
+	saved = true;
 }
 
 void MainWindow::onExitTrigger()

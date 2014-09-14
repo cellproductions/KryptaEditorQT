@@ -322,6 +322,48 @@ void Map::saveToFile(const QString& name)
 	file.close();
 }
 
+void Map::exportToFile(const QString& name, const kry::Media::Config& prjconfig)
+{
+	std::vector<kry::Util::String> lines;
+
+	lines.push_back("[Settings]");
+	lines.push_back("name = " + qToKString(single->getName()));
+	lines.push_back("iconImage = icon.png");
+	lines.push_back("checksum = 0");
+	lines.push_back("fogOfWar = 1");
+	lines.push_back("playerSpawnFloor = " + prjconfig["player"]["layer"]);
+	lines.push_back("playerSpawnPosition = { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
+	lines.push_back("; just for prototype");
+	lines.push_back("[Objectives]");
+	lines.push_back("objective1=0");
+	lines.push_back("[objective1]");
+	lines.push_back("type = loot");
+	lines.push_back("minimumLootRequired = 100");
+	lines.push_back("[Floors]");
+	for (size_t i = 0; i < single->getLayers().size(); ++i)
+	{
+		auto str = kry::Util::toString(i);
+		lines.push_back("floor" + str + '=' + str);
+	}
+	for (size_t i = 0; i < single->getLayers().size(); ++i)
+	{
+		std::shared_ptr<Layer>& layer = single->getLayers()[i];
+		lines.push_back("[floor" + kry::Util::toString(i) + ']');
+		lines.push_back("dimensions={ " + kry::Util::toString(layer->size[0]) + ", " + kry::Util::toString(layer->size[1]) + " }");
+
+		for (size_t j = 0; j < layer->tiles.size(); ++j)
+		{
+			Tile& tile = layer->tiles[j];
+			lines.push_back("[tile" + kry::Util::toString(j) +']');
+			lines.push_back("type=void");
+			lines.push_back("skinConfig=data/TileSkins.txt");
+			auto skin = qToKString(tile.asset->resource->name);
+			lines.push_back("skin=" + skin.substring(0, skin.indexOf('.')));
+			lines.push_back("heuristic = 1");
+		}
+	}
+}
+
 std::shared_ptr<Map> Map::getMap()
 {
     return single;

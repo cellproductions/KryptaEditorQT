@@ -107,23 +107,23 @@ AssetType strToAssetType(const kry::Util::String& str)
 {
 	AssetType STATIC_TILE = AssetType::STATIC_TILE;
 	AssetType STATIC_TILE_DECAL = AssetType::STATIC_TILE_DECAL;
-	AssetType STATIC_TILE_TRAP = AssetType::STATIC_TILE_TRAP;
+	AssetType STATIC_TILE_OBJECT = AssetType::STATIC_TILE_OBJECT;
 	AssetType STATIC_ENTITY = AssetType::STATIC_ENTITY;
 	AssetType ANIM_TILE_DECAL = AssetType::ANIM_TILE_DECAL;
-	AssetType ANIM_TILE_TRAP = AssetType::ANIM_TILE_TRAP;
+	AssetType ANIM_TILE_OBJECT = AssetType::ANIM_TILE_OBJECT;
 	AssetType ANIM_ENTITY = AssetType::ANIM_ENTITY;
 	if (str == STRINGIFY(STATIC_TILE))
 		return STATIC_TILE;
 	else if (str == STRINGIFY(STATIC_TILE_DECAL))
 		return STATIC_TILE_DECAL;
-	else if (str == STRINGIFY(STATIC_TILE_TRAP))
-		return STATIC_TILE_TRAP;
+	else if (str == STRINGIFY(STATIC_TILE_OBJECT))
+		return STATIC_TILE_OBJECT;
 	else if (str == STRINGIFY(STATIC_ENTITY))
 		return STATIC_ENTITY;
 	else if (str == STRINGIFY(ANIM_TILE_DECAL))
 		return ANIM_TILE_DECAL;
-	else if (str == STRINGIFY(ANIM_TILE_TRAP))
-		return ANIM_TILE_TRAP;
+	else if (str == STRINGIFY(ANIM_TILE_OBJECT))
+		return ANIM_TILE_OBJECT;
 	else if (str == STRINGIFY(ANIM_ENTITY))
 		return ANIM_ENTITY;
 	return AssetType::NONE;

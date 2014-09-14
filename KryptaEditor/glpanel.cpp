@@ -392,7 +392,7 @@ namespace Kryed
 				{
 					follower.rgba = 1.0f;
 					follower.position = canvascoord;
-					follower.position[0] -= static_cast<int>(follower.position[0]) % (Map::getMap()->getCurrentLayer()->tilesize[0] / 2);
+					follower.position[0] -= static_cast<int>(follower.position[0]) % (Map::getMap()->getCurrentLayer()->tilesize[0] / 2); /** #TODO(change) not really a grid snap */
 					follower.position[1] -= static_cast<int>(follower.position[1]) % (Map::getMap()->getCurrentLayer()->tilesize[1] / 2);
 					if (Tool<PaintData>::getTool()->getData().assetitem != nullptr)
 					{
@@ -409,12 +409,38 @@ namespace Kryed
 						}
 						else if (asset->type == AssetType::STATIC_TILE_DECAL ||asset->type == AssetType::ANIM_TILE_DECAL)
 						{
-							kry::Util::Vector2f pos;
+							kry::Util::Vector2f pos = 0.0f;
 							if (asset->properties["object"].keyExists("relativex"))
 								pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
 							if (asset->properties["object"].keyExists("relativey"))
 								pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
-							follower.position -= follower.dimensions * pos; // cant really test this sought of thing until walls are fixed
+							//follower.position += follower.dimensions * pos; // cant really test this sought of thing until walls are fixed
+						}
+						else if (asset->type == AssetType::STATIC_TILE_OBJECT ||asset->type == AssetType::ANIM_TILE_OBJECT)
+						{
+							bool snap = true;
+							if (asset->properties.sectionExists("object"))
+								if (asset->properties["object"].keyExists("gridsnap"))
+									if (asset->properties["object"]["gridsnap"] == "false")
+										snap = false;
+							if (snap)
+							{
+								kry::Util::Vector2f pos = 0.0f;
+								if (asset->properties["object"].keyExists("relativex"))
+									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
+								if (asset->properties["object"].keyExists("relativey"))
+									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
+								follower.position -= follower.dimensions * pos; // cant really test this sought of thing until walls are fixed
+							}
+							else
+							{
+								kry::Util::Vector2f pos = 0.0f;
+								if (asset->properties["object"].keyExists("relativex"))
+									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
+								if (asset->properties["object"].keyExists("relativey"))
+									pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
+								follower.position = canvascoord - follower.dimensions * pos;
+							}
 						}
 						else
 							follower.position -= asset->resource->rawresource->getDimensions() / 2;

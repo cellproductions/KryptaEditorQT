@@ -44,6 +44,8 @@ public:
     QAction *miFileOpen;
     QAction *miPreferences;
     QAction *miFileSave;
+    QAction *miFileSaveAs;
+    QAction *miProjectSettings;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -76,6 +78,8 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuEdit;
+    QMenu *menuProject;
+    QMenu *menuAbout;
     QToolBar *toolMain;
     QStatusBar *statusBar;
 
@@ -100,6 +104,10 @@ public:
         miPreferences->setObjectName(QStringLiteral("miPreferences"));
         miFileSave = new QAction(MainWindow);
         miFileSave->setObjectName(QStringLiteral("miFileSave"));
+        miFileSaveAs = new QAction(MainWindow);
+        miFileSaveAs->setObjectName(QStringLiteral("miFileSaveAs"));
+        miProjectSettings = new QAction(MainWindow);
+        miProjectSettings->setObjectName(QStringLiteral("miProjectSettings"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -327,6 +335,10 @@ public:
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuEdit = new QMenu(menuBar);
         menuEdit->setObjectName(QStringLiteral("menuEdit"));
+        menuProject = new QMenu(menuBar);
+        menuProject->setObjectName(QStringLiteral("menuProject"));
+        menuAbout = new QMenu(menuBar);
+        menuAbout->setObjectName(QStringLiteral("menuAbout"));
         MainWindow->setMenuBar(menuBar);
         toolMain = new QToolBar(MainWindow);
         toolMain->setObjectName(QStringLiteral("toolMain"));
@@ -344,13 +356,17 @@ public:
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuEdit->menuAction());
+        menuBar->addAction(menuProject->menuAction());
+        menuBar->addAction(menuAbout->menuAction());
         menuFile->addAction(miFileNew);
         menuFile->addAction(miFileOpen);
         menuFile->addSeparator();
         menuFile->addAction(miFileSave);
+        menuFile->addAction(miFileSaveAs);
         menuFile->addSeparator();
         menuFile->addAction(miFileExit);
         menuEdit->addAction(miPreferences);
+        menuProject->addAction(miProjectSettings);
 
         retranslateUi(MainWindow);
 
@@ -361,10 +377,16 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Krypta Map Editor", 0));
         miFileNew->setText(QApplication::translate("MainWindow", "New", 0));
+        miFileNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0));
         miFileExit->setText(QApplication::translate("MainWindow", "Exit", 0));
         miFileOpen->setText(QApplication::translate("MainWindow", "Open", 0));
+        miFileOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
         miPreferences->setText(QApplication::translate("MainWindow", "Preferences", 0));
         miFileSave->setText(QApplication::translate("MainWindow", "Save", 0));
+        miFileSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
+        miFileSaveAs->setText(QApplication::translate("MainWindow", "Save As...", 0));
+        miFileSaveAs->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
+        miProjectSettings->setText(QApplication::translate("MainWindow", "Settings", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));
@@ -400,6 +422,8 @@ public:
         bLayerMan->setText(QApplication::translate("MainWindow", "Layer manager", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         menuEdit->setTitle(QApplication::translate("MainWindow", "Edit", 0));
+        menuProject->setTitle(QApplication::translate("MainWindow", "Project", 0));
+        menuAbout->setTitle(QApplication::translate("MainWindow", "Help", 0));
         toolMain->setWindowTitle(QApplication::translate("MainWindow", "Krypta Map Editor", 0));
     } // retranslateUi
 
