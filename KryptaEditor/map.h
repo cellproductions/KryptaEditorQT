@@ -44,7 +44,7 @@ class Map
         static std::shared_ptr<Map> createMap(const QString& name, const Tile& defaulttile, QListWidget* layerList);
 		static std::shared_ptr<Map> loadFromFile(const QString& name);
 		static void saveToFile(const QString& name);
-		static void exportToFile(const QString& name);
+		static void exportToFile(const QString& name, kry::Media::Config& prjconfig);
         static std::shared_ptr<Map> getMap();
 
     private:

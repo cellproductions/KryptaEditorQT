@@ -1,4 +1,5 @@
 #include "Resources.h"
+#include "Configuration.h"
 #include <System/Filesystem.h>
 #include <Media/ImageFactory.h>
 #include <Media/AudioFactory.h>
@@ -18,8 +19,8 @@ void Resources::loadResources(const QString& rootdir) /** #TODO(incomplete) add 
             continue;
 
         Resource<kry::Graphics::Texture>* resource = new Resource<kry::Graphics::Texture>;
-        resource->type = ResourceType::TEXTURE;
-        resource->rawresource = new kry::Graphics::Texture(std::move(kry::Media::pngFileToTexture(path)));
+		resource->type = ResourceType::TEXTURE;
+		resource->rawresource = new kry::Graphics::Texture(std::move(kry::Media::pngFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
         resource->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
         auto name = path.substring(path.lastIndexOf('\\') + 1);
         resource->name = QString::fromStdString(std::string(name.getData(), name.getLength()));
@@ -65,7 +66,7 @@ void Resources::loadAndAssignTextures(std::vector<std::shared_ptr<Asset<kry::Gra
         Resource<kry::Graphics::Texture>* resource = new Resource<kry::Graphics::Texture>;
         resource->type = ResourceType::TEXTURE;
         auto path = asset->properties["global"]["resource"];
-        resource->rawresource = new kry::Graphics::Texture(std::move(kry::Media::pngFileToTexture(path)));
+		resource->rawresource = new kry::Graphics::Texture(std::move(kry::Media::pngFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
         resource->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
         auto name = path.substring(path.lastIndexOf('\\') + 1);
         resource->name = QString::fromStdString(std::string(name.getData(), name.getLength()));

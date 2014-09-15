@@ -1,0 +1,25 @@
+[Settings]
+name = lol
+iconImage = icon.png
+checksum = 0
+fogOfWar = 1
+playerSpawnFloor = 0
+playerSpawnPosition = { 0, 0 }
+; just for prototype
+[Objectives]
+objective1=0
+[objective1]
+type = loot
+minimumLootRequired = 100
+[Floors]
+floor0=0
+[floor0]
+dimensions={ 10, 10 }
+[Tiles]
+tile0=0
+[tile0]
+type=void
+skinConfig=data/TileSkins.txt
+skin=brick1
+heuristic = 1
+[Entities]

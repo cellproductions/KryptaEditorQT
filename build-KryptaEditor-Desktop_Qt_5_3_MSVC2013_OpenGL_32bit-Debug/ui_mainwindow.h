@@ -46,6 +46,7 @@ public:
     QAction *miFileSave;
     QAction *miFileSaveAs;
     QAction *miProjectSettings;
+    QAction *miFileExport;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -108,6 +109,8 @@ public:
         miFileSaveAs->setObjectName(QStringLiteral("miFileSaveAs"));
         miProjectSettings = new QAction(MainWindow);
         miProjectSettings->setObjectName(QStringLiteral("miProjectSettings"));
+        miFileExport = new QAction(MainWindow);
+        miFileExport->setObjectName(QStringLiteral("miFileExport"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -363,6 +366,7 @@ public:
         menuFile->addSeparator();
         menuFile->addAction(miFileSave);
         menuFile->addAction(miFileSaveAs);
+        menuFile->addAction(miFileExport);
         menuFile->addSeparator();
         menuFile->addAction(miFileExit);
         menuEdit->addAction(miPreferences);
@@ -387,6 +391,7 @@ public:
         miFileSaveAs->setText(QApplication::translate("MainWindow", "Save As...", 0));
         miFileSaveAs->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
         miProjectSettings->setText(QApplication::translate("MainWindow", "Settings", 0));
+        miFileExport->setText(QApplication::translate("MainWindow", "Export", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));

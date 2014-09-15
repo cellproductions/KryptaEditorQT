@@ -1,0 +1,8 @@
+[Skins]
+brick1=
+[brick1]
+frames=1
+fps=1
+sheetDimensions = { 1, 1 } 
+sheetImage = data/images/brick1.png
+framePivot= { 838, 480 }

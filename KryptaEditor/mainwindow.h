@@ -31,6 +31,7 @@ class MainWindow : public QMainWindow
         void onOpenTrigger();
 		void onSaveTrigger();
 		void onSaveAsTrigger();
+		void onExportTrigger();
         void onExitTrigger();
 
     private:

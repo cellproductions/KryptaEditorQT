@@ -15,6 +15,8 @@ void Configuration::saveToFile(const kry::Util::String& filename)
     std::vector<kry::Util::String> lines;
     for (auto& section : config.getSectionNames())
     {
+		if (section.isEmpty())
+			continue;
         lines.push_back("[" + section + "]");
         for (auto& key : config[section].getKeyNames())
             lines.push_back(key + "=" + config[section][key]);

@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->miFileOpen, SIGNAL(triggered()), this, SLOT(onOpenTrigger()));
 	connect(ui->miFileSave, SIGNAL(triggered()), this, SLOT(onSaveTrigger()));
 	connect(ui->miFileSaveAs, SIGNAL(triggered()), this, SLOT(onSaveAsTrigger()));
+	connect(ui->miFileExport, SIGNAL(triggered()), this, SLOT(onExportTrigger()));
     connect(ui->miFileExit, SIGNAL(triggered()), this, SLOT(onExitTrigger()));
 	connect(ui->miPreferences, &QAction::triggered, [this]()
 	{
@@ -265,6 +266,13 @@ void MainWindow::onSaveAsTrigger()
 	Map::setProjectName(prjname);
 	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj");
 	saved = true;
+}
+
+void MainWindow::onExportTrigger()
+{
+	if (!saved)
+		onSaveTrigger();
+	Map::getMap()->exportToFile(Map::getMap()->getName(), prjsettingsDialog->getAllSettings()); /** #TODO(change) change all .txt to .map */
 }
 
 void MainWindow::onExitTrigger()
