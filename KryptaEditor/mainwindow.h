@@ -8,6 +8,7 @@ namespace Ui
     class MainWindow;
 }
 
+class QLabel;
 class PrjSetupDialog;
 class EntBrowserDialog;
 class EnvBrowserDialog;
@@ -25,6 +26,9 @@ class MainWindow : public QMainWindow
         void init();
 
         inline Ui::MainWindow* getUI() const;
+		inline QLabel* getStatusMain() const;
+		inline QLabel* getStatusPos() const;
+		inline QLabel* getStatusTile() const;
 
     public slots:
         void onNewTrigger();
@@ -38,6 +42,9 @@ class MainWindow : public QMainWindow
 		void closeEvent(QCloseEvent*);
 
         Ui::MainWindow *ui;
+		QLabel* statusMain;
+		QLabel* statusPos;
+		QLabel* statusTile;
         PrjSetupDialog* prjsetupDialog;
 		EntBrowserDialog* entbrowseDialog;
         EnvBrowserDialog* envbrowseDialog;
@@ -51,6 +58,21 @@ class MainWindow : public QMainWindow
 Ui::MainWindow* MainWindow::getUI() const
 {
     return ui;
+}
+
+QLabel* MainWindow::getStatusMain() const
+{
+	return statusMain;
+}
+
+QLabel* MainWindow::getStatusPos() const
+{
+	return statusPos;
+}
+
+QLabel* MainWindow::getStatusTile() const
+{
+	return statusTile;
 }
 
 #endif // MAINWINDOW_H

@@ -78,7 +78,7 @@ PrjSetupDialog::PrjSetupDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Pr
             return;
         }
 
-        this->lastresult = DialogResult::OK;
+		this->lastresult = DialogResult::OK; /** #TODO(incomplete) also add an overwrite prompt here (in case the project already exists) */
         this->close();
     });
 

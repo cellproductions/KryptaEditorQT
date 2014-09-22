@@ -36,6 +36,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     });
 
+	ui->statusBar->addWidget((statusMain = new QLabel("Welcome to the Krypta Map Editor.")), 70);
+	ui->statusBar->addWidget((statusPos = new QLabel), 15);
+	ui->statusBar->addWidget((statusTile = new QLabel), 15);
+
     connect(ui->miFileNew, SIGNAL(triggered()), this, SLOT(onNewTrigger()));
     connect(ui->miFileOpen, SIGNAL(triggered()), this, SLOT(onOpenTrigger()));
 	connect(ui->miFileSave, SIGNAL(triggered()), this, SLOT(onSaveTrigger()));
@@ -228,7 +232,7 @@ void MainWindow::onOpenTrigger()
 	try
 	{
 		Map::setProjectName(prjname);
-		auto map = Map::loadFromFile(file);
+		auto map = Map::loadFromFile(file, prjsettingsDialog->getAllSettings());
 		prjsettingsDialog->resetSettings();
 		ui->cbLayers->clear();
 		for (auto& layer : map->getLayers())
@@ -249,7 +253,7 @@ void MainWindow::onSaveTrigger()
 {
 	if (!Map::getMap())
 		return;
-	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj");
+	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
 	saved = true;
 }
 
@@ -264,7 +268,7 @@ void MainWindow::onSaveAsTrigger()
 	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
 	this->setWindowTitle(mainTitle + " - " + prjname);
 	Map::setProjectName(prjname);
-	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj");
+	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
 	saved = true;
 }
 
@@ -289,16 +293,17 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	}
 
 	SaveDialog save(this);
-	if (save.showDialog() == DialogResult::YES)
+	DialogResult result = save.showDialog();
+	if (result == DialogResult::YES)
 	{
 		Configuration::saveToFile("editor.cfg");
 
-		Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj");
+		Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
 	}
-	else if (save.showDialog() == DialogResult::NO)
+	else if (result == DialogResult::NO)
 	{
 		Configuration::saveToFile("editor.cfg");
 	}
-	else if (save.showDialog() == DialogResult::CANCEL)
+	else if (result == DialogResult::CANCEL)
 		event->ignore();
 }

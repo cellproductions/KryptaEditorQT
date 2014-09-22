@@ -21,7 +21,7 @@ class PrjSettingsDialog : public CSDialog
 		DialogResult showDialog();
 
 		void resetSettings();
-		inline kry::Media::Config getAllSettings() const;
+		inline kry::Media::Config& getAllSettings();
 
 	private:
 		void setTableData();
@@ -31,7 +31,7 @@ class PrjSettingsDialog : public CSDialog
 };
 
 
-kry::Media::Config PrjSettingsDialog::getAllSettings() const
+kry::Media::Config& PrjSettingsDialog::getAllSettings()
 {
 	return settings;
 }

@@ -67,11 +67,16 @@ void PrjSettingsDialog::resetSettings()
 		if (Map::getMap()->getLayers()[index] == Map::getMap()->getCurrentLayer())
 			break;
 
-	settings["player"]["layer"] = kry::Util::toString(index);
-	settings["player"]["tilex"] = kry::Util::toString(0);
-	settings["player"]["tiley"] = kry::Util::toString(0);
-	settings["player"]["speed"] = kry::Util::toString(1);
-	settings["player"]["fov"] = kry::Util::toString(8);
+	if (!settings["player"].keyExists("layer"))
+		settings["player"]["layer"] = kry::Util::toString(index);
+	if (!settings["player"].keyExists("tilex"))
+		settings["player"]["tilex"] = kry::Util::toString(0);
+	if (!settings["player"].keyExists("tiley"))
+		settings["player"]["tiley"] = kry::Util::toString(0);
+	if (!settings["player"].keyExists("speed"))
+		settings["player"]["speed"] = kry::Util::toString(1);
+	if (!settings["player"].keyExists("fov"))
+		settings["player"]["fov"] = kry::Util::toString(8);
 }
 
 void PrjSettingsDialog::setTableData()

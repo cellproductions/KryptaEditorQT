@@ -6,12 +6,14 @@
 #include "GLPanel.h"
 #include <System/Filesystem.h>
 #include <Utilities/StringConvert.h>
+#include <Media/Zip.h>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QMessageBox>
 #include <QDebug>
 #include <set>
+#include <fstream>
 
 struct TextElement
 {
@@ -65,7 +67,7 @@ TextElement readElement(QXmlStreamReader& reader)
 	return element;
 }
 
-std::shared_ptr<Map> Map::loadFromFile(const QString& path)
+std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& prjsettings)
 {
 	using namespace kry;
 
@@ -88,6 +90,25 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path)
 			element = readElement(reader);
 			size_t layercount = element.text.toUInt();
 			single.reset(new Map(name, layercount));
+			reader.readNext();
+			reader.readNext();
+		reader.readNext();
+		reader.readNext(); // player
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["layer"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["tilex"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["tiley"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["speed"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["fov"] = qToKString(element.text);
 			reader.readNext();
 			reader.readNext();
 		reader.readNext();
@@ -209,7 +230,7 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path)
 	return single;
 }
 
-void Map::saveToFile(const QString& name)
+void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 {
 	using namespace kry;
 
@@ -226,6 +247,15 @@ void Map::saveToFile(const QString& name)
 		{
 			writer.writeTextElement("name", single->getName());
 			writer.writeTextElement("layercount", QString::number(single->layers.size()));
+		}
+		writer.writeEndElement();
+		writer.writeStartElement("player");
+		{
+			writer.writeTextElement("layer", kryToQString(prjsettings["player"]["layer"]));
+			writer.writeTextElement("tilex", kryToQString(prjsettings["player"]["tilex"]));
+			writer.writeTextElement("tiley", kryToQString(prjsettings["player"]["tiley"]));
+			writer.writeTextElement("speed", kryToQString(prjsettings["player"]["speed"]));
+			writer.writeTextElement("fov", kryToQString(prjsettings["player"]["fov"]));
 		}
 		writer.writeEndElement();
 		writer.writeStartElement("layers");
@@ -340,26 +370,48 @@ kry::Util::Vector2f coordToTileCoord(const kry::Util::Vector2f& coord)
 	kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
 	kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
 
-	float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f - 1;
-	float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1 - 1;
+	float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f + 1;  // black magic goin on here?
+	float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1;
 
 	return {x, y};
 }
 
+std::vector<unsigned char> linesToBin(const std::vector<kry::Util::String>& lines)
+{
+	std::vector<unsigned char> data;
+
+	for (auto& line : lines)
+	{
+		for (unsigned i = 0; i < line.getLength(); ++i)
+			data.push_back(static_cast<unsigned char>(line[i]));
+		data.push_back('\r');
+		data.push_back('\n');
+	}
+
+	return data;
+}
+
+std::vector<unsigned char> fileToBin(const QString& filename)
+{
+	QFile file(filename);
+	file.open(QIODevice::ReadOnly);
+	auto bytes = file.readAll();
+	std::vector<unsigned char> data(bytes.begin(), bytes.end());
+
+	return data;
+}
+
 void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 {
+	using namespace kry;
+
 	try
 	{
-		auto kname = qToKString(name);
-		if (!kry::System::pathExists(kname))
-			kry::System::createPath(kname);
-		kname += "\\data";
-		if (!kry::System::pathExists(kname))
-			kry::System::createPath(kname);
-		if (!kry::System::pathExists(kname + "\\images"))
-			kry::System::createPath(kname + "\\images");
+		Media::Zip zipfile;
 
-		std::vector<kry::Util::String> lines;
+		auto kname = qToKString(name);
+
+		std::vector<Util::String> lines;
 
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
@@ -378,17 +430,17 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("[Floors]");
 		for (size_t i = 0; i < single->getLayers().size(); ++i)
 		{
-			auto str = kry::Util::toString(i);
+			auto str = Util::toString(i);
 			lines.push_back("floor" + str + '=' + str);
 		}
-		std::set<Asset<kry::Graphics::Texture>*> tilesused;
-		std::set<Asset<kry::Graphics::Texture>*> objectsused;
+		std::set<Asset<Graphics::Texture>*> tilesused;
+		std::set<Asset<Graphics::Texture>*> objectsused;
 		for (size_t i = 0; i < single->getLayers().size(); ++i)
 		{
 			std::shared_ptr<Layer>& layer = single->getLayers()[i];
-			lines.push_back("[floor" + kry::Util::toString(i) + ']');
-			lines.push_back("dimensions={ " + kry::Util::toString(layer->size[0]) + ", " + kry::Util::toString(layer->size[1]) + " }");
-			lines.push_back("floorBinary=data/floor" + kry::Util::toString(i) + ".txt");
+			lines.push_back("[floor" + Util::toString(i) + ']');
+			lines.push_back("dimensions={ " + Util::toString(layer->size[0]) + ", " + Util::toString(layer->size[1]) + " }");
+			lines.push_back("floorBinary=floor" + Util::toString(i) + ".txt");
 
 			for (Tile& tile : layer->tiles)
 			{
@@ -406,24 +458,24 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("[Tiles]"); // only one floor supported for now
 		unsigned index = 0;
 		size_t first = ~0;
-		for (Asset<kry::Graphics::Texture>* asset : tilesused)
+		for (Asset<Graphics::Texture>* asset : tilesused)
 		{
 			size_t assetindex = getAssetIndex(asset, Assets::getTiles());
 			if (first == ~0)
 				first = assetindex;
 			if (assetindex == ~0)
 				assetindex = (wallindex = getAssetIndex(asset, Assets::getObjects()) + Assets::getTiles().size());
-			lines.push_back("tile" + kry::Util::toString(index++) + '=' + kry::Util::toString(assetindex));
+			lines.push_back("tile" + Util::toString(index++) + '=' + Util::toString(assetindex));
 		}
 		index = 0;
-		for (Asset<kry::Graphics::Texture>* asset : tilesused)
+		for (Asset<Graphics::Texture>* asset : tilesused)
 		{
-			lines.push_back("[tile" + kry::Util::toString(index++) + ']');
+			lines.push_back("[tile" + Util::toString(index++) + ']');
 			if (asset->type != AssetType::STATIC_TILE_DECAL)
 				lines.push_back("type=solid");
 			else
 				lines.push_back("type=wall"); // change this to wall
-			lines.push_back("skinConfig=data/TileSkins.txt");
+			lines.push_back("skinConfig=TileSkins.txt");
 			auto skin = qToKString(asset->resource->name);
 			lines.push_back("skin=" + skin.substring(0, skin.indexOf('.')));
 			if (asset->type != AssetType::STATIC_TILE_DECAL)
@@ -436,7 +488,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 				lines.push_back("sortDepth=0");
 			lines.push_back("sortPivotOffset = { 0, 0 }");
 			if (asset->type == AssetType::STATIC_TILE_DECAL)
-				lines.push_back("floorTile=" + kry::Util::toString(first));
+				lines.push_back("floorTile=" + Util::toString(first));
 		}
 
 		lines.push_back("[Entities]"); // no entities supported for now
@@ -449,23 +501,24 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			for (auto& object : tile.objects)
 			{
 				if (object->asset->type != AssetType::STATIC_TILE_DECAL)
-					lines.push_back("entity" + kry::Util::toString(index) + "=" + kry::Util::toString(index));
-				index++;
+				{
+					lines.push_back("entity" + Util::toString(index) + "=" + Util::toString(index));
+					index++;
+				}
 			}
 		}
-
 
 		lines.push_back("[player]");
 		lines.push_back("type=player");
 		lines.push_back("spawnFloor = 0");
 		lines.push_back("position = { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
-		lines.push_back("skinConfig = data/EntitySkins.txt");
+		lines.push_back("skinConfig = EntitySkins.txt");
 		lines.push_back("skin = player");
 		lines.push_back("[exit]");
 		lines.push_back("type = exit");
 		lines.push_back("spawnFloor = 0");
 		lines.push_back("position = { 0.5, 0.5 }");
-		lines.push_back("skinConfig = data/EntitySkins.txt");
+		lines.push_back("skinConfig = EntitySkins.txt");
 		lines.push_back("skin = exitPortal");
 
 		index = 4;
@@ -476,16 +529,24 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 				if (object->asset->type == AssetType::STATIC_TILE_DECAL)
 					continue;
 
-				lines.push_back("[entity" + kry::Util::toString(index++) + ']');
+				lines.push_back("[entity" + Util::toString(index++) + ']');
 				if (object->asset->type == AssetType::STATIC_TILE_DECAL)
 					lines.push_back("type=smallGoldLoot");
 				else
 					lines.push_back("type=smallGoldLoot");
 				lines.push_back("spawnFloor=0");
+
+				Util::Vector2f fpos = 0.0f;
+				if (object->asset->properties["object"].keyExists("relativex"))
+					fpos[0] = Util::toDecimal<float>(object->asset->properties["object"]["relativex"]);
+				if (object->asset->properties["object"].keyExists("relativey"))
+					fpos[1] = Util::toDecimal<float>(object->asset->properties["object"]["relativey"]);
 				auto pos = coordToTileCoord(object->sprite.position);
-				lines.push_back("position= { " + kry::Util::toString(pos[0]) + ", " +
-													kry::Util::toString(pos[1]) + " }");
-				lines.push_back("skinConfig = data/EntitySkins.txt");
+				//pos[0] -= single->layers[0]->tilesize[0];
+				//pos[1] -= single->layers[0]->tilesize[1] * (single->layers[0]->size[1] / 2);
+				lines.push_back("position= { " + Util::toString(pos[0]) + ", " +
+													Util::toString(pos[1]) + " }");
+				lines.push_back("skinConfig = EntitySkins.txt");
 				if (object->asset->type != AssetType::STATIC_TILE_DECAL)
 					lines.push_back("onCollectionPoints = 1");
 				auto skin = qToKString(object->asset->resource->name);
@@ -493,14 +554,14 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			}
 		}
 
-		kry::System::writeAllLines(kname + '\\' + qToKString(name) + ".txt", lines);
+		zipfile[""]["Map.txt"] = linesToBin(lines);
 		lines.clear();
 
 		/** #TODO(change) mention to luka to always do y before x */
-		for (size_t x = 0; x < single->getLayers()[0]->size[0]; ++x) // only one floor supported for now
+		for (size_t x = 0; x < static_cast<size_t>(single->getLayers()[0]->size[0]); ++x) // only one floor supported for now
 		{
-			kry::Util::String line;
-			for (size_t y = 0; y < single->getLayers()[0]->size[1]; ++y)
+			Util::String line;
+			for (size_t y = 0; y < static_cast<size_t>(single->getLayers()[0]->size[1]); ++y)
 			{
 				size_t index = y * single->getLayers()[0]->size[0] + x;
 				bool haswall = false;
@@ -516,90 +577,98 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 				size_t assetindex = getAssetIndex(single->getLayers()[0]->tiles[index].asset, Assets::getTiles());
 				if (haswall)
 					assetindex = wallindex;
-				line += kry::Util::toString(assetindex) + ' ';
+				line += Util::toString(assetindex) + ' ';
 			}
 			line = line.substring(0, line.getLength() - 1);
 			lines.push_back(line);
 		}
-		kry::System::writeAllLines(kname + '\\' + "floor0.txt", lines); /** #TODO(change) change all of these .txt types to something much more representitive of what they hold */
+		zipfile[""]["floor0.txt"] = linesToBin(lines); /** #TODO(change) change all of these .txt types to something much more representitive of what they hold */
 		lines.clear();
 
 		lines.push_back("[Skins]");
-		for (Asset<kry::Graphics::Texture>* asset : tilesused)
+		for (Asset<Graphics::Texture>* asset : tilesused)
 		{
 			auto skin = qToKString(asset->resource->name);
 			lines.push_back(skin.substring(0, skin.indexOf('.')) + '=');
 		}
-		for (Asset<kry::Graphics::Texture>* asset : tilesused)
+		for (Asset<Graphics::Texture>* asset : tilesused)
 		{
 			auto skin = qToKString(asset->resource->name);
 			lines.push_back('[' + skin.substring(0, skin.indexOf('.')) + ']');
 			lines.push_back("frames=1"); // only 1 frame supported for now
 			lines.push_back("fps=1");
-			lines.push_back("sheetImage = data/images/" + skin);
+			lines.push_back("sheetImage = images/" + skin);
 			if (asset->type != AssetType::STATIC_TILE_DECAL)
-				lines.push_back("framePivot= { " + kry::Util::toString(asset->resource->rawresource->getDimensions()[0] * 0.5f) + ", " +
-					kry::Util::toString(asset->resource->rawresource->getDimensions()[0] * 0.5f) + " }");
+				lines.push_back("framePivot= { " + Util::toString(asset->resource->rawresource->getDimensions()[0] * 0.5f) + ", " +
+					Util::toString(asset->resource->rawresource->getDimensions()[1] * 0.5f) + " }");
 			else
-				lines.push_back("framePivot= { " + kry::Util::toString(asset->resource->rawresource->getDimensions()[0] * kry::Util::toDecimal<float>(asset->properties["object"]["relativex"])) + ", " +
-					kry::Util::toString(asset->resource->rawresource->getDimensions()[0] * kry::Util::toDecimal<float>(asset->properties["object"]["relativey"])) + " }");
+				lines.push_back("framePivot= { " + Util::toString(asset->resource->rawresource->getDimensions()[0] * Util::toDecimal<float>(asset->properties["object"]["relativex"])) + ", " +
+					Util::toString(asset->resource->rawresource->getDimensions()[1] * Util::toDecimal<float>(asset->properties["object"]["relativey"])) + " }");
 			if (asset->type != AssetType::STATIC_TILE_DECAL)
-				lines.push_back("dimensions= { " + kry::Util::toString(asset->resource->rawresource->getDimensions()[0]) + ", " +
-							kry::Util::toString(asset->resource->rawresource->getDimensions()[0] * 0.5f) + " }");
+				lines.push_back("dimensions= { " + Util::toString(asset->resource->rawresource->getDimensions()[0]) + ", " +
+							Util::toString(asset->resource->rawresource->getDimensions()[1]) + " }");
 		}
-		kry::System::writeAllLines(kname + '\\' + "TileSkins.txt", lines);
+		zipfile[""]["TileSkins.txt"] = linesToBin(lines);
 		lines.clear();
 
 		lines.push_back("[Skins]");
 		lines.push_back("exitPortal=");
 		lines.push_back("player=");
-		for (Asset<kry::Graphics::Texture>* asset : objectsused)
+		for (Asset<Graphics::Texture>* asset : objectsused)
 		{
 			auto skin = qToKString(asset->resource->name);
 			lines.push_back(skin.substring(0, skin.indexOf('.')) + '=');
 		}
-		for (Asset<kry::Graphics::Texture>* asset : objectsused)
+		for (Asset<Graphics::Texture>* asset : objectsused)
 		{
 			auto skin = qToKString(asset->resource->name);
 			lines.push_back('[' + skin.substring(0, skin.indexOf('.')) + ']');
 			lines.push_back("frames=1");
 			lines.push_back("fps=1");
 			auto dims = asset->resource->rawresource->getDimensions();
-			lines.push_back("framePivot= { " + kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) * dims[0]) + ", " +
-					kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) * dims[1]) + " }");
+			lines.push_back("framePivot= { " + 
+				Util::toString((asset->properties["object"].keyExists("relativex") ? Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.0f) * dims[0]) + ", " +
+					Util::toString(dims[1] - (asset->properties["object"].keyExists("relativey") ? Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.0f) * dims[1]) + " }");
 			lines.push_back("sheetDimensions = { 1, 1 }");
-			lines.push_back("sheetImage = data/images/" + qToKString(asset->resource->name));
+			lines.push_back("sheetImage = images/" + qToKString(asset->resource->name));
 		}
 		lines.push_back("[exitPortal]");
 		lines.push_back("frames=1");
 		lines.push_back("fps=1");
 		lines.push_back("framePivot= { 212.16, -835 }");
 		lines.push_back("sheetDimensions = { 1, 1 }");
-		lines.push_back("sheetImage = data/images/wallcross1.png");
+		lines.push_back("sheetImage = images/r_stair_down_y.png");
 		lines.push_back("[player]");
 		lines.push_back("frames=4");
 		lines.push_back("fps=0");
 		lines.push_back("[player: 0]");
 		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = data/images/Magnus_4.png");
+		lines.push_back("image = images/Magnus_4.png");
 		lines.push_back("[player: 1]");
 		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = data/images/Magnus_2.png");
+		lines.push_back("image = images/Magnus_2.png");
 		lines.push_back("[player: 2]");
 		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = data/images/Magnus_3.png");
+		lines.push_back("image = images/Magnus_3.png");
 		lines.push_back("[player: 3]");
 		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = data/images/Magnus_1.png");
+		lines.push_back("image = images/Magnus_1.png");
 
-		kry::System::writeAllLines(kname + '\\' + "EntitySkins.txt", lines);
+		zipfile[""]["EntitySkins.txt"] = linesToBin(lines);
 		lines.clear();
 
-		for (Asset<kry::Graphics::Texture>* asset : tilesused)
-			if (!kry::System::fileExists(kname + "\\images\\" + qToKString(asset->resource->name)))
-				kry::System::copyFile(qToKString(asset->resource->path), kname + "\\images\\" + qToKString(asset->resource->name));
+		for (Asset<Graphics::Texture>* asset : tilesused)
+			zipfile["images"][qToKString(asset->resource->name)] = fileToBin(asset->resource->path);
+		for (Asset<Graphics::Texture>* asset : objectsused)
+			zipfile["images"][qToKString(asset->resource->name)] = fileToBin(asset->resource->path);
+		zipfile["images"]["Magnus_1.png"] = fileToBin("assets\\resources\\images\\Magnus_1.png"); // hardcoded for now
+		zipfile["images"]["Magnus_2.png"] = fileToBin("assets\\resources\\images\\Magnus_2.png");
+		zipfile["images"]["Magnus_3.png"] = fileToBin("assets\\resources\\images\\Magnus_3.png");
+		zipfile["images"]["Magnus_4.png"] = fileToBin("assets\\resources\\images\\Magnus_4.png");
+
+		zipfile.zipToFile(kname + ".zip");
 	}
-	catch (const kry::Util::Exception& e)
+	catch (const Util::Exception& e)
 	{
 		QMessageBox::information(nullptr, "Export Failure", e.what(), QMessageBox::Ok);
 	}

@@ -42,7 +42,9 @@ namespace Kryed
 		auto& tiles = Map::getMap()->getCurrentLayer()->tiles;
 		auto dim = Map::getMap()->getCurrentLayer()->tilesize;
 		auto halfdim = dim / 2;
-		kry::Util::Vector2f startpos = { static_cast<float>(dim[0]), static_cast<float>(-halfdim[1]) };
+		kry::Util::Vector2f startpos = { 0.0f, static_cast<float>(-halfdim[1]) };
+		//kry::Util::Vector2f startpos = { static_cast<float>(dim[0]), static_cast<float>(-halfdim[1]) };
+		//kry::Util::Vector2f startpos = { static_cast<float>(0.0f), static_cast<float>(dim[1] * (size[1] / 2)) };
 
 		std::map<kry::Util::Vector3f, Object*> zorder;
         for (int y = 0; y < size[1]; ++y)
@@ -249,7 +251,7 @@ namespace Kryed
 			auto stack = context.addMenu("Objects");
 			connect(tileaction, &ObjectAction::hovered, [this, tileaction]()
 			{
-				tileaction->getObject()->sprite.rgba = {1.0f, 1.0f, 0.0f, 1.0f};
+				tileaction->getObject()->sprite.rgba = {0.0f, 1.0f, 0.0f, 1.0f};
 				paintGL();
 			});
 			connect(tilecheck, &QCheckBox::clicked, [stack, editaction, removeaction](bool checked)
@@ -269,11 +271,12 @@ namespace Kryed
 				objectcheck->setText(kryToQString(object->asset->properties["global"]["name"]));
 				objectaction->setCheckable(true);
 				objectaction->setObject(object.get());
-				connect(objectaction, &ObjectAction::hovered, [this, stack, objectaction]()
+				connect(objectaction, &ObjectAction::hovered, [this, stack, objectaction, tileaction]()
 				{
+					tileaction->getObject()->sprite.rgba = 1.0f;
 					for (QAction* action : stack->actions())
 						dynamic_cast<ObjectAction*>(action)->getObject()->sprite.rgba = 1.0f;
-					objectaction->getObject()->sprite.rgba = {1.0f, 1.0f, 0.0f, 1.0f};
+					objectaction->getObject()->sprite.rgba = {0.0f, 1.0f, 0.0f, 1.0f};
 					paintGL();
 				});
 				connect(objectcheck, &QCheckBox::clicked, [objectcheck, tileaction, stack](bool checked)
@@ -383,6 +386,13 @@ namespace Kryed
 		}
 
 		kry::Util::Vector2f canvascoord = {static_cast<float>(event->x()), static_cast<float>(event->y())};
+		{
+			auto coord = canvas.getCoord(canvascoord);
+			dynamic_cast<MainWindow*>(this->parent()->parent())->getStatusPos()->setText(QString::number(coord[0]) + 'x' + QString::number(coord[1]));
+			coord = coordToTileCoord(canvascoord);
+			dynamic_cast<MainWindow*>(this->parent()->parent())->getStatusTile()->setText(QString::number(coord[0]) + 'x' + QString::number(coord[1]));
+		}
+
 		size_t tileindex = tileCoordToIndex(coordToTileCoord(canvascoord));
 		if (isValidIndex(tileindex))
 		{
@@ -428,24 +438,16 @@ namespace Kryed
 									if (asset->properties["object"].keyExists("gridsnap"))
 										if (asset->properties["object"]["gridsnap"] == "false")
 											snap = false;
+
+								kry::Util::Vector2f pos = 0.0f;
+								if (asset->properties["object"].keyExists("relativex"))
+									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
+								if (asset->properties["object"].keyExists("relativey"))
+									pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
 								if (snap)
-								{
-									kry::Util::Vector2f pos = 0.0f;
-									if (asset->properties["object"].keyExists("relativex"))
-										pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
-									if (asset->properties["object"].keyExists("relativey"))
-										pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
 									follower.position += follower.dimensions * pos;
-								}
 								else
-								{
-									kry::Util::Vector2f pos = 0.0f;
-									if (asset->properties["object"].keyExists("relativex"))
-										pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
-									if (asset->properties["object"].keyExists("relativey"))
-										pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
 									follower.position = canvas.getCoord(canvascoord) - follower.dimensions * pos;
-								}
 							}
 						}
 						redraw = true;
@@ -507,8 +509,8 @@ namespace Kryed
 		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
 		kry::Util::Vector2f screen = canvas.getCoord(coord);
 
-		int x = static_cast<int>((screen[0] / halfdim[0] + screen[1] / halfdim[1]) * 0.5f) - 1;
-		int y = static_cast<int>((screen[1] / halfdim[1] - screen[0] / halfdim[0]) * 0.5f) * -1 - 1;
+		int x = static_cast<int>((screen[0] / halfdim[0] + screen[1] / halfdim[1]) * 0.5f);
+		int y = static_cast<int>((screen[1] / halfdim[1] - screen[0] / halfdim[0]) * 0.5f) * -1;
 
 		return {x, y};
 	}
