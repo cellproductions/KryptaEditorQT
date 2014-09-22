@@ -15,7 +15,7 @@ namespace Kryed
         public:
             GLPanel(QWidget* parent = nullptr);
 
-            inline kry::Graphics::Canvas& getCanvas();
+			inline static kry::Graphics::Canvas& getCanvas();
             void updateCanvas();
             void setGrid(bool gridon);
 			void resetCamera();
@@ -39,12 +39,12 @@ namespace Kryed
 			bool isValidTileCoord(const kry::Util::Vector2i& coord);
 			bool isValidIndex(size_t index);
 
-            kry::Graphics::Canvas canvas;
 			ObjectSettingsDialog* objsettingsDialog;
             bool empty;
             bool gridmode;
             bool mouseDown;
 
+			static kry::Graphics::Canvas canvas;
             static kry::Graphics::Renderer renderer;
     };
 
