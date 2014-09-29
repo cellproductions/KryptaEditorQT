@@ -45,27 +45,9 @@
         <tile id="3">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>1</objectcount>
+            <objectcount>0</objectcount>
             <properties sections="0"/>
-            <objects>
-                <object id="0">
-                    <tileid>3</tileid>
-                    <asset>assets\objects\egyptwallcross.ini</asset>
-                    <properties sections="2">
-                        <global keys="3">
-                            <name>Wall Egyptian Cross</name>
-                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
-                            <type>STATIC_TILE_DECAL</type>
-                        </global>
-                        <object keys="4">
-                            <posx>1140.78</posx>
-                            <posy>39</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
-                        </object>
-                    </properties>
-                </object>
-            </objects>
+            <objects/>
         </tile>
         <tile id="4">
             <layerid>0</layerid>
@@ -75,19 +57,18 @@
             <objects>
                 <object id="0">
                     <tileid>4</tileid>
-                    <asset>assets\objects\loot1.ini</asset>
+                    <asset>assets\objects\egyptwallcross.ini</asset>
                     <properties sections="2">
                         <global keys="3">
-                            <name>Loot 1</name>
-                            <resource>assets\resources\images\item_loot.png</resource>
-                            <type>STATIC_TILE_OBJECT</type>
+                            <name>Wall Egyptian Cross</name>
+                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
+                            <type>STATIC_TILE_DECAL</type>
                         </global>
-                        <object keys="5">
-                            <gridsnap>false</gridsnap>
-                            <posx>1607.23</posx>
-                            <posy>553.122</posy>
-                            <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                        <object keys="4">
+                            <posx>1489</posx>
+                            <posy>212</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -103,9 +84,28 @@
         <tile id="6">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>0</objectcount>
+            <objectcount>1</objectcount>
             <properties sections="0"/>
-            <objects/>
+            <objects>
+                <object id="0">
+                    <tileid>6</tileid>
+                    <asset>assets\objects\loot1.ini</asset>
+                    <properties sections="2">
+                        <global keys="3">
+                            <name>Loot 1</name>
+                            <resource>assets\resources\images\item_loot.png</resource>
+                            <type>STATIC_TILE_OBJECT</type>
+                        </global>
+                        <object keys="5">
+                            <gridsnap>false</gridsnap>
+                            <posx>2130.76</posx>
+                            <posy>788.494</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.7</relativey>
+                        </object>
+                    </properties>
+                </object>
+            </objects>
         </tile>
         <tile id="7">
             <layerid>0</layerid>
@@ -124,10 +124,10 @@
                         </global>
                         <object keys="5">
                             <gridsnap>false</gridsnap>
-                            <posx>2649.89</posx>
-                            <posy>1082.6</posy>
+                            <posx>2732.83</posx>
+                            <posy>1092.91</posy>
                             <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
@@ -158,7 +158,7 @@
                         <object keys="3">
                             <gridsnap>true</gridsnap>
                             <posx>3150</posx>
-                            <posy>1400</posy>
+                            <posy>1396</posy>
                         </object>
                     </properties>
                 </object>
@@ -188,10 +188,10 @@
                         </global>
                         <object keys="5">
                             <gridsnap>true</gridsnap>
-                            <posx>757.3</posx>
-                            <posy>-313.9</posy>
-                            <relativex>0.1</relativex>
-                            <relativey>-0.3</relativey>
+                            <posx>764</posx>
+                            <posy>-324</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
@@ -207,11 +207,18 @@
         <tile id="13">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="14">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
             <objectcount>1</objectcount>
             <properties sections="0"/>
             <objects>
                 <object id="0">
-                    <tileid>13</tileid>
+                    <tileid>14</tileid>
                     <asset>assets\objects\egyptwallx.ini</asset>
                     <properties sections="2">
                         <global keys="3">
@@ -220,46 +227,21 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>1489.76</posx>
-                            <posy>-135</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>1842</posx>
+                            <posy>39</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
             </objects>
         </tile>
-        <tile id="14">
+        <tile id="15">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
             <objectcount>0</objectcount>
             <properties sections="0"/>
             <objects/>
-        </tile>
-        <tile id="15">
-            <layerid>0</layerid>
-            <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>1</objectcount>
-            <properties sections="0"/>
-            <objects>
-                <object id="0">
-                    <tileid>15</tileid>
-                    <asset>assets\objects\egyptwallcross.ini</asset>
-                    <properties sections="2">
-                        <global keys="3">
-                            <name>Wall Egyptian Cross</name>
-                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
-                            <type>STATIC_TILE_DECAL</type>
-                        </global>
-                        <object keys="4">
-                            <posx>2190.78</posx>
-                            <posy>214</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
-                        </object>
-                    </properties>
-                </object>
-            </objects>
         </tile>
         <tile id="16">
             <layerid>0</layerid>
@@ -277,10 +259,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2540.1</posx>
-                            <posy>390</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2541</posx>
+                            <posy>389</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -302,10 +284,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2890.1</posx>
-                            <posy>565</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2891</posx>
+                            <posy>564</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -327,10 +309,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3240.1</posx>
-                            <posy>740</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3241</posx>
+                            <posy>739</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -352,10 +334,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3590.78</posx>
-                            <posy>914</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3589</posx>
+                            <posy>912</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -378,43 +360,11 @@
         <tile id="22">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>0</objectcount>
-            <properties sections="0"/>
-            <objects/>
-        </tile>
-        <tile id="23">
-            <layerid>0</layerid>
-            <asset>assets\tiles\egyptbrickx.ini</asset>
             <objectcount>1</objectcount>
             <properties sections="0"/>
             <objects>
                 <object id="0">
-                    <tileid>23</tileid>
-                    <asset>assets\objects\egyptwallx.ini</asset>
-                    <properties sections="2">
-                        <global keys="3">
-                            <name>Wall Egyptian X</name>
-                            <resource>assets\resources\images\e_wall_x_soft.png</resource>
-                            <type>STATIC_TILE_DECAL</type>
-                        </global>
-                        <object keys="4">
-                            <posx>1839.76</posx>
-                            <posy>-310</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
-                        </object>
-                    </properties>
-                </object>
-            </objects>
-        </tile>
-        <tile id="24">
-            <layerid>0</layerid>
-            <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>1</objectcount>
-            <properties sections="0"/>
-            <objects>
-                <object id="0">
-                    <tileid>24</tileid>
+                    <tileid>22</tileid>
                     <asset>assets\objects\loot1.ini</asset>
                     <properties sections="2">
                         <global keys="3">
@@ -424,10 +374,42 @@
                         </global>
                         <object keys="5">
                             <gridsnap>false</gridsnap>
-                            <posx>2340.35</posx>
-                            <posy>162.126</posy>
+                            <posx>1623.4</posx>
+                            <posy>-111.225</posy>
                             <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                            <relativey>0.7</relativey>
+                        </object>
+                    </properties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="23">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="24">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>1</objectcount>
+            <properties sections="0"/>
+            <objects>
+                <object id="0">
+                    <tileid>24</tileid>
+                    <asset>assets\objects\egyptwallx.ini</asset>
+                    <properties sections="2">
+                        <global keys="3">
+                            <name>Wall Egyptian X</name>
+                            <resource>assets\resources\images\e_wall_x_soft.png</resource>
+                            <type>STATIC_TILE_DECAL</type>
+                        </global>
+                        <object keys="4">
+                            <posx>2192</posx>
+                            <posy>-136</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -436,9 +418,28 @@
         <tile id="25">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>0</objectcount>
+            <objectcount>1</objectcount>
             <properties sections="0"/>
-            <objects/>
+            <objects>
+                <object id="0">
+                    <tileid>25</tileid>
+                    <asset>assets\objects\loot1.ini</asset>
+                    <properties sections="2">
+                        <global keys="3">
+                            <name>Loot 1</name>
+                            <resource>assets\resources\images\item_loot.png</resource>
+                            <type>STATIC_TILE_OBJECT</type>
+                        </global>
+                        <object keys="5">
+                            <gridsnap>false</gridsnap>
+                            <posx>2726.07</posx>
+                            <posy>369.076</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.7</relativey>
+                        </object>
+                    </properties>
+                </object>
+            </objects>
         </tile>
         <tile id="26">
             <layerid>0</layerid>
@@ -464,10 +465,10 @@
                         </global>
                         <object keys="5">
                             <gridsnap>false</gridsnap>
-                            <posx>3440.02</posx>
-                            <posy>683.454</posy>
+                            <posx>3449.9</posx>
+                            <posy>720.846</posy>
                             <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
@@ -496,10 +497,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3939.76</posx>
-                            <posy>740</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3942</posx>
+                            <posy>739</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -515,28 +516,9 @@
         <tile id="31">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>1</objectcount>
+            <objectcount>0</objectcount>
             <properties sections="0"/>
-            <objects>
-                <object id="0">
-                    <tileid>31</tileid>
-                    <asset>assets\objects\loot1.ini</asset>
-                    <properties sections="2">
-                        <global keys="3">
-                            <name>Loot 1</name>
-                            <resource>assets\resources\images\item_loot.png</resource>
-                            <type>STATIC_TILE_OBJECT</type>
-                        </global>
-                        <object keys="5">
-                            <gridsnap>false</gridsnap>
-                            <posx>1639.81</posx>
-                            <posy>-489.534</posy>
-                            <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
-                        </object>
-                    </properties>
-                </object>
-            </objects>
+            <objects/>
         </tile>
         <tile id="32">
             <layerid>0</layerid>
@@ -548,27 +530,9 @@
         <tile id="33">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>1</objectcount>
+            <objectcount>0</objectcount>
             <properties sections="0"/>
-            <objects>
-                <object id="0">
-                    <tileid>33</tileid>
-                    <asset>assets\objects\egyptwallcross.ini</asset>
-                    <properties sections="2">
-                        <global keys="3">
-                            <name>Wall Egyptian Cross</name>
-                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
-                            <type>STATIC_TILE_DECAL</type>
-                        </global>
-                        <object keys="4">
-                            <posx>2190.78</posx>
-                            <posy>-486</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
-                        </object>
-                    </properties>
-                </object>
-            </objects>
+            <objects/>
         </tile>
         <tile id="34">
             <layerid>0</layerid>
@@ -578,18 +542,18 @@
             <objects>
                 <object id="0">
                     <tileid>34</tileid>
-                    <asset>assets\objects\egyptwally.ini</asset>
+                    <asset>assets\objects\egyptwallcross.ini</asset>
                     <properties sections="2">
                         <global keys="3">
-                            <name>Wall Egyptian Y</name>
-                            <resource>assets\resources\images\e_wall_y_soft.png</resource>
+                            <name>Wall Egyptian Cross</name>
+                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2540.1</posx>
-                            <posy>-310</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2539</posx>
+                            <posy>-313</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -611,10 +575,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2890.1</posx>
-                            <posy>-135</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2891</posx>
+                            <posy>-136</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -636,10 +600,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3240.1</posx>
-                            <posy>40</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3241</posx>
+                            <posy>39</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -661,10 +625,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3590.78</posx>
-                            <posy>214</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3589</posx>
+                            <posy>212</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -693,10 +657,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>4289.76</posx>
-                            <posy>565</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>4292</posx>
+                            <posy>564</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -767,10 +731,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3939.76</posx>
-                            <posy>40</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3942</posx>
+                            <posy>39</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -793,10 +757,10 @@
                         </global>
                         <object keys="5">
                             <gridsnap>false</gridsnap>
-                            <posx>4311.62</posx>
-                            <posy>520.539</posy>
+                            <posx>4403.74</posx>
+                            <posy>517.902</posy>
                             <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
@@ -818,10 +782,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>4639.76</posx>
-                            <posy>390</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>4642</posx>
+                            <posy>389</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -837,18 +801,11 @@
         <tile id="51">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>0</objectcount>
-            <properties sections="0"/>
-            <objects/>
-        </tile>
-        <tile id="52">
-            <layerid>0</layerid>
-            <asset>assets\tiles\egyptbrickx.ini</asset>
             <objectcount>1</objectcount>
             <properties sections="0"/>
             <objects>
                 <object id="0">
-                    <tileid>52</tileid>
+                    <tileid>51</tileid>
                     <asset>assets\objects\loot1.ini</asset>
                     <properties sections="2">
                         <global keys="3">
@@ -858,14 +815,21 @@
                         </global>
                         <object keys="5">
                             <gridsnap>false</gridsnap>
-                            <posx>2861.68</posx>
-                            <posy>-758.344</posy>
+                            <posx>2326.94</posx>
+                            <posy>-889.177</posy>
                             <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
             </objects>
+        </tile>
+        <tile id="52">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
         </tile>
         <tile id="53">
             <layerid>0</layerid>
@@ -877,9 +841,28 @@
         <tile id="54">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>0</objectcount>
+            <objectcount>1</objectcount>
             <properties sections="0"/>
-            <objects/>
+            <objects>
+                <object id="0">
+                    <tileid>54</tileid>
+                    <asset>assets\objects\loot1.ini</asset>
+                    <properties sections="2">
+                        <global keys="3">
+                            <name>Loot 1</name>
+                            <resource>assets\resources\images\item_loot.png</resource>
+                            <type>STATIC_TILE_OBJECT</type>
+                        </global>
+                        <object keys="5">
+                            <gridsnap>false</gridsnap>
+                            <posx>3375.49</posx>
+                            <posy>-483.289</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.7</relativey>
+                        </object>
+                    </properties>
+                </object>
+            </objects>
         </tile>
         <tile id="55">
             <layerid>0</layerid>
@@ -975,28 +958,9 @@
         <tile id="68">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>1</objectcount>
+            <objectcount>0</objectcount>
             <properties sections="0"/>
-            <objects>
-                <object id="0">
-                    <tileid>68</tileid>
-                    <asset>assets\objects\loot1.ini</asset>
-                    <properties sections="2">
-                        <global keys="3">
-                            <name>Loot 1</name>
-                            <resource>assets\resources\images\item_loot.png</resource>
-                            <type>STATIC_TILE_OBJECT</type>
-                        </global>
-                        <object keys="5">
-                            <gridsnap>false</gridsnap>
-                            <posx>5223.94</posx>
-                            <posy>227.292</posy>
-                            <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
-                        </object>
-                    </properties>
-                </object>
-            </objects>
+            <objects/>
         </tile>
         <tile id="69">
             <layerid>0</layerid>
@@ -1021,10 +985,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2540.78</posx>
-                            <posy>-1711</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2539</posx>
+                            <posy>-1713</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1046,10 +1010,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2890.1</posx>
-                            <posy>-1535</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2891</posx>
+                            <posy>-1536</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1071,10 +1035,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3240.1</posx>
-                            <posy>-1360</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3241</posx>
+                            <posy>-1361</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1088,18 +1052,18 @@
             <objects>
                 <object id="0">
                     <tileid>73</tileid>
-                    <asset>assets\objects\egyptwallcross.ini</asset>
+                    <asset>assets\objects\egyptwally.ini</asset>
                     <properties sections="2">
                         <global keys="3">
-                            <name>Wall Egyptian Cross</name>
-                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
+                            <name>Wall Egyptian Y</name>
+                            <resource>assets\resources\images\e_wall_y_soft.png</resource>
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3590.78</posx>
+                            <posx>3591</posx>
                             <posy>-1186</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1115,11 +1079,18 @@
         <tile id="75">
             <layerid>0</layerid>
             <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="76">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
             <objectcount>1</objectcount>
             <properties sections="0"/>
             <objects>
                 <object id="0">
-                    <tileid>75</tileid>
+                    <tileid>76</tileid>
                     <asset>assets\objects\loot1.ini</asset>
                     <properties sections="2">
                         <global keys="3">
@@ -1129,21 +1100,14 @@
                         </global>
                         <object keys="5">
                             <gridsnap>false</gridsnap>
-                            <posx>4596.72</posx>
-                            <posy>-424.368</posy>
+                            <posx>4924.63</posx>
+                            <posy>-327.698</posy>
                             <relativex>0.5</relativex>
-                            <relativey>0.6</relativey>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
             </objects>
-        </tile>
-        <tile id="76">
-            <layerid>0</layerid>
-            <asset>assets\tiles\egyptbrickx.ini</asset>
-            <objectcount>0</objectcount>
-            <properties sections="0"/>
-            <objects/>
         </tile>
         <tile id="77">
             <layerid>0</layerid>
@@ -1182,10 +1146,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>2889.76</posx>
-                            <posy>-1885</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>2892</posx>
+                            <posy>-1886</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1257,10 +1221,10 @@
                         </global>
                         <object keys="5">
                             <gridsnap>true</gridsnap>
-                            <posx>5657.3</posx>
-                            <posy>-313.9</posy>
-                            <relativex>0.1</relativex>
-                            <relativey>-0.3</relativey>
+                            <posx>5664</posx>
+                            <posy>-324</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.7</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1289,10 +1253,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3240.78</posx>
-                            <posy>-2061</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3239</posx>
+                            <posy>-2063</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1314,10 +1278,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3590.1</posx>
-                            <posy>-1885</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3591</posx>
+                            <posy>-1886</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1339,10 +1303,10 @@
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>3940.1</posx>
-                            <posy>-1710</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <posx>3941</posx>
+                            <posy>-1711</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>
@@ -1356,18 +1320,18 @@
             <objects>
                 <object id="0">
                     <tileid>93</tileid>
-                    <asset>assets\objects\egyptwallcross.ini</asset>
+                    <asset>assets\objects\egyptwally.ini</asset>
                     <properties sections="2">
                         <global keys="3">
-                            <name>Wall Egyptian Cross</name>
-                            <resource>assets\resources\images\e_wall_xy_soft.png</resource>
+                            <name>Wall Egyptian Y</name>
+                            <resource>assets\resources\images\e_wall_y_soft.png</resource>
                             <type>STATIC_TILE_DECAL</type>
                         </global>
                         <object keys="4">
-                            <posx>4290.78</posx>
+                            <posx>4291</posx>
                             <posy>-1536</posy>
-                            <relativex>0.17</relativex>
-                            <relativey>-0.5</relativey>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
                         </object>
                     </properties>
                 </object>

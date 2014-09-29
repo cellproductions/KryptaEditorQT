@@ -14,10 +14,10 @@ CXX           = cl
 DEFINES       = -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG
 CFLAGS        = -nologo -Zm200 -Zc:wchar_t -FS -O2 -MD -W3 $(DEFINES)
 CXXFLAGS      = -nologo -Zm200 -Zc:wchar_t -FS -O2 -MD -GR -W3 -w34100 -w34189 -EHsc $(DEFINES)
-INCPATH       = -I"..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include" -I"..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\include" -I"..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\include\GL" -I"..\KryptaEditor" -I"..\..\..\5.3\msvc2013_opengl\include" -I"..\..\..\5.3\msvc2013_opengl\include\QtOpenGL" -I"..\..\..\5.3\msvc2013_opengl\include\QtWidgets" -I"..\..\..\5.3\msvc2013_opengl\include\QtGui" -I"..\..\..\5.3\msvc2013_opengl\include\QtCore" -I"release" -I"." -I"." -I"..\..\..\5.3\msvc2013_opengl\mkspecs\win32-msvc2013"
+INCPATH       = -I"..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include" -I"..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\include" -I"..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\include\GL" -I"..\KryptaEditor" -I"..\..\..\5.3\msvc2013_opengl\include" -I"..\..\..\5.3\msvc2013_opengl\include\QtOpenGL" -I"..\..\..\5.3\msvc2013_opengl\include\QtWidgets" -I"..\..\..\5.3\msvc2013_opengl\include\QtGui" -I"..\..\..\5.3\msvc2013_opengl\include\QtCore" -I"release" -I"." -I"." -I"..\..\..\5.3\msvc2013_opengl\mkspecs\win32-msvc2013"
 LINKER        = link
 LFLAGS        = /NOLOGO /DYNAMICBASE /NXCOMPAT /INCREMENTAL:NO /SUBSYSTEM:WINDOWS "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'"
-LIBS          = glu32.lib opengl32.lib gdi32.lib user32.lib /LIBPATH:C:\Qt5.3.1\5.3\msvc2013_opengl\lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\qtmain.lib /LIBPATH:C:\Qt\Qt5.3.1\5.3\msvc2013_opengl\lib C:\Qt\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Core.lib /LIBPATH:C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\release\ C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\release\\Krypta2D.lib /LIBPATH:C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\ C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\\glew32.lib C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\\openAL32.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5OpenGL.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Widgets.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Gui.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Core.lib 
+LIBS          = glu32.lib opengl32.lib gdi32.lib user32.lib /LIBPATH:C:\Qt5.3.1\5.3\msvc2013_opengl\lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\qtmain.lib /LIBPATH:C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\release\ Krypta2D.lib /LIBPATH:C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\ C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\\glew32.lib C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\\openAL32.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5OpenGL.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Widgets.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Gui.lib C:\Qt5.3.1\5.3\msvc2013_opengl\lib\Qt5Core.lib 
 QMAKE         = C:\Qt5.3.1\5.3\msvc2013_opengl\bin\qmake.exe
 IDC           = idc
 IDL           = midl
@@ -188,7 +188,7 @@ DESTDIR_TARGET = release\KryptaEditor.exe
 first: all
 all: Makefile.Release $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\release\Krypta2D.lib C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\glew32.lib C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\openAL32.lib ui_mainwindow.h ui_prjsetupdialog.h ui_envbrowserdialog.h ui_layerbrowserdialog.h ui_EntBrowserDialog.h ui_ConfigDialog.h ui_ObjectSettingsDialog.h ui_SaveDialog.h ui_PrjSettingsDialog.h $(OBJECTS) 
+$(DESTDIR_TARGET): C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\release\Krypta2D.lib C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\glew32.lib C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditor\..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\openAL32.lib ui_mainwindow.h ui_prjsetupdialog.h ui_envbrowserdialog.h ui_layerbrowserdialog.h ui_EntBrowserDialog.h ui_ConfigDialog.h ui_ObjectSettingsDialog.h ui_SaveDialog.h ui_PrjSettingsDialog.h $(OBJECTS) 
 	$(LINKER) $(LFLAGS) /MANIFEST /MANIFESTFILE:release\KryptaEditor.exe.embed.manifest /OUT:$(DESTDIR_TARGET) @<<
 $(OBJECTS) $(LIBS)
 <<
@@ -200,7 +200,7 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) KryptaEditor.zip $(SOURCES) $(DIST) ..\KryptaEditor\KryptaEditor.pro ..\..\..\5.3\msvc2013_opengl\mkspecs\features\spec_pre.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\common\shell-win32.conf ..\..\..\5.3\msvc2013_opengl\mkspecs\qconfig.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axbase.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axbase_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axcontainer.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axserver.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axserver_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_bluetooth.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_clucene_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_concurrent.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_core.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_core_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_declarative.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_declarative_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_designer.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_designer_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_enginio.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_enginio_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_gui.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_gui_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_help.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_help_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimedia.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_network.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_network_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_nfc.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_nfc_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_opengl.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_opengl_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_openglextensions.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_platformsupport_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_positioning.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_positioning_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_printsupport.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qml.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qml_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qmltest.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quick.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quick_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_script.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_script_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_scripttools.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_scripttools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sensors.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sensors_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_serialport.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_serialport_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sql.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sql_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_svg.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_svg_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_testlib.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_testlib_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_uitools.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_uitools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkit.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkit_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkitwidgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkitwidgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_websockets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_websockets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_widgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_widgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_winextras.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_winextras_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xml.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xml_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\features\qt_functions.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\qt_config.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\qt_config.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\win32-msvc2013\qmake.conf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\spec_post.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\exclusive_builds.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\default_pre.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\default_pre.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\resolve_config.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\exclusive_builds_post.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\default_post.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\build_pass.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\rtti.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\precompile_header.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\warn_on.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\qt.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\resources.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\moc.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\opengl.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\uic.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\windows.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\testcase_targets.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\exceptions.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\yacc.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\lex.prf ..\KryptaEditor\KryptaEditor.pro C:/Qt5.3.1/5.3/msvc2013_opengl/lib/qtmain.prl C:/Qt/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Core.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5OpenGL.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Widgets.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Gui.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Core.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
+	$(ZIP) KryptaEditor.zip $(SOURCES) $(DIST) ..\KryptaEditor\KryptaEditor.pro ..\..\..\5.3\msvc2013_opengl\mkspecs\features\spec_pre.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\common\shell-win32.conf ..\..\..\5.3\msvc2013_opengl\mkspecs\qconfig.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axbase.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axbase_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axcontainer.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axserver.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_axserver_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_bluetooth.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_clucene_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_concurrent.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_core.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_core_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_declarative.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_declarative_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_designer.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_designer_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_enginio.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_enginio_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_gui.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_gui_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_help.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_help_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimedia.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_network.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_network_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_nfc.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_nfc_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_opengl.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_opengl_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_openglextensions.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_platformsupport_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_positioning.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_positioning_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_printsupport.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qml.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qml_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qmltest.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quick.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quick_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_script.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_script_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_scripttools.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_scripttools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sensors.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sensors_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_serialport.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_serialport_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sql.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_sql_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_svg.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_svg_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_testlib.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_testlib_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_uitools.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_uitools_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkit.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkit_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkitwidgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_webkitwidgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_websockets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_websockets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_widgets.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_widgets_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_winextras.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_winextras_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xml.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xml_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\..\5.3\msvc2013_opengl\mkspecs\features\qt_functions.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\qt_config.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\qt_config.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\win32-msvc2013\qmake.conf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\spec_post.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\exclusive_builds.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\default_pre.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\default_pre.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\resolve_config.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\exclusive_builds_post.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\default_post.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\build_pass.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\rtti.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\precompile_header.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\warn_on.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\qt.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\resources.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\moc.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\opengl.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\uic.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\win32\windows.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\testcase_targets.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\exceptions.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\yacc.prf ..\..\..\5.3\msvc2013_opengl\mkspecs\features\lex.prf ..\KryptaEditor\KryptaEditor.pro C:/Qt5.3.1/5.3/msvc2013_opengl/lib/qtmain.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Core.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5OpenGL.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Widgets.prl C:/Qt5.3.1/5.3/msvc2013_opengl/lib/Qt5Gui.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
 	-$(DEL_FILE) release\main.obj release\ClickableLabel.obj release\EntBrowserDialog.obj release\AssetListItem.obj release\Utilities.obj release\Assets.obj release\Configuration.obj release\EnvBrowserDialog.obj release\GLPanel.obj release\LayerBrowserDialog.obj release\LayerOptionsItem.obj release\MainWindow.obj release\Map.obj release\MapProject.obj release\PrjSetupDialog.obj release\Resources.obj release\ConfigDialog.obj release\ObjectAction.obj release\ObjectSettingsDialog.obj release\SaveDialog.obj release\PrjSettingsDialog.obj release\CSDialog.obj release\moc_ClickableLabel.obj release\moc_EntBrowserDialog.obj release\moc_EnvBrowserDialog.obj release\moc_GLPanel.obj release\moc_LayerBrowserDialog.obj release\moc_MainWindow.obj release\moc_PrjSetupDialog.obj release\moc_ConfigDialog.obj release\moc_ObjectAction.obj release\moc_ObjectSettingsDialog.obj release\moc_SaveDialog.obj release\moc_PrjSettingsDialog.obj release\moc_CSDialog.obj
@@ -326,23 +326,23 @@ release\moc_ClickableLabel.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtWidgets\Q
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
 		..\KryptaEditor\ClickableLabel.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ClickableLabel.h -o release\moc_ClickableLabel.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ClickableLabel.h -o release\moc_ClickableLabel.cpp
 
 release\moc_EntBrowserDialog.cpp: ..\KryptaEditor\AssetListItem.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -467,23 +467,23 @@ release\moc_EntBrowserDialog.cpp: ..\KryptaEditor\AssetListItem.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\KryptaEditor\EntBrowserDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\EntBrowserDialog.h -o release\moc_EntBrowserDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\EntBrowserDialog.h -o release\moc_EntBrowserDialog.cpp
 
 release\moc_EnvBrowserDialog.cpp: ..\KryptaEditor\AssetListItem.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -608,7 +608,7 @@ release\moc_EnvBrowserDialog.cpp: ..\KryptaEditor\AssetListItem.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\KryptaEditor\EnvBrowserDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\EnvBrowserDialog.h -o release\moc_EnvBrowserDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\EnvBrowserDialog.h -o release\moc_EnvBrowserDialog.cpp
 
 release\moc_GLPanel.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\QGLWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qgl.h \
@@ -723,38 +723,38 @@ release\moc_GLPanel.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\QGLWidget
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qtopenglglobal.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\QSurfaceFormat \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qsurfaceformat.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\WindowTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\WindowTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\KryptaEditor\GLPanel.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\GLPanel.h -o release\moc_GLPanel.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\GLPanel.h -o release\moc_GLPanel.cpp
 
 release\moc_LayerBrowserDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -791,7 +791,7 @@ release\moc_LayerBrowserDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qnamespace.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qarraydata.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistview.h \
@@ -879,7 +879,7 @@ release\moc_LayerBrowserDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\KryptaEditor\LayerBrowserDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\LayerBrowserDialog.h -o release\moc_LayerBrowserDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\LayerBrowserDialog.h -o release\moc_LayerBrowserDialog.cpp
 
 release\moc_MainWindow.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QMainWindow \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qmainwindow.h \
@@ -985,7 +985,7 @@ release\moc_MainWindow.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QMain
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qtabwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qicon.h \
 		..\KryptaEditor\MainWindow.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\MainWindow.h -o release\moc_MainWindow.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\MainWindow.h -o release\moc_MainWindow.cpp
 
 release\moc_PrjSetupDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
@@ -1110,11 +1110,11 @@ release\moc_PrjSetupDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qtabwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qrubberband.h \
 		..\KryptaEditor\PrjSetupDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\PrjSetupDialog.h -o release\moc_PrjSetupDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\PrjSetupDialog.h -o release\moc_PrjSetupDialog.cpp
 
 release\moc_ConfigDialog.cpp: ..\KryptaEditor\DialogResult.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qwidget.h \
@@ -1217,7 +1217,7 @@ release\moc_ConfigDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
 		..\KryptaEditor\ConfigDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ConfigDialog.h -o release\moc_ConfigDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ConfigDialog.h -o release\moc_ConfigDialog.cpp
 
 release\moc_ObjectAction.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QWidgetAction \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qwidgetaction.h \
@@ -1324,11 +1324,11 @@ release\moc_ObjectAction.cpp: ..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QWi
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qicon.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qactiongroup.h \
 		..\KryptaEditor\ObjectAction.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ObjectAction.h -o release\moc_ObjectAction.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ObjectAction.h -o release\moc_ObjectAction.cpp
 
 release\moc_ObjectSettingsDialog.cpp: ..\KryptaEditor\DialogResult.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qwidget.h \
@@ -1431,7 +1431,7 @@ release\moc_ObjectSettingsDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
 		..\KryptaEditor\ObjectSettingsDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ObjectSettingsDialog.h -o release\moc_ObjectSettingsDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\ObjectSettingsDialog.h -o release\moc_ObjectSettingsDialog.cpp
 
 release\moc_SaveDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
@@ -1536,7 +1536,7 @@ release\moc_SaveDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
 		..\KryptaEditor\SaveDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\SaveDialog.h -o release\moc_SaveDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\SaveDialog.h -o release\moc_SaveDialog.cpp
 
 release\moc_PrjSettingsDialog.cpp: ..\KryptaEditor\CSDialog.h \
 		..\KryptaEditor\DialogResult.h \
@@ -1641,15 +1641,15 @@ release\moc_PrjSettingsDialog.cpp: ..\KryptaEditor\CSDialog.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qfiledevice.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\KryptaEditor\PrjSettingsDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\PrjSettingsDialog.h -o release\moc_PrjSettingsDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\PrjSettingsDialog.h -o release\moc_PrjSettingsDialog.cpp
 
 release\moc_CSDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
@@ -1754,7 +1754,7 @@ release\moc_CSDialog.cpp: ..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
 		..\KryptaEditor\CSDialog.h
-	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Documents/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\CSDialog.h -o release\moc_CSDialog.cpp
+	C:\Qt5.3.1\5.3\msvc2013_opengl\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -IC:/Qt5.3.1/5.3/msvc2013_opengl/mkspecs/win32-msvc2013 -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include -IC:/Users/Callum/Desktop/Krypta2D/Krypta2D/libs/include/GL -IC:/Qt5.3.1/Projects/KryptaEditorQT/KryptaEditor -IC:/Qt5.3.1/5.3/msvc2013_opengl/include -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtOpenGL -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtWidgets -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtGui -IC:/Qt5.3.1/5.3/msvc2013_opengl/include/QtCore -I. ..\KryptaEditor\CSDialog.h -o release\moc_CSDialog.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1877,19 +1877,19 @@ ui_mainwindow.h: ..\KryptaEditor\mainwindow.ui \
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qtopenglglobal.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\QSurfaceFormat \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qsurfaceformat.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\WindowTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\WindowTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QLabel \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlabel.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qframe.h \
@@ -2134,8 +2134,8 @@ release\main.obj: ..\KryptaEditor\main.cpp ..\KryptaEditor\MainWindow.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qtabwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qicon.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QApplication \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qapplication.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qcoreapplication.h \
@@ -2252,19 +2252,19 @@ release\ClickableLabel.obj: ..\KryptaEditor\ClickableLabel.cpp ..\KryptaEditor\C
 release\EntBrowserDialog.obj: ..\KryptaEditor\EntBrowserDialog.cpp ..\KryptaEditor\EntBrowserDialog.h \
 		..\KryptaEditor\AssetListItem.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -2425,19 +2425,19 @@ release\EntBrowserDialog.obj: ..\KryptaEditor\EntBrowserDialog.cpp ..\KryptaEdit
 
 release\AssetListItem.obj: ..\KryptaEditor\AssetListItem.cpp ..\KryptaEditor\AssetListItem.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -2560,12 +2560,12 @@ release\AssetListItem.obj: ..\KryptaEditor\AssetListItem.cpp ..\KryptaEditor\Ass
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qrubberband.h
 
 release\Utilities.obj: ..\KryptaEditor\Utilities.cpp ..\KryptaEditor\Utilities.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -2604,19 +2604,19 @@ release\Utilities.obj: ..\KryptaEditor\Utilities.cpp ..\KryptaEditor\Utilities.h
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h
 
 release\Assets.obj: ..\KryptaEditor\Assets.cpp ..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -2655,7 +2655,7 @@ release\Assets.obj: ..\KryptaEditor\Assets.cpp ..\KryptaEditor\Assets.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
 		..\KryptaEditor\resources.h \
 		..\KryptaEditor\Utilities.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\Filesystem.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\Filesystem.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QDebug \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qdebug.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qalgorithms.h \
@@ -2689,30 +2689,30 @@ release\Assets.obj: ..\KryptaEditor\Assets.cpp ..\KryptaEditor\Assets.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qcontiguouscache.h
 
 release\Configuration.obj: ..\KryptaEditor\Configuration.cpp ..\KryptaEditor\Configuration.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\Filesystem.h
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\Filesystem.h
 
 release\EnvBrowserDialog.obj: ..\KryptaEditor\EnvBrowserDialog.cpp ..\KryptaEditor\EnvBrowserDialog.h \
 		..\KryptaEditor\AssetListItem.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -2871,7 +2871,7 @@ release\EnvBrowserDialog.obj: ..\KryptaEditor\EnvBrowserDialog.cpp ..\KryptaEdit
 		..\KryptaEditor\Resources.h \
 		..\KryptaEditor\Utilities.h
 
-release\GLPanel.obj: ..\KryptaEditor\GLPanel.cpp ..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\include\GL\glew.h \
+release\GLPanel.obj: ..\KryptaEditor\GLPanel.cpp ..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\include\GL\glew.h \
 		..\KryptaEditor\GLPanel.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\QGLWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qgl.h \
@@ -2986,25 +2986,25 @@ release\GLPanel.obj: ..\KryptaEditor\GLPanel.cpp ..\..\..\..\Users\Callum\Docume
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qtopenglglobal.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\QSurfaceFormat \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qsurfaceformat.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\WindowTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\WindowTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
@@ -3091,7 +3091,7 @@ release\GLPanel.obj: ..\KryptaEditor\GLPanel.cpp ..\..\..\..\Users\Callum\Docume
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\KryptaEditor\Utilities.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Math.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Math.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\QWheelEvent \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QCheckBox \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qcheckbox.h \
@@ -3103,19 +3103,19 @@ release\LayerBrowserDialog.obj: ..\KryptaEditor\LayerBrowserDialog.cpp ..\Krypta
 		..\KryptaEditor\DialogResult.h \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -3152,7 +3152,7 @@ release\LayerBrowserDialog.obj: ..\KryptaEditor\LayerBrowserDialog.cpp ..\Krypta
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qnamespace.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qarraydata.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistview.h \
@@ -3287,19 +3287,19 @@ release\LayerBrowserDialog.obj: ..\KryptaEditor\LayerBrowserDialog.cpp ..\Krypta
 release\LayerOptionsItem.obj: ..\KryptaEditor\LayerOptionsItem.cpp ..\KryptaEditor\LayerOptionsItem.h \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -3336,7 +3336,7 @@ release\LayerOptionsItem.obj: ..\KryptaEditor\LayerOptionsItem.cpp ..\KryptaEdit
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qnamespace.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qarraydata.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistview.h \
@@ -3606,19 +3606,19 @@ release\MainWindow.obj: ..\KryptaEditor\MainWindow.cpp ..\KryptaEditor\MainWindo
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qtopenglglobal.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\QSurfaceFormat \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qsurfaceformat.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\WindowTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\WindowTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\KryptaEditor\PrjSetupDialog.h \
 		..\KryptaEditor\DialogResult.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
@@ -3640,10 +3640,10 @@ release\MainWindow.obj: ..\KryptaEditor\MainWindow.cpp ..\KryptaEditor\MainWindo
 		..\KryptaEditor\EntBrowserDialog.h \
 		..\KryptaEditor\AssetListItem.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\KryptaEditor\EnvBrowserDialog.h \
 		..\KryptaEditor\LayerBrowserDialog.h \
@@ -3667,19 +3667,19 @@ release\MainWindow.obj: ..\KryptaEditor\MainWindow.cpp ..\KryptaEditor\MainWindo
 
 release\Map.obj: ..\KryptaEditor\Map.cpp ..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -3716,7 +3716,7 @@ release\Map.obj: ..\KryptaEditor\Map.cpp ..\KryptaEditor\Map.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qnamespace.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qarraydata.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistview.h \
@@ -3824,10 +3824,11 @@ release\Map.obj: ..\KryptaEditor\Map.cpp ..\KryptaEditor\Map.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtOpenGL\qtopenglglobal.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\QSurfaceFormat \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qsurfaceformat.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\WindowTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\Filesystem.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Renderer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\WindowTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Canvas.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\Filesystem.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\Zip.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QXmlStreamWriter \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qxmlstream.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QXmlStreamReader \
@@ -3837,21 +3838,21 @@ release\Map.obj: ..\KryptaEditor\Map.cpp ..\KryptaEditor\Map.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QDebug
 
 release\MapProject.obj: ..\KryptaEditor\MapProject.cpp ..\KryptaEditor\MapProject.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -3888,7 +3889,7 @@ release\MapProject.obj: ..\KryptaEditor\MapProject.cpp ..\KryptaEditor\MapProjec
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qnamespace.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qarraydata.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistview.h \
@@ -4139,21 +4140,21 @@ release\PrjSetupDialog.obj: ..\KryptaEditor\PrjSetupDialog.cpp ui_prjsetupdialog
 		..\KryptaEditor\LayerOptionsItem.h \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QShortcut \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qshortcut.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QMessageBox \
@@ -4161,19 +4162,19 @@ release\PrjSetupDialog.obj: ..\KryptaEditor\PrjSetupDialog.cpp ui_prjsetupdialog
 
 release\Resources.obj: ..\KryptaEditor\Resources.cpp ..\KryptaEditor\Resources.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstring.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qchar.h \
@@ -4211,9 +4212,9 @@ release\Resources.obj: ..\KryptaEditor\Resources.cpp ..\KryptaEditor\Resources.h
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qarraydata.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qstringbuilder.h \
 		..\KryptaEditor\Configuration.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\System\Filesystem.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ImageFactory.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\AudioFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\System\Filesystem.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ImageFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\AudioFactory.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QDebug \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qdebug.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qalgorithms.h \
@@ -4248,8 +4249,8 @@ release\Resources.obj: ..\KryptaEditor\Resources.cpp ..\KryptaEditor\Resources.h
 
 release\ConfigDialog.obj: ..\KryptaEditor\ConfigDialog.cpp ..\KryptaEditor\ConfigDialog.h \
 		..\KryptaEditor\DialogResult.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qwidget.h \
@@ -4398,11 +4399,11 @@ release\ConfigDialog.obj: ..\KryptaEditor\ConfigDialog.cpp ..\KryptaEditor\Confi
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qtableview.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QVBoxLayout \
 		..\KryptaEditor\Utilities.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QDebug
 
@@ -4514,8 +4515,8 @@ release\ObjectAction.obj: ..\KryptaEditor\ObjectAction.cpp ..\KryptaEditor\Objec
 
 release\ObjectSettingsDialog.obj: ..\KryptaEditor\ObjectSettingsDialog.cpp ..\KryptaEditor\ObjectSettingsDialog.h \
 		..\KryptaEditor\DialogResult.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QDialog \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qdialog.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qwidget.h \
@@ -4664,11 +4665,11 @@ release\ObjectSettingsDialog.obj: ..\KryptaEditor\ObjectSettingsDialog.cpp ..\Kr
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QTabWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QVBoxLayout \
 		..\KryptaEditor\Utilities.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QTableWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qtablewidget.h \
@@ -4926,13 +4927,13 @@ release\PrjSettingsDialog.obj: ..\KryptaEditor\PrjSettingsDialog.cpp ..\KryptaEd
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\qfiledevice.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qvector2d.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtGui\qtouchdevice.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\String.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Exception.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\libs\FMT\format.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\String.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicString.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Exception.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\StringConvert.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\libs\FMT\format.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Media\ConfigFactory.h \
 		ui_PrjSettingsDialog.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QVariant \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QAction \
@@ -4983,14 +4984,14 @@ release\PrjSettingsDialog.obj: ..\KryptaEditor\PrjSettingsDialog.cpp ..\KryptaEd
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QWidget \
 		..\KryptaEditor\Map.h \
 		..\KryptaEditor\Assets.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Texture.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\Vector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Buffer.h \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Audio\Source.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Texture.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\Vector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\VectorTypes.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Utilities\BasicVector.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Buffer.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Audio\Source.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtCore\QString \
-		..\..\..\..\Users\Callum\Documents\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
+		..\..\..\..\Users\Callum\Desktop\Krypta2D\Krypta2D\include\Graphics\Primitives.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\QListWidget \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistwidget.h \
 		..\..\..\5.3\msvc2013_opengl\include\QtWidgets\qlistview.h \

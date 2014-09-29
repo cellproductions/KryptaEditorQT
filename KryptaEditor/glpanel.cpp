@@ -424,12 +424,12 @@ namespace Kryed
 							}
 							else if (asset->type == AssetType::STATIC_TILE_DECAL ||asset->type == AssetType::ANIM_TILE_DECAL)
 							{
-								kry::Util::Vector2f pos = 0.0f;
+								kry::Util::Vector2f pos = 0.5f;
 								if (asset->properties["object"].keyExists("relativex"))
 									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
 								if (asset->properties["object"].keyExists("relativey"))
 									pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
-								follower.position += follower.dimensions * pos;
+								follower.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - follower.dimensions * pos;
 							}
 							else if (asset->type == AssetType::STATIC_TILE_OBJECT ||asset->type == AssetType::ANIM_TILE_OBJECT)
 							{
@@ -439,15 +439,16 @@ namespace Kryed
 										if (asset->properties["object"]["gridsnap"] == "false")
 											snap = false;
 
-								kry::Util::Vector2f pos = 0.0f;
+								kry::Util::Vector2f pos = 0.5f;
 								if (asset->properties["object"].keyExists("relativex"))
 									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
 								if (asset->properties["object"].keyExists("relativey"))
 									pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
+								pos = follower.dimensions * pos; // texture pivot
 								if (snap)
-									follower.position += follower.dimensions * pos;
+									follower.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
 								else
-									follower.position = canvas.getCoord(canvascoord) - follower.dimensions * pos;
+									follower.position = canvas.getCoord(canvascoord) - pos;
 							}
 						}
 						redraw = true;

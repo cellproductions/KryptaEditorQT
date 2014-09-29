@@ -369,8 +369,9 @@ kry::Util::Vector2f coordToTileCoord(const kry::Util::Vector2f& coord)
 {
 	kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
 	kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
+//	auto pos = coord + halfdim;
 
-	float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f + 1;  // black magic goin on here?
+	float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;  // black magic goin on here?
 	float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1;
 
 	return {x, y};
@@ -417,6 +418,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("name = " + qToKString(single->getName()));
 		lines.push_back("iconImage = icon.png");
 		lines.push_back("checksum = 0");
+		lines.push_back("tileDimensions = 700");
 		lines.push_back("fogOfWar = 1");
 		lines.push_back("playerSpawnFloor = " + prjconfig["player"]["layer"]);
 		lines.push_back("playerSpawnPosition = { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
@@ -511,13 +513,13 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("[player]");
 		lines.push_back("type=player");
 		lines.push_back("spawnFloor = 0");
-		lines.push_back("position = { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
+		lines.push_back("position = { " + prjconfig["player"]["tiley"] + ".5, " + prjconfig["player"]["tilex"] + ".5 }");
 		lines.push_back("skinConfig = EntitySkins.txt");
 		lines.push_back("skin = player");
 		lines.push_back("[exit]");
 		lines.push_back("type = exit");
 		lines.push_back("spawnFloor = 0");
-		lines.push_back("position = { 0.5, 0.5 }");
+		lines.push_back("position = { 0.5, 9.4 }");
 		lines.push_back("skinConfig = EntitySkins.txt");
 		lines.push_back("skin = exitPortal");
 
@@ -536,16 +538,14 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 					lines.push_back("type=smallGoldLoot");
 				lines.push_back("spawnFloor=0");
 
-				Util::Vector2f fpos = 0.0f;
+				kry::Util::Vector2f fpos = 0.5f;
 				if (object->asset->properties["object"].keyExists("relativex"))
-					fpos[0] = Util::toDecimal<float>(object->asset->properties["object"]["relativex"]);
+					fpos[0] = kry::Util::toDecimal<float>(object->asset->properties["object"]["relativex"]);
 				if (object->asset->properties["object"].keyExists("relativey"))
-					fpos[1] = Util::toDecimal<float>(object->asset->properties["object"]["relativey"]);
-				auto pos = coordToTileCoord(object->sprite.position);
-				//pos[0] -= single->layers[0]->tilesize[0];
-				//pos[1] -= single->layers[0]->tilesize[1] * (single->layers[0]->size[1] / 2);
-				lines.push_back("position= { " + Util::toString(pos[0]) + ", " +
-													Util::toString(pos[1]) + " }");
+					fpos[1] = kry::Util::toDecimal<float>(object->asset->properties["object"]["relativey"]);
+				auto pos = coordToTileCoord(object->sprite.position + fpos * object->sprite.dimensions);
+				lines.push_back("position= { " + Util::toString(pos[1]) + ", " +
+													Util::toString(pos[0]) + " }");
 				lines.push_back("skinConfig = EntitySkins.txt");
 				if (object->asset->type != AssetType::STATIC_TILE_DECAL)
 					lines.push_back("onCollectionPoints = 1");
@@ -626,16 +626,16 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			lines.push_back("frames=1");
 			lines.push_back("fps=1");
 			auto dims = asset->resource->rawresource->getDimensions();
-			lines.push_back("framePivot= { " + 
-				Util::toString((asset->properties["object"].keyExists("relativex") ? Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.0f) * dims[0]) + ", " +
-					Util::toString(dims[1] - (asset->properties["object"].keyExists("relativey") ? Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.0f) * dims[1]) + " }");
+			lines.push_back("framePivot= { " +
+				Util::toString((asset->properties["object"].keyExists("relativex") ? Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) + ", " +
+					Util::toString((asset->properties["object"].keyExists("relativey") ? Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) + " }");
 			lines.push_back("sheetDimensions = { 1, 1 }");
 			lines.push_back("sheetImage = images/" + qToKString(asset->resource->name));
 		}
 		lines.push_back("[exitPortal]");
 		lines.push_back("frames=1");
 		lines.push_back("fps=1");
-		lines.push_back("framePivot= { 212.16, -835 }");
+		lines.push_back("framePivot= { 350.5, 179.5 }");
 		lines.push_back("sheetDimensions = { 1, 1 }");
 		lines.push_back("sheetImage = images/r_stair_down_y.png");
 		lines.push_back("[player]");

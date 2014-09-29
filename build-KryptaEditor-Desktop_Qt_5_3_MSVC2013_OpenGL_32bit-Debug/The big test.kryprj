@@ -1,0 +1,3525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectfile>
+    <project>
+        <name>The big test</name>
+        <layercount>1</layercount>
+    </project>
+    <player>
+        <layer>0</layer>
+        <tilex>0</tilex>
+        <tiley>0</tiley>
+        <speed>1</speed>
+        <fov>8</fov>
+    </player>
+    <layers>
+        <layer id="0">
+            <description></description>
+            <width>10</width>
+            <height>50</height>
+            <tilewidth>700</tilewidth>
+            <tileheight>350</tileheight>
+        </layer>
+    </layers>
+    <tiledata>
+        <tile id="0">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="1">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="2">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="3">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="4">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="5">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="6">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="7">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="8">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="9">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="10">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="11">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="12">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="13">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="14">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="15">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="16">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="17">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="18">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="19">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="20">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="21">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="22">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="23">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="24">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="25">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="26">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="27">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="28">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="29">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="30">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="31">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="32">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="33">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="34">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="35">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="36">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="37">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="38">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="39">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="40">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="41">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="42">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="43">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="44">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="45">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="46">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="47">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="48">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="49">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="50">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="51">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="52">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="53">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="54">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="55">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="56">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="57">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="58">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="59">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="60">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="61">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="62">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="63">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="64">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="65">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="66">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="67">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="68">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="69">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="70">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="71">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="72">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="73">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="74">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="75">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="76">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="77">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="78">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="79">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="80">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="81">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="82">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="83">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="84">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="85">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="86">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="87">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="88">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="89">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="90">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="91">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="92">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="93">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="94">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="95">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="96">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="97">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="98">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="99">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="100">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="101">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="102">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="103">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="104">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="105">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="106">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="107">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="108">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="109">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="110">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="111">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="112">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="113">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="114">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="115">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="116">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="117">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="118">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="119">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="120">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="121">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="122">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="123">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="124">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="125">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="126">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="127">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="128">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="129">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="130">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="131">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="132">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="133">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="134">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="135">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="136">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="137">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="138">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="139">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="140">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="141">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="142">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="143">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="144">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="145">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="146">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="147">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="148">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="149">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="150">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="151">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="152">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="153">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="154">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="155">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="156">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="157">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="158">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="159">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="160">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="161">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="162">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="163">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="164">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="165">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="166">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="167">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="168">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="169">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="170">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="171">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="172">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="173">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="174">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="175">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="176">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="177">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="178">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="179">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="180">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="181">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="182">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="183">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="184">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="185">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="186">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="187">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="188">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="189">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="190">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="191">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="192">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="193">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="194">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="195">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="196">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="197">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="198">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="199">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="200">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="201">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="202">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="203">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="204">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="205">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="206">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="207">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="208">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="209">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="210">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="211">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="212">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="213">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="214">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="215">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="216">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="217">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="218">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="219">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="220">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="221">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="222">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="223">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="224">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="225">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="226">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="227">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="228">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="229">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="230">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="231">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="232">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="233">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="234">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="235">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="236">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="237">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="238">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="239">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="240">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="241">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="242">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="243">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="244">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="245">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="246">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="247">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="248">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="249">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="250">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="251">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="252">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="253">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="254">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="255">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="256">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="257">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="258">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="259">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="260">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="261">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="262">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="263">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="264">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="265">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="266">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="267">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="268">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="269">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="270">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="271">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="272">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="273">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="274">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="275">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="276">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="277">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="278">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="279">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="280">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="281">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="282">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="283">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="284">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="285">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="286">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="287">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="288">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="289">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="290">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="291">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="292">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="293">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="294">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="295">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="296">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="297">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="298">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="299">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="300">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="301">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="302">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="303">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="304">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="305">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="306">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="307">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="308">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="309">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="310">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="311">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="312">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="313">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="314">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="315">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="316">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="317">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="318">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="319">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="320">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="321">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="322">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="323">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="324">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="325">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="326">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="327">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="328">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="329">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="330">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="331">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="332">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="333">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="334">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="335">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="336">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="337">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="338">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="339">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="340">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="341">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="342">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="343">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="344">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="345">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="346">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="347">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="348">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="349">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="350">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="351">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="352">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="353">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="354">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="355">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="356">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="357">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="358">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="359">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="360">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="361">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="362">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="363">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="364">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="365">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="366">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="367">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="368">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="369">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="370">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="371">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="372">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="373">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="374">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="375">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="376">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="377">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="378">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="379">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="380">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="381">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="382">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="383">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="384">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="385">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="386">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="387">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="388">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="389">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="390">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="391">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="392">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="393">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="394">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="395">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="396">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="397">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="398">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="399">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="400">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="401">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="402">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="403">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="404">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="405">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="406">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="407">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="408">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="409">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="410">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="411">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="412">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="413">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="414">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="415">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="416">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="417">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="418">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="419">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="420">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="421">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="422">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="423">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="424">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="425">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="426">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="427">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="428">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="429">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="430">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="431">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="432">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="433">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="434">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="435">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="436">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="437">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="438">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="439">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="440">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="441">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="442">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="443">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="444">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="445">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="446">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="447">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="448">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="449">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="450">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="451">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="452">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="453">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="454">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="455">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="456">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="457">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="458">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="459">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="460">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="461">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="462">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="463">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="464">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="465">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="466">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="467">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="468">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="469">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="470">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="471">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="472">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="473">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="474">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="475">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="476">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="477">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="478">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="479">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="480">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="481">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="482">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="483">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="484">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="485">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="486">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="487">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="488">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="489">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="490">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="491">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="492">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="493">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="494">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="495">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="496">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="497">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="498">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+        <tile id="499">
+            <layerid>0</layerid>
+            <asset>assets\tiles\egyptbrickx.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="0"/>
+            <objects/>
+        </tile>
+    </tiledata>
+</projectfile>
