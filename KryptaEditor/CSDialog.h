@@ -9,6 +9,7 @@ class CSDialog : public QDialog
 		Q_OBJECT
 	public:
 		explicit CSDialog(QWidget *parent = 0);
+		virtual ~CSDialog() {}
 
 		virtual DialogResult showDialog();
 

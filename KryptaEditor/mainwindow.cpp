@@ -8,10 +8,12 @@
 #include "ConfigDialog.h"
 #include "SaveDialog.h"
 #include "PrjSettingsDialog.h"
+#include "AnimManagerDialog.h"
 #include "Configuration.h"
 #include "Map.h"
 #include "Assets.h"
 #include "Tool.h"
+#include "EventSystem.h"
 #include <QGraphicsColorizeEffect>
 #include <QToolButton>
 #include <QFileDialog>
@@ -23,7 +25,7 @@ static const QString mainTitle("Krypta Map Editor");
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), prjsetupDialog(new PrjSetupDialog(this)),
 	entbrowseDialog(new EntBrowserDialog(this)), envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this)), configDialog(new ConfigDialog(this)),
-	prjsettingsDialog(new PrjSettingsDialog(this)), saved(true)
+	prjsettingsDialog(new PrjSettingsDialog(this)), animmanagerDialog(new AnimManagerDialog(this)), saved(true)
 {
 	ui->setupUi(this);
 
@@ -56,6 +58,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		if (!Map::getMap())
 			return;
 		if (prjsettingsDialog->showDialog() == DialogResult::OK)
+		{
+
+		}
+	});
+	connect(ui->miProjectAnims, &QAction::triggered, [this]()
+	{
+		if (!Map::getMap())
+			return;
+		if (animmanagerDialog->showDialog() == DialogResult::OK)
 		{
 
 		}
@@ -176,6 +187,7 @@ void MainWindow::init()
         if (Configuration::loadFromFile("editor.cfg")["editor"]["maximised"] == "true")
             this->showMaximized();
 		configDialog->setConfigData(Configuration::getConfig());
+		EventSystem::createSystem();
     }
     catch (const kry::Util::Exception&)
     {

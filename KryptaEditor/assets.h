@@ -12,7 +12,7 @@
 template <typename ResType>
 struct Resource; // resources.h
 
-enum class AssetType : unsigned char
+enum class AssetType : unsigned char /** #TODO(note) are these now redundant? */
 {
 	STATIC_TILE,
 	STATIC_TILE_DECAL,
@@ -36,22 +36,24 @@ struct Asset
 class Assets
 {
     public:
-        static void loadAssets(const QString& rootdir);
+		static void loadAssets(const QString& rootdir);
         inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& getTiles();
 		inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& getObjects();
 		inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& getEntities();
 		static std::shared_ptr<Asset<kry::Graphics::Texture> >& getTileByIni(const QString& path);
 		static std::shared_ptr<Asset<kry::Graphics::Texture> >& getObjectByIni(const QString& path);
 		static std::shared_ptr<Asset<kry::Graphics::Texture> >& getEntityByIni(const QString& path);
+		inline static const kry::Media::Config& getHardTypes();
         inline static bool isLoaded();
 
     private:
         Assets();
 
-        static bool loaded;
         static std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > tiles;
 		static std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > objects;
 		static std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > entities;
+		static kry::Media::Config hardtypes;
+		static bool loaded;
 };
 
 
@@ -68,6 +70,11 @@ const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& Assets::get
 const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& Assets::getEntities()
 {
 	return entities;
+}
+
+const kry::Media::Config& Assets::getHardTypes()
+{
+	return hardtypes;
 }
 
 bool Assets::isLoaded()

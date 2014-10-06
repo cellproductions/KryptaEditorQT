@@ -1,0 +1,24 @@
+FLUX=keeps changing
+DOING=currently in development
+
+TODO:
+[ ] add more player settings
+[ ] finish layer editing
+[x] add properties that link to hardcoded properties
+[ ] finish different property types (in the dialogs) for object hardtype settings [FLUX]
+[ ] complete exporting (remove hardcoded stuff, update) [FLUX]
+[ ] add objectives (add exit here too?)/objective settings
+[ ] finish pivot editing for objects
+[ ] add object waypoints
+[ ] add waypoint options dialog/manual placement
+[ ] set a pivot for the upstairs object (and all other objects afterwards)
+[x] add tile/object IDs
+[ ] add background options per layer
+[ ] add skins structures
+[ ] add skins management dialog [DOING]
+[ ] add more todos
+
+BUGS:
+* object settings dialog does not clear the icon pane after closing
+* flip x/y of tile positions (crash from exporting, rectangle maps are the wrong way around)
+* object pivot point does not move correctly

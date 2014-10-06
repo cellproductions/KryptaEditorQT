@@ -10,6 +10,7 @@
 #include "ObjectSettingsDialog.h"
 #include "Utilities.h"
 #include <Utilities/Math.h>
+#include <Utilities/MD5.h>
 #include <Graphics/Primitives.h>
 #include <QWheelEvent>
 #include <QCheckBox>
@@ -205,6 +206,17 @@ namespace Kryed
 								section = "entity";
 							object->properties[section]["posx"] = kry::Util::toString(follower.position[0]);
 							object->properties[section]["posy"] = kry::Util::toString(follower.position[1]);
+							if (object->properties["global"].keyExists("hardtype"))
+							{
+								auto type = object->properties["global"]["hardtype"];
+								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+									object->hardproperties[type][key] = "";
+							}
+							for (size_t i = 0; i < EventSystem::getSystem()->getEvents().size(); ++i)
+								object->events.push_back(parseEvent(EventSystem::getSystem()->getEvents()[i].name, object->properties["events"][kry::Util::toString(i)]));
+							// hardcoded id limit (max is 999 layers, 100x100 map size, with 99 objects per tile)
+							object->properties["global"]["id"] = kry::Util::toString(((Map::getMap()->getCurrentLayer()->index * 10000u + index) * 100u) +
+																					 Map::getMap()->getCurrentLayer()->tiles[index].objects.size());
 
 							Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
 							updateCanvas();
@@ -244,7 +256,7 @@ namespace Kryed
 			ObjectAction* tileaction = new ObjectAction(&context);
 			QCheckBox* tilecheck = new QCheckBox(&context);
 			tileaction->setDefaultWidget(tilecheck);
-			tilecheck->setText("Tile: " + kryToQString(tile.asset->properties["global"]["name"]));
+			tilecheck->setText(kryToQString("Tile: " + tile.properties["global"]["id"] + ':' + tile.asset->properties["global"]["name"]));
 			tileaction->setCheckable(true);
 			tileaction->setObject(&tile);
 			context.addAction(tileaction);
@@ -268,7 +280,7 @@ namespace Kryed
 				ObjectAction* objectaction = new ObjectAction(stack);
 				QCheckBox* objectcheck = new QCheckBox(&context);
 				objectaction->setDefaultWidget(objectcheck);
-				objectcheck->setText(kryToQString(object->asset->properties["global"]["name"]));
+				objectcheck->setText(kryToQString(object->properties["global"]["id"] + ':' + object->asset->properties["global"]["name"]));
 				objectaction->setCheckable(true);
 				objectaction->setObject(object.get());
 				connect(objectaction, &ObjectAction::hovered, [this, stack, objectaction, tileaction]()
@@ -329,8 +341,14 @@ namespace Kryed
 					if (toedit == tileaction)
 						QMessageBox::information(this, "Invalid Action", "You cannot edit a tile.", QMessageBox::Ok);
 					else
-						if (objsettingsDialog->showDialog(toedit->getObject()->properties["global"]["name"], toedit->getObject()->properties) == DialogResult::OK)
+					{
+						if (objsettingsDialog->showDialog(toedit->getObject()->properties["global"]["id"] + " - " + toedit->getObject()->properties["global"]["name"],
+														  toedit->getObject()) == DialogResult::OK)
+						{
 							toedit->getObject()->properties = objsettingsDialog->getSettings();
+							toedit->getObject()->hardproperties = objsettingsDialog->getHardTypeSettings();
+						}
+					}
 				}
 			});
 			connect(removeaction, &QAction::triggered, [this, &findSelected, tileaction, stack, index](bool)

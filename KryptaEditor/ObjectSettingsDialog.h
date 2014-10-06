@@ -5,6 +5,8 @@
 #include <Media/ConfigFactory.h>
 #include <QDialog>
 
+struct Object;
+
 namespace Ui
 {
 	class ObjectSettingsDialog;
@@ -18,13 +20,15 @@ class ObjectSettingsDialog : public QDialog
 		explicit ObjectSettingsDialog(QWidget *parent = 0);
 		~ObjectSettingsDialog();
 
-		DialogResult showDialog(const kry::Util::String& title, const kry::Media::Config& config);
+		DialogResult showDialog(const kry::Util::String& title, Object* object);
 		kry::Media::Config getSettings() const;
+		kry::Media::Config getHardTypeSettings() const;
 
 	private:
-		void updateTables();
+		void updateTables(Object* object);
 
 		kry::Media::Config settings;
+		kry::Media::Config hardtypesettings;
 		Ui::ObjectSettingsDialog *ui;
 		DialogResult lastresult;
 };

@@ -386,6 +386,8 @@
      <string>Project</string>
     </property>
     <addaction name="miProjectSettings"/>
+    <addaction name="miProjectEvents"/>
+    <addaction name="miProjectAnims"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -474,6 +476,16 @@
   <action name="miFileExport">
    <property name="text">
     <string>Export</string>
+   </property>
+  </action>
+  <action name="miProjectEvents">
+   <property name="text">
+    <string>Event Manager</string>
+   </property>
+  </action>
+  <action name="miProjectAnims">
+   <property name="text">
+    <string>Animation Manager</string>
    </property>
   </action>
  </widget>

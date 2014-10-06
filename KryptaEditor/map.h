@@ -2,6 +2,7 @@
 #define MAP_H
 
 #include "Assets.h"
+#include "EventSystem.h"
 #include <Graphics/Primitives.h>
 #include <Utilities/Vector.h>
 #include <QListWidget>
@@ -11,6 +12,8 @@
 struct Object
 {
 	kry::Media::Config properties;
+	kry::Media::Config hardproperties;
+	std::vector<Event> events;
 	kry::Graphics::Sprite sprite;
 	Asset<kry::Graphics::Texture>* asset;
 };
@@ -29,6 +32,7 @@ class Map
             QString description;
             kry::Util::Vector2i size;
 			kry::Util::Vector2i tilesize;
+			unsigned index; // index in its owning vector
         };
 
 		inline void setCurrentLayer(size_t index);

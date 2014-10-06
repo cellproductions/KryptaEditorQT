@@ -42,7 +42,10 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
             continue;
 		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(layerList->item(i));
 		Layer* layer = new Layer { std::move(std::vector<Tile>(option->getWidth() * option->getHeight(), defaulttile)), option->getDescription(),
-									{option->getWidth(), option->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions() };
+									{option->getWidth(), option->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(i) };
+		unsigned index = 0;
+		for (Tile& tile : layer->tiles)
+			tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(i) * 10000u + (index++));
 
         single->layers.emplace_back(layer);
     }
@@ -67,7 +70,7 @@ TextElement readElement(QXmlStreamReader& reader)
 	return element;
 }
 
-std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& prjsettings)
+std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& prjsettings) /** #TODO(change) actually read the id attributes and set them properly for tiles/objects */
 {
 	using namespace kry;
 
@@ -287,7 +290,7 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 					Tile& tile = layer->tiles[j];
 
 					writer.writeStartElement("tile");
-					writer.writeAttribute("id", QString::number(j));
+					writer.writeAttribute("id", kryToQString(tile.properties["global"]["id"]));
 					{
 						writer.writeTextElement("layerid", QString::number(i));
 						writer.writeTextElement("asset", tile.asset->path);
@@ -315,9 +318,9 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 							{
 								std::shared_ptr<Object>& object = tile.objects[n];
 								writer.writeStartElement("object");
-								writer.writeAttribute("id", QString::number(n));
+								writer.writeAttribute("id", kryToQString(object->properties["global"]["id"]));
 								{
-									writer.writeTextElement("tileid", QString::number(j));
+									writer.writeTextElement("tileid", kryToQString(tile.properties["global"]["id"]));
 									writer.writeTextElement("asset", object->asset->path);
 									writer.writeStartElement("properties");
 									writer.writeAttribute("sections", QString::number(object->properties.getSectionNames().size() == 0 ? 0 : object->properties.getSectionNames().size() - 1));

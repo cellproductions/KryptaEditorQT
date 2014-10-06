@@ -7,14 +7,17 @@
 #define STRINGIFY(x) (#x)
 AssetType strToAssetType(const kry::Util::String& str);
 
-bool Assets::loaded(false);
 std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > Assets::tiles;
 std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > Assets::objects;
 std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > Assets::entities;
+kry::Media::Config Assets::hardtypes;
+bool Assets::loaded(false);
 
 void Assets::loadAssets(const QString& rootdir)
 {
 	auto strrootdir = rootdir.toStdString(); // if they were all in one directory, could load them and place them based on their type?
+	hardtypes.fileToConfig(qToKString(rootdir + "\\types.ini"));
+
     auto assets = strrootdir + "\\tiles";
     for (kry::Util::String& path : kry::System::getAllFiles(kry::Util::String(assets.c_str(), assets.length())))
     {
@@ -64,9 +67,12 @@ void Assets::loadAssets(const QString& rootdir)
 		entities.emplace_back(asset);
 	}
 
-    Resources::loadAndAssignTextures(tiles); // run these at the end
-	Resources::loadAndAssignTextures(objects);
-	Resources::loadAndAssignTextures(entities);
+	//Resources::loadAndAssignTextures(tiles); // run these at the end
+	//Resources::loadAndAssignTextures(objects);
+	//Resources::loadAndAssignTextures(entities);
+	Resources::loadAndAssignAnimations(tiles);
+	Resources::loadAndAssignAnimations(objects);
+	Resources::loadAndAssignAnimations(entities);
 
     loaded = true;
 }

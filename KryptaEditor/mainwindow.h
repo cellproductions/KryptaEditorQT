@@ -15,6 +15,7 @@ class EnvBrowserDialog;
 class LayerBrowserDialog;
 class ConfigDialog;
 class PrjSettingsDialog;
+class AnimManagerDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -51,6 +52,7 @@ class MainWindow : public QMainWindow
 		LayerBrowserDialog* layerbrowseDialog;
 		ConfigDialog* configDialog;
 		PrjSettingsDialog* prjsettingsDialog;
+		AnimManagerDialog* animmanagerDialog;
 		bool saved;
 };
 

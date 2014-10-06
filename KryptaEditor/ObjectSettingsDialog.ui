@@ -15,16 +15,41 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="45,50,5">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="50,0,50,5">
      <item>
-      <widget class="QLabel" name="lObject">
-       <property name="text">
-        <string/>
+      <widget class="PivotView" name="gvObject">
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="bPivotSet">
+         <property name="text">
+          <string>Set Pivot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="bPivotReset">
+         <property name="text">
+          <string>Reset Pivot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="bPivotCancel">
+         <property name="text">
+          <string>Cancel Pivot</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QTabWidget" name="tabs">
@@ -68,6 +93,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PivotView</class>
+   <extends>QGraphicsView</extends>
+   <header>PivotView.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

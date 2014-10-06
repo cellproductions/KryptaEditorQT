@@ -4,12 +4,7 @@
 #include "LayerOptionsItem.h"
 #include "Utilities.h"
 #include <Utilities/StringConvert.h>
-
-struct LayerTableItem : QTableWidgetItem
-{
-	size_t index;
-	Map::Layer* layer;
-};
+#include <QComboBox>
 
 PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new Ui::PrjSettingsDialog)
 {
@@ -33,7 +28,7 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 		settings["project"]["name"] = qToKString(ui->projectProperties->item(0, 1)->text());
 		settings["project"]["path"] = qToKString(ui->projectProperties->item(1, 1)->text());
 
-		settings["player"]["layer"] = kry::Util::toString(dynamic_cast<LayerTableItem*>(ui->playerProperties->item(0, 1))->index);
+		settings["player"]["layer"] = kry::Util::toString(dynamic_cast<QComboBox*>(ui->playerProperties->cellWidget(0, 1))->currentIndex());
 		auto xy = qToKString(ui->playerProperties->item(1, 1)->text());
 		settings["player"]["tilex"] = xy.substring(0, xy.indexOf('x'));
 		settings["player"]["tiley"] = xy.substring(xy.indexOf('x') + 1);
@@ -62,13 +57,8 @@ void PrjSettingsDialog::resetSettings()
 	settings["project"]["name"] = qToKString(Map::getProjectName());
 	settings["project"]["path"]; // set from map probably?
 
-	unsigned index = 0;
-	for ( ; index < Map::getMap()->getLayers().size(); ++index)
-		if (Map::getMap()->getLayers()[index] == Map::getMap()->getCurrentLayer())
-			break;
-
 	if (!settings["player"].keyExists("layer"))
-		settings["player"]["layer"] = kry::Util::toString(index);
+		settings["player"]["layer"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
 	if (!settings["player"].keyExists("tilex"))
 		settings["player"]["tilex"] = kry::Util::toString(0);
 	if (!settings["player"].keyExists("tiley"))
@@ -86,11 +76,12 @@ void PrjSettingsDialog::setTableData()
 	ui->projectProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["project"]["path"])));
 	ui->projectProperties->item(1, 1)->setFlags(Qt::ItemIsSelectable);
 
-	LayerTableItem* item = new LayerTableItem;
-	item->index = kry::Util::toUIntegral<size_t>(settings["player"]["layer"]);
-	item->layer = Map::getMap()->getLayers()[item->index].get();
-	item->setText(item->layer->description);
-	ui->playerProperties->setItem(0, 1, item);
+	QComboBox* box = new QComboBox(ui->playerProperties);
+	box->setEditable(false);
+	for (auto& layer : Map::getMap()->getLayers())
+		box->addItem(QString::number(layer->index) + ':' + layer->description);
+	box->setCurrentIndex(kry::Util::toIntegral<int>(settings["player"]["layer"]));
+	ui->playerProperties->setCellWidget(0, 1, box);
 	ui->playerProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["player"]["tilex"]) + 'x' + kryToQString(settings["player"]["tiley"])));
 	ui->playerProperties->setItem(2, 1, new QTableWidgetItem(kryToQString(settings["player"]["speed"])));
 	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["fov"])));

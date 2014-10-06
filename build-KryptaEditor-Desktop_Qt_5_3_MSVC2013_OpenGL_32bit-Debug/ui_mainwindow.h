@@ -47,6 +47,8 @@ public:
     QAction *miFileSaveAs;
     QAction *miProjectSettings;
     QAction *miFileExport;
+    QAction *miProjectEvents;
+    QAction *miProjectAnims;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -111,6 +113,10 @@ public:
         miProjectSettings->setObjectName(QStringLiteral("miProjectSettings"));
         miFileExport = new QAction(MainWindow);
         miFileExport->setObjectName(QStringLiteral("miFileExport"));
+        miProjectEvents = new QAction(MainWindow);
+        miProjectEvents->setObjectName(QStringLiteral("miProjectEvents"));
+        miProjectAnims = new QAction(MainWindow);
+        miProjectAnims->setObjectName(QStringLiteral("miProjectAnims"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -371,6 +377,8 @@ public:
         menuFile->addAction(miFileExit);
         menuEdit->addAction(miPreferences);
         menuProject->addAction(miProjectSettings);
+        menuProject->addAction(miProjectEvents);
+        menuProject->addAction(miProjectAnims);
 
         retranslateUi(MainWindow);
 
@@ -392,6 +400,8 @@ public:
         miFileSaveAs->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
         miProjectSettings->setText(QApplication::translate("MainWindow", "Settings", 0));
         miFileExport->setText(QApplication::translate("MainWindow", "Export", 0));
+        miProjectEvents->setText(QApplication::translate("MainWindow", "Event Manager", 0));
+        miProjectAnims->setText(QApplication::translate("MainWindow", "Animation Manager", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));
