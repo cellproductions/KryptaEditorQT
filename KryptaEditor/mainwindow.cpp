@@ -11,6 +11,7 @@
 #include "AnimManagerDialog.h"
 #include "Configuration.h"
 #include "Map.h"
+#include "Resources.h"
 #include "Assets.h"
 #include "Tool.h"
 #include "EventSystem.h"
@@ -187,6 +188,7 @@ void MainWindow::init()
         if (Configuration::loadFromFile("editor.cfg")["editor"]["maximised"] == "true")
             this->showMaximized();
 		configDialog->setConfigData(Configuration::getConfig());
+		Resources::initMissingTexture();
 		EventSystem::createSystem();
     }
     catch (const kry::Util::Exception&)

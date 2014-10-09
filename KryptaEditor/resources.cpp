@@ -11,6 +11,60 @@ std::vector<std::shared_ptr<Animation<> > > Resources::animations;
 std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > Resources::textures;
 std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > Resources::sounds;
 std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > Resources::music;
+std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::missingtexture;
+
+template <typename ResType>
+Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::String& strimagefile)
+{
+	auto imagefile = strimagefile.replace('\\', '/');
+
+	Animation<>* animation = new Animation<>;
+	animation->type = ResourceType::ANIMATION;
+	animation->path = kryToQString(imagefile);
+	auto name = imagefile.substring(imagefile.lastIndexOf('/') + 1);
+	auto pname = name.substring(0, name.lastIndexOf('.'));
+	animation->name = kryToQString(name);
+	animation->properties[""]["name"] = pname;
+	animation->properties[pname]["frames"] = "1";
+	animation->properties[pname]["fps"] = "1";
+	animation->properties[pname]["sheetImage"] = imagefile;
+	animation->properties[pname]["sheetDimensions"] = "{ 1, 1 }";
+	if (imagefile.endsWith(".sheet"))
+	{
+		/** #TODO(incomplete) add spritesheet loading */
+		// load first image from spritesheet and set rawresource to that
+	}
+	else
+	{
+		animation->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture(imagefile, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
+		auto dims = animation->rawresource->getDimensions();
+		animation->properties[pname]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
+	}
+	animation->properties[pname]["frameDimensions"] = "";
+	animation->properties[pname]["dimensions"] = "";
+	animation->properties[pname]["sheetPosition"] = "";
+	animation->properties[pname]["frameRGBA"] = "";
+	animation->properties[pname]["frameRotation"] = "";
+	animation->properties[pname]["frameLinearFilter"] = "";
+	animation->properties[pname]["framePivot"] = "";
+	animation->properties[pname]["frameSortDepth"] = "";
+	animation->properties[pname]["frameSortPivotOffset"] = "";
+	animation->properties[pname]["nextSkin"] = "";
+
+	pname += ": 0";
+	animation->properties[pname]["image"] = "";
+	animation->properties[pname]["pivot"] = "";
+	animation->properties[pname]["dimensions"] = "";
+	animation->properties[pname]["RGBA"] = "";
+	animation->properties[pname]["rotation"] = "";
+	animation->properties[pname]["UVposition"] = "";
+	animation->properties[pname]["UVdimensions"] = "";
+	animation->properties[pname]["linearFilter"] = "";
+	animation->properties[pname]["sortDepth"] = "";
+	animation->properties[pname]["sortPivotOffset"] = "";
+
+	return animation;
+}
 
 void Resources::loadResources(const QString& rootdir) /** #TODO(incomplete) add exception handling here (collect list of resources that failed to load, display them in message box) */
 {
@@ -68,51 +122,24 @@ void Resources::loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::G
 	{
 		for (std::shared_ptr<Asset<kry::Graphics::Texture> >& asset : assets)
 		{
-			Animation<>* animation = new Animation<>;
-			animation->type = ResourceType::ANIMATION;
-			auto path = asset->properties["global"]["resource"];
-			animation->path = kryToQString(path);
-			auto name = path.substring(path.lastIndexOf('\\') + 1);
-			auto pname = name.substring(0, name.indexOf('.'));
-			animation->name = kryToQString(name);
-			if (path.endsWith(".sheet"))
+			Animation<>* animation = Animation<>::createDefaultAnimation(asset->properties["global"]["resource"]);
+			auto dims = animation->rawresource->getDimensions();
+			if (asset->properties.sectionExists("object"))
 			{
-				/** #TODO(incomplete) add spritesheet loading */
-				// load first image from spritesheet and set rawresource to that
+				animation->properties[animation->properties[""]["name"]]["framePivot"] = "{ " +
+						kry::Util::toString((asset->properties["object"].keyExists("relativex") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) +
+						", " +
+						kry::Util::toString((asset->properties["object"].keyExists("relativey") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) +
+						" }";
+			}
+			else if (asset->properties.sectionExists("entity"))
+			{
+				animation->properties[animation->properties[""]["name"]]["framePivot"] = "{ " +
+						kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
+						kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
 			}
 			else
-			{
-				animation->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
-				animation->properties[""]["name"] = pname;
-				animation->properties[pname]["frames"] = "1";
-				animation->properties[pname]["fps"] = "1";
-				animation->properties[pname]["sheetImage"] = "images/" + name;
-				animation->properties[pname]["sheetDimensions"] = "{ 1, 1 }";
-				auto dims = animation->rawresource->getDimensions();
-				if (asset->properties.sectionExists("object"))
-				{
-					animation->properties[pname]["framePivot"] = "{ " +
-							kry::Util::toString((asset->properties["object"].keyExists("relativex") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) +
-							", " +
-							kry::Util::toString((asset->properties["object"].keyExists("relativey") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) +
-							" }";
-				}
-				else if (asset->properties.sectionExists("entity"))
-				{
-					animation->properties[pname]["framePivot"] = "{ " +
-							kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
-							kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
-				}
-				else
-					animation->properties[pname]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
-			}
-			animation->properties[pname]["frameDimensions"] = "";
-			animation->properties[pname]["dimensions"] = "";
-			animation->properties[pname]["sheetPosition"] = "";
-			animation->properties[pname]["frameRGBA"] = "";
-			animation->properties[pname]["frameRotation"] = "";
-			animation->properties[pname]["frameLinearFilter"] = "";
-			animation->properties[pname]["framePivot"] = "";
+				animation->properties[animation->properties[""]["name"]]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
 
 			animations.emplace_back(animation);
 			asset->resource = animation;
@@ -139,6 +166,16 @@ void Resources::loadAndAssignTextures(std::vector<std::shared_ptr<Asset<kry::Gra
         textures.emplace_back(resource);
         asset->resource = resource;
     }
+}
+
+void Resources::initMissingTexture()
+{
+	Resource<kry::Graphics::Texture>* missing = new Resource<kry::Graphics::Texture>;
+	missing->path = "editor\\missing.png";
+	missing->name = "missing.png";
+	missing->type = ResourceType::TEXTURE;
+	missing->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture("editor\\missing.png", Configuration::getConfig()["editor"]["mipmapping"] == "true")));
+	missingtexture.reset(missing);
 }
 
 Resources::Resources()

@@ -17,6 +17,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -34,11 +35,13 @@ public:
     QComboBox *cbAnims;
     QHBoxLayout *horizontalLayout_2;
     QVBoxLayout *verticalLayout_4;
+    QLabel *lDisplay;
     QListWidget *lbImages;
     QHBoxLayout *horizontalLayout_3;
     QPushButton *bChange;
     QPushButton *bAdd;
     QPushButton *bRemove;
+    QPushButton *bAnimate;
     QTableWidget *tSheetProps;
     QTabWidget *tabs;
     QHBoxLayout *horizontalLayout;
@@ -69,6 +72,19 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        lDisplay = new QLabel(AnimManagerDialog);
+        lDisplay->setObjectName(QStringLiteral("lDisplay"));
+        QSizePolicy sizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(lDisplay->sizePolicy().hasHeightForWidth());
+        lDisplay->setSizePolicy(sizePolicy);
+        lDisplay->setFrameShape(QFrame::StyledPanel);
+        lDisplay->setScaledContents(false);
+        lDisplay->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_4->addWidget(lDisplay);
+
         lbImages = new QListWidget(AnimManagerDialog);
         lbImages->setObjectName(QStringLiteral("lbImages"));
         lbImages->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -97,9 +113,17 @@ public:
 
         horizontalLayout_3->addWidget(bRemove);
 
+        bAnimate = new QPushButton(AnimManagerDialog);
+        bAnimate->setObjectName(QStringLiteral("bAnimate"));
+
+        horizontalLayout_3->addWidget(bAnimate);
+
 
         verticalLayout_4->addLayout(horizontalLayout_3);
 
+        verticalLayout_4->setStretch(0, 75);
+        verticalLayout_4->setStretch(1, 20);
+        verticalLayout_4->setStretch(2, 5);
 
         horizontalLayout_2->addLayout(verticalLayout_4);
 
@@ -187,9 +211,11 @@ public:
     void retranslateUi(QDialog *AnimManagerDialog)
     {
         AnimManagerDialog->setWindowTitle(QApplication::translate("AnimManagerDialog", "Animation Manager", 0));
+        lDisplay->setText(QString());
         bChange->setText(QApplication::translate("AnimManagerDialog", "Change Spritesheet", 0));
         bAdd->setText(QApplication::translate("AnimManagerDialog", "Add Image", 0));
         bRemove->setText(QApplication::translate("AnimManagerDialog", "Remove Image", 0));
+        bAnimate->setText(QApplication::translate("AnimManagerDialog", "Animate", 0));
         QTableWidgetItem *___qtablewidgetitem = tSheetProps->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("AnimManagerDialog", "Property", 0));
         QTableWidgetItem *___qtablewidgetitem1 = tSheetProps->horizontalHeaderItem(1);

@@ -32,6 +32,8 @@ template <typename ResType = kry::Graphics::Texture>
 struct Animation : public Resource<ResType> // create an anim type, fill a vector with anims from a new folder,
 {
 	kry::Media::Config properties;
+
+	static Animation<ResType>* createDefaultAnimation(const kry::Util::String& imagefile);
 };
 
 class Resources
@@ -44,14 +46,17 @@ class Resources
 		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& getTextures(); /** #TODO(note) should this be replaced with Anim's? */
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > >& getSounds();
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Source> > >& getMusic();
+		static void initMissingTexture();
+		inline static std::shared_ptr<Resource<kry::Graphics::Texture> > getMissingTexture();
 
-    private:
-        Resources();
+	private:
+		Resources();
 
 		static std::vector<std::shared_ptr<Animation<> > > animations;
         static std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > textures;
         static std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > sounds;
         static std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > music;
+		static std::shared_ptr<Resource<kry::Graphics::Texture> > missingtexture;
 };
 
 
@@ -79,6 +84,11 @@ const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > >& Resources::g
 const std::vector<std::shared_ptr<Resource<kry::Audio::Source> > >& Resources::getMusic()
 {
     return music;
+}
+
+std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::getMissingTexture()
+{
+	return missingtexture;
 }
 
 #endif // ASSETS_H

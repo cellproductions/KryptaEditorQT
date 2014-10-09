@@ -77,6 +77,19 @@ void Assets::loadAssets(const QString& rootdir)
     loaded = true;
 }
 
+const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > Assets::getAllTextureAssets()
+{
+	std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > assets;
+	for (auto& asset : tiles)
+		assets.push_back(asset);
+	for (auto& asset : objects)
+		assets.push_back(asset);
+	for (auto& asset : entities)
+		assets.push_back(asset);
+
+	return assets;
+}
+
 std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getTileByIni(const QString& path)
 {
 	//qDebug() << path;

@@ -238,6 +238,7 @@ void ObjectSettingsDialog::updateTables(Object* object)
 
 		EventButtonItem* button = new EventButtonItem(event.actions.empty() ? "None" : "...", table);
 		button->setEvent(event);
+		button->setEnabled(false); /** #TODO(note) remove this line if events are added */
 		connect(button, &EventButtonItem::clicked, [button](bool)
 		{
 			EventEditDialog edit(button);

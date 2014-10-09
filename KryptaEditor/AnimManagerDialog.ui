@@ -29,7 +29,29 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="60,40">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_4" stretch="75,20,5">
+         <item>
+          <widget class="QLabel" name="lDisplay">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QListWidget" name="lbImages">
            <property name="horizontalScrollBarPolicy">
@@ -53,7 +75,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,0">
+          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,0,0">
            <item>
             <widget class="QPushButton" name="bChange">
              <property name="text">
@@ -72,6 +94,13 @@
             <widget class="QPushButton" name="bRemove">
              <property name="text">
               <string>Remove Image</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="bAnimate">
+             <property name="text">
+              <string>Animate</string>
              </property>
             </widget>
            </item>

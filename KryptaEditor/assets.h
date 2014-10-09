@@ -40,6 +40,7 @@ class Assets
         inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& getTiles();
 		inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& getObjects();
 		inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& getEntities();
+		static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > getAllTextureAssets();
 		static std::shared_ptr<Asset<kry::Graphics::Texture> >& getTileByIni(const QString& path);
 		static std::shared_ptr<Asset<kry::Graphics::Texture> >& getObjectByIni(const QString& path);
 		static std::shared_ptr<Asset<kry::Graphics::Texture> >& getEntityByIni(const QString& path);

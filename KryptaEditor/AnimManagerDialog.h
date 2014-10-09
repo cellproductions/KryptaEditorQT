@@ -8,6 +8,8 @@
 template <typename ResType = kry::Graphics::Texture>
 struct Animation;
 
+class QTimer;
+
 namespace Ui
 {
 	class AnimManagerDialog;
@@ -27,6 +29,7 @@ class AnimManagerDialog : public CSDialog
 		void setup(const std::shared_ptr<Animation<> >& animation);
 
 		Ui::AnimManagerDialog *ui;
+		QTimer* timer;
 };
 
 #endif // ANIMMANAGERDIALOG_H

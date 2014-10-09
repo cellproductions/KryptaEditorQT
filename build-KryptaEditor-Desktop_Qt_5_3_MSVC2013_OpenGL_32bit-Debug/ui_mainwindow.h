@@ -115,6 +115,7 @@ public:
         miFileExport->setObjectName(QStringLiteral("miFileExport"));
         miProjectEvents = new QAction(MainWindow);
         miProjectEvents->setObjectName(QStringLiteral("miProjectEvents"));
+        miProjectEvents->setEnabled(false);
         miProjectAnims = new QAction(MainWindow);
         miProjectAnims->setObjectName(QStringLiteral("miProjectAnims"));
         centralWidget = new QWidget(MainWindow);
