@@ -18,11 +18,12 @@
 #include <QMessageBox>
 #include <Windows.h>
 #include <functional>
+#include <iostream>
 
 namespace Kryed
 {
     QPoint dragPos;
-	kry::Graphics::Sprite follower;
+	Object follower;
 
 	kry::Graphics::Canvas GLPanel::canvas;
     kry::Graphics::Renderer GLPanel::renderer;
@@ -31,6 +32,7 @@ namespace Kryed
 		gridmode(true), mouseDown(false)
     {
 		this->setMouseTracking(true);
+		follower.asset = nullptr;
     }
 
     void GLPanel::updateCanvas()
@@ -77,11 +79,14 @@ namespace Kryed
 				pos[1] += halfdim[1];
             }
         }
+		//if (follower.asset != nullptr)
+		//	zorder.insert(std::pair<kry::Util::Vector3f, Object*>({follower.sprite.position[0], follower.sprite.position[1], (follower.asset->type == AssetType::STATIC_TILE ? 0.0f : 1.0f)}, &follower));
 
 		for (auto& pair : zorder)
 			canvas.addSprite(&pair.second->sprite);
 
-		canvas.addSprite(&follower);
+		canvas.addSprite(&follower.sprite); /** #TODO(change) make it so that the follower also follows the zorder rules */
+
 		paintGL();
     }
 
@@ -175,19 +180,21 @@ namespace Kryed
 						if (!isValidIndex(index))
 							break;
 
-						if (Tool<PaintData>::getTool()->getData().assetitem == nullptr)
+						if (Tool<PaintData>::getTool()->getData().asset == nullptr)
 							break;
-						auto asset = Tool<PaintData>::getTool()->getData().assetitem->asset;
+
+						auto asset = Tool<PaintData>::getTool()->getData().asset;
 						if (asset->type == AssetType::STATIC_TILE)
 						{
 							Map::getMap()->getCurrentLayer()->tiles[index].asset = asset;
 							Map::getMap()->getCurrentLayer()->tiles[index].sprite.texture = asset->resource->rawresource;
+							/** #TODO(incomplete) set the tile's skin to the asset's animation */
 							paintGL();
 						}
 						else
 						{
 							Object* object = new Object;
-							object->sprite.position = follower.position;//tileCoordToCoord(coord);
+							object->sprite.position = follower.sprite.position;
 							object->sprite.texture = asset->resource->rawresource;
 							object->sprite.dimensions = asset->resource->rawresource->getDimensions();
 							if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
@@ -197,26 +204,60 @@ namespace Kryed
 								pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
 								object->sprite.position = canvas.getCoord({static_cast<float>(event->x()), static_cast<float>(event->y())}) - object->sprite.dimensions * pos;
 							}
-							object->properties = asset->properties;
 							object->asset = asset;
+							if (Tool<PaintObjectData>::getTool()->getData().object != nullptr)
+							{
+								Object* o = Tool<PaintObjectData>::getTool()->getData().object;
+								object->properties = o->properties;
+								object->hardproperties = o->hardproperties;
+								object->waypoints = o->waypoints;
+								object->events = o->events;
+								object->asset = o->asset;
+								asset = object->asset;
+							}
+							else
+							{
+								object->properties = asset->properties;
+								kry::Util::String section;
+								if (object->properties.sectionExists("object"))
+									section = "object";
+								else if (object->properties.sectionExists("entity"))
+									section = "entity";
+								if (object->properties["global"].keyExists("hardtype"))
+								{
+									auto type = object->properties["global"]["hardtype"];
+									for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+										object->hardproperties[type][key] = "";
+									for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["all"].getKeyNames())
+										object->hardproperties["all"][key] = "";
+									for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
+										object->hardproperties["floor"][key] = "";
+									unsigned index = 0;
+									for (auto& resource : Resources::getAnimations())
+									{
+										if (resource.get() == asset->resource)
+											break;
+										++index;
+									}
+									object->hardproperties["all"]["skinIdle"] = kry::Util::toString(index);
+								}
+								for (size_t i = 0; i < EventSystem::getSystem()->getEvents().size(); ++i)
+									object->events.push_back(parseEvent(EventSystem::getSystem()->getEvents()[i].name, object->properties["events"][kry::Util::toString(i)]));
+							}
+							object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
 							kry::Util::String section;
 							if (object->properties.sectionExists("object"))
 								section = "object";
 							else if (object->properties.sectionExists("entity"))
 								section = "entity";
-							object->properties[section]["posx"] = kry::Util::toString(follower.position[0]);
-							object->properties[section]["posy"] = kry::Util::toString(follower.position[1]);
-							if (object->properties["global"].keyExists("hardtype"))
-							{
-								auto type = object->properties["global"]["hardtype"];
-								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-									object->hardproperties[type][key] = "";
-							}
-							for (size_t i = 0; i < EventSystem::getSystem()->getEvents().size(); ++i)
-								object->events.push_back(parseEvent(EventSystem::getSystem()->getEvents()[i].name, object->properties["events"][kry::Util::toString(i)]));
-							// hardcoded id limit (max is 999 layers, 100x100 map size, with 99 objects per tile)
-							object->properties["global"]["id"] = kry::Util::toString(((Map::getMap()->getCurrentLayer()->index * 10000u + index) * 100u) +
-																					 Map::getMap()->getCurrentLayer()->tiles[index].objects.size());
+							object->properties[section]["posx"] = kry::Util::toString(follower.sprite.position[0]);
+							object->properties[section]["posy"] = kry::Util::toString(follower.sprite.position[1]);
+							kry::Util::Vector2f rel;
+							rel[0] = kry::Util::toDecimal<float>(asset->properties[section]["relativex"]);
+							rel[1] = kry::Util::toDecimal<float>(asset->properties[section]["relativey"]);
+							auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions);
+							object->hardproperties["all"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
+							/** #TODO(incomplete) also add this to map loading */
 
 							Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
 							updateCanvas();
@@ -231,8 +272,8 @@ namespace Kryed
 			if (Tool<>::getTool()->getType() == ToolType::PAINT)
 			{
 				Tool<>::switchTool(ToolType::POINTER);
-				follower.texture = nullptr;
-				follower.rgba = 0.0f;
+				follower.sprite.texture = nullptr;
+				follower.sprite.rgba = 0.0f;
 				//updateCanvas();
 				paintGL();
 				return;
@@ -333,13 +374,27 @@ namespace Kryed
 			};
 
 			// add the name of the thing that was clicked, then a separator
+			connect(copyaction, &QAction::triggered, [this, &findSelected, tileaction, index, event](bool)
+			{
+				auto toedit = findSelected();
+				if (toedit != nullptr)
+				{
+					auto value = Tool<PaintObjectData>::getTool()->getType() == ToolType::PAINT ? Tool<PaintData>::getTool()->getData().size : 1;
+					Tool<>::switchTool(ToolType::PAINT);
+					PaintObjectData data;
+					data.size = value;
+					data.asset = tileaction->getObject()->asset;
+					data.object = tileaction->getObject();
+					Tool<PaintObjectData>::getTool()->setData(data);
+				}
+			});
 			connect(editaction, &QAction::triggered, [this, &findSelected, tileaction, index](bool)
 			{
 				auto toedit = findSelected();
 				if (toedit != nullptr)
 				{
 					if (toedit == tileaction)
-						QMessageBox::information(this, "Invalid Action", "You cannot edit a tile.", QMessageBox::Ok);
+						QMessageBox::information(this, "Invalid Action", "You cannot edit a tile (incomplete).", QMessageBox::Ok); /** #TODO(refactor) need to be able to edit a tile */
 					else
 					{
 						if (objsettingsDialog->showDialog(toedit->getObject()->properties["global"]["id"] + " - " + toedit->getObject()->properties["global"]["name"],
@@ -419,26 +474,27 @@ namespace Kryed
 			{
 				case ToolType::POINTER:
 					{
-						follower.texture = nullptr;
-						follower.rgba = 0.0f;
+						follower.sprite.texture = nullptr;
+						follower.sprite.rgba = 0.0f;
 					}
 					break;
 				case ToolType::PAINT:
 					{
-						follower.rgba = 1.0f;
-						follower.position = tilecoord;
-						if (Tool<PaintData>::getTool()->getData().assetitem != nullptr)
+						follower.sprite.rgba = 1.0f;
+						follower.sprite.position = tilecoord;
+						if (Tool<PaintData>::getTool()->getData().asset != nullptr)
 						{
-							auto asset = Tool<PaintData>::getTool()->getData().assetitem->asset;
-							follower.dimensions = asset->resource->rawresource->getDimensions();
-							follower.texture = asset->resource->rawresource;
+							auto asset = Tool<PaintData>::getTool()->getData().asset;
+							follower.sprite.dimensions = asset->resource->rawresource->getDimensions();
+							follower.sprite.texture = asset->resource->rawresource;
+							follower.asset = asset;
 
 							if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
 							{
 								kry::Util::Vector2f pos;
 								pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
 								pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
-								follower.position = canvas.getCoord(canvascoord) - follower.dimensions * pos;
+								follower.sprite.position = canvas.getCoord(canvascoord) - follower.sprite.dimensions * pos;
 							}
 							else if (asset->type == AssetType::STATIC_TILE_DECAL ||asset->type == AssetType::ANIM_TILE_DECAL)
 							{
@@ -447,7 +503,7 @@ namespace Kryed
 									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
 								if (asset->properties["object"].keyExists("relativey"))
 									pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
-								follower.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - follower.dimensions * pos;
+								follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - follower.sprite.dimensions * pos;
 							}
 							else if (asset->type == AssetType::STATIC_TILE_OBJECT ||asset->type == AssetType::ANIM_TILE_OBJECT)
 							{
@@ -462,11 +518,11 @@ namespace Kryed
 									pos[0] = kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]);
 								if (asset->properties["object"].keyExists("relativey"))
 									pos[1] = kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]);
-								pos = follower.dimensions * pos; // texture pivot
+								pos = follower.sprite.dimensions * pos; // texture pivot
 								if (snap)
-									follower.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
+									follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
 								else
-									follower.position = canvas.getCoord(canvascoord) - pos;
+									follower.sprite.position = canvas.getCoord(canvascoord) - pos;
 							}
 						}
 						redraw = true;
@@ -530,6 +586,17 @@ namespace Kryed
 
 		int x = static_cast<int>((screen[0] / halfdim[0] + screen[1] / halfdim[1]) * 0.5f);
 		int y = static_cast<int>((screen[1] / halfdim[1] - screen[0] / halfdim[0]) * 0.5f) * -1;
+
+		return {x, y};
+	}
+
+	kry::Util::Vector2f GLPanel::coordToExpTileCoord(const kry::Util::Vector2f& coord)
+	{
+		kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
+		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
+
+		float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;  // black magic goin on here?
+		float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1;
 
 		return {x, y};
 	}

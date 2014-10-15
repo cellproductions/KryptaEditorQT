@@ -30,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
 	ui->setupUi(this);
 
+	ui->bPointer->setIcon(QIcon("editor\\pointer.png"));
+	ui->bPaint->setIcon(QIcon("editor\\paint.png"));
+
     ui->layerProperties->horizontalHeader()->resizeSections(QHeaderView::Interactive);
     ui->layerProperties->item(0, 0)->setFlags(ui->layerProperties->item(0, 0)->flags() ^ Qt::ItemIsEditable);
     ui->layerProperties->item(1, 0)->setFlags(ui->layerProperties->item(1, 0)->flags() ^ Qt::ItemIsEditable);
@@ -91,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->lEnv->setGraphicsEffect(nullptr);
 
 		if (Tool<>::getTool()->getType() == ToolType::PAINT)
-			Tool<PaintData>::getTool()->getData().assetitem = entbrowseDialog->getSelectedAssetItem();
+			Tool<PaintData>::getTool()->getData().asset = entbrowseDialog->getSelectedAssetItem()->asset;
 	});
     connect(ui->bBrowseEnv, &QPushButton::clicked, [this]()
     {
@@ -112,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->lEntity->setGraphicsEffect(nullptr);
 
 		if (Tool<>::getTool()->getType() == ToolType::PAINT)
-			Tool<PaintData>::getTool()->getData().assetitem = envbrowseDialog->getSelectedAssetItem();
+			Tool<PaintData>::getTool()->getData().asset = envbrowseDialog->getSelectedAssetItem()->asset;
 	});
 	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
 	{
@@ -171,7 +174,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		Tool<>::switchTool(ToolType::PAINT);
 		PaintData data;
 		data.size = spin->value();
-		data.assetitem = envbrowseDialog->getSelectedAssetItem();
+		data.asset = envbrowseDialog->getSelectedAssetItem()->asset;
 		Tool<PaintData>::getTool()->setData(data);
 	});
 }
@@ -188,7 +191,7 @@ void MainWindow::init()
         if (Configuration::loadFromFile("editor.cfg")["editor"]["maximised"] == "true")
             this->showMaximized();
 		configDialog->setConfigData(Configuration::getConfig());
-		Resources::initMissingTexture();
+		Resources::initEditorTextures();
 		EventSystem::createSystem();
     }
     catch (const kry::Util::Exception&)

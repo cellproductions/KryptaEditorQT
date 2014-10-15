@@ -4,7 +4,7 @@
 #include <QShortcut>
 #include <QMessageBox>
 
-PrjSetupDialog::PrjSetupDialog(QWidget *parent) : QDialog(parent), ui(new Ui::PrjWizard) /** #TODO(incomplete) layer names should be unique */
+PrjSetupDialog::PrjSetupDialog(QWidget *parent) : QDialog(parent), ui(new Ui::PrjWizard)
 {
     ui->setupUi(this);
 

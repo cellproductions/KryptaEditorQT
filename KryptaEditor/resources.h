@@ -9,6 +9,12 @@
 #include <vector>
 #include <memory>
 
+enum class EditorResource : unsigned
+{
+	MISSING_TILE,
+	FLAG
+};
+
 enum class ResourceType : unsigned char
 {
 	ANIMATION,
@@ -31,9 +37,12 @@ struct Resource
 template <typename ResType = kry::Graphics::Texture>
 struct Animation : public Resource<ResType> // create an anim type, fill a vector with anims from a new folder,
 {
+	//static const unsigned char MAX_DIRECTION_COUNT = 8;
+	//kry::Media::Config properties[MAX_DIRECTION_COUNT];
 	kry::Media::Config properties;
+	/** #TODO(change) uncomment these things here */
 
-	static Animation<ResType>* createDefaultAnimation(const kry::Util::String& imagefile);
+	static Animation<ResType>* createDefaultAnimation(const kry::Util::String& imagefile, const kry::Util::String& name = kry::Util::String());
 };
 
 class Resources
@@ -46,8 +55,9 @@ class Resources
 		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& getTextures(); /** #TODO(note) should this be replaced with Anim's? */
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > >& getSounds();
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Source> > >& getMusic();
-		static void initMissingTexture();
-		inline static std::shared_ptr<Resource<kry::Graphics::Texture> > getMissingTexture();
+		static void initEditorTextures();
+		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& getEditorTextures();
+		inline static std::shared_ptr<Resource<kry::Graphics::Texture> > getEditorTexture(EditorResource texture);
 
 	private:
 		Resources();
@@ -56,7 +66,7 @@ class Resources
         static std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > textures;
         static std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > sounds;
         static std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > music;
-		static std::shared_ptr<Resource<kry::Graphics::Texture> > missingtexture;
+		static std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > editortextures;
 };
 
 
@@ -86,9 +96,14 @@ const std::vector<std::shared_ptr<Resource<kry::Audio::Source> > >& Resources::g
     return music;
 }
 
-std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::getMissingTexture()
+const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& Resources::getEditorTextures()
 {
-	return missingtexture;
+	return editortextures;
+}
+
+std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::getEditorTexture(EditorResource texture)
+{
+	return editortextures[unsigned(texture)];
 }
 
 #endif // ASSETS_H

@@ -16,11 +16,11 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
-#include "PivotView.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -29,11 +29,7 @@ class Ui_ObjectSettingsDialog
 public:
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
-    PivotView *gvObject;
-    QHBoxLayout *horizontalLayout_2;
-    QPushButton *bPivotSet;
-    QPushButton *bPivotReset;
-    QPushButton *bPivotCancel;
+    QLabel *lObject;
     QTabWidget *tabs;
     QHBoxLayout *horizontalLayout;
     QPushButton *bSave;
@@ -49,32 +45,17 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        gvObject = new PivotView(ObjectSettingsDialog);
-        gvObject->setObjectName(QStringLiteral("gvObject"));
-        gvObject->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        gvObject->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        lObject = new QLabel(ObjectSettingsDialog);
+        lObject->setObjectName(QStringLiteral("lObject"));
+        QSizePolicy sizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(lObject->sizePolicy().hasHeightForWidth());
+        lObject->setSizePolicy(sizePolicy);
+        lObject->setFrameShape(QFrame::StyledPanel);
+        lObject->setAlignment(Qt::AlignCenter);
 
-        verticalLayout->addWidget(gvObject);
-
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        bPivotSet = new QPushButton(ObjectSettingsDialog);
-        bPivotSet->setObjectName(QStringLiteral("bPivotSet"));
-
-        horizontalLayout_2->addWidget(bPivotSet);
-
-        bPivotReset = new QPushButton(ObjectSettingsDialog);
-        bPivotReset->setObjectName(QStringLiteral("bPivotReset"));
-
-        horizontalLayout_2->addWidget(bPivotReset);
-
-        bPivotCancel = new QPushButton(ObjectSettingsDialog);
-        bPivotCancel->setObjectName(QStringLiteral("bPivotCancel"));
-
-        horizontalLayout_2->addWidget(bPivotCancel);
-
-
-        verticalLayout->addLayout(horizontalLayout_2);
+        verticalLayout->addWidget(lObject);
 
         tabs = new QTabWidget(ObjectSettingsDialog);
         tabs->setObjectName(QStringLiteral("tabs"));
@@ -101,8 +82,8 @@ public:
         verticalLayout->addLayout(horizontalLayout);
 
         verticalLayout->setStretch(0, 50);
-        verticalLayout->setStretch(2, 50);
-        verticalLayout->setStretch(3, 5);
+        verticalLayout->setStretch(1, 45);
+        verticalLayout->setStretch(2, 5);
 
         verticalLayout_2->addLayout(verticalLayout);
 
@@ -118,9 +99,7 @@ public:
     void retranslateUi(QDialog *ObjectSettingsDialog)
     {
         ObjectSettingsDialog->setWindowTitle(QApplication::translate("ObjectSettingsDialog", "Object Settings", 0));
-        bPivotSet->setText(QApplication::translate("ObjectSettingsDialog", "Set Pivot", 0));
-        bPivotReset->setText(QApplication::translate("ObjectSettingsDialog", "Reset Pivot", 0));
-        bPivotCancel->setText(QApplication::translate("ObjectSettingsDialog", "Cancel Pivot", 0));
+        lObject->setText(QString());
         bSave->setText(QApplication::translate("ObjectSettingsDialog", "Save and Close", 0));
         bCancel->setText(QApplication::translate("ObjectSettingsDialog", "Cancel", 0));
     } // retranslateUi

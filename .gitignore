@@ -33,6 +33,7 @@
 *.lastbuildstate
 *.opensdf
 *.pro
+*.ilk
 
 # Resource Files
 *.wav
@@ -43,3 +44,5 @@
 *.jpg
 *.jpeg
 *.gif
+*.rc
+*.ico

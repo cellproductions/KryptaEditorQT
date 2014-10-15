@@ -2,21 +2,50 @@ FLUX=keeps changing
 DOING=currently in development
 
 TODO:
-[ ] add more player settings
+[x] finish project setup dialog
+[x] add objects/entities/tiles
+[x] add object/tile editing dialogs
+[x] add editor settings dialog
+[x] add player settings dialog
+[x] finish zorder sorting for renderables
+[ ] add placement follower as a sorted renderable
+[x] add object/tile placement
+[x] add object/tile context menu
+[x] finish object/tile copy option
+[x] add tool pane
+[x] finish pointer tool
+[ ] finish brush tool (brush sizes)
+[ ] add clone tool
+[ ] complete project saving/loading
+[x] complete project save/load dialogs
+[x] finish opengl panel
+[x] complete map structure
+[x] add more player settings [FLUX]
 [ ] finish layer editing
+[x] finish asset/resource loading
 [x] add properties that link to hardcoded properties
-[ ] finish different property types (in the dialogs) for object hardtype settings [FLUX]
+[x] finish different property types (in the dialogs) for object hardtype settings [FLUX]
 [ ] complete exporting (remove hardcoded stuff, update) [FLUX]
 [ ] add objectives (add exit here too?)/objective settings
+[x] move pivoting to the skins manager
 [ ] finish pivot editing for objects
-[ ] add object waypoints
+[ ] add object waypoints [DOING]
 [ ] add waypoint options dialog/manual placement
 [ ] set a pivot for the upstairs object (and all other objects afterwards)
 [x] add tile/object IDs
 [ ] add background options per layer
-[ ] add skins structures
+[X] add skins structures
 [ ] add skins management dialog [DOING]
-[ ] add more todos
+[ ] add directions to skins dialog [DOING]
+[ ] add map uploading (requires login)
+[ ] add a help dialog (maybe using HTML pages)
+[ ] finish diaries
+[ ] add items (inherits object? simplicity)
+[ ] add item dialog
+[ ] add object spawn options using using the ObjectSettingsDialog
+[ ] finish the COUNT/VEC_2 type for hardtypes in the ObjectSettingsDialog
+[ ] add key names/descriptions for keys in types.ini for hover help/table names
+[ ] finish tooltips for everything
 
 BUGS:
 * object settings dialog does not clear the icon pane after closing

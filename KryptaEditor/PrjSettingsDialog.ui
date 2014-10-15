@@ -110,12 +110,67 @@
            </row>
            <row>
             <property name="text">
-             <string>Speed</string>
+             <string>Hitbox dimensions</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Direction</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>See in fog</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Turn directions</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Max heuristic</string>
             </property>
            </row>
            <row>
             <property name="text">
              <string>View distance</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Move acceleration</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Turn acceleration</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Max move speed</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Max turn speed</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Idle animation</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Move animation</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Health</string>
             </property>
            </row>
            <column>
@@ -140,12 +195,102 @@
            </item>
            <item row="2" column="0">
             <property name="text">
-             <string>Speed:</string>
+             <string>Hitbox dimensions:</string>
             </property>
            </item>
            <item row="3" column="0">
             <property name="text">
+             <string>Direction:</string>
+            </property>
+           </item>
+           <item row="4" column="0">
+            <property name="text">
+             <string>See in fog:</string>
+            </property>
+           </item>
+           <item row="5" column="0">
+            <property name="text">
+             <string>Turn directions:</string>
+            </property>
+           </item>
+           <item row="6" column="0">
+            <property name="text">
+             <string>Max heuristic:</string>
+            </property>
+           </item>
+           <item row="7" column="0">
+            <property name="text">
              <string>View distance:</string>
+            </property>
+           </item>
+           <item row="7" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="8" column="0">
+            <property name="text">
+             <string>Move acceleration:</string>
+            </property>
+           </item>
+           <item row="9" column="0">
+            <property name="text">
+             <string>Turn acceleration:</string>
+            </property>
+           </item>
+           <item row="9" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="10" column="0">
+            <property name="text">
+             <string>Max move speed:</string>
+            </property>
+           </item>
+           <item row="10" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="11" column="0">
+            <property name="text">
+             <string>Max turn speed:</string>
+            </property>
+           </item>
+           <item row="11" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="12" column="0">
+            <property name="text">
+             <string>Idle animation:</string>
+            </property>
+           </item>
+           <item row="12" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="13" column="0">
+            <property name="text">
+             <string>Move animation:</string>
+            </property>
+           </item>
+           <item row="13" column="1">
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item row="14" column="0">
+            <property name="text">
+             <string>Health:</string>
+            </property>
+           </item>
+           <item row="14" column="1">
+            <property name="text">
+             <string/>
             </property>
            </item>
           </widget>

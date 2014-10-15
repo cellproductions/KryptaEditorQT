@@ -7,6 +7,8 @@
 #include "Utilities.h"
 #include <QTableWidget>
 #include <QComboBox>
+#include <QSpinBox>
+#include <QCheckBox>
 #include <QDebug>
 
 ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ObjectSettingsDialog), lastresult(DialogResult::CANCEL)
@@ -22,7 +24,7 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 	{
 		lastresult = DialogResult::OK;
 
-		for (int i = 0; i < ui->tabs->count() - 2; ++i) /** #TODO(bug) not correct, last 2 tabs are different to the first 2 */
+		for (int i = 0; i < ui->tabs->count() - 2; ++i)
 		{
 			QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(i));
 			for (int row = 0; row < table->rowCount(); ++row)
@@ -30,48 +32,91 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 		}
 
 		QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(ui->tabs->count() - 2)); // hardtype tab
-		kry::Util::String& type = settings["global"]["hardtype"];
-		for (auto& key : hardtypesettings[type].getKeyNames())
+		kry::Util::String type = settings["global"]["hardtype"];
+		
+		auto saveHard = [this, table](const kry::Util::String& section)
 		{
-			int rowindex = 0;
-			for (int row = 0; row < table->rowCount(); ++row)
+			for (auto& key : hardtypesettings[section].getKeyNames())
 			{
-				if (qToKString(table->item(row, 0)->text()) == key)
+				int rowindex = 0;
+				for (int row = 0; row < table->rowCount(); ++row)
 				{
-					rowindex = row;
-					break;
+					if (qToKString(table->item(row, 0)->text()) == key)
+					{
+						rowindex = row;
+						break;
+					}
 				}
-			}
 
-			if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key].isEmpty())
-				hardtypesettings[type][key] = qToKString(table->item(rowindex, 1)->text());
-			else if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key] == "FLOOR_ID")
-			{
-				auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
-				text = text.left(text.indexOf(':'));
-				hardtypesettings[type][key] = qToKString(text);
-			}
-			else if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key] == "BOOL")
-				hardtypesettings[type][key] = qToKString(dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText());
-			else if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key] == "OBJECT_ID")
-			{
-				auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
-				text = text.left(text.indexOf(':'));
-				hardtypesettings[type][key] = qToKString(text);
-			}
+				auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
+				if (type.isEmpty() || type == "COUNT" || type == "VEC_2") /** #TODO(change) add these 2 types as widgets instead */
+					hardtypesettings[section][key] = qToKString(table->item(rowindex, 1)->text());
+				else if (type == "FLOOR_ID")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					text = text.left(text.indexOf(':'));
+					hardtypesettings[section][key] = qToKString(text);
+				}
+				else if (type == "BOOL")
+					hardtypesettings[section][key] = qToKString(dynamic_cast<QCheckBox*>(table->cellWidget(rowindex, 1))->isChecked() ? "true" : "false");
+				else if (type == "OBJECT_ID")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					text = text.left(text.indexOf(':'));
+					if (text != "-1")
+						hardtypesettings[section][key] = qToKString(text);
+				}
+				else if (type == "ANIM_ID")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					text = text.left(text.indexOf(':'));
+					if (text != "-1")
+						hardtypesettings[section][key] = qToKString(text);
+				}
+				else if (type == "ANIM_DIR")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					hardtypesettings[section][key] = qToKString(text).substring(0, 1);
+				}
+				else if (type == "DIR")
+				{
+					auto value = dynamic_cast<QSpinBox*>(table->cellWidget(rowindex, 1))->value();
+					hardtypesettings[section][key] = kry::Util::toString(value);
+				}
 
-			/** #TODO(incomplete) add parts for whatever else that comes along */
-		}
-		// get hardtype stuff
+				/** #TODO(incomplete) add parts for whatever else that comes along */
+			}
+		};
+		saveHard("all");
+		saveHard(type);
 
 		// ignore events stuff for now
 
 		this->close();
 	});
+	connect(ui->bApply, &QPushButton::clicked, [this]()
+	{
+		ui->bSave->click();
+		for (auto& layer : Map::getMap()->getLayers())
+		{
+			for (auto& tile : layer->tiles)
+			{
+				if (tile.hardproperties["all"]["skinIdle"] == hardtypesettings["all"]["skinIdle"])
+					tile.hardproperties = hardtypesettings;
+				else
+				{
+					for (auto& object : tile.objects)
+						if (object->hardproperties["all"]["skinIdle"] == hardtypesettings["all"]["skinIdle"])
+							object->hardproperties = hardtypesettings;
+				}
+			}
+		}
+	});
+	/*
 	connect(ui->bPivotSet, &QPushButton::clicked, [this](bool)
 	{
 		ui->gvObject->setPivoting(true);
-	});
+	});*/
 }
 
 ObjectSettingsDialog::~ObjectSettingsDialog()
@@ -86,7 +131,8 @@ DialogResult ObjectSettingsDialog::showDialog(const kry::Util::String& title, Ob
 	this->setWindowTitle(t);
 	settings = object->properties;
 	hardtypesettings = object->hardproperties;
-
+	ui->lObject->setPixmap(QIcon(kryToQString(settings["global"]["resource"])).pixmap(ui->lObject->size()));
+/*
 	QSize iconsize;
 	auto dim = object->asset->resource->rawresource->getDimensions();
 	iconsize.setWidth(dim[0]);
@@ -105,12 +151,12 @@ DialogResult ObjectSettingsDialog::showDialog(const kry::Util::String& title, Ob
 	}
 
 	ui->gvObject->setup(QIcon(kryToQString(settings["global"]["resource"])).pixmap(scaled),
-			x * static_cast<qreal>(scaled.width()), y * static_cast<qreal>(scaled.height()));
+			x * static_cast<qreal>(scaled.width()), y * static_cast<qreal>(scaled.height()));*/
 	updateTables(object);
 
-	ui->gvObject->setPivoting(false);
+	//ui->gvObject->setPivoting(false);
 	this->exec();
-	ui->gvObject->reset();
+	//ui->gvObject->reset();
 	return lastresult;
 }
 
@@ -175,57 +221,97 @@ void ObjectSettingsDialog::updateTables(Object* object)
 	table = initTable(new QTableWidget(ui->tabs));
 	ui->tabs->addTab(table, "hardtype");
 	kry::Util::String& type = object->properties["global"]["hardtype"];
-	for (auto& key : hardtypesettings[type].getKeyNames())
+	auto setupHard = [this, table](const kry::Util::String& section)
 	{
-		int index = table->rowCount();
-		table->insertRow(index);
-		table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
-		table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-		if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key].isEmpty())
-			table->setItem(index, 1, new QTableWidgetItem(kryToQString(hardtypesettings[type][key])));
-		else if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key] == "FLOOR_ID")
+		for (auto& key : hardtypesettings[section].getKeyNames())
 		{
-			QComboBox* box = new QComboBox(table);
-			box->setEditable(false);
-			unsigned i = 0;
-			for (auto& floor : Map::getMap()->getLayers())
-				box->addItem(QString::number(i++) + ':' + floor->description);
-			if (!hardtypesettings[type][key].isEmpty())
-				box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[type][key]));
-			table->setCellWidget(index, 1, box);
-		}
-		else if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key] == "BOOL")
-		{
-			QComboBox* box = new QComboBox(table);
-			box->setEditable(false);
-			box->addItem("true");
-			box->addItem("false");
-			if (!hardtypesettings[type][key].isEmpty())
-				box->setCurrentIndex(hardtypesettings[type][key] == "true" ? 0 : 1);
-			table->setCellWidget(index, 1, box);
-		}
-		else if (const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key] == "OBJECT_ID")
-		{
-			QComboBox* box = new QComboBox(table);
-			box->setEditable(false);
-			unsigned curr = 0;
-			unsigned index = 0;
-			for (Tile& tile : Map::getMap()->getCurrentLayer()->tiles)
+			int index = table->rowCount();
+			table->insertRow(index);
+			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
+			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
+			if (type.isEmpty() || type == "COUNT" || type == "VEC_2")
+				table->setItem(index, 1, new QTableWidgetItem(kryToQString(hardtypesettings[section][key])));
+			else if (type == "FLOOR_ID")
 			{
-				for (auto& obj : tile.objects)
-				{
-					auto& id = obj->properties["global"]["id"];
-					box->addItem(kryToQString(id + ':' + obj->properties["global"]["name"]));
-					if (hardtypesettings[type][key] == id)
-						curr = index;
-					++index;
-				}
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				unsigned i = 0;
+				for (auto& floor : Map::getMap()->getLayers())
+					box->addItem(QString::number(i++) + ':' + floor->description);
+				if (!hardtypesettings[section][key].isEmpty())
+					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]));
+				table->setCellWidget(index, 1, box);
 			}
-			box->setCurrentIndex(curr);
-			table->setCellWidget(index, 1, box);
+			else if (type == "BOOL")
+			{
+				QCheckBox* box = new QCheckBox(table);
+				if (!hardtypesettings[section][key].isEmpty())
+					box->setChecked(hardtypesettings[section][key] == "true");
+				table->setCellWidget(index, 1, box);
+			}
+			else if (type == "OBJECT_ID") /** #TODO(note) this is explicitly objects only (no tiles or player) */
+			{
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				unsigned curr = 1;
+				unsigned index = 0;
+				box->addItem("-1:none");
+				for (Tile& tile : Map::getMap()->getCurrentLayer()->tiles)
+				{
+					for (auto& obj : tile.objects)
+					{
+						auto& id = obj->properties["global"]["id"];
+						box->addItem(kryToQString(id + ':' + obj->properties["global"]["name"]));
+						if (hardtypesettings[section][key] == id)
+							curr = index;
+						++index;
+					}
+				}
+				box->setCurrentIndex(curr);
+				table->setCellWidget(index, 1, box);
+			}
+			else if (type == "ANIM_ID")
+			{
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				unsigned i = 0;
+				box->addItem("-1:none");
+				for (auto& anim : Resources::getAnimations())
+					box->addItem(QString::number(i++) + ':' + anim->name);
+				if (!hardtypesettings[section][key].isEmpty())
+					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]) + 1);
+				table->setCellWidget(index, 1, box);
+			}
+			else if (type == "ANIM_DIR")
+			{
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				box->addItem("1 direction");
+				box->addItem("4 directions");
+				box->addItem("8 directions");
+				if (!hardtypesettings[section][key].isEmpty())
+				{
+					int dir = kry::Util::toIntegral<int>(hardtypesettings[section][key]);
+					box->setCurrentIndex(dir == 1 ? 0 : (dir == 4 ? 1 : 2));
+				}
+				table->setCellWidget(index, 1, box);
+			}
+			else if (type == "DIR")
+			{
+				QSpinBox* box = new QSpinBox(table);
+				box->setMinimum(0);
+				box->setMaximum(359);
+				box->setSuffix(QString::fromWCharArray(L"°"));
+				if (!hardtypesettings[section][key].isEmpty())
+					box->setValue(kry::Util::toIntegral<int>(hardtypesettings[section][key]));
+				table->setCellWidget(index, 1, box);
+			}
+			/** #TODO(incomplete) add parts for whatever else that comes along */
 		}
-		/** #TODO(incomplete) add parts for whatever else that comes along */
-	}
+	};
+	setupHard("all");
+	setupHard(type);
 
 	table = initTable(new QTableWidget(ui->tabs));
 	ui->tabs->addTab(table, "events");

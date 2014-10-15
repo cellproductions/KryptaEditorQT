@@ -5,7 +5,7 @@
 #include "Graphics/Texture.h"
 #include <memory>
 
-template <typename ResType = kry::Graphics::Texture>
+template <typename ResType>
 struct Animation;
 
 class QTimer;
@@ -24,12 +24,16 @@ class AnimManagerDialog : public CSDialog
 		~AnimManagerDialog();
 
 		DialogResult showDialog();
+		inline Ui::AnimManagerDialog* getUI();
 
 	private:
-		void setup(const std::shared_ptr<Animation<> >& animation);
-
-		Ui::AnimManagerDialog *ui;
-		QTimer* timer;
+		Ui::AnimManagerDialog* ui;
 };
+
+
+Ui::AnimManagerDialog* AnimManagerDialog::getUI()
+{
+	return ui;
+}
 
 #endif // ANIMMANAGERDIALOG_H

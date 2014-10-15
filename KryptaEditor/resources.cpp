@@ -11,10 +11,10 @@ std::vector<std::shared_ptr<Animation<> > > Resources::animations;
 std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > Resources::textures;
 std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > Resources::sounds;
 std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > Resources::music;
-std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::missingtexture;
+std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > Resources::editortextures;
 
 template <typename ResType>
-Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::String& strimagefile)
+Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::String& strimagefile, const kry::Util::String& animname)
 {
 	auto imagefile = strimagefile.replace('\\', '/');
 
@@ -22,8 +22,8 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 	animation->type = ResourceType::ANIMATION;
 	animation->path = kryToQString(imagefile);
 	auto name = imagefile.substring(imagefile.lastIndexOf('/') + 1);
-	auto pname = name.substring(0, name.lastIndexOf('.'));
-	animation->name = kryToQString(name);
+	auto pname = animname.isEmpty() ? name.substring(0, name.lastIndexOf('.')) : animname;
+	animation->name = kryToQString(animname.isEmpty() ? name : animname);
 	animation->properties[""]["name"] = pname;
 	animation->properties[pname]["frames"] = "1";
 	animation->properties[pname]["fps"] = "1";
@@ -36,7 +36,7 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 	}
 	else
 	{
-		animation->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture(imagefile, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
+		animation->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(imagefile, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
 		auto dims = animation->rawresource->getDimensions();
 		animation->properties[pname]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
 	}
@@ -77,7 +77,7 @@ void Resources::loadResources(const QString& rootdir) /** #TODO(incomplete) add 
 
         Resource<kry::Graphics::Texture>* resource = new Resource<kry::Graphics::Texture>;
 		resource->type = ResourceType::TEXTURE;
-		resource->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
+		resource->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
         resource->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
         auto name = path.substring(path.lastIndexOf('\\') + 1);
         resource->name = QString::fromStdString(std::string(name.getData(), name.getLength()));
@@ -158,7 +158,7 @@ void Resources::loadAndAssignTextures(std::vector<std::shared_ptr<Asset<kry::Gra
         Resource<kry::Graphics::Texture>* resource = new Resource<kry::Graphics::Texture>;
         resource->type = ResourceType::TEXTURE;
         auto path = asset->properties["global"]["resource"];
-		resource->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true")));
+		resource->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
 		resource->path = kryToQString(path);
         auto name = path.substring(path.lastIndexOf('\\') + 1);
 		resource->name = kryToQString(name);
@@ -168,14 +168,29 @@ void Resources::loadAndAssignTextures(std::vector<std::shared_ptr<Asset<kry::Gra
     }
 }
 
-void Resources::initMissingTexture()
+void Resources::initEditorTextures()
 {
-	Resource<kry::Graphics::Texture>* missing = new Resource<kry::Graphics::Texture>;
-	missing->path = "editor\\missing.png";
-	missing->name = "missing.png";
-	missing->type = ResourceType::TEXTURE;
-	missing->rawresource = new kry::Graphics::Texture(std::move(kry::Media::imageFileToTexture("editor\\missing.png", Configuration::getConfig()["editor"]["mipmapping"] == "true")));
-	missingtexture.reset(missing);
+	try
+	{
+		Resource<kry::Graphics::Texture>* missing = new Resource<kry::Graphics::Texture>;
+		missing->path = QString("editor\\missing.png");
+		missing->name = QString("missing.png");
+		missing->type = ResourceType::TEXTURE;
+		missing->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\missing.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
+
+		Resource<kry::Graphics::Texture>* flag = new Resource<kry::Graphics::Texture>;
+		flag->path = QString("editor\\flag.png");
+		flag->name = QString("flag.png");
+		flag->type = ResourceType::TEXTURE;
+		flag->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\flag.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
+
+		editortextures.emplace_back(missing);
+		editortextures.emplace_back(flag);
+	}
+	catch (const kry::Util::Exception& e)
+	{
+		QMessageBox::information(nullptr, "Editor Loading Error", e.what(), QMessageBox::Ok);
+	}
 }
 
 Resources::Resources()

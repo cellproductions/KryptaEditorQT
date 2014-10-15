@@ -11,9 +11,12 @@
 
 struct Object
 {
+	static unsigned increment;
+
 	kry::Media::Config properties;
 	kry::Media::Config hardproperties;
 	std::vector<Event> events;
+	std::vector<kry::Graphics::Sprite> waypoints;
 	kry::Graphics::Sprite sprite;
 	Asset<kry::Graphics::Texture>* asset;
 };

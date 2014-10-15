@@ -15,6 +15,8 @@
 #include <set>
 #include <fstream>
 
+unsigned Object::increment(0);
+
 struct TextElement
 {
 	QString name;
@@ -45,7 +47,14 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 									{option->getWidth(), option->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(i) };
 		unsigned index = 0;
 		for (Tile& tile : layer->tiles)
+		{
 			tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(i) * 10000u + (index++));
+			auto type = tile.properties["global"]["hardtype"];
+			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
+				tile.hardproperties["floor"][key] = "";
+			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+				tile.hardproperties[type][key] = "";
+		}
 
         single->layers.emplace_back(layer);
     }
@@ -405,6 +414,24 @@ std::vector<unsigned char> fileToBin(const QString& filename)
 	return data;
 }
 
+struct ExpTile
+{
+	Object* tile;
+	Object* wall;
+};
+
+bool operator<(const ExpTile& left, const ExpTile& right)
+{
+	return left.tile < right.tile && left.wall < right.wall;
+}
+
+bool operator==(const ExpTile& left, const ExpTile& right)
+{
+	if (left.wall != nullptr || right.wall != nullptr)
+		return left.wall == right.wall;
+	return left.tile == right.tile;
+}
+
 void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 {
 	using namespace kry;
@@ -417,6 +444,178 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 
 		std::vector<Util::String> lines;
 
+		lines.push_back("[Settings]");
+		lines.push_back("name = " + qToKString(single->getName()));
+		lines.push_back("iconImage = icon.png");
+		lines.push_back("checksum = ce114e4501d2f4e2dcea3e17b546f339");
+		lines.push_back("fogOfWar = 1");
+		lines.push_back("revealOfWar = 1");
+		lines.push_back("fogTint = { 0.4, 0.4, 0.4, 1.0 }");
+		lines.push_back("tileDimensions = 700");
+		lines.push_back("floorFadeTime = 250");
+		lines.push_back("loadingSound = sounds/loading.mp3");
+		lines.push_back("loadingImage = images/loading.png");
+
+		lines.push_back("[Objectives]");
+
+		lines.push_back("[Floors]");
+		for (auto& floor : Map::getMap()->getLayers())
+			lines.push_back("floor" + Util::toString(floor->index) + '=' + Util::toString(floor->index));
+		
+		for (auto& floor : Map::getMap()->getLayers())
+		{
+			lines.push_back("[floor" + Util::toString(floor->index) + ']');
+			lines.push_back("dimensions= { " + Util::toString(floor->size[0]) + ", " + Util::toString(floor->size[1]) + " }");
+			lines.push_back("floorBinary=floors/floor" + Util::toString(floor->index) + ".txt");
+		}
+
+		std::vector<Object*> objects;
+		lines.push_back("[Entities]");
+		lines.push_back("player=-1");
+		unsigned count = 0;
+		for (auto& floor : Map::getMap()->getLayers())
+		{
+			for (auto& tile : floor->tiles)
+			{
+				for (auto& object : tile.objects)
+				{
+					if (object->properties["global"]["hardtype"] == "wall")
+						continue;
+					lines.push_back("entity" + Util::toString(count++) + '=' + object->properties["global"]["id"]);
+					objects.push_back(object.get());
+				}
+			}
+		}
+		
+		lines.push_back("[player]");
+		lines.push_back("type=player");
+		lines.push_back("floor=" + prjconfig["player"]["layer"]);
+		lines.push_back("position= { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
+		lines.push_back("dimensions= { " + prjconfig["player"]["dimensionsx"] + ", " + prjconfig["player"]["dimensionsy"] + " }");
+		lines.push_back("direction=" + prjconfig["player"]["direction"]);
+		lines.push_back("seeInFog=" + prjconfig["player"]["seeInFog"]);
+		lines.push_back("directions=" + prjconfig["player"]["directions"]);
+		lines.push_back("maxHeuristic=" + prjconfig["player"]["maxHeuristic"]);
+		lines.push_back("viewDistance=" + prjconfig["player"]["viewDistance"]);
+		lines.push_back("moveAcceleration=" + prjconfig["player"]["moveAcceleration"]);
+		lines.push_back("turnAcceleration=" + prjconfig["player"]["turnAcceleration"]);
+		lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
+		lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
+		lines.push_back("skinConfig=PlayerSkins.txt");
+		lines.push_back("skinIdle=" + prjconfig["player"]["direction"]);
+		lines.push_back("skinRun=" + prjconfig["player"]["direction"]);
+		lines.push_back("health=" + prjconfig["player"]["direction"]);
+
+		count = 0;
+		for (auto& object : objects)
+		{
+			auto section = object->hardproperties[""]["name"];
+			lines.push_back("[entity" + Util::toString(count++) + ']');
+			lines.push_back("type=" + object->properties["global"]["hardtype"]);
+			object->hardproperties["all"]["skinConfig"] = "EntitySkins.txt";
+			for (auto& key : object->hardproperties["all"].getKeyNames())
+				lines.push_back(key + '=' + object->hardproperties["all"][key]);
+			for (auto& key : object->hardproperties[section].getKeyNames())
+				lines.push_back(key + '=' + object->hardproperties[section][key]);
+			/*
+			lines.push_back("floor=" + object->hardproperties[section]["floor"]);
+			lines.push_back("position= { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
+			lines.push_back("dimensions= { " + prjconfig["player"]["dimensionsx"] + ", " + prjconfig["player"]["dimensionsy"] + " }");
+			lines.push_back("direction=" + prjconfig["player"]["direction"]);
+			lines.push_back("seeInFog=" + prjconfig["player"]["seeInFog"]);
+			lines.push_back("directions=" + prjconfig["player"]["directions"]);
+			lines.push_back("maxHeuristic=" + prjconfig["player"]["maxHeuristic"]);
+			lines.push_back("viewDistance=" + prjconfig["player"]["viewDistance"]);
+			lines.push_back("moveAcceleration=" + prjconfig["player"]["moveAcceleration"]);
+			lines.push_back("turnAcceleration=" + prjconfig["player"]["turnAcceleration"]);
+			lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
+			lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
+			lines.push_back("skinConfig=PlayerSkins.txt");
+			lines.push_back("skinIdle=" + prjconfig["player"]["direction"]);
+			lines.push_back("skinRun=" + prjconfig["player"]["direction"]);
+			lines.push_back("health=" + prjconfig["player"]["direction"]);
+			*/
+		}
+
+		std::set<ExpTile> tilesused;
+		for (auto& layer : Map::getMap()->getLayers())
+		{
+			for (auto& tile : layer->tiles)
+			{
+				ExpTile exptile { &tile, nullptr };
+				for (auto& object : tile.objects)
+				{
+					if (object->properties["global"]["hardtype"] == "wall")
+					{
+						exptile.wall = object.get();
+						break;
+					}
+				}
+				tilesused.insert(exptile);
+			}
+		}
+
+		lines.push_back("[Tiles]");
+		count = 0;
+		for (auto& exptile : tilesused)
+			lines.push_back("tile" + Util::toString(count++) + '=' + Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getObjects()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())));
+		
+		count = 0;
+		for (auto& exptile : tilesused)
+		{
+			lines.push_back("[tile" + Util::toString(count++) + ']');
+			Object* object = exptile.wall != nullptr ? exptile.wall : exptile.tile;
+			auto type = object->properties["global"]["hardtype"];
+			object->hardproperties["floor"]["skinConfig"] = "TileSkins.txt";
+			object->hardproperties["floor"]["skin"] = qToKString(object->asset->resource->name);
+			object->hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }"; /** #TODO(change) hardcoded */
+			object->hardproperties["floor"]["sortDepth"] = "0";
+			object->hardproperties["floor"]["heuristic"] = "1";
+			if (type == "wall")
+			{
+				object->hardproperties[type]["floorTile"] = Util::toString(getAssetIndex(exptile.tile->asset, Assets::getTiles()));
+				object->hardproperties["floor"]["sortDepth"] = "1";
+				object->hardproperties["floor"]["heuristic"] = "0";
+			}
+			for (auto& key : object->hardproperties["floor"].getKeyNames())
+				lines.push_back(key + '=' + object->hardproperties["floor"][key]);
+			for (auto& key : object->hardproperties[type].getKeyNames())
+				lines.push_back(key + '=' + object->hardproperties[type][key]);
+		}
+
+		zipfile[""]["Map.txt"] = linesToBin(lines);
+		lines.clear();
+
+		count = 0;
+		for (auto& layer : Map::getMap()->getLayers())
+		{
+			for (size_t x = 0; x < static_cast<size_t>(layer->size[0]); ++x) // only one floor supported for now
+			{
+				Util::String line;
+				for (size_t y = 0; y < static_cast<size_t>(layer->size[1]); ++y)
+				{
+					size_t index = y * layer->size[0] + x;
+					ExpTile exptile { &layer->tiles[index], nullptr };
+					for (auto& object : layer->tiles[index].objects)
+					{
+						if (object->properties["global"]["hardtype"] == "wall")
+						{
+							exptile.wall = object.get();
+							break;
+						}
+					}
+
+
+					line += Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getObjects()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())) + ' ';
+				}
+				line = line.substring(0, line.getLength() - 1);
+				lines.push_back(line);
+			}
+
+			zipfile[""]["floor" + Util::toString(count++) + ".txt"] = linesToBin(lines);
+			lines.clear();
+		}
+#if 0
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
 		lines.push_back("iconImage = icon.png");
@@ -560,7 +759,6 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		zipfile[""]["Map.txt"] = linesToBin(lines);
 		lines.clear();
 
-		/** #TODO(change) mention to luka to always do y before x */
 		for (size_t x = 0; x < static_cast<size_t>(single->getLayers()[0]->size[0]); ++x) // only one floor supported for now
 		{
 			Util::String line;
@@ -668,6 +866,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		zipfile["images"]["Magnus_2.png"] = fileToBin("assets\\resources\\images\\Magnus_2.png");
 		zipfile["images"]["Magnus_3.png"] = fileToBin("assets\\resources\\images\\Magnus_3.png");
 		zipfile["images"]["Magnus_4.png"] = fileToBin("assets\\resources\\images\\Magnus_4.png");
+#endif
 
 		zipfile.zipToFile(kname + ".zip");
 	}

@@ -47,6 +47,13 @@ PivotView::~PivotView()
 
 void PivotView::setup(const QPixmap& pixmap, qreal pivotx, qreal pivoty)
 {
+	for (auto item : scene->items())
+	{
+		scene->removeItem(item);
+		if (item == &crossItem)
+			continue;
+		delete item;
+	}
 	scene->addPixmap(pixmap);
 	scene->addRect(0.0, 0.0, pixmap.width(), pixmap.height());
 	crossItem.setPos(pivotx * static_cast<qreal>(pixmap.width()), pivoty * static_cast<qreal>(pixmap.height()));
@@ -56,6 +63,7 @@ void PivotView::setup(const QPixmap& pixmap, qreal pivotx, qreal pivoty)
 void PivotView::reset()
 {
 	scene->removeItem(&crossItem);
+	pivoting = false;
 }
 
 void PivotView::setPivoting(bool pivoting)

@@ -1,6 +1,7 @@
 #ifndef TOOL_H
 #define TOOL_H
 
+#include <Graphics\Texture.h>
 #include <memory>
 
 enum class ToolType
@@ -17,7 +18,13 @@ struct AssetListItem;
 struct PaintData
 {
 	unsigned size = 1;
-	AssetListItem* assetitem = nullptr;
+	Asset<kry::Graphics::Texture>* asset = nullptr;
+};
+
+struct Object;
+struct PaintObjectData : PaintData
+{
+	Object* object = nullptr;
 };
 
 template <typename DataType = PointerData>

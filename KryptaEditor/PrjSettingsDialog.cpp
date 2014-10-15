@@ -32,8 +32,20 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 		auto xy = qToKString(ui->playerProperties->item(1, 1)->text());
 		settings["player"]["tilex"] = xy.substring(0, xy.indexOf('x'));
 		settings["player"]["tiley"] = xy.substring(xy.indexOf('x') + 1);
-		settings["player"]["speed"] = qToKString(ui->playerProperties->item(2, 1)->text());
-		settings["player"]["fov"] = qToKString(ui->playerProperties->item(3, 1)->text());
+		xy = qToKString(ui->playerProperties->item(2, 1)->text());
+		settings["player"]["dimensionsx"] = xy.substring(0, xy.indexOf('x'));
+		settings["player"]["dimensionsy"] = xy.substring(xy.indexOf('x') + 1);
+		settings["player"]["seeInFog"] = qToKString(ui->playerProperties->item(3, 1)->text());
+		settings["player"]["directions"] = qToKString(ui->playerProperties->item(4, 1)->text());
+		settings["player"]["maxHeuristic"] = qToKString(ui->playerProperties->item(5, 1)->text());
+		settings["player"]["viewDistance"] = qToKString(ui->playerProperties->item(6, 1)->text());
+		settings["player"]["moveAcceleration"] = qToKString(ui->playerProperties->item(7, 1)->text());
+		settings["player"]["turnAcceleration"] = qToKString(ui->playerProperties->item(8, 1)->text());
+		settings["player"]["maxMoveSpeed"] = qToKString(ui->playerProperties->item(9, 1)->text());
+		settings["player"]["maxTurnSpeed"] = qToKString(ui->playerProperties->item(10, 1)->text());
+		settings["player"]["skinIdle"] = qToKString(ui->playerProperties->item(11, 1)->text());
+		settings["player"]["skinRun"] = qToKString(ui->playerProperties->item(12, 1)->text());
+		settings["player"]["health"] = qToKString(ui->playerProperties->item(13, 1)->text());
 
 		lastresult = DialogResult::OK;
 		this->close();
@@ -55,7 +67,7 @@ DialogResult PrjSettingsDialog::showDialog()
 void PrjSettingsDialog::resetSettings()
 {
 	settings["project"]["name"] = qToKString(Map::getProjectName());
-	settings["project"]["path"]; // set from map probably?
+	settings["project"]["path"] = ""; // set from map probably?
 
 	if (!settings["player"].keyExists("layer"))
 		settings["player"]["layer"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
@@ -63,11 +75,53 @@ void PrjSettingsDialog::resetSettings()
 		settings["player"]["tilex"] = kry::Util::toString(0);
 	if (!settings["player"].keyExists("tiley"))
 		settings["player"]["tiley"] = kry::Util::toString(0);
-	if (!settings["player"].keyExists("speed"))
-		settings["player"]["speed"] = kry::Util::toString(1);
-	if (!settings["player"].keyExists("fov"))
-		settings["player"]["fov"] = kry::Util::toString(8);
+	if (!settings["player"].keyExists("dimensionsx"))
+		settings["player"]["dimensionsx"] = kry::Util::toString(1);
+	if (!settings["player"].keyExists("dimensionsy"))
+		settings["player"]["dimensionsy"] = kry::Util::toString(1);
+	if (!settings["player"].keyExists("seeInFog"))
+		settings["player"]["seeInFog"] = kry::Util::toString(1);
+	if (!settings["player"].keyExists("directions"))
+		settings["player"]["directions"] = kry::Util::toString(8);
+	if (!settings["player"].keyExists("maxHeuristic"))
+		settings["player"]["maxHeuristic"] = kry::Util::toString(0);
+	if (!settings["player"].keyExists("viewDistance"))
+		settings["player"]["viewDistance"] = kry::Util::toString(3);
+	if (!settings["player"].keyExists("moveAcceleration"))
+		settings["player"]["moveAcceleration"] = kry::Util::toString(1.3);
+	if (!settings["player"].keyExists("turnAcceleration"))
+		settings["player"]["turnAcceleration"] = kry::Util::toString(50);
+	if (!settings["player"].keyExists("maxMoveSpeed"))
+		settings["player"]["maxMoveSpeed"] = kry::Util::toString(6);
+	if (!settings["player"].keyExists("maxTurnSpeed"))
+		settings["player"]["maxTurnSpeed"] = kry::Util::toString(700);
+	if (!settings["player"].keyExists("skinIdle"))
+		settings["player"]["skinIdle"] = "playerIdle";
+	if (!settings["player"].keyExists("skinRun"))
+		settings["player"]["skinRun"] = "playerMove";
+	if (!settings["player"].keyExists("health"))
+		settings["player"]["health"] = kry::Util::toString(1);
 }
+
+/*
+type = player
+floor = 0
+position = { 1.5, 1.5 }
+dimensions = { 0.3, 0.3 }
+direction = 90
+seeInFog = 1
+directions = 8
+maxHeuristic = 0
+viewDistance = 3
+moveAcceleration = 1.3
+turnAcceleration = 50
+maxMoveSpeed = 6
+maxTurnSpeed = 700
+skinConfig = PlayerSkins.txt
+skinIdle = playerIdle
+skinRun = playerMove
+health = 1
+*/
 
 void PrjSettingsDialog::setTableData()
 {
@@ -82,7 +136,18 @@ void PrjSettingsDialog::setTableData()
 		box->addItem(QString::number(layer->index) + ':' + layer->description);
 	box->setCurrentIndex(kry::Util::toIntegral<int>(settings["player"]["layer"]));
 	ui->playerProperties->setCellWidget(0, 1, box);
+	/** #TODO(incomplete) add a widgets for specific options */
 	ui->playerProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["player"]["tilex"]) + 'x' + kryToQString(settings["player"]["tiley"])));
-	ui->playerProperties->setItem(2, 1, new QTableWidgetItem(kryToQString(settings["player"]["speed"])));
-	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["fov"])));
+	ui->playerProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["player"]["dimensionsx"]) + 'x' + kryToQString(settings["player"]["dimensionsy"])));
+	ui->playerProperties->setItem(2, 1, new QTableWidgetItem(kryToQString(settings["player"]["seeInFog"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["directions"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["maxHeuristic"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["viewDistance"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["moveAcceleration"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["turnAcceleration"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["maxMoveSpeed"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["maxTurnSpeed"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["skinIdle"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["skinRun"])));
+	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["health"])));
 }
