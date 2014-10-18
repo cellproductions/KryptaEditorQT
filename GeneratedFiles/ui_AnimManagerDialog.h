@@ -22,7 +22,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "animationsetupwidget.h"
+#include "AnimationSetupWidget.h"
 
 QT_BEGIN_NAMESPACE
 

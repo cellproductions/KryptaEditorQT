@@ -13,6 +13,7 @@ class PivotView : public QGraphicsView
 		void setup(const QPixmap& pixmap, qreal pivotx, qreal pivoty);
 		void reset();
 		void setPivoting(bool pivoting);
+		void clear();
 
 	private:
 		void mouseMoveEvent(QMouseEvent* event);

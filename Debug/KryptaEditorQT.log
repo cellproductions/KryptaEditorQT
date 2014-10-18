@@ -1,98 +1,8 @@
-﻿Build started 10/16/2014 2:46:35 AM.
-     1>Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" on node 2 (Rebuild target(s)).
-     1>CustomBuild:
-         Moc'ing AnimManagerDialog.h...
-         Uic'ing KryptaEditor\AnimManagerDialog.ui...
-         Moc'ing AnimationSetupWidget.h...
-         Moc'ing SaveDialog.h...
-         Moc'ing PrjSetupDialog.h...
-         Moc'ing PrjSettingsDialog.h...
-         Moc'ing PivotView.h...
-         Moc'ing ObjectSettingsDialog.h...
-         Moc'ing ObjectAction.h...
-         Moc'ing MainWindow.h...
-         Moc'ing LayerBrowserDialog.h...
-         Moc'ing glpanel.h...
-         Moc'ing EventManagerDialog.h...
-         Moc'ing EventEditDialog.h...
-         Moc'ing EventButtonItem.h...
-         Moc'ing EnvBrowserDialog.h...
-         Moc'ing EntBrowserDialog.h...
-         Moc'ing DropListWidget.h...
-         Moc'ing CSDialog.h...
-         Moc'ing ConfigDialog.h...
-         Moc'ing ClickableLabel.h...
-         Uic'ing KryptaEditor\ConfigDialog.ui...
-         Uic'ing KryptaEditor\EntBrowserDialog.ui...
-         Uic'ing KryptaEditor\envbrowserdialog.ui...
-         Uic'ing KryptaEditor\EventEditDialog.ui...
-         Uic'ing KryptaEditor\EventManagerDialog.ui...
-         Uic'ing KryptaEditor\AnimationSetupWidget.ui...
-         Uic'ing KryptaEditor\layerbrowserdialog.ui...
-         Uic'ing KryptaEditor\mainwindow.ui...
-         Uic'ing KryptaEditor\ObjectSettingsDialog.ui...
-         Uic'ing KryptaEditor\PrjSettingsDialog.ui...
-         Uic'ing KryptaEditor\prjsetupdialog.ui...
-         Uic'ing KryptaEditor\SaveDialog.ui...
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt5.3.1\5.3\msvc2013_opengl\include /I.\GeneratedFiles\Debug /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtCore /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtGui /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtNetwork /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtOpenGL /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtWidgets /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtXml /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_NETWORK_LIB /D QT_OPENGL_LIB /D QT_WIDGETS_LIB /D QT_XML_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\Debug\moc_AnimationSetupWidget.cpp GeneratedFiles\Debug\moc_AnimManagerDialog.cpp GeneratedFiles\Debug\moc_ClickableLabel.cpp GeneratedFiles\Debug\moc_ConfigDialog.cpp GeneratedFiles\Debug\moc_CSDialog.cpp GeneratedFiles\Debug\moc_DropListWidget.cpp GeneratedFiles\Debug\moc_EntBrowserDialog.cpp GeneratedFiles\Debug\moc_EnvBrowserDialog.cpp GeneratedFiles\Debug\moc_EventButtonItem.cpp GeneratedFiles\Debug\moc_EventEditDialog.cpp GeneratedFiles\Debug\moc_EventManagerDialog.cpp GeneratedFiles\Debug\moc_glpanel.cpp GeneratedFiles\Debug\moc_LayerBrowserDialog.cpp GeneratedFiles\Debug\moc_MainWindow.cpp GeneratedFiles\Debug\moc_ObjectAction.cpp GeneratedFiles\Debug\moc_ObjectSettingsDialog.cpp GeneratedFiles\Debug\moc_PivotView.cpp GeneratedFiles\Debug\moc_PrjSettingsDialog.cpp GeneratedFiles\Debug\moc_PrjSetupDialog.cpp GeneratedFiles\Debug\moc_SaveDialog.cpp KryptaEditor\AnimationSetupWidget.cpp KryptaEditor\AnimManagerDialog.cpp KryptaEditor\AssetListItem.cpp KryptaEditor\assets.cpp KryptaEditor\ClickableLabel.cpp KryptaEditor\ConfigDialog.cpp KryptaEditor\Configuration.cpp KryptaEditor\CSDialog.cpp KryptaEditor\DropListWidget.cpp KryptaEditor\EntBrowserDialog.cpp KryptaEditor\envbrowserdialog.cpp KryptaEditor\EventButtonItem.cpp KryptaEditor\EventEditDialog.cpp KryptaEditor\EventManagerDialog.cpp KryptaEditor\EventSystem.cpp KryptaEditor\GLPanel.cpp KryptaEditor\LayerBrowserDialog.cpp KryptaEditor\LayerOptionsItem.cpp KryptaEditor\main.cpp KryptaEditor\MainWindow.cpp KryptaEditor\Map.cpp KryptaEditor\MapProject.cpp KryptaEditor\ObjectAction.cpp KryptaEditor\ObjectSettingsDialog.cpp KryptaEditor\PivotView.cpp KryptaEditor\PrjSettingsDialog.cpp KryptaEditor\PrjSetupDialog.cpp KryptaEditor\Resources.cpp KryptaEditor\SaveDialog.cpp KryptaEditor\Utilities.cpp
-         moc_AnimationSetupWidget.cpp
-         moc_AnimManagerDialog.cpp
-         moc_ClickableLabel.cpp
-         moc_ConfigDialog.cpp
-         moc_CSDialog.cpp
-         moc_DropListWidget.cpp
-         moc_EntBrowserDialog.cpp
-         moc_EnvBrowserDialog.cpp
-         moc_EventButtonItem.cpp
-         moc_EventEditDialog.cpp
-         moc_EventManagerDialog.cpp
-         moc_glpanel.cpp
-         moc_LayerBrowserDialog.cpp
-         moc_MainWindow.cpp
-         moc_ObjectAction.cpp
-         moc_ObjectSettingsDialog.cpp
-         moc_PivotView.cpp
-         moc_PrjSettingsDialog.cpp
-         moc_PrjSetupDialog.cpp
-         moc_SaveDialog.cpp
-         Generating Code...
-         Compiling...
-         AnimationSetupWidget.cpp
-         AnimManagerDialog.cpp
-         AssetListItem.cpp
-         assets.cpp
-         ClickableLabel.cpp
-         ConfigDialog.cpp
-         Configuration.cpp
-         CSDialog.cpp
-         DropListWidget.cpp
-         EntBrowserDialog.cpp
-         envbrowserdialog.cpp
-         EventButtonItem.cpp
-         EventEditDialog.cpp
-         EventManagerDialog.cpp
-         EventSystem.cpp
+﻿Build started 10/18/2014 11:18:45 PM.
+     1>Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt5.3.1\5.3\msvc2013_opengl\include /I.\GeneratedFiles\Debug /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtCore /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtGui /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtNetwork /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtOpenGL /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtWidgets /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtXml /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_NETWORK_LIB /D QT_OPENGL_LIB /D QT_WIDGETS_LIB /D QT_XML_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KryptaEditor\GLPanel.cpp
          GLPanel.cpp
-         LayerBrowserDialog.cpp
-         LayerOptionsItem.cpp
-         main.cpp
-         MainWindow.cpp
-         Generating Code...
-         Compiling...
-         Map.cpp
-         MapProject.cpp
-         ObjectAction.cpp
-         ObjectSettingsDialog.cpp
-         PivotView.cpp
-         PrjSettingsDialog.cpp
-         PrjSetupDialog.cpp
-         Resources.cpp
-         SaveDialog.cpp
-         Utilities.cpp
-         Generating Code...
-       ResourceCompile:
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /l"0x0409" /nologo /fo"Debug\KryptaEditorQT.res" KryptaEditorQT.rc 
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\\KryptaEditorQT.exe" /NOLOGO /LIBPATH:C:\Qt5.3.1\5.3\msvc2013_opengl\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Networkd.lib Qt5OpenGLd.lib opengl32.lib glu32.lib Qt5Widgetsd.lib Qt5Xmld.lib Krypta2Dd.lib freetype253_D.lib glew32d.lib libmpg123.lib openAL32d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\KryptaEditorQT.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\KryptaEditorQT.lib" /MACHINE:X86 /SAFESEH Debug\KryptaEditorQT.res
          Debug\moc_AnimationSetupWidget.obj
@@ -100,7 +10,6 @@
          Debug\moc_ClickableLabel.obj
          Debug\moc_ConfigDialog.obj
          Debug\moc_CSDialog.obj
-         Debug\moc_DropListWidget.obj
          Debug\moc_EntBrowserDialog.obj
          Debug\moc_EnvBrowserDialog.obj
          Debug\moc_EventButtonItem.obj
@@ -123,7 +32,6 @@
          Debug\ConfigDialog.obj
          Debug\Configuration.obj
          Debug\CSDialog.obj
-         Debug\DropListWidget.obj
          Debug\EntBrowserDialog.obj
          Debug\envbrowserdialog.obj
          Debug\EventButtonItem.obj
@@ -145,33 +53,9 @@
          Debug\Resources.obj
          Debug\SaveDialog.obj
          Debug\Utilities.obj
-     1>Krypta2Dd.lib(Exception.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-     1>Krypta2Dd.lib(winfnt.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(winfnt.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(type42.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(type42.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(type1cid.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(type1cid.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(type1.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(type1.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(truetype.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(truetype.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(sfnt.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(sfnt.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(raster.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(raster.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(psmodule.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(psmodule.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(pshinter.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(pshinter.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(psaux.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(psaux.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(pfr.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(pfr.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(pcf.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(pcf.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(smooth.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(smooth.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftsystem.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftsystem.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftlzw.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftlzw.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftinit.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftinit.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftgzip.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftgzip.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftdebug.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftdebug.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftbitmap.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftbitmap.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(ftbase.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(ftbase.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(cff.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(cff.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(bdf.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(bdf.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
-     1>Krypta2Dd.lib(autofit.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'Krypta2Dd.lib(autofit.obj)' or at 'C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\vc120.pdb'; linking object as if no debug info
          KryptaEditorQT.vcxproj -> C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\KryptaEditorQT.exe
-     1>Done Building Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:43.64
+Time Elapsed 00:00:02.67

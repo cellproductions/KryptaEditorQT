@@ -22,46 +22,58 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 	animation->type = ResourceType::ANIMATION;
 	animation->path = kryToQString(imagefile);
 	auto name = imagefile.substring(imagefile.lastIndexOf('/') + 1);
-	auto pname = animname.isEmpty() ? name.substring(0, name.lastIndexOf('.')) : animname;
 	animation->name = kryToQString(animname.isEmpty() ? name : animname);
-	animation->properties[""]["name"] = pname;
-	animation->properties[pname]["frames"] = "1";
-	animation->properties[pname]["fps"] = "1";
-	animation->properties[pname]["sheetImage"] = imagefile;
-	animation->properties[pname]["sheetDimensions"] = "{ 1, 1 }";
-	if (imagefile.endsWith(".sheet"))
+	for (int i = 0; i < Animation<>::MAX_DIRECTION_COUNT; ++i)
 	{
-		/** #TODO(incomplete) add spritesheet loading */
-		// load first image from spritesheet and set rawresource to that
-	}
-	else
-	{
-		animation->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(imagefile, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
-		auto dims = animation->rawresource->getDimensions();
-		animation->properties[pname]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
-	}
-	animation->properties[pname]["frameDimensions"] = "";
-	animation->properties[pname]["dimensions"] = "";
-	animation->properties[pname]["sheetPosition"] = "";
-	animation->properties[pname]["frameRGBA"] = "";
-	animation->properties[pname]["frameRotation"] = "";
-	animation->properties[pname]["frameLinearFilter"] = "";
-	animation->properties[pname]["framePivot"] = "";
-	animation->properties[pname]["frameSortDepth"] = "";
-	animation->properties[pname]["frameSortPivotOffset"] = "";
-	animation->properties[pname]["nextSkin"] = "";
+		auto pname = animname.isEmpty() ? name.substring(0, name.lastIndexOf('.')) : animname;
+		pname += kry::Util::toString(i);
+		animation->properties[i]["Skins"]["name"] = pname;
+		animation->properties[i][pname]["frames"] = "1";
+		animation->properties[i][pname]["fps"] = "1";
+		animation->properties[i][pname]["sheetDimensions"] = "{ 1, 1 }";
+		if (i == 0)
+		{
+			animation->properties[i][pname]["sheetImage"] = imagefile;
+			if (imagefile.endsWith(".sheet"))
+			{
+				/** #TODO(incomplete) add spritesheet loading */
+				// load first image from spritesheet and set rawresource to that
+			}
+			else
+			{
+				animation->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(imagefile, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
+				auto dims = animation->rawresource->getDimensions();
+				animation->properties[i][pname]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
+			}
+		}
+		else
+		{
+			animation->properties[i][pname]["sheetImage"] = "";
+			animation->properties[i][pname]["framePivot"] = "";
+		}
+		animation->properties[i][pname]["frameDimensions"] = "";
+		animation->properties[i][pname]["dimensions"] = "";
+		animation->properties[i][pname]["sheetPosition"] = "";
+		animation->properties[i][pname]["frameRGBA"] = "";
+		animation->properties[i][pname]["frameRotation"] = "";
+		animation->properties[i][pname]["frameLinearFilter"] = "";
+		animation->properties[i][pname]["framePivot"] = "";
+		animation->properties[i][pname]["frameSortDepth"] = "";
+		animation->properties[i][pname]["frameSortPivotOffset"] = "";
+		animation->properties[i][pname]["nextSkin"] = "";
 
-	pname += ": 0";
-	animation->properties[pname]["image"] = "";
-	animation->properties[pname]["pivot"] = "";
-	animation->properties[pname]["dimensions"] = "";
-	animation->properties[pname]["RGBA"] = "";
-	animation->properties[pname]["rotation"] = "";
-	animation->properties[pname]["UVposition"] = "";
-	animation->properties[pname]["UVdimensions"] = "";
-	animation->properties[pname]["linearFilter"] = "";
-	animation->properties[pname]["sortDepth"] = "";
-	animation->properties[pname]["sortPivotOffset"] = "";
+		pname += ": 0";
+		animation->properties[i][pname]["image"] = "";
+		animation->properties[i][pname]["pivot"] = "";
+		animation->properties[i][pname]["dimensions"] = "";
+		animation->properties[i][pname]["RGBA"] = "";
+		animation->properties[i][pname]["rotation"] = "";
+		animation->properties[i][pname]["UVposition"] = "";
+		animation->properties[i][pname]["UVdimensions"] = "";
+		animation->properties[i][pname]["linearFilter"] = "";
+		animation->properties[i][pname]["sortDepth"] = "";
+		animation->properties[i][pname]["sortPivotOffset"] = "";
+	}
 
 	return animation;
 }
@@ -126,20 +138,27 @@ void Resources::loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::G
 			auto dims = animation->rawresource->getDimensions();
 			if (asset->properties.sectionExists("object"))
 			{
-				animation->properties[animation->properties[""]["name"]]["framePivot"] = "{ " +
+				for (auto& properties : animation->properties)
+				{
+					properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
 						kry::Util::toString((asset->properties["object"].keyExists("relativex") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) +
 						", " +
 						kry::Util::toString((asset->properties["object"].keyExists("relativey") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) +
 						" }";
+				}
 			}
 			else if (asset->properties.sectionExists("entity"))
 			{
-				animation->properties[animation->properties[""]["name"]]["framePivot"] = "{ " +
-						kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
-						kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
+				for (auto& properties : animation->properties)
+				{
+					properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
+							kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
+							kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
+				}
 			}
 			else
-				animation->properties[animation->properties[""]["name"]]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
+				for (auto& properties : animation->properties)
+					properties[properties["Skins"]["name"]]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
 
 			animations.emplace_back(animation);
 			asset->resource = animation;

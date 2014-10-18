@@ -95,6 +95,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 		if (Tool<>::getTool()->getType() == ToolType::PAINT)
 			Tool<PaintData>::getTool()->getData().asset = entbrowseDialog->getSelectedAssetItem()->asset;
+		if (entbrowseDialog->getSelectedAssetItem() != nullptr)
+			prevAsset = entbrowseDialog->getSelectedAssetItem()->asset;
 	});
     connect(ui->bBrowseEnv, &QPushButton::clicked, [this]()
     {
@@ -116,6 +118,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 		if (Tool<>::getTool()->getType() == ToolType::PAINT)
 			Tool<PaintData>::getTool()->getData().asset = envbrowseDialog->getSelectedAssetItem()->asset;
+		if (envbrowseDialog->getSelectedAssetItem() != nullptr)
+			prevAsset = envbrowseDialog->getSelectedAssetItem()->asset;
 	});
 	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
 	{
@@ -171,11 +175,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 			ui->toolMain->addWidget(spin);
 		}
 
-		Tool<>::switchTool(ToolType::PAINT);
-		PaintData data;
-		data.size = spin->value();
-		data.asset = envbrowseDialog->getSelectedAssetItem()->asset;
-		Tool<PaintData>::getTool()->setData(data);
+		if (prevAsset != nullptr)
+		{
+			Tool<>::switchTool(ToolType::PAINT);
+			PaintData data;
+			data.size = spin->value();
+			data.asset = prevAsset;
+			Tool<PaintData>::getTool()->setData(data);
+		}
 	});
 }
 

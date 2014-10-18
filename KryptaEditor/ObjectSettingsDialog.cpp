@@ -112,11 +112,6 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 			}
 		}
 	});
-	/*
-	connect(ui->bPivotSet, &QPushButton::clicked, [this](bool)
-	{
-		ui->gvObject->setPivoting(true);
-	});*/
 }
 
 ObjectSettingsDialog::~ObjectSettingsDialog()
@@ -132,31 +127,10 @@ DialogResult ObjectSettingsDialog::showDialog(const kry::Util::String& title, Ob
 	settings = object->properties;
 	hardtypesettings = object->hardproperties;
 	ui->lObject->setPixmap(QIcon(kryToQString(settings["global"]["resource"])).pixmap(ui->lObject->size()));
-/*
-	QSize iconsize;
-	auto dim = object->asset->resource->rawresource->getDimensions();
-	iconsize.setWidth(dim[0]);
-	iconsize.setHeight(dim[1]);
-	QSize scaled = iconsize.scaled(ui->gvObject->width(), ui->gvObject->height(), Qt::KeepAspectRatio);
-	qreal x = 0.0, y = 0.0;
-	if (settings.sectionExists("object"))
-	{
-		x = settings["object"].keyExists("relativex") ? kry::Util::toDecimal<qreal>(settings["object"]["relativex"]) : 0.0;
-		y = settings["object"].keyExists("relativey") ? kry::Util::toDecimal<qreal>(settings["object"]["relativey"]) : 0.0;
-	}
-	else if (settings.sectionExists("entity"))
-	{
-		x = settings["entity"].keyExists("relativex") ? kry::Util::toDecimal<qreal>(settings["entity"]["relativex"]) : 0.0;
-		y = settings["entity"].keyExists("relativey") ? kry::Util::toDecimal<qreal>(settings["entity"]["relativey"]) : 0.0;
-	}
-
-	ui->gvObject->setup(QIcon(kryToQString(settings["global"]["resource"])).pixmap(scaled),
-			x * static_cast<qreal>(scaled.width()), y * static_cast<qreal>(scaled.height()));*/
 	updateTables(object);
 
-	//ui->gvObject->setPivoting(false);
 	this->exec();
-	//ui->gvObject->reset();
+
 	return lastresult;
 }
 
@@ -278,7 +252,7 @@ void ObjectSettingsDialog::updateTables(Object* object)
 				unsigned i = 0;
 				box->addItem("-1:none");
 				for (auto& anim : Resources::getAnimations())
-					box->addItem(QString::number(i++) + ':' + anim->name);
+					box->addItem(QString::number(i++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
 				if (!hardtypesettings[section][key].isEmpty())
 					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]) + 1);
 				table->setCellWidget(index, 1, box);
@@ -310,7 +284,7 @@ void ObjectSettingsDialog::updateTables(Object* object)
 			/** #TODO(incomplete) add parts for whatever else that comes along */
 		}
 	};
-	setupHard("all");
+	setupHard(object->asset->type == AssetType::STATIC_TILE ? kry::Util::String("floor") : kry::Util::String("all"));
 	setupHard(type);
 
 	table = initTable(new QTableWidget(ui->tabs));

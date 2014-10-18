@@ -35,12 +35,10 @@ struct Resource
 };
 
 template <typename ResType = kry::Graphics::Texture>
-struct Animation : public Resource<ResType> // create an anim type, fill a vector with anims from a new folder,
+struct Animation : public Resource<ResType>
 {
-	//static const unsigned char MAX_DIRECTION_COUNT = 8;
-	//kry::Media::Config properties[MAX_DIRECTION_COUNT];
-	kry::Media::Config properties;
-	/** #TODO(change) uncomment these things here */
+	static const unsigned char MAX_DIRECTION_COUNT = 8;
+	kry::Media::Config properties[MAX_DIRECTION_COUNT];
 
 	static Animation<ResType>* createDefaultAnimation(const kry::Util::String& imagefile, const kry::Util::String& name = kry::Util::String());
 };

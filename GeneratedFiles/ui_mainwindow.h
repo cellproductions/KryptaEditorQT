@@ -122,7 +122,7 @@ public:
         miProjectEvents->setVisible(true);
         miProjectAnims = new QAction(MainWindow);
         miProjectAnims->setObjectName(QStringLiteral("miProjectAnims"));
-        miProjectAnims->setEnabled(false);
+        miProjectAnims->setEnabled(true);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());

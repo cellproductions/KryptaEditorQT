@@ -68,7 +68,10 @@ public:
         lbImages = new QListWidget(AnimationSetupWidget);
         lbImages->setObjectName(QStringLiteral("lbImages"));
         lbImages->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        lbImages->setMovement(QListView::Snap);
+        lbImages->setEditTriggers(QAbstractItemView::AllEditTriggers);
+        lbImages->setProperty("showDropIndicator", QVariant(false));
+        lbImages->setDragDropMode(QAbstractItemView::NoDragDrop);
+        lbImages->setMovement(QListView::Static);
         lbImages->setResizeMode(QListView::Fixed);
         lbImages->setLayoutMode(QListView::SinglePass);
         lbImages->setViewMode(QListView::IconMode);

@@ -65,6 +65,7 @@ c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_eventmanagerdialog.c
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_eventeditdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_eventbuttonitem.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_envbrowserdialog.cpp
+c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_entbrowserdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_droplistwidget.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_csdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_configdialog.cpp
@@ -76,12 +77,11 @@ c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_eventeditdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_eventmanagerdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_animationsetupwidget.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_layerbrowserdialog.h
+c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_mainwindow.h
+c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_objectsettingsdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_prjsettingsdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_prjsetupdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_savedialog.h
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_mainwindow.h
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_entbrowserdialog.cpp
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_objectsettingsdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\win32\debug\kryptaeditorqt.ilk
 c:\qt5.3.1\projects\kryptaeditorqt\win32\debug\kryptaeditorqt.exe
 c:\qt5.3.1\projects\kryptaeditorqt\win32\debug\kryptaeditorqt.pdb

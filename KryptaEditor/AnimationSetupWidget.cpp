@@ -45,9 +45,12 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 
 	connect(ui->lbImages, &QListWidget::currentItemChanged, [this](QListWidgetItem*, QListWidgetItem*)
 	{
-		// what if the user reorders the images?
+		/** #TODO(incomplete) handle image reordering (reorder frame tabs as well) */
 		if (ui->lbImages->currentRow() < 0 || ui->lbImages->currentItem() == nullptr)
+		{
+			ui->lbImages->clearSelection();
 			return;
+		}
 		if (!timer->isActive())
 			ui->tabs->setCurrentIndex(ui->lbImages->currentRow());
 
@@ -56,20 +59,32 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 		for (; row < table->rowCount() && table->item(row, 0)->text() != "image"; ++row);
 
 		QString path;
-		if (!table->item(row, 1)->text().isEmpty())
-			path = table->item(row, 1)->text();
+		if (row < table->rowCount() && !table->item(row, 1)->text().isEmpty())
+			path = table->item(row, 1)->text().trimmed();
 		else
 		{
 			row = 0;
 			table = ui->tSheetProps;
 			for (; row < table->rowCount() && table->item(row, 0)->text() != "sheetImage"; ++row);
-			path = table->item(row, 1)->text();
+			path = table->item(row, 1)->text().trimmed();
 		}
 
-		QImageReader reader(path); /** #TODO(bug) if either of the image fields are empty, this could fail */
+		if (path.isEmpty())
+			return;
+		QImageReader reader(path);
 		QSize iconsize = reader.size();
 		QSize scaled = iconsize.scaled(ui->gvPivot->width(), ui->gvPivot->height(), Qt::KeepAspectRatio);
 		ui->gvPivot->setup(ui->lbImages->currentItem()->icon().pixmap(scaled), 0.5, 0.5);
+	});
+	connect(ui->lbImages, &QListWidget::itemClicked, [this](QListWidgetItem* item)
+	{
+		if (item->isSelected())
+			item->setSelected(false);
+		else
+		{
+			item->setSelected(true);
+			ui->lbImages->currentItemChanged(item, item);
+		}
 	});
 	connect(ui->bAdd, &QPushButton::clicked, [this](bool)
 	{
@@ -78,10 +93,10 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 		{
 			for (QString& file : files)
 			{
-				int currentindex = dynamic_cast<AnimManagerDialog*>(this->parent())->getUI()->cbAnims->currentIndex();
+				int currentindex = dynamic_cast<AnimManagerDialog*>(this->parent()->parent()->parent()->parent())->getUI()->cbAnims->currentIndex();
 				Animation<>* currentanim = Resources::getAnimations()[currentindex].get();
 
-				QString section = kryToQString(currentanim->properties[""]["name"] + ": ") + QString::number(ui->tabs->count());
+				QString section = kryToQString(currentanim->properties[currdir]["Skins"]["name"]) + ": " + QString::number(ui->tabs->count() - 1);
 				auto ksection = qToKString(section);
 				kry::Media::Config framesettings;
 				framesettings[ksection]["image"] = qToKString(file);
@@ -104,9 +119,15 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 					table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 					table->setItem(index, 1, new QTableWidgetItem(kryToQString(framesettings[ksection][key])));
 
-					currentanim->properties[ksection][key] = framesettings[ksection][key];
+					currentanim->properties[currdir][ksection][key] = framesettings[ksection][key];
 				}
-				ui->tabs->addTab(table, section);
+				connect(table, &QTableWidget::itemChanged, [this, table, currentanim, ksection](QTableWidgetItem* item)
+				{
+					if (item->column() == 0)
+						return;
+					currentanim->properties[currdir][ksection][qToKString(table->item(item->row(), 0)->text())] = qToKString(item->text().trimmed());
+				});
+				ui->tabs->addTab(table, "Frame: " + QString::number(ui->tabs->count()));
 
 				ui->lbImages->addItem(new QListWidgetItem(QIcon(file), ""));
 			}
@@ -120,7 +141,7 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 		ui->tabs->removeTab(index);
 
 		index = dynamic_cast<AnimManagerDialog*>(this->parent())->getUI()->cbAnims->currentIndex();
-		Resources::getAnimations()[index]->properties.removeSection(qToKString(toremove));
+		Resources::getAnimations()[index]->properties[currdir].removeSection(qToKString(toremove));
 	});
 	connect(ui->bAnimate, &QPushButton::clicked, [this](bool)
 	{
@@ -148,42 +169,73 @@ AnimationSetupWidget::~AnimationSetupWidget()
 	delete ui;
 }
 
-void AnimationSetupWidget::setup(std::shared_ptr<Animation<kry::Graphics::Texture> > animation)
+void AnimationSetupWidget::setup(std::shared_ptr<Animation<kry::Graphics::Texture> > animation, int tabindex)
 {
-	auto name = animation->properties[""]["name"];
+	currdir = tabindex;
+	auto sectionname = animation->properties[currdir]["Skins"]["name"];
 
 	QTableWidget* table = ui->tSheetProps;
 	while (table->rowCount() > 0)
 		table->removeRow(0);
-	for (auto& key : animation->properties[name].getKeyNames())
+	for (auto& key : animation->properties[currdir][sectionname].getKeyNames()) // main section
 	{
-		kryToQString(animation->properties[name][key]);
 		int index = table->rowCount();
 		table->insertRow(index);
 		table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 		table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-		table->setItem(index, 1, new QTableWidgetItem(kryToQString(animation->properties[name][key])));
+		table->setItem(index, 1, new QTableWidgetItem(kryToQString(animation->properties[currdir][sectionname][key])));
 	}
+	/*
+	connect(table, &QTableWidget::itemChanged, [this, table, animation, sectionname, tabindex](QTableWidgetItem* item)
+	{
+		if (item->column() == 0)
+			return;
+		animation->properties[tabindex][sectionname][qToKString(table->item(item->row(), 0)->text())] = qToKString(item->text().trimmed());
+	});*/
 
 	ui->lbImages->clear();
 	while (ui->tabs->count() > 0)
 		delete ui->tabs->widget(0);
-	for (auto& section : animation->properties.getSectionNames())
+	for (auto& section : animation->properties[currdir].getSectionNames()) // frames
 	{
-		if (section.isEmpty() || section == name)
+		if (section.isEmpty() || section == sectionname || section == "Skins")
 			continue;
 		table = initTable(new QTableWidget(ui->tabs));
-		for (auto& key : animation->properties[section].getKeyNames())
+		for (auto& key : animation->properties[currdir][section].getKeyNames()) // frame table
 		{
 			int index = table->rowCount();
 			table->insertRow(index);
 			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-			table->setItem(index, 1, new QTableWidgetItem(kryToQString(animation->properties[section][key])));
+			table->setItem(index, 1, new QTableWidgetItem(kryToQString(animation->properties[currdir][section][key])));
 		}
-		ui->tabs->addTab(table, kryToQString(section));
-		ui->lbImages->addItem(new QListWidgetItem(QIcon(animation->properties[section]["image"].isEmpty() ? animation->path : kryToQString(animation->properties[section]["image"])), ""));
+		connect(table, &QTableWidget::itemChanged, [this, table, animation, section, tabindex](QTableWidgetItem* item)
+		{
+			if (item->column() == 0)
+				return;
+			animation->properties[tabindex][section][qToKString(table->item(item->row(), 0)->text())] = qToKString(item->text().trimmed());
+		});
+		ui->tabs->addTab(table, "Frame: " + QString::number(ui->tabs->count()));
+		ui->lbImages->addItem(new QListWidgetItem(QIcon(animation->properties[currdir][section]["image"].isEmpty() ? animation->path : kryToQString(animation->properties[currdir][section]["image"])), ""));
 	}
+	if (ui->lbImages->count() > 0)
+		ui->lbImages->setCurrentRow(0);
+}
+
+void AnimationSetupWidget::saveTo(std::shared_ptr<Animation<kry::Graphics::Texture> > animation, int tabindex)
+{
+	auto sectionname = animation->properties[tabindex]["Skins"]["name"];
+	for (int row = 0; row < ui->tSheetProps->rowCount(); ++row)
+		animation->properties[tabindex][sectionname][qToKString(ui->tSheetProps->item(row, 0)->text())] = qToKString(ui->tSheetProps->item(row, 1)->text());
+	/*
+	for (int i = 0; i < ui->tabs->count(); ++i)
+	{
+		auto table = dynamic_cast<QTableWidget*>(ui->tabs->widget(i));
+		auto framename = sectionname + ": " + kry::Util::toString(i);
+		for (int row = 0; row < table->rowCount(); ++row)
+			animation->properties[tabindex][framename][qToKString(table->item(row, 0)->text())] = qToKString(table->item(row, 1)->text());
+	}
+	*/
 }
 
 void AnimationSetupWidget::release()
@@ -191,4 +243,14 @@ void AnimationSetupWidget::release()
 	timer->stop();
 	ui->bAnimate->setText("Animate");
 	ui->gvPivot->reset();
+}
+
+void AnimationSetupWidget::clearAll()
+{
+	ui->gvPivot->clear();
+	while (ui->tSheetProps->rowCount() > 0)
+		ui->tSheetProps->removeRow(0);
+	ui->lbImages->clear();
+	while (ui->tabs->count() > 0)
+		delete ui->tabs->widget(0);
 }

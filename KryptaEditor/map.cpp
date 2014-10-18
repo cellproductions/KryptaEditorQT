@@ -48,6 +48,7 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 		unsigned index = 0;
 		for (Tile& tile : layer->tiles)
 		{
+			tile.properties = defaulttile.asset->properties;
 			tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(i) * 10000u + (index++));
 			auto type = tile.properties["global"]["hardtype"];
 			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
@@ -377,6 +378,15 @@ size_t getAssetIndex(TypeAsset* asset, const TypeContainer& container)
 	return ~0;
 }
 
+size_t getAnimIndex(Resource<kry::Graphics::Texture>* anim)
+{
+	size_t index = 0;
+	for ( ; index < Resources::getAnimations().size(); ++index)
+		if (Resources::getAnimations()[index].get() == anim)
+			return index;
+	return ~0;
+}
+
 kry::Util::Vector2f coordToTileCoord(const kry::Util::Vector2f& coord)
 {
 	kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
@@ -443,7 +453,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		auto kname = qToKString(name);
 
 		std::vector<Util::String> lines;
-
+// MAP SETTINGS
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
 		lines.push_back("iconImage = icon.png");
@@ -455,9 +465,9 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("floorFadeTime = 250");
 		lines.push_back("loadingSound = sounds/loading.mp3");
 		lines.push_back("loadingImage = images/loading.png");
-
+// OBJECTIVE SETTINGS
 		lines.push_back("[Objectives]");
-
+// FLOORS/FLOOR SETTINGS
 		lines.push_back("[Floors]");
 		for (auto& floor : Map::getMap()->getLayers())
 			lines.push_back("floor" + Util::toString(floor->index) + '=' + Util::toString(floor->index));
@@ -468,7 +478,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			lines.push_back("dimensions= { " + Util::toString(floor->size[0]) + ", " + Util::toString(floor->size[1]) + " }");
 			lines.push_back("floorBinary=floors/floor" + Util::toString(floor->index) + ".txt");
 		}
-
+// ENTITY DECLARATIONS
 		std::vector<Object*> objects;
 		lines.push_back("[Entities]");
 		lines.push_back("player=-1");
@@ -486,7 +496,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 				}
 			}
 		}
-		
+// ENTITY SETTINGS
 		lines.push_back("[player]");
 		lines.push_back("type=player");
 		lines.push_back("floor=" + prjconfig["player"]["layer"]);
@@ -502,39 +512,24 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
 		lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
 		lines.push_back("skinConfig=PlayerSkins.txt");
-		lines.push_back("skinIdle=" + prjconfig["player"]["direction"]);
-		lines.push_back("skinRun=" + prjconfig["player"]["direction"]);
-		lines.push_back("health=" + prjconfig["player"]["direction"]);
+		lines.push_back("skinIdle=" + prjconfig["player"]["skinIdle"]);
+		lines.push_back("skinRun=" + prjconfig["player"]["skinRun"]);
+		lines.push_back("health=" + prjconfig["player"]["health"]);
 
 		count = 0;
 		for (auto& object : objects)
 		{
-			auto section = object->hardproperties[""]["name"];
+			auto section = object->hardproperties["Skins"]["name"];
 			lines.push_back("[entity" + Util::toString(count++) + ']');
 			lines.push_back("type=" + object->properties["global"]["hardtype"]);
-			object->hardproperties["all"]["skinConfig"] = "EntitySkins.txt";
+			if (object->hardproperties["all"]["directions"] == "1")
+				object->hardproperties["all"]["skinConfig"] = "EntitySkins.txt";
+			else
+				object->hardproperties["all"]["skinConfig"] = Util::toString(getAnimIndex(object->asset->resource)) + "Skins.txt"; /** #TODO(note) remember this while exporting animations */
 			for (auto& key : object->hardproperties["all"].getKeyNames())
 				lines.push_back(key + '=' + object->hardproperties["all"][key]);
 			for (auto& key : object->hardproperties[section].getKeyNames())
 				lines.push_back(key + '=' + object->hardproperties[section][key]);
-			/*
-			lines.push_back("floor=" + object->hardproperties[section]["floor"]);
-			lines.push_back("position= { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
-			lines.push_back("dimensions= { " + prjconfig["player"]["dimensionsx"] + ", " + prjconfig["player"]["dimensionsy"] + " }");
-			lines.push_back("direction=" + prjconfig["player"]["direction"]);
-			lines.push_back("seeInFog=" + prjconfig["player"]["seeInFog"]);
-			lines.push_back("directions=" + prjconfig["player"]["directions"]);
-			lines.push_back("maxHeuristic=" + prjconfig["player"]["maxHeuristic"]);
-			lines.push_back("viewDistance=" + prjconfig["player"]["viewDistance"]);
-			lines.push_back("moveAcceleration=" + prjconfig["player"]["moveAcceleration"]);
-			lines.push_back("turnAcceleration=" + prjconfig["player"]["turnAcceleration"]);
-			lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
-			lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
-			lines.push_back("skinConfig=PlayerSkins.txt");
-			lines.push_back("skinIdle=" + prjconfig["player"]["direction"]);
-			lines.push_back("skinRun=" + prjconfig["player"]["direction"]);
-			lines.push_back("health=" + prjconfig["player"]["direction"]);
-			*/
 		}
 
 		std::set<ExpTile> tilesused;
@@ -554,12 +549,12 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 				tilesused.insert(exptile);
 			}
 		}
-
+// TILE/WALL DECLARATIONS
 		lines.push_back("[Tiles]");
 		count = 0;
 		for (auto& exptile : tilesused)
 			lines.push_back("tile" + Util::toString(count++) + '=' + Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getObjects()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())));
-		
+// TILE/WALL SETTINGS 
 		count = 0;
 		for (auto& exptile : tilesused)
 		{
@@ -568,7 +563,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			auto type = object->properties["global"]["hardtype"];
 			object->hardproperties["floor"]["skinConfig"] = "TileSkins.txt";
 			object->hardproperties["floor"]["skin"] = qToKString(object->asset->resource->name);
-			object->hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }"; /** #TODO(change) hardcoded */
+			object->hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }"; /** #TODO(change) hardcoded (there are no defaults available yet) */
 			object->hardproperties["floor"]["sortDepth"] = "0";
 			object->hardproperties["floor"]["heuristic"] = "1";
 			if (type == "wall")
@@ -585,7 +580,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 
 		zipfile[""]["Map.txt"] = linesToBin(lines);
 		lines.clear();
-
+// FLOOR FILES
 		count = 0;
 		for (auto& layer : Map::getMap()->getLayers())
 		{
@@ -615,6 +610,9 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			zipfile[""]["floor" + Util::toString(count++) + ".txt"] = linesToBin(lines);
 			lines.clear();
 		}
+
+		/** #TODO(note) when exporting animations, if an object has 1 direction (tiles/some objects), place in Tile/EntitySkins.txt. otherwise, place in their own Skins file (avoids possible name collisions) */
+		/** #TODO(note) if an object has 1 direction, export North(0), else if 4, export every second starting from 0, otherwise, export all. (section name end numbers must be sequential (0-8)) */
 #if 0
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
@@ -696,7 +694,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		}
 
 		lines.push_back("[Entities]"); // no entities supported for now
-		lines.push_back("player=0"); /** #TODO(change) all hardcoded rubbish. no player needed (always will be a player). game does not need an exit (an objective could describe that easily) */
+		lines.push_back("player=0");
 		lines.push_back("exit=3");
 
 		index = 4;
@@ -783,7 +781,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			line = line.substring(0, line.getLength() - 1);
 			lines.push_back(line);
 		}
-		zipfile[""]["floor0.txt"] = linesToBin(lines); /** #TODO(change) change all of these .txt types to something much more representitive of what they hold */
+		zipfile[""]["floor0.txt"] = linesToBin(lines);
 		lines.clear();
 
 		lines.push_back("[Skins]");

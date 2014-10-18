@@ -1,19 +1,20 @@
 #include "AnimManagerDialog.h"
 #include "ui_AnimManagerDialog.h"
 #include "AnimationSetupWidget.h"
+#include "ui_AnimationSetupWidget.h"
 #include "Resources.h"
 #include "Utilities.h"
 #include <QListWidgetItem>
 #include <QFileDialog>
-#include <QTimer>
 #include <QImageReader>
 #include <QInputDialog>
 #include <QTableWidget>
+#include <QTabWidget>
 #include <QDebug>
 
 namespace
 {
-	QTableWidget* initTable(QTableWidget* table)
+	inline QTableWidget* initTable(QTableWidget* table)
 	{
 		table->setVerticalHeader(new QHeaderView(Qt::Vertical, table));
 		table->verticalHeader()->setVisible(false);
@@ -24,6 +25,22 @@ namespace
 		table->insertColumn(0);
 
 		return table;
+	}
+
+	inline AnimationSetupWidget* getSetup(Ui::AnimManagerDialog* ui, int tabindex) /** #TODO(note) qt screwed up and didnt promote the widgets properly. have to get them manually */
+	{
+		switch (tabindex)
+		{
+			case 0: return ui->northAnim;
+			case 1: return ui->northeastAnim;
+			case 2: return ui->eastAnim;
+			case 3: return ui->southeastAnim;
+			case 4: return ui->southAnim;
+			case 5: return ui->southwestAnim;
+			case 6: return ui->westAnim;
+			case 7: return ui->northwestAnim;
+		}
+		return nullptr;
 	}
 }
 
@@ -41,8 +58,21 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 	connect(ui->cbAnims, animsSignal, [this](int index)
 	{
 		if (index < 0)
-			return; /** #TODO(incomplete) state is not saved per direction. also, might be setting up for the wrong direction */
-		dynamic_cast<AnimationSetupWidget*>(ui->dirTabs->currentWidget())->setup(Resources::getAnimations()[index]);
+			return;
+		
+		saveTabStates(lastindex);
+		AnimationSetupWidget* currsetup;
+		for (int i = Animation<>::MAX_DIRECTION_COUNT - 1; i >= 0; --i)
+		{
+			currsetup = getSetup(ui, i);
+			currsetup->release();
+			currsetup->setup(Resources::getAnimations()[index], i);
+		}
+		lastindex = index;
+	});
+	connect(ui->dirTabs, &QTabWidget::currentChanged, [this](int index) /** #TODO(note) switching tabs doesnt update the pivotview (coz the other dirs have no sheetImage) */
+	{
+
 	});
 	connect(ui->bDeleteAnim, &QPushButton::clicked, [this](bool)
 	{
@@ -60,7 +90,11 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 		{
 			unsigned index = 0;
 			for (auto anim : Resources::getAnimations())
-				ui->cbAnims->addItem(QString::number(index++) + ':' + kryToQString(anim->properties[""]["name"]));
+			{
+				ui->cbAnims->addItem(QString::number(index) + ':' + kryToQString(anim->properties[index]["Skins"]["name"]));
+				++index;
+			}
+			saveTabStates(lastindex);
 			ui->cbAnims->setCurrentIndex(currentindex < ui->cbAnims->count() ? currentindex : 0);
 		}
 	});
@@ -83,8 +117,11 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 			result = test;
 
 			Animation<>* animation = Animation<>::createDefaultAnimation(qToKString(file), qToKString(result));
+			size_t size = Resources::getAnimations().size();
 			Resources::getAnimations().emplace_back(animation);
-			ui->cbAnims->addItem(QString::number(ui->cbAnims->count()) + ':' + kryToQString(animation->properties[""]["name"]));
+			ui->cbAnims->addItem(QString::number(ui->cbAnims->count()) + ':' + kryToQString(animation->properties[0]["Skins"]["name"]));
+			
+			saveTabStates(lastindex);
 			ui->cbAnims->setCurrentIndex(ui->cbAnims->count() - 1);
 		}
 	});
@@ -92,24 +129,35 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 
 AnimManagerDialog::~AnimManagerDialog()
 {
+	for (int i = 0; i < ui->dirTabs->count(); ++i)
+		getSetup(ui, i)->release();
 	delete ui;
 }
 
-DialogResult AnimManagerDialog::showDialog() /** #TODO(incomplete) add directions to dialog */
+DialogResult AnimManagerDialog::showDialog()
 {
-	if (ui->cbAnims->count() <= 0)
+	lastindex = -1;
+	if (ui->cbAnims->count() <= 0 && !Resources::getAnimations().empty())
 	{
-		if (!Resources::getAnimations().empty())
-		{
-			unsigned index = 0;
-			for (auto anim : Resources::getAnimations())
-				ui->cbAnims->addItem(QString::number(index++) + ':' + kryToQString(anim->properties[""]["name"]));
+		unsigned index = 0;
+		for (auto anim : Resources::getAnimations())
+			ui->cbAnims->addItem(QString::number(index++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
 			
-			//setup(Resources::getAnimations()[0]);
-		}
+		for (int i = Animation<>::MAX_DIRECTION_COUNT - 1; i >= 0; --i)
+			getSetup(ui, i)->setup(Resources::getAnimations()[0], i);
 	}
+	else if (!Resources::getAnimations().empty())
+		ui->dirTabs->setCurrentIndex(0);
 
 	exec();
 
+	saveTabStates(lastindex);
 	return lastresult;
+}
+
+void AnimManagerDialog::saveTabStates(int animindex)
+{
+	if (lastindex >= 0 && lastindex < ui->cbAnims->count())
+		for (int i = Animation<>::MAX_DIRECTION_COUNT - 1; i >= 0; --i)
+			getSetup(ui, i)->saveTo(Resources::getAnimations()[animindex], i);
 }

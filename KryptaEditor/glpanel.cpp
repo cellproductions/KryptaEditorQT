@@ -186,25 +186,59 @@ namespace Kryed
 						auto asset = Tool<PaintData>::getTool()->getData().asset;
 						if (asset->type == AssetType::STATIC_TILE)
 						{
-							Map::getMap()->getCurrentLayer()->tiles[index].asset = asset;
-							Map::getMap()->getCurrentLayer()->tiles[index].sprite.texture = asset->resource->rawresource;
-							/** #TODO(incomplete) set the tile's skin to the asset's animation */
+							Tile& tile = Map::getMap()->getCurrentLayer()->tiles[index];
+							auto id = tile.properties["global"]["id"];
+							tile.asset = asset;
+							tile.sprite.texture = asset->resource->rawresource;
+							if (Tool<PaintObjectData>::getTool()->getData().object != nullptr)
+							{
+								Tile* o = reinterpret_cast<Tile*>(Tool<PaintObjectData>::getTool()->getData().object);
+								tile.properties = o->properties;
+								tile.hardproperties = o->hardproperties;
+							}
+							else
+							{
+								Map::getMap()->getCurrentLayer()->tiles[index].properties = asset->properties;
+								auto type = asset->properties["global"]["hardtype"];
+								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+									tile.hardproperties[type][key] = "";
+								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["all"].getKeyNames())
+									tile.hardproperties["all"][key] = "";
+								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
+									tile.hardproperties["floor"][key] = "";
+								unsigned index = 0;
+								for (auto& resource : Resources::getAnimations())
+								{
+									if (resource.get() == asset->resource)
+										break;
+									++index;
+								}
+								tile.hardproperties["all"]["skinIdle"] = kry::Util::toString(index);
+							}
+							tile.properties["global"]["id"] = id;
 							paintGL();
 						}
 						else
 						{
+							
 							Object* object = new Object;
 							object->sprite.position = follower.sprite.position;
 							object->sprite.texture = asset->resource->rawresource;
 							object->sprite.dimensions = asset->resource->rawresource->getDimensions();
 							if (asset->type == AssetType::STATIC_ENTITY || asset->type == AssetType::ANIM_ENTITY)
 							{
-								kry::Util::Vector2f pos;
-								pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
-								pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
-								object->sprite.position = canvas.getCoord({static_cast<float>(event->x()), static_cast<float>(event->y())}) - object->sprite.dimensions * pos;
+								try
+								{
+									kry::Util::Vector2f pos;
+									pos[0] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]);
+									pos[1] = kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]);
+									object->sprite.position = canvas.getCoord({static_cast<float>(event->x()), static_cast<float>(event->y())}) - object->sprite.dimensions * pos;
+								}
+								catch (const kry::Util::Exception& e)
+								{
+									QMessageBox::information(nullptr, "Internal Error", QStringLiteral("Entity: ") + e.what(), QMessageBox::Ok);
+								}
 							}
-							object->asset = asset;
 							if (Tool<PaintObjectData>::getTool()->getData().object != nullptr)
 							{
 								Object* o = Tool<PaintObjectData>::getTool()->getData().object;
@@ -217,6 +251,7 @@ namespace Kryed
 							}
 							else
 							{
+								object->asset = asset;
 								object->properties = asset->properties;
 								kry::Util::String section;
 								if (object->properties.sectionExists("object"))
@@ -252,11 +287,18 @@ namespace Kryed
 								section = "entity";
 							object->properties[section]["posx"] = kry::Util::toString(follower.sprite.position[0]);
 							object->properties[section]["posy"] = kry::Util::toString(follower.sprite.position[1]);
-							kry::Util::Vector2f rel;
-							rel[0] = kry::Util::toDecimal<float>(asset->properties[section]["relativex"]);
-							rel[1] = kry::Util::toDecimal<float>(asset->properties[section]["relativey"]);
-							auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions);
-							object->hardproperties["all"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
+							try
+							{
+								kry::Util::Vector2f rel;
+								rel[0] = kry::Util::toDecimal<float>(asset->properties[section]["relativex"]);
+								rel[1] = kry::Util::toDecimal<float>(asset->properties[section]["relativey"]);
+								auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions);
+								object->hardproperties["all"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
+							}
+							catch (const kry::Util::Exception& e)
+							{
+								QMessageBox::information(nullptr, "Internal Error", QStringLiteral("Object: ") + e.what(), QMessageBox::Ok);
+							}
 							/** #TODO(incomplete) also add this to map loading */
 
 							Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
@@ -313,7 +355,6 @@ namespace Kryed
 					for (QAction* action : stack->actions())
 						dynamic_cast<QCheckBox*>(dynamic_cast<ObjectAction*>(action)->defaultWidget())->setChecked(false);
 
-				editaction->setEnabled(!checked);
 				removeaction->setEnabled(!checked);
 			});
 			for (auto& object : tile.objects)
@@ -383,8 +424,8 @@ namespace Kryed
 					Tool<>::switchTool(ToolType::PAINT);
 					PaintObjectData data;
 					data.size = value;
-					data.asset = tileaction->getObject()->asset;
-					data.object = tileaction->getObject();
+					data.asset = toedit->getObject()->asset;
+					data.object = toedit->getObject();
 					Tool<PaintObjectData>::getTool()->setData(data);
 				}
 			});
@@ -393,17 +434,17 @@ namespace Kryed
 				auto toedit = findSelected();
 				if (toedit != nullptr)
 				{
-					if (toedit == tileaction)
-						QMessageBox::information(this, "Invalid Action", "You cannot edit a tile (incomplete).", QMessageBox::Ok); /** #TODO(refactor) need to be able to edit a tile */
-					else
-					{
+					//if (toedit == tileaction)
+					//	QMessageBox::information(this, "Invalid Action", "You cannot edit a tile (incomplete).", QMessageBox::Ok);
+					//else
+					//{
 						if (objsettingsDialog->showDialog(toedit->getObject()->properties["global"]["id"] + " - " + toedit->getObject()->properties["global"]["name"],
 														  toedit->getObject()) == DialogResult::OK)
 						{
 							toedit->getObject()->properties = objsettingsDialog->getSettings();
 							toedit->getObject()->hardproperties = objsettingsDialog->getHardTypeSettings();
 						}
-					}
+					//}
 				}
 			});
 			connect(removeaction, &QAction::triggered, [this, &findSelected, tileaction, stack, index](bool)

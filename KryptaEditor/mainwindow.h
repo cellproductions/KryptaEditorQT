@@ -1,12 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <Graphics\Texture.h>
 #include <QMainWindow>
-
-namespace Ui
-{
-    class MainWindow;
-}
 
 class QLabel;
 class PrjSetupDialog;
@@ -16,6 +12,14 @@ class LayerBrowserDialog;
 class ConfigDialog;
 class PrjSettingsDialog;
 class AnimManagerDialog;
+
+template <typename Resource>
+struct Asset;
+
+namespace Ui
+{
+    class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
@@ -49,6 +53,7 @@ class MainWindow : public QMainWindow
         PrjSetupDialog* prjsetupDialog;
 		EntBrowserDialog* entbrowseDialog;
         EnvBrowserDialog* envbrowseDialog;
+		Asset<kry::Graphics::Texture>* prevAsset = nullptr;
 		LayerBrowserDialog* layerbrowseDialog;
 		ConfigDialog* configDialog;
 		PrjSettingsDialog* prjsettingsDialog;

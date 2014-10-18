@@ -27,7 +27,10 @@ class AnimManagerDialog : public CSDialog
 		inline Ui::AnimManagerDialog* getUI();
 
 	private:
+		void saveTabStates(int animindex);
+
 		Ui::AnimManagerDialog* ui;
+		int lastindex;
 };
 
 

@@ -205,7 +205,7 @@
   <customwidget>
    <class>AnimationSetupWidget</class>
    <extends>QWidget</extends>
-   <header>animationsetupwidget.h</header>
+   <header>AnimationSetupWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
