@@ -1,8 +1,8 @@
-﻿Build started 10/18/2014 11:18:45 PM.
+﻿Build started 10/20/2014 12:51:30 AM.
      1>Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt5.3.1\5.3\msvc2013_opengl\include /I.\GeneratedFiles\Debug /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtCore /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtGui /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtNetwork /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtOpenGL /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtWidgets /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtXml /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_NETWORK_LIB /D QT_OPENGL_LIB /D QT_WIDGETS_LIB /D QT_XML_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KryptaEditor\GLPanel.cpp
-         GLPanel.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt5.3.1\5.3\msvc2013_opengl\include /I.\GeneratedFiles\Debug /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtCore /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtGui /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtNetwork /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtOpenGL /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtWidgets /IC:\Qt5.3.1\5.3\msvc2013_opengl\include\QtXml /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_NETWORK_LIB /D QT_OPENGL_LIB /D QT_WIDGETS_LIB /D QT_XML_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt KryptaEditor\ObjectSettingsDialog.cpp
+         ObjectSettingsDialog.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\\KryptaEditorQT.exe" /NOLOGO /LIBPATH:C:\Qt5.3.1\5.3\msvc2013_opengl\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Networkd.lib Qt5OpenGLd.lib opengl32.lib glu32.lib Qt5Widgetsd.lib Qt5Xmld.lib Krypta2Dd.lib freetype253_D.lib glew32d.lib libmpg123.lib openAL32d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\KryptaEditorQT.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\KryptaEditorQT.lib" /MACHINE:X86 /SAFESEH Debug\KryptaEditorQT.res
          Debug\moc_AnimationSetupWidget.obj
@@ -58,4 +58,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.67
+Time Elapsed 00:00:02.28

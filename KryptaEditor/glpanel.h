@@ -6,6 +6,7 @@
 #include <Graphics/Canvas.h>
 
 class ObjectSettingsDialog;
+struct Object;
 
 namespace Kryed
 {
@@ -16,7 +17,10 @@ namespace Kryed
             GLPanel(QWidget* parent = nullptr);
 
 			inline static kry::Graphics::Canvas& getCanvas();
+			inline static kry::Graphics::Canvas& getWaypointCanvas();
+			inline static std::map<Object*, std::vector<kry::Graphics::Sprite>>& getWaypoints();
             void updateCanvas();
+			void updateWaypointCanvas();
             void setGrid(bool gridon);
 			void resetCamera();
 
@@ -46,7 +50,9 @@ namespace Kryed
             bool mouseDown;
 
 			static kry::Graphics::Canvas canvas;
+			static kry::Graphics::Canvas waypointcanvas;
             static kry::Graphics::Renderer renderer;
+			static std::map<Object*, std::vector<kry::Graphics::Sprite>> waypoints;
     };
 
 
@@ -54,6 +60,16 @@ namespace Kryed
     {
         return canvas;
     }
+
+    kry::Graphics::Canvas& GLPanel::getWaypointCanvas()
+    {
+        return waypointcanvas;
+    }
+
+	std::map<Object*, std::vector<kry::Graphics::Sprite>>& GLPanel::getWaypoints()
+	{
+		return waypoints;
+	}
 }
 
 #endif // GLPANEL_H

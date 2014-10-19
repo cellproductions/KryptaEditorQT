@@ -424,6 +424,11 @@ std::vector<unsigned char> fileToBin(const QString& filename)
 	return data;
 }
 
+kry::Util::String boolToKBool(const kry::Util::String& boolean) /** #TODO(note) use this to convert "true/false" to "1/0" */
+{
+	return boolean == "true" ? kry::Util::String("1") : kry::Util::String("0");
+}
+
 struct ExpTile
 {
 	Object* tile;
@@ -496,7 +501,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 				}
 			}
 		}
-// ENTITY SETTINGS
+// ENTITY SETTINGS /** #TODO(incomplete) add the keys 'path' and 'loopPath' to these settings (player doesnt need them) */
 		lines.push_back("[player]");
 		lines.push_back("type=player");
 		lines.push_back("floor=" + prjconfig["player"]["layer"]);
@@ -523,7 +528,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			lines.push_back("[entity" + Util::toString(count++) + ']');
 			lines.push_back("type=" + object->properties["global"]["hardtype"]);
 			if (object->hardproperties["all"]["directions"] == "1")
-				object->hardproperties["all"]["skinConfig"] = "EntitySkins.txt";
+				object->hardproperties["all"]["skinConfig"] = "EntitySkins.txt"; /** #TODO(incomplete) what if there is no skin? does the game handle empty skins? */
 			else
 				object->hardproperties["all"]["skinConfig"] = Util::toString(getAnimIndex(object->asset->resource)) + "Skins.txt"; /** #TODO(note) remember this while exporting animations */
 			for (auto& key : object->hardproperties["all"].getKeyNames())

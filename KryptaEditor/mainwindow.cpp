@@ -93,10 +93,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->lEntity->setGraphicsEffect(effect);
 		ui->lEnv->setGraphicsEffect(nullptr);
 
-		if (Tool<>::getTool()->getType() == ToolType::PAINT)
-			Tool<PaintData>::getTool()->getData().asset = entbrowseDialog->getSelectedAssetItem()->asset;
 		if (entbrowseDialog->getSelectedAssetItem() != nullptr)
+		{
+			if (Tool<>::getTool()->getType() == ToolType::PAINT)
+				Tool<PaintData>::getTool()->getData().asset = entbrowseDialog->getSelectedAssetItem()->asset;
 			prevAsset = entbrowseDialog->getSelectedAssetItem()->asset;
+		}
 	});
     connect(ui->bBrowseEnv, &QPushButton::clicked, [this]()
     {
@@ -116,10 +118,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->lEnv->setGraphicsEffect(effect);
 		ui->lEntity->setGraphicsEffect(nullptr);
 
-		if (Tool<>::getTool()->getType() == ToolType::PAINT)
-			Tool<PaintData>::getTool()->getData().asset = envbrowseDialog->getSelectedAssetItem()->asset;
 		if (envbrowseDialog->getSelectedAssetItem() != nullptr)
+		{
+			if (Tool<>::getTool()->getType() == ToolType::PAINT)
+				Tool<PaintData>::getTool()->getData().asset = envbrowseDialog->getSelectedAssetItem()->asset;
 			prevAsset = envbrowseDialog->getSelectedAssetItem()->asset;
+		}
 	});
 	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
 	{

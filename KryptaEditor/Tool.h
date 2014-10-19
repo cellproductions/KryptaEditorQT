@@ -1,13 +1,15 @@
 #ifndef TOOL_H
 #define TOOL_H
 
-#include <Graphics\Texture.h>
+#include <Graphics\Primitives.h>
+#include <QObject>
 #include <memory>
 
 enum class ToolType
 {
 	POINTER,
-	PAINT
+	PAINT,
+	WAYPOINT
 };
 
 struct PointerData
@@ -22,9 +24,22 @@ struct PaintData
 };
 
 struct Object;
-struct PaintObjectData : PaintData
+struct CopyObjectData : PaintData
 {
 	Object* object = nullptr;
+};
+
+struct Waypoint
+{
+	kry::Util::Vector2f position;
+	Object* owner;
+};
+
+struct WaypointData
+{
+	std::vector<Waypoint> waypoints;
+	Object* object;
+	bool looping = false;
 };
 
 template <typename DataType = PointerData>

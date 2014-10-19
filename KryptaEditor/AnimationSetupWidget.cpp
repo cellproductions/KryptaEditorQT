@@ -73,18 +73,41 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 			return;
 		QImageReader reader(path);
 		QSize iconsize = reader.size();
-		QSize scaled = iconsize.scaled(ui->gvPivot->width(), ui->gvPivot->height(), Qt::KeepAspectRatio);
-		ui->gvPivot->setup(ui->lbImages->currentItem()->icon().pixmap(scaled), 0.5, 0.5);
+		if (iconsize.width() == 0) // prevent a divide by 0
+			iconsize.setWidth(1);
+		if (iconsize.height() == 0)
+			iconsize.setHeight(1);
+		QString strpivot;
+		table = dynamic_cast<QTableWidget*>(ui->tabs->currentWidget());
+		for (row = 0; row < table->rowCount() && table->item(row, 0)->text() != "image"; ++row);
+		if (table->item(row, 1)->text().isEmpty())
+		{
+			for (row = 0; row < ui->tSheetProps->rowCount() && ui->tSheetProps->item(row, 0)->text() != "sheetImage"; ++row);
+			if (ui->tSheetProps->item(row, 1)->text().trimmed().isEmpty())
+				strpivot = "{ 0, 0 }";
+			else
+			{
+				for (row = 0; row < ui->tSheetProps->rowCount() && ui->tSheetProps->item(row, 0)->text() != "framePivot"; ++row);
+				strpivot = ui->tSheetProps->item(row, 1)->text().trimmed();
+			}
+		}
+		else
+		{
+			for (row = 0; row < table->rowCount() && table->item(row, 0)->text() != "pivot"; ++row);
+			strpivot = table->item(row, 1)->text().trimmed().isEmpty() ? QString("{ 0, 0 }") : table->item(row, 1)->text().trimmed();
+		}
+		auto pivot = kry::Util::Vector2f::Vector(qToKString(strpivot));
+		ui->gvPivot->setup(ui->lbImages->currentItem()->icon().pixmap(iconsize), pivot[0] / iconsize.width(), pivot[1] / iconsize.height());
 	});
 	connect(ui->lbImages, &QListWidget::itemClicked, [this](QListWidgetItem* item)
 	{
-		if (item->isSelected())
-			item->setSelected(false);
-		else
-		{
-			item->setSelected(true);
+		//if (item->isSelected())
+		//	item->setSelected(false);
+		//else
+		//{
+			//item->setSelected(true);
 			ui->lbImages->currentItemChanged(item, item);
-		}
+		//}
 	});
 	connect(ui->bAdd, &QPushButton::clicked, [this](bool)
 	{
@@ -135,7 +158,7 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 	});
 	connect(ui->bRemove, &QPushButton::clicked, [this](bool)
 	{
-		int index = ui->lbImages->currentRow();\
+		int index = ui->lbImages->currentRow();
 		QString toremove = ui->tabs->tabText(index);
 		delete ui->lbImages->takeItem(index);
 		ui->tabs->removeTab(index);
@@ -161,6 +184,28 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 			timer->start(1000 / fps);
 			ui->bAnimate->setText("Stop Animating");
 		}
+	});
+	ui->gvPivot->setClickCallback([this](float x, float y)
+	{
+		auto pivot = kry::Util::Vector2f(x, y);
+		int row = 0;
+		for (; row < ui->tSheetProps->rowCount() && ui->tSheetProps->item(row, 0)->text() != "framePivot"; ++row);
+		ui->tSheetProps->item(row, 1)->setText(kryToQString(pivot.toString()));
+		auto table = dynamic_cast<QTableWidget*>(ui->tabs->widget(ui->lbImages->currentRow()));
+		for (row = 0; row < table->rowCount() && table->item(row, 0)->text() != "image"; ++row);
+		if (!table->item(row, 1)->text().isEmpty())
+		{
+			for (row = 0; row < table->rowCount() && table->item(row, 0)->text() != "pivot"; ++row);
+			table->item(row, 1)->setText(kryToQString(pivot.toString()));
+		}
+	});
+	connect(ui->bSetPivot, &QPushButton::clicked, [this](bool)
+	{
+		ui->gvPivot->setPivoting(true);
+	});
+	connect(ui->bCancelPivot, &QPushButton::clicked, [this](bool)
+	{
+		ui->gvPivot->setPivoting(false);
 	});
 }
 

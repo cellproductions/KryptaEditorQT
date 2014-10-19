@@ -12,21 +12,24 @@
 #include <Utilities/Math.h>
 #include <Utilities/MD5.h>
 #include <Graphics/Primitives.h>
+#include <Utilities\Math.h>
 #include <QWheelEvent>
 #include <QCheckBox>
-#include <QDebug>
 #include <QMessageBox>
+#include <QDebug>
 #include <Windows.h>
 #include <functional>
 #include <iostream>
 
-namespace Kryed
+namespace Kryed /** #TODO(change) remove the qDebugs from here */
 {
     QPoint dragPos;
 	Object follower;
 
 	kry::Graphics::Canvas GLPanel::canvas;
+	kry::Graphics::Canvas GLPanel::waypointcanvas;
     kry::Graphics::Renderer GLPanel::renderer;
+	std::map<Object*, std::vector<kry::Graphics::Sprite>> GLPanel::waypoints;
 
 	GLPanel::GLPanel(QWidget* parent) : QGLWidget(QGLFormat(QGL::FormatOption::SampleBuffers), parent), objsettingsDialog(new ObjectSettingsDialog(this)), empty(true),
 		gridmode(true), mouseDown(false)
@@ -85,10 +88,22 @@ namespace Kryed
 		for (auto& pair : zorder)
 			canvas.addSprite(&pair.second->sprite);
 
-		canvas.addSprite(&follower.sprite); /** #TODO(change) make it so that the follower also follows the zorder rules */
+		if (Tool<>::getTool()->getType() != ToolType::WAYPOINT)
+			canvas.addSprite(&follower.sprite); /** #TODO(change) make it so that the follower also follows the zorder rules */
 
 		paintGL();
     }
+
+	void GLPanel::updateWaypointCanvas()
+	{
+		waypointcanvas.clear();
+		for (auto& pair : waypoints)
+			for (auto& sprite : pair.second)
+				waypointcanvas.addSprite(&sprite);
+		waypointcanvas.addSprite(&follower.sprite);
+
+		paintGL();
+	}
 
     void GLPanel::setGrid(bool gridon)
     {
@@ -108,12 +123,16 @@ namespace Kryed
 		glewInit();
 
         renderer.addCanvas(&canvas);
+		renderer.addCanvas(&waypointcanvas);
+		waypointcanvas.rgba[3] = 0.0f;
     }
 
     void GLPanel::resizeGL(int w, int h)
     {
-        this->canvas.dimensions = {static_cast<float>(w), static_cast<float>(h)};
-        this->canvas.setResolution({w, h});
+		this->canvas.dimensions = { static_cast<float>(w), static_cast<float>(h) };
+		this->canvas.setResolution({ w, h });
+		this->waypointcanvas.dimensions = this->canvas.dimensions;
+		this->waypointcanvas.setResolution({ w, h });
     }
 
     void GLPanel::paintGL()
@@ -190,9 +209,9 @@ namespace Kryed
 							auto id = tile.properties["global"]["id"];
 							tile.asset = asset;
 							tile.sprite.texture = asset->resource->rawresource;
-							if (Tool<PaintObjectData>::getTool()->getData().object != nullptr)
+							if (Tool<CopyObjectData>::getTool()->getData().object != nullptr)
 							{
-								Tile* o = reinterpret_cast<Tile*>(Tool<PaintObjectData>::getTool()->getData().object);
+								Tile* o = reinterpret_cast<Tile*>(Tool<CopyObjectData>::getTool()->getData().object);
 								tile.properties = o->properties;
 								tile.hardproperties = o->hardproperties;
 							}
@@ -239,9 +258,9 @@ namespace Kryed
 									QMessageBox::information(nullptr, "Internal Error", QStringLiteral("Entity: ") + e.what(), QMessageBox::Ok);
 								}
 							}
-							if (Tool<PaintObjectData>::getTool()->getData().object != nullptr)
+							if (Tool<CopyObjectData>::getTool()->getData().object != nullptr)
 							{
-								Object* o = Tool<PaintObjectData>::getTool()->getData().object;
+								Object* o = Tool<CopyObjectData>::getTool()->getData().object;
 								object->properties = o->properties;
 								object->hardproperties = o->hardproperties;
 								object->waypoints = o->waypoints;
@@ -304,7 +323,44 @@ namespace Kryed
 							Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
 							updateCanvas();
 						}
+					}
+					break;
+				case ToolType::WAYPOINT:
+					{
+							qDebug() << "waypoint click";
+						if (!isValidTileCoord(coord))
+							break;
+						size_t index = this->tileCoordToIndex(coord);
+						if (!isValidIndex(index))
+							break;
 
+						if (Tool<WaypointData>::getTool()->getData().object == nullptr)
+							return;
+
+						WaypointData& data = Tool<WaypointData>::getTool()->getData();
+						auto cursorpos = canvas.getCoord({(float)event->x(), (float)event->y()});
+						if (data.waypoints.size() > 1)
+						{
+							kry::Util::Vector2f pivot = { 0.09f, 1.0f };
+							auto startpoint = data.waypoints[0].position + follower.sprite.dimensions * pivot;
+							if (kry::Util::boxPointIntersect(cursorpos, startpoint, follower.sprite.dimensions))
+							{
+								
+							qDebug() << "looped";
+								data.looping = true;
+								for (auto& sprite : waypoints[data.object])
+									sprite.texture = Resources::getEditorTexture(EditorResource::FLAG_GREEN)->rawresource;
+								updateWaypointCanvas();
+							}
+						}
+						if (!data.looping)
+						{
+							qDebug() << "added";
+							kry::Graphics::Sprite sprite = follower.sprite;
+							waypoints[data.object].push_back(sprite);
+							updateWaypointCanvas();
+						}
+							qDebug() << "done";
 					}
 					break;
 			}
@@ -318,6 +374,61 @@ namespace Kryed
 				follower.sprite.rgba = 0.0f;
 				//updateCanvas();
 				paintGL();
+				return;
+			}
+			else if (Tool<>::getTool()->getType() == ToolType::WAYPOINT)
+			{
+				WaypointData& data = Tool<WaypointData>::getTool()->getData();
+				if (data.object == nullptr) // just a safety check
+					return;
+				auto cursorpos = canvas.getCoord({(float)event->x(), (float)event->y()});
+
+				kry::Util::Vector2f pivot = { 0.09f, 1.0f };
+				auto dims = Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource->getDimensions();
+				unsigned index = 0;
+				for (auto& waypoint : data.waypoints)
+				{
+					auto spritepoint = waypoint.position + dims * pivot;
+					if (kry::Util::boxPointIntersect(cursorpos, spritepoint, dims))
+					{
+						auto object = waypoint.owner;
+						QMenu context(this);
+						context.addAction("Owner: " + kryToQString(object->properties["global"]["id"]));
+						QAction* removeaction = new QAction("Remove", &context);
+						connect(removeaction, &QAction::triggered, [this, &context, &data, index](bool checked)
+						{
+							if (index == 0 || index == data.waypoints.size() - 1)
+							{
+								data.looping = false;
+								for (auto& sprite : getWaypoints()[data.object])
+									sprite.texture = Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource;
+							}
+							data.waypoints.erase(data.waypoints.begin() + index);
+							getWaypoints()[data.object].erase(getWaypoints()[data.object].begin() + index);
+							updateWaypointCanvas();
+							context.close();
+						});
+						context.addAction(removeaction);
+						context.exec(event->globalPos());
+
+						return;
+					}
+					++index;
+				}
+
+				auto type = data.object->properties["global"]["hardtype"];
+				data.object->hardproperties[type]["loopPath"] = data.looping ? kry::Util::String("true") : kry::Util::String("false");
+				kry::Util::String path;
+				for (auto& waypoint : data.waypoints)
+					path += waypoint.position.toString() + ", ";
+				data.object->hardproperties[type]["path"] = path.trim();
+				Tool<>::switchTool(ToolType::POINTER);
+				follower.sprite.texture = nullptr;
+				follower.sprite.rgba = 0.0f;
+				waypointcanvas.rgba[3] = 0.0f;
+				//updateCanvas();
+				paintGL();
+
 				return;
 			}
 
@@ -420,13 +531,13 @@ namespace Kryed
 				auto toedit = findSelected();
 				if (toedit != nullptr)
 				{
-					auto value = Tool<PaintObjectData>::getTool()->getType() == ToolType::PAINT ? Tool<PaintData>::getTool()->getData().size : 1;
+					auto value = Tool<CopyObjectData>::getTool()->getType() == ToolType::PAINT ? Tool<PaintData>::getTool()->getData().size : 1;
 					Tool<>::switchTool(ToolType::PAINT);
-					PaintObjectData data;
+					CopyObjectData data;
 					data.size = value;
 					data.asset = toedit->getObject()->asset;
 					data.object = toedit->getObject();
-					Tool<PaintObjectData>::getTool()->setData(data);
+					Tool<CopyObjectData>::getTool()->setData(data);
 				}
 			});
 			connect(editaction, &QAction::triggered, [this, &findSelected, tileaction, index](bool)
@@ -566,6 +677,34 @@ namespace Kryed
 									follower.sprite.position = canvas.getCoord(canvascoord) - pos;
 							}
 						}
+						redraw = true;
+					}
+					break;
+				case ToolType::WAYPOINT:
+					{
+						waypointcanvas.rgba[3] = 0.0f;
+						follower.sprite.texture = Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource;
+						follower.sprite.dimensions = Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource->getDimensions();
+						follower.sprite.rgba = 1.0f;
+						kry::Util::Vector2f pos = { 0.09f, 1.0f };
+						follower.sprite.position = canvas.getCoord(canvascoord) - follower.sprite.dimensions * pos;
+
+						for (auto& pair : waypoints)
+						{
+							if (pair.first == Tool<WaypointData>::getTool()->getData().object)
+							{
+								for (auto& sprite : pair.second) /** #TODO(note) compiler bug? removing the braces for this loop reveales the bug */
+								{
+									sprite.rgba = 1.0f;
+								}
+								continue;
+							}
+							for (auto& sprite : pair.second)
+							{
+								sprite.rgba = { 0.5f, 0.5f, 0.5f, 1.0f };
+							}
+						}
+
 						redraw = true;
 					}
 					break;

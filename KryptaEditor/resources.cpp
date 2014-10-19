@@ -197,14 +197,21 @@ void Resources::initEditorTextures()
 		missing->type = ResourceType::TEXTURE;
 		missing->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\missing.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
 
-		Resource<kry::Graphics::Texture>* flag = new Resource<kry::Graphics::Texture>;
-		flag->path = QString("editor\\flag.png");
-		flag->name = QString("flag.png");
-		flag->type = ResourceType::TEXTURE;
-		flag->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\flag.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
+		Resource<kry::Graphics::Texture>* flag_red = new Resource<kry::Graphics::Texture>;
+		flag_red->path = QString("editor\\flag_red.png");
+		flag_red->name = QString("flag_red.png");
+		flag_red->type = ResourceType::TEXTURE;
+		flag_red->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\flag_red.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
+
+		Resource<kry::Graphics::Texture>* flag_green = new Resource<kry::Graphics::Texture>;
+		flag_green->path = QString("editor\\flag_green.png");
+		flag_green->name = QString("flag_green.png");
+		flag_green->type = ResourceType::TEXTURE;
+		flag_green->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\flag_green.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
 
 		editortextures.emplace_back(missing);
-		editortextures.emplace_back(flag);
+		editortextures.emplace_back(flag_red);
+		editortextures.emplace_back(flag_green);
 	}
 	catch (const kry::Util::Exception& e)
 	{

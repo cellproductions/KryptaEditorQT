@@ -11,8 +11,9 @@
 
 enum class EditorResource : unsigned
 {
-	MISSING_TILE,
-	FLAG
+	MISSING_TILE = 0,
+	FLAG_RED,
+	FLAG_GREEN
 };
 
 enum class ResourceType : unsigned char

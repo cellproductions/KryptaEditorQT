@@ -3,7 +3,11 @@
 #include "Map.h"
 #include "EventButtonItem.h"
 #include "EventEditDialog.h"
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
+#include "glpanel.h"
 #include "Resources.h"
+#include "Tool.h"
 #include "Utilities.h"
 #include <QTableWidget>
 #include <QComboBox>
@@ -24,7 +28,7 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 	{
 		lastresult = DialogResult::OK;
 
-		for (int i = 0; i < ui->tabs->count() - 2; ++i)
+		for (int i = 0; i < ui->tabs->count() - 3; ++i)
 		{
 			QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(i));
 			for (int row = 0; row < table->rowCount(); ++row)
@@ -306,4 +310,59 @@ void ObjectSettingsDialog::updateTables(Object* object)
 		});
 		table->setCellWidget(index, 1, button);
 	}
+
+	table = initTable(new QTableWidget(ui->tabs));
+	ui->tabs->addTab(table, "waypoints");
+	table->insertRow(0);
+	QPushButton* button = new QPushButton("Edit Waypoints", table); /** #TODO(note) 2 options for waypointcanvas. remove it from the renderer if its not needed, or place the waypoints in the normal canvas instead (after everything else), updateCanvas instead of waypointcanvas */
+	button->setEnabled(false); /** #TODO(change) remove this line after committing */
+	button->setToolTip("Saves and closes the Object Settings window and begins recording of waypoint placement.");
+	connect(button, &QPushButton::clicked, [this, table, object](bool)
+	{
+		qDebug() << "waypoint mode on";
+		Tool<>::switchTool(ToolType::WAYPOINT); // follow on from here. follower isnt rendering and neither are the waypoints >:|
+		WaypointData data;
+		if (!table->item(1, 1)->text().isEmpty())
+		{
+			auto list = qToKString(table->item(1, 1)->text()).explode("},"); /** #TODO(bug) there's an exception thrown from here if the string is empty */
+			for (auto& vec : list)
+			{
+				Waypoint waypoint;
+				waypoint.owner = object;
+				waypoint.position = kry::Util::Vector2f::Vector((vec + '}').trim());
+				data.waypoints.push_back(waypoint);
+			}
+		}
+		data.object = object;
+		data.looping = table->item(2, 1)->text() == "true";
+		Tool<WaypointData>::getTool()->setData(data);
+		dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getUI()->glWidget->updateWaypointCanvas();
+
+		lastresult = DialogResult::OK;
+		close();
+	});
+	table->setCellWidget(0, 0, button);
+	button = new QPushButton("Clear Waypoints", table);
+	button->setEnabled(false); /** #TODO(change) remove this line after committing */
+	connect(button, &QPushButton::clicked, [this, table, object](bool)
+	{
+		table->item(1, 1)->setText("");
+		table->item(2, 1)->setText("false");
+		object->hardproperties[object->properties["global"]["hardtype"]]["path"] = "";
+		object->hardproperties[object->properties["global"]["hardtype"]]["loopPath"] = "false";
+		if (Kryed::GLPanel::getWaypoints().find(object) != Kryed::GLPanel::getWaypoints().end())
+			Kryed::GLPanel::getWaypoints().erase(object);
+	});
+	table->setCellWidget(0, 1, button);
+	table->insertRow(1);
+	table->insertRow(2);
+	table->setItem(1, 0, new QTableWidgetItem("path"));
+	table->setItem(2, 0, new QTableWidgetItem("loopPath"));
+	if (object->properties["global"]["hardtype"] == "enemy")
+	{
+		table->setItem(1, 1, new QTableWidgetItem(kryToQString(object->hardproperties[object->properties["global"]["hardtype"]]["path"])));
+		table->setItem(2, 1, new QTableWidgetItem(kryToQString(object->hardproperties[object->properties["global"]["hardtype"]]["loopPath"])));
+	}
+	if (object->asset->type == AssetType::STATIC_TILE)
+		table->hide();
 }

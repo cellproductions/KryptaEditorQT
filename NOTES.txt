@@ -1,7 +1,7 @@
 FLUX=keeps changing
 DOING=currently in development
 
-TODO HIGH:
+TODO HIGH(absolutely required):
 [x] finish project setup dialog
 [x] add objects/entities/tiles
 [x] add object/tile editing dialogs
@@ -21,9 +21,9 @@ TODO HIGH:
 [x] add properties that link to hardcoded properties
 [x] finish different property types (in the dialogs) for object hardtype settings [FLUX]
 [ ] complete exporting (remove hardcoded stuff, update) [FLUX]
-[ ] finish pivot editing for objects
-[ ] add object waypoints [DOING]
-[ ] add waypoint options dialog/manual placement
+[x] finish pivot editing for objects
+[x] add object waypoints
+[ ] add waypoint options dialog/manual placement [DOING]
 [x] add tile/object IDs
 [X] add skins structures
 [x] add skins management dialog
@@ -33,7 +33,7 @@ TODO HIGH:
 [ ] add object spawn options using the ObjectSettingsDialog
 [ ] finish diaries
 
-TODO MEDIUM:
+TODO MEDIUM(will pass fine without being added):
 [x] finish zorder sorting for renderables
 [x] finish pointer tool
 [ ] finish brush tool (brush sizes)
@@ -43,9 +43,10 @@ TODO MEDIUM:
 [ ] set a pivot for the upstairs object (and all other objects afterwards)
 [ ] add map uploading (requires login)
 [ ] finish the COUNT/VEC_2 type for hardtypes in the ObjectSettingsDialog
-[ ] finish layer editing
+[ ] finish layer editing (can already delete/add layers)
 
-TODO LOW:
+TODO LOW(extra fluff for polish):
+[ ] add grid overlay/toggle
 [ ] add placement follower as a sorted renderable
 [ ] add background options per layer
 [ ] add a help dialog (maybe using HTML pages)
