@@ -47,25 +47,24 @@ struct Animation : public Resource<ResType>
 class Resources
 {
     public:
-        static void loadResources(const QString& rootdir);
-		static void loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& assets);
-		static void loadAndAssignTextures(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& assets); /** #TODO(incomplete) add loadSounds/Music as well */
-		inline static std::vector<std::shared_ptr<Animation<> > >& getAnimations();
-		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& getTextures(); /** #TODO(note) should this be replaced with Anim's? */
-        inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > >& getSounds();
-        inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Source> > >& getMusic();
+		static void loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>& assets);
+		static void loadAndAssignSounds(std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& assets);
+		static void loadAndAssignMusic(std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& assets);
+		inline static std::vector<std::shared_ptr<Animation<>>>& getAnimations();
+		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>>& getTextures(); /** #TODO(note) should this be replaced with Anim's? */
+        inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>& getSounds();
+        inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>& getMusic();
 		static void initEditorTextures();
-		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& getEditorTextures();
-		inline static std::shared_ptr<Resource<kry::Graphics::Texture> > getEditorTexture(EditorResource texture);
+		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>>& getEditorTextures();
+		inline static std::shared_ptr<Resource<kry::Graphics::Texture>> getEditorTexture(EditorResource texture);
 
 	private:
 		Resources();
 
-		static std::vector<std::shared_ptr<Animation<> > > animations;
-        static std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > textures;
-        static std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > sounds;
-        static std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > music;
-		static std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > editortextures;
+		static std::vector<std::shared_ptr<Animation<>>> animations;
+        static std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>> sounds;
+        static std::vector<std::shared_ptr<Resource<kry::Audio::Source>>> music;
+		static std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>> editortextures;
 };
 
 
@@ -78,11 +77,6 @@ Resource<ResType>::~Resource()
 std::vector<std::shared_ptr<Animation<> > >& Resources::getAnimations()
 {
 	return animations;
-}
-
-const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& Resources::getTextures()
-{
-    return textures;
 }
 
 const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > >& Resources::getSounds()

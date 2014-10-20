@@ -93,6 +93,7 @@ public:
 
         bRemove = new QPushButton(AnimationSetupWidget);
         bRemove->setObjectName(QStringLiteral("bRemove"));
+        bRemove->setEnabled(false);
 
         horizontalLayout_3->addWidget(bRemove);
 

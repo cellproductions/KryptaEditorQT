@@ -20,16 +20,20 @@ TODO HIGH(absolutely required):
 [x] finish asset/resource loading
 [x] add properties that link to hardcoded properties
 [x] finish different property types (in the dialogs) for object hardtype settings [FLUX]
+[x] change entity/environment dialogs to suit types
 [ ] complete exporting (remove hardcoded stuff, update) [FLUX]
 [x] finish pivot editing for objects
 [x] add object waypoints
 [ ] add waypoint options dialog/manual placement [DOING]
+[ ] make some of the type widgets affect the tile/entity (change floor, set animation, etc.)
 [x] add tile/object IDs
 [X] add skins structures
 [x] add skins management dialog
 [x] add directions to skins dialog
 [ ] add items (inherits object? simplicity)
 [ ] add item dialog
+[ ] add sound/music
+[ ] add sound/music dialogs
 [ ] add object spawn options using the ObjectSettingsDialog
 [ ] finish diaries
 
@@ -40,10 +44,10 @@ TODO MEDIUM(will pass fine without being added):
 [ ] add clone tool
 [ ] add objectives (add exit here too?)/objective settings
 [x] move pivoting to the skins manager
-[ ] set a pivot for the upstairs object (and all other objects afterwards)
 [ ] add map uploading (requires login)
 [ ] finish the COUNT/VEC_2 type for hardtypes in the ObjectSettingsDialog
 [ ] finish layer editing (can already delete/add layers)
+[ ] add boundingbox overlay
 
 TODO LOW(extra fluff for polish):
 [ ] add grid overlay/toggle
@@ -52,6 +56,7 @@ TODO LOW(extra fluff for polish):
 [ ] add a help dialog (maybe using HTML pages)
 [ ] add key names/descriptions for keys in types.ini for hover help/table names
 [ ] finish tooltips for everything
+[ ] add debug overlay
 
 BUGS:
 * object settings dialog does not clear the icon pane after closing

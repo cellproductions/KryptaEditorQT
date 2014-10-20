@@ -8,7 +8,6 @@
 #include <QDebug>
 
 std::vector<std::shared_ptr<Animation<> > > Resources::animations;
-std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > Resources::textures;
 std::vector<std::shared_ptr<Resource<kry::Audio::Buffer> > > Resources::sounds;
 std::vector<std::shared_ptr<Resource<kry::Audio::Source> > > Resources::music;
 std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > > Resources::editortextures;
@@ -78,56 +77,6 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 	return animation;
 }
 
-void Resources::loadResources(const QString& rootdir) /** #TODO(incomplete) add exception handling here (collect list of resources that failed to load, display them in message box) */
-{
-    auto strrootdir = rootdir.toStdString();
-    auto resources = strrootdir + "\\images";
-    for (kry::Util::String& path : kry::System::getAllFiles(kry::Util::String(resources.c_str(), resources.length())))
-    {
-        if (path[path.getLength() - 1] == '.')
-            continue;
-
-        Resource<kry::Graphics::Texture>* resource = new Resource<kry::Graphics::Texture>;
-		resource->type = ResourceType::TEXTURE;
-		resource->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
-        resource->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
-        auto name = path.substring(path.lastIndexOf('\\') + 1);
-        resource->name = QString::fromStdString(std::string(name.getData(), name.getLength()));
-
-        textures.emplace_back(resource);
-    }
-    resources = strrootdir + "\\audio";
-    for (kry::Util::String& path : kry::System::getAllFiles(kry::Util::String(resources.c_str(), resources.length())))
-    {
-        if (path[path.getLength() - 1] == '.')
-            continue;
-
-        Resource<kry::Audio::Buffer>* resource = new Resource<kry::Audio::Buffer>;
-        resource->type = ResourceType::SOUND;
-        resource->rawresource = nullptr;
-        resource->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
-        auto name = path.substring(path.lastIndexOf('\\') + 1);
-        resource->name = QString::fromStdString(std::string(name.getData(), name.getLength()));
-
-        sounds.emplace_back(resource);
-    }
-    resources += "\\music";
-    for (kry::Util::String& path : kry::System::getAllFiles(kry::Util::String(resources.c_str(), resources.length())))
-    {
-        if (path[path.getLength() - 1] == '.')
-            continue;
-
-        Resource<kry::Audio::Source>* resource = new Resource<kry::Audio::Source>;
-        resource->type = ResourceType::MUSIC;
-        resource->rawresource = nullptr;
-        resource->path = QString::fromStdString(std::string(path.getData(), path.getLength()));
-        auto name = path.substring(path.lastIndexOf('\\') + 1);
-        resource->name = QString::fromStdString(std::string(name.getData(), name.getLength()));
-
-        music.emplace_back(resource);
-    }
-}
-
 void Resources::loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& assets)
 {
 	try
@@ -170,21 +119,54 @@ void Resources::loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::G
 	}
 }
 
-void Resources::loadAndAssignTextures(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& assets)
+void Resources::loadAndAssignSounds(std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& assets)
 {
-    for (std::shared_ptr<Asset<kry::Graphics::Texture> >& asset : assets)
-    {
-        Resource<kry::Graphics::Texture>* resource = new Resource<kry::Graphics::Texture>;
-        resource->type = ResourceType::TEXTURE;
-        auto path = asset->properties["global"]["resource"];
-		resource->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(path, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
-		resource->path = kryToQString(path);
-        auto name = path.substring(path.lastIndexOf('\\') + 1);
-		resource->name = kryToQString(name);
+	try
+	{
+		for (auto& asset : assets)
+		{
+			Resource<kry::Audio::Buffer>* resource = new Resource<kry::Audio::Buffer>;
+			auto name = asset->properties["global"]["resource"];
+			resource->name = kryToQString(name.substring(name.lastIndexOf('\\') + 1));
+			resource->path = kryToQString(name);
+			resource->type = ResourceType::SOUND;
+			kry::Audio::Format format;
+			unsigned frequency;
+			auto pcm = kry::Media::mp3FileToPCM(name, format, frequency);
+			resource->rawresource = new kry::Audio::Buffer(pcm, format, frequency);
 
-        textures.emplace_back(resource);
-        asset->resource = resource;
-    }
+			sounds.emplace_back(resource);
+			asset->resource = resource;
+		}
+	}
+	catch (const kry::Util::Exception& e)
+	{
+		QMessageBox::information(nullptr, "Sound Loading Error", e.what(), QMessageBox::Ok);
+	}
+}
+
+void Resources::loadAndAssignMusic(std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& assets)
+{
+	try
+	{
+		
+		for (auto& asset : assets)
+		{
+			Resource<kry::Audio::Source>* resource = new Resource<kry::Audio::Source>;
+			auto name = asset->properties["global"]["resource"];
+			resource->name = kryToQString(name.substring(name.lastIndexOf('\\') + 1));
+			resource->path = kryToQString(name);
+			resource->type = ResourceType::MUSIC;
+			resource->rawresource = nullptr;
+
+			music.emplace_back(resource);
+			asset->resource = resource;
+		}
+	}
+	catch (const kry::Util::Exception& e)
+	{
+		QMessageBox::information(nullptr, "Music Loading Error", e.what(), QMessageBox::Ok);
+	}
 }
 
 void Resources::initEditorTextures()

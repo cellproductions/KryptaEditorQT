@@ -96,7 +96,7 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 			for (row = 0; row < table->rowCount() && table->item(row, 0)->text() != "pivot"; ++row);
 			strpivot = table->item(row, 1)->text().trimmed().isEmpty() ? QString("{ 0, 0 }") : table->item(row, 1)->text().trimmed();
 		}
-		auto pivot = kry::Util::Vector2f::Vector(qToKString(strpivot));
+		auto pivot = kry::Util::Vector2f::Vector(qToKString(strpivot.isEmpty() ? QString("{ 0, 0 }") : strpivot));
 		ui->gvPivot->setup(ui->lbImages->currentItem()->icon().pixmap(iconsize), pivot[0] / iconsize.width(), pivot[1] / iconsize.height());
 	});
 	connect(ui->lbImages, &QListWidget::itemClicked, [this](QListWidgetItem* item)
@@ -154,6 +154,8 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 
 				ui->lbImages->addItem(new QListWidgetItem(QIcon(file), ""));
 			}
+			if (ui->tabs->count() > 1)
+				ui->bRemove->setEnabled(true);
 		}
 	});
 	connect(ui->bRemove, &QPushButton::clicked, [this](bool)
@@ -162,6 +164,8 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 		QString toremove = ui->tabs->tabText(index);
 		delete ui->lbImages->takeItem(index);
 		ui->tabs->removeTab(index);
+		if (ui->tabs->count() <= 1)
+			ui->bRemove->setEnabled(false);
 
 		index = dynamic_cast<AnimManagerDialog*>(this->parent())->getUI()->cbAnims->currentIndex();
 		Resources::getAnimations()[index]->properties[currdir].removeSection(qToKString(toremove));

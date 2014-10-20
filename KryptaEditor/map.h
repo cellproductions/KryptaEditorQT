@@ -2,7 +2,7 @@
 #define MAP_H
 
 #include "Assets.h"
-#include "EventSystem.h"
+//#include "EventSystem.h"
 #include <Graphics/Primitives.h>
 #include <Utilities/Vector.h>
 #include <QListWidget>
@@ -15,7 +15,7 @@ struct Object
 
 	kry::Media::Config properties;
 	kry::Media::Config hardproperties;
-	std::vector<Event> events;
+	//std::vector<Event> events; /** #TODO(note) ignore this */
 	std::vector<kry::Graphics::Sprite> waypoints;
 	kry::Graphics::Sprite sprite;
 	Asset<kry::Graphics::Texture>* asset;

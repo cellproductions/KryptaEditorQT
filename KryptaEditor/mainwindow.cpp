@@ -9,12 +9,13 @@
 #include "SaveDialog.h"
 #include "PrjSettingsDialog.h"
 #include "AnimManagerDialog.h"
+#include "AudioManagerDialog.h"
 #include "Configuration.h"
 #include "Map.h"
 #include "Resources.h"
 #include "Assets.h"
 #include "Tool.h"
-#include "EventSystem.h"
+//#include "EventSystem.h"
 #include <QGraphicsColorizeEffect>
 #include <QToolButton>
 #include <QFileDialog>
@@ -26,7 +27,7 @@ static const QString mainTitle("Krypta Map Editor");
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), prjsetupDialog(new PrjSetupDialog(this)),
 	entbrowseDialog(new EntBrowserDialog(this)), envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this)), configDialog(new ConfigDialog(this)),
-	prjsettingsDialog(new PrjSettingsDialog(this)), animmanagerDialog(new AnimManagerDialog(this)), saved(true)
+	prjsettingsDialog(new PrjSettingsDialog(this)), animmanagerDialog(new AnimManagerDialog(this)), audiomanagerDialog(new AudioManagerDialog(this)), saved(true)
 {
 	ui->setupUi(this);
 
@@ -71,6 +72,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		if (!Map::getMap())
 			return;
 		if (animmanagerDialog->showDialog() == DialogResult::OK)
+		{
+
+		}
+	});
+	connect(ui->miProjectAudio, &QAction::triggered, [this]()
+	{
+		if (!Map::getMap())
+			return;
+		if (audiomanagerDialog->showDialog() == DialogResult::OK)
 		{
 
 		}
@@ -203,7 +213,7 @@ void MainWindow::init()
             this->showMaximized();
 		configDialog->setConfigData(Configuration::getConfig());
 		Resources::initEditorTextures();
-		EventSystem::createSystem();
+		//EventSystem::createSystem();
     }
     catch (const kry::Util::Exception&)
     {
@@ -226,7 +236,7 @@ void MainWindow::onNewTrigger()
                 Map::getMap()->resetMap();
 			Map::setProjectName(prjsetupDialog->getUI()->tbPrjName->text());
 			Tile defaulttile;
-			defaulttile.asset = Assets::getTiles()[0].get();
+			defaulttile.asset = Assets::getTiles()[0].get(); /** #TODO(bug) there might not be any assets */
 			auto map = Map::createMap(prjsetupDialog->getUI()->tbMapName->text(), defaulttile,
 									  prjsetupDialog->getUI()->lbLayers);
 			saved = false;

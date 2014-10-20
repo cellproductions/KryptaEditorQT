@@ -141,7 +141,7 @@ DialogResult AnimManagerDialog::showDialog()
 	{
 		unsigned index = 0;
 		for (auto anim : Resources::getAnimations())
-			ui->cbAnims->addItem(QString::number(index++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
+			ui->cbAnims->addItem(QString::number(index++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"])); /** #TODO(bug) for some reason there's a 0 on the end of each name */
 			
 		for (int i = Animation<>::MAX_DIRECTION_COUNT - 1; i >= 0; --i)
 			getSetup(ui, i)->setup(Resources::getAnimations()[0], i);

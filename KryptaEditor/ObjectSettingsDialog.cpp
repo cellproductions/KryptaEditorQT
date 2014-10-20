@@ -27,15 +27,8 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 	connect(ui->bSave, &QPushButton::clicked, [this]()
 	{
 		lastresult = DialogResult::OK;
-
-		for (int i = 0; i < ui->tabs->count() - 3; ++i)
-		{
-			QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(i));
-			for (int row = 0; row < table->rowCount(); ++row)
-				settings[qToKString(ui->tabs->tabBar()->tabText(i))][qToKString(table->item(row, 0)->text())] = qToKString(table->item(row, 1)->text());
-		}
-
-		QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(ui->tabs->count() - 2)); // hardtype tab
+		
+		QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(0)); // hardtype tab
 		kry::Util::String type = settings["global"]["hardtype"];
 		
 		auto saveHard = [this, table](const kry::Util::String& section)
@@ -53,7 +46,7 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 				}
 
 				auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (type.isEmpty() || type == "COUNT" || type == "VEC_2") /** #TODO(change) add these 2 types as widgets instead */
+				if (type.isEmpty() || type == "COUNT" || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE") /** #TODO(change) add these 2 types as widgets instead */
 					hardtypesettings[section][key] = qToKString(table->item(rowindex, 1)->text());
 				else if (type == "FLOOR_ID")
 				{
@@ -86,6 +79,20 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 				{
 					auto value = dynamic_cast<QSpinBox*>(table->cellWidget(rowindex, 1))->value();
 					hardtypesettings[section][key] = kry::Util::toString(value);
+				}
+				else if (type == "SOUND_ID")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					text = text.left(text.indexOf(':'));
+					if (text != "-1")
+						hardtypesettings[section][key] = qToKString(text);
+				}
+				else if (type == "MUSIC_ID")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					text = text.left(text.indexOf(':'));
+					if (text != "-1")
+						hardtypesettings[section][key] = qToKString(text);
 				}
 
 				/** #TODO(incomplete) add parts for whatever else that comes along */
@@ -165,50 +172,20 @@ void ObjectSettingsDialog::updateTables(Object* object)
 {
 	while (ui->tabs->count() > 0)
 		delete ui->tabs->widget(0);
-
+	
 	QTableWidget* table = initTable(new QTableWidget(ui->tabs));
-	ui->tabs->addTab(table, "global");
-
-	for (kry::Util::String& key : settings["global"].getKeyNames())
-	{
-		int index = table->rowCount();
-		table->insertRow(index);
-		table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
-		table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-		table->setItem(index, 1, new QTableWidgetItem(kryToQString(settings["global"][key])));
-	}
-
-	for (kry::Util::String& section : settings.getSectionNames())
-	{
-		if (section.isEmpty() || section == "global" || section == "events")
-			continue;
-
-		QTableWidget* table = initTable(new QTableWidget(ui->tabs));
-		ui->tabs->addTab(table, kryToQString(section));
-
-		for (kry::Util::String& key : settings[section].getKeyNames())
-		{
-			int index = table->rowCount();
-			table->insertRow(index);
-			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
-			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-			table->setItem(index, 1, new QTableWidgetItem(kryToQString(settings[section][key])));
-		}
-	}
-
-	table = initTable(new QTableWidget(ui->tabs));
-	ui->tabs->addTab(table, "hardtype");
+	ui->tabs->addTab(table, "Settings");
 	kry::Util::String& type = object->properties["global"]["hardtype"];
 	auto setupHard = [this, table](const kry::Util::String& section)
 	{
-		for (auto& key : hardtypesettings[section].getKeyNames())
+		for (auto& key : hardtypesettings[section].getKeyNames()) /** #TODO(incomplete) some of these should actually do things (change animation, move floor, etc) */
 		{
 			int index = table->rowCount();
 			table->insertRow(index);
 			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-			if (type.isEmpty() || type == "COUNT" || type == "VEC_2")
+			if (type.isEmpty() || type == "COUNT" || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE")
 				table->setItem(index, 1, new QTableWidgetItem(kryToQString(hardtypesettings[section][key])));
 			else if (type == "FLOOR_ID")
 			{
@@ -252,6 +229,21 @@ void ObjectSettingsDialog::updateTables(Object* object)
 			else if (type == "ANIM_ID")
 			{
 				QComboBox* box = new QComboBox(table);
+				table->setCellWidget(index, 1, box);
+				void(QComboBox::* animsSignal)(int) = &QComboBox::currentIndexChanged;
+				connect(box, animsSignal, [this, table, index](int index)
+				{
+					auto key = qToKString(table->item(index, 0)->text());
+					if (key == "skin" || key == "skinIdle")
+					{
+						auto text = dynamic_cast<QComboBox*>(table->cellWidget(index, 1))->currentText();
+						text = text.left(text.indexOf(':'));
+						if (text != "-1")
+							ui->lObject->setPixmap(QIcon(Resources::getAnimations()[text.toInt()]->path).pixmap(ui->lObject->size()));
+						else
+							ui->lObject->setPixmap(QIcon(Resources::getEditorTexture(EditorResource::MISSING_TILE)->path).pixmap(ui->lObject->size()));
+					}
+				});
 				box->setEditable(false);
 				unsigned i = 0;
 				box->addItem("-1:none");
@@ -259,7 +251,6 @@ void ObjectSettingsDialog::updateTables(Object* object)
 					box->addItem(QString::number(i++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
 				if (!hardtypesettings[section][key].isEmpty())
 					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]) + 1);
-				table->setCellWidget(index, 1, box);
 			}
 			else if (type == "ANIM_DIR")
 			{
@@ -285,12 +276,73 @@ void ObjectSettingsDialog::updateTables(Object* object)
 					box->setValue(kry::Util::toIntegral<int>(hardtypesettings[section][key]));
 				table->setCellWidget(index, 1, box);
 			}
+			else if (type == "SOUND_ID")
+			{
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				unsigned i = 0;
+				box->addItem("-1:none");
+				for (auto& sound : Assets::getSounds())
+					box->addItem(QString::number(i++) + ':' + kryToQString(sound->properties["global"]["name"]));
+				if (!hardtypesettings[section][key].isEmpty())
+					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]) + 1);
+				table->setCellWidget(index, 1, box);
+			}
+			else if (type == "MUSIC_ID")
+			{
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				unsigned i = 0;
+				box->addItem("-1:none");
+				for (auto& music : Assets::getMusic())
+					box->addItem(QString::number(i++) + ':' + kryToQString(music->properties["global"]["name"]));
+				if (!hardtypesettings[section][key].isEmpty())
+					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]) + 1);
+				table->setCellWidget(index, 1, box);
+			}
 			/** #TODO(incomplete) add parts for whatever else that comes along */
 		}
 	};
-	setupHard(object->asset->type == AssetType::STATIC_TILE ? kry::Util::String("floor") : kry::Util::String("all"));
+	setupHard(object->asset->type == AssetType::TILE ? kry::Util::String("floor") : kry::Util::String("all"));
 	setupHard(type);
+	/*
+	connect(table, &QTableWidget::itemChanged, [this, table, object](QTableWidgetItem* item)
+	{
+		if (item->column() != 1)
+			return;
 
+		auto key = qToKString(table->item(item->row(), 0)->text());
+		if (hardtypesettings.sectionExists("all"))
+		{
+			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())["all"][key];
+			if (type == "ANIM_ID")
+			{
+				auto text = dynamic_cast<QComboBox*>(table->cellWidget(item->row(), 1))->currentText();
+				if (key == "skinIdle" && !text.isEmpty())
+				{
+					text = text.left(text.indexOf(':'));
+					if (text != "-1")
+						ui->lObject->setPixmap(QIcon(Resources::getAnimations()[text.toInt()]->path).pixmap(ui->lObject->size()));
+				}
+			}
+		}
+		else // floor
+		{
+			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"][key];
+			if (type == "ANIM_ID")
+			{
+				auto text = dynamic_cast<QComboBox*>(table->cellWidget(item->row(), 1))->currentText();
+				if (key == "skin" && !text.isEmpty())
+				{
+					text = text.left(text.indexOf(':'));
+					if (text != "-1")
+						ui->lObject->setPixmap(QIcon(Resources::getAnimations()[text.toInt()]->path).pixmap(ui->lObject->size()));
+				}
+			}
+		}
+	});
+	*/
+#if 0
 	table = initTable(new QTableWidget(ui->tabs));
 	ui->tabs->addTab(table, "events");
 	for (Event& event : object->events)
@@ -310,59 +362,63 @@ void ObjectSettingsDialog::updateTables(Object* object)
 		});
 		table->setCellWidget(index, 1, button);
 	}
+#endif
 
-	table = initTable(new QTableWidget(ui->tabs));
-	ui->tabs->addTab(table, "waypoints");
-	table->insertRow(0);
-	QPushButton* button = new QPushButton("Edit Waypoints", table); /** #TODO(note) 2 options for waypointcanvas. remove it from the renderer if its not needed, or place the waypoints in the normal canvas instead (after everything else), updateCanvas instead of waypointcanvas */
-	button->setEnabled(false); /** #TODO(change) remove this line after committing */
-	button->setToolTip("Saves and closes the Object Settings window and begins recording of waypoint placement.");
-	connect(button, &QPushButton::clicked, [this, table, object](bool)
+	if (object->asset->type != AssetType::TILE)
 	{
-		qDebug() << "waypoint mode on";
-		Tool<>::switchTool(ToolType::WAYPOINT); // follow on from here. follower isnt rendering and neither are the waypoints >:|
-		WaypointData data;
-		if (!table->item(1, 1)->text().isEmpty())
+		table = initTable(new QTableWidget(ui->tabs));
+		ui->tabs->addTab(table, "Waypoints");
+		table->insertRow(0);
+		QPushButton* button = new QPushButton("Edit Waypoints", table); /** #TODO(note) 2 options for waypointcanvas. remove it from the renderer if its not needed, or place the waypoints in the normal canvas instead (after everything else), updateCanvas instead of waypointcanvas */
+		button->setEnabled(false); /** #TODO(change) remove this line after committing */
+		button->setToolTip("Saves and closes the Object Settings window and begins recording of waypoint placement.");
+		connect(button, &QPushButton::clicked, [this, table, object](bool)
 		{
-			auto list = qToKString(table->item(1, 1)->text()).explode("},"); /** #TODO(bug) there's an exception thrown from here if the string is empty */
-			for (auto& vec : list)
+			qDebug() << "waypoint mode on";
+			Tool<>::switchTool(ToolType::WAYPOINT); // follow on from here. follower isnt rendering and neither are the waypoints >:|
+			WaypointData data;
+			if (!table->item(1, 1)->text().isEmpty())
 			{
-				Waypoint waypoint;
-				waypoint.owner = object;
-				waypoint.position = kry::Util::Vector2f::Vector((vec + '}').trim());
-				data.waypoints.push_back(waypoint);
+				auto list = qToKString(table->item(1, 1)->text()).explode("},"); /** #TODO(bug) there's an exception thrown from here if the string is empty */
+				for (auto& vec : list)
+				{
+					Waypoint waypoint;
+					waypoint.owner = object;
+					waypoint.position = kry::Util::Vector2f::Vector((vec + '}').trim());
+					data.waypoints.push_back(waypoint);
+				}
 			}
-		}
-		data.object = object;
-		data.looping = table->item(2, 1)->text() == "true";
-		Tool<WaypointData>::getTool()->setData(data);
-		dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getUI()->glWidget->updateWaypointCanvas();
+			data.object = object;
+			data.looping = table->item(2, 1)->text() == "true";
+			Tool<WaypointData>::getTool()->setData(data);
+			dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getUI()->glWidget->updateWaypointCanvas();
 
-		lastresult = DialogResult::OK;
-		close();
-	});
-	table->setCellWidget(0, 0, button);
-	button = new QPushButton("Clear Waypoints", table);
-	button->setEnabled(false); /** #TODO(change) remove this line after committing */
-	connect(button, &QPushButton::clicked, [this, table, object](bool)
-	{
-		table->item(1, 1)->setText("");
-		table->item(2, 1)->setText("false");
-		object->hardproperties[object->properties["global"]["hardtype"]]["path"] = "";
-		object->hardproperties[object->properties["global"]["hardtype"]]["loopPath"] = "false";
-		if (Kryed::GLPanel::getWaypoints().find(object) != Kryed::GLPanel::getWaypoints().end())
-			Kryed::GLPanel::getWaypoints().erase(object);
-	});
-	table->setCellWidget(0, 1, button);
-	table->insertRow(1);
-	table->insertRow(2);
-	table->setItem(1, 0, new QTableWidgetItem("path"));
-	table->setItem(2, 0, new QTableWidgetItem("loopPath"));
-	if (object->properties["global"]["hardtype"] == "enemy")
-	{
-		table->setItem(1, 1, new QTableWidgetItem(kryToQString(object->hardproperties[object->properties["global"]["hardtype"]]["path"])));
-		table->setItem(2, 1, new QTableWidgetItem(kryToQString(object->hardproperties[object->properties["global"]["hardtype"]]["loopPath"])));
+			lastresult = DialogResult::OK;
+			close();
+		});
+		table->setCellWidget(0, 0, button);
+		button = new QPushButton("Clear Waypoints", table);
+		button->setEnabled(false); /** #TODO(change) remove this line after committing */
+		connect(button, &QPushButton::clicked, [this, table, object](bool)
+		{
+			table->item(1, 1)->setText("");
+			table->item(2, 1)->setText("false");
+			object->hardproperties[object->properties["global"]["hardtype"]]["path"] = "";
+			object->hardproperties[object->properties["global"]["hardtype"]]["loopPath"] = "false";
+			if (Kryed::GLPanel::getWaypoints().find(object) != Kryed::GLPanel::getWaypoints().end())
+				Kryed::GLPanel::getWaypoints().erase(object);
+		});
+		table->setCellWidget(0, 1, button);
+		table->insertRow(1);
+		table->insertRow(2);
+		table->setItem(1, 0, new QTableWidgetItem("path"));
+		table->item(1, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+		table->setItem(2, 0, new QTableWidgetItem("loopPath"));
+		table->item(2, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+		if (object->properties["global"]["hardtype"] == "enemy")
+		{
+			table->setItem(1, 1, new QTableWidgetItem(kryToQString(object->hardproperties[object->properties["global"]["hardtype"]]["path"])));
+			table->setItem(2, 1, new QTableWidgetItem(kryToQString(object->hardproperties[object->properties["global"]["hardtype"]]["loopPath"])));
+		}
 	}
-	if (object->asset->type == AssetType::STATIC_TILE)
-		table->hide();
 }

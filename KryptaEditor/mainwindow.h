@@ -12,6 +12,7 @@ class LayerBrowserDialog;
 class ConfigDialog;
 class PrjSettingsDialog;
 class AnimManagerDialog;
+class AudioManagerDialog;
 
 template <typename Resource>
 struct Asset;
@@ -58,6 +59,7 @@ class MainWindow : public QMainWindow
 		ConfigDialog* configDialog;
 		PrjSettingsDialog* prjsettingsDialog;
 		AnimManagerDialog* animmanagerDialog;
+		AudioManagerDialog* audiomanagerDialog;
 		bool saved;
 };
 

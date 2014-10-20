@@ -49,6 +49,7 @@ public:
     QAction *miFileExport;
     QAction *miProjectEvents;
     QAction *miProjectAnims;
+    QAction *miProjectAudio;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -123,6 +124,8 @@ public:
         miProjectAnims = new QAction(MainWindow);
         miProjectAnims->setObjectName(QStringLiteral("miProjectAnims"));
         miProjectAnims->setEnabled(true);
+        miProjectAudio = new QAction(MainWindow);
+        miProjectAudio->setObjectName(QStringLiteral("miProjectAudio"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -383,8 +386,8 @@ public:
         menuFile->addAction(miFileExit);
         menuEdit->addAction(miPreferences);
         menuProject->addAction(miProjectSettings);
-        menuProject->addAction(miProjectEvents);
         menuProject->addAction(miProjectAnims);
+        menuProject->addAction(miProjectAudio);
 
         retranslateUi(MainWindow);
 
@@ -408,6 +411,7 @@ public:
         miFileExport->setText(QApplication::translate("MainWindow", "Export", 0));
         miProjectEvents->setText(QApplication::translate("MainWindow", "Event Manager", 0));
         miProjectAnims->setText(QApplication::translate("MainWindow", "Animation Manager", 0));
+        miProjectAudio->setText(QApplication::translate("MainWindow", "Audio Manager", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));

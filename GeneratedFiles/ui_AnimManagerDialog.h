@@ -77,7 +77,9 @@ public:
     {
         if (AnimManagerDialog->objectName().isEmpty())
             AnimManagerDialog->setObjectName(QStringLiteral("AnimManagerDialog"));
+        AnimManagerDialog->setWindowModality(Qt::NonModal);
         AnimManagerDialog->resize(880, 700);
+        AnimManagerDialog->setSizeGripEnabled(true);
         verticalLayout_3 = new QVBoxLayout(AnimManagerDialog);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout = new QVBoxLayout();
@@ -263,7 +265,7 @@ public:
 
         retranslateUi(AnimManagerDialog);
 
-        dirTabs->setCurrentIndex(0);
+        dirTabs->setCurrentIndex(7);
 
 
         QMetaObject::connectSlotsByName(AnimManagerDialog);

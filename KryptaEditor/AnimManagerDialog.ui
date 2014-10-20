@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>AnimManagerDialog</class>
  <widget class="QDialog" name="AnimManagerDialog">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,9 @@
   </property>
   <property name="windowTitle">
    <string>Animation Manager</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -29,7 +35,7 @@
      <item>
       <widget class="QTabWidget" name="dirTabs">
        <property name="currentIndex">
-        <number>0</number>
+        <number>7</number>
        </property>
        <widget class="QWidget" name="tab_1">
         <attribute name="title">

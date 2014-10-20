@@ -7,6 +7,10 @@
 #include <System/Filesystem.h>
 #include <Utilities/StringConvert.h>
 #include <Media/Zip.h>
+#include <QJSONDocument>
+#include <QJSONObject>
+#include <QJSONArray>
+#include <QJSONValue>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QFile>
@@ -45,6 +49,13 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(layerList->item(i));
 		Layer* layer = new Layer { std::move(std::vector<Tile>(option->getWidth() * option->getHeight(), defaulttile)), option->getDescription(),
 									{option->getWidth(), option->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(i) };
+		unsigned resourceindex = 0;
+		for (auto& resource : Resources::getAnimations())
+		{
+			if (resource.get() == defaulttile.asset->resource)
+				break;
+			++resourceindex;
+		}
 		unsigned index = 0;
 		for (Tile& tile : layer->tiles)
 		{
@@ -55,6 +66,7 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 				tile.hardproperties["floor"][key] = "";
 			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
 				tile.hardproperties[type][key] = "";
+			tile.hardproperties["floor"]["skin"] = kry::Util::toString(resourceindex);
 		}
 
         single->layers.emplace_back(layer);
@@ -80,7 +92,7 @@ TextElement readElement(QXmlStreamReader& reader)
 	return element;
 }
 
-std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& prjsettings) /** #TODO(change) actually read the id attributes and set them properly for tiles/objects */
+std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& prjsettings) /** #TODO(change) whole thing will need a readover. things have changed */
 {
 	using namespace kry;
 
@@ -118,10 +130,46 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 			prjsettings["player"]["tiley"] = qToKString(element.text);
 			reader.readNext();
 			element = readElement(reader);
-			prjsettings["player"]["speed"] = qToKString(element.text);
+			prjsettings["player"]["dimensionsx"] = qToKString(element.text);
 			reader.readNext();
 			element = readElement(reader);
-			prjsettings["player"]["fov"] = qToKString(element.text);
+			prjsettings["player"]["dimensionsy"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["seeInFog"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["directions"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["maxHeuristic"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["viewDistance"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["moveAcceleration"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["turnAcceleration"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["maxMoveSpeed"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["maxTurnSpeed"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["skinIdle"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["skinRun"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["skinDead"] = qToKString(element.text);
+			reader.readNext();
+			element = readElement(reader);
+			prjsettings["player"]["health"] = qToKString(element.text);
 			reader.readNext();
 			reader.readNext();
 		reader.readNext();
@@ -145,7 +193,7 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 					reader.readNext();
 					element = readElement(reader);
 					int tileheight = element.text.toInt();
-					Layer* layer = new Layer { std::move(std::vector<Tile>(width * height, Tile())), description, {width, height}, {tilewidth, tileheight}};
+					Layer* layer = new Layer { std::move(std::vector<Tile>(width * height, Tile())), description, {width, height}, {tilewidth, tileheight}, i};
 					single->layers.emplace_back(layer);
 					reader.readNext();
 					reader.readNext();
@@ -192,9 +240,7 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 									reader.readNext();
 									element = readElement(reader);
 									auto assetpath = element.text;
-									if (assetpath.startsWith("assets\\objects"))
-										object->asset = Assets::getObjectByIni(assetpath).get();
-									else if (assetpath.startsWith("assets\\entities"))
+									if (assetpath.startsWith("assets\\entities"))
 										object->asset = Assets::getEntityByIni(assetpath).get();
 									reader.readNext();
 									reader.readNext(); // properties
@@ -267,8 +313,20 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 			writer.writeTextElement("layer", kryToQString(prjsettings["player"]["layer"]));
 			writer.writeTextElement("tilex", kryToQString(prjsettings["player"]["tilex"]));
 			writer.writeTextElement("tiley", kryToQString(prjsettings["player"]["tiley"]));
-			writer.writeTextElement("speed", kryToQString(prjsettings["player"]["speed"]));
-			writer.writeTextElement("fov", kryToQString(prjsettings["player"]["fov"]));
+			writer.writeTextElement("dimensionsx", kryToQString(prjsettings["player"]["dimensionsx"]));
+			writer.writeTextElement("dimensionsy", kryToQString(prjsettings["player"]["dimensionsy"]));
+			writer.writeTextElement("seeInFog", kryToQString(prjsettings["player"]["seeInFog"]));
+			writer.writeTextElement("directions", kryToQString(prjsettings["player"]["directions"]));
+			writer.writeTextElement("maxHeuristic", kryToQString(prjsettings["player"]["maxHeuristic"]));
+			writer.writeTextElement("viewDistance", kryToQString(prjsettings["player"]["viewDistance"]));
+			writer.writeTextElement("moveAcceleration", kryToQString(prjsettings["player"]["moveAcceleration"]));
+			writer.writeTextElement("turnAcceleration", kryToQString(prjsettings["player"]["turnAcceleration"]));
+			writer.writeTextElement("maxMoveSpeed", kryToQString(prjsettings["player"]["maxMoveSpeed"]));
+			writer.writeTextElement("maxTurnSpeed", kryToQString(prjsettings["player"]["maxTurnSpeed"]));
+			writer.writeTextElement("skinIdle", kryToQString(prjsettings["player"]["skinIdle"]));
+			writer.writeTextElement("skinRun", kryToQString(prjsettings["player"]["skinRun"]));
+			writer.writeTextElement("skinDead", kryToQString(prjsettings["player"]["skinDead"]));
+			writer.writeTextElement("health", kryToQString(prjsettings["player"]["health"]));
 		}
 		writer.writeEndElement();
 		writer.writeStartElement("layers");
@@ -277,7 +335,7 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 			{
 				std::shared_ptr<Layer>& layer = single->layers[i];
 				writer.writeStartElement("layer");
-				writer.writeAttribute("id", QString::number(i));
+				writer.writeAttribute("id", QString::number(layer->index));
 				{
 					writer.writeTextElement("description", layer->description);
 					writer.writeTextElement("width", QString::number(layer->size[0]));
@@ -322,6 +380,23 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 							}
 						}
 						writer.writeEndElement();
+						writer.writeStartElement("hardproperties");
+						writer.writeAttribute("sections", QString::number(tile.hardproperties.getSectionNames().size() == 0 ? 0 : tile.hardproperties.getSectionNames().size() - 1));
+						{
+							for (auto& section : tile.hardproperties.getSectionNames())
+							{
+								if (section.isEmpty())
+									continue;
+								writer.writeStartElement(kryToQString(section));
+								writer.writeAttribute("keys", QString::number(tile.hardproperties[section].getKeyNames().size()));
+								{
+									for (auto& key : tile.hardproperties[section].getKeyNames())
+										writer.writeTextElement(kryToQString(key), kryToQString(tile.hardproperties[section][key]));
+								}
+								writer.writeEndElement();
+							}
+						}
+						writer.writeEndElement();
 						writer.writeStartElement("objects");
 						{
 							for (size_t n = 0; n < tile.objects.size(); ++n)
@@ -344,6 +419,23 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
 											{
 												for (auto& key : object->properties[section].getKeyNames())
 													writer.writeTextElement(kryToQString(key), kryToQString(object->properties[section][key]));
+											}
+											writer.writeEndElement();
+										}
+									}
+									writer.writeEndElement();
+									writer.writeStartElement("hardproperties");
+									writer.writeAttribute("sections", QString::number(object->hardproperties.getSectionNames().size() == 0 ? 0 : object->hardproperties.getSectionNames().size() - 1));
+									{
+										for (auto& section : object->hardproperties.getSectionNames())
+										{
+											if (section.isEmpty())
+												continue;
+											writer.writeStartElement(kryToQString(section));
+											writer.writeAttribute("keys", QString::number(object->hardproperties[section].getKeyNames().size()));
+											{
+												for (auto& key : object->hardproperties[section].getKeyNames())
+													writer.writeTextElement(kryToQString(key), kryToQString(object->hardproperties[section][key]));
 											}
 											writer.writeEndElement();
 										}
@@ -558,7 +650,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		lines.push_back("[Tiles]");
 		count = 0;
 		for (auto& exptile : tilesused)
-			lines.push_back("tile" + Util::toString(count++) + '=' + Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getObjects()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())));
+			lines.push_back("tile" + Util::toString(count++) + '=' + Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getTiles()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())));
 // TILE/WALL SETTINGS 
 		count = 0;
 		for (auto& exptile : tilesused)
@@ -606,7 +698,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 					}
 
 
-					line += Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getObjects()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())) + ' ';
+					line += Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getTiles()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())) + ' ';
 				}
 				line = line.substring(0, line.getLength() - 1);
 				lines.push_back(line);

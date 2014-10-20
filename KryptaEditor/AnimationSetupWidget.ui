@@ -72,6 +72,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="bRemove">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Remove Image</string>
              </property>

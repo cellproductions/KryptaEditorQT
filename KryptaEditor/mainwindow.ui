@@ -386,8 +386,8 @@
      <string>Project</string>
     </property>
     <addaction name="miProjectSettings"/>
-    <addaction name="miProjectEvents"/>
     <addaction name="miProjectAnims"/>
+    <addaction name="miProjectAudio"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -504,6 +504,11 @@
    </property>
    <property name="text">
     <string>Animation Manager</string>
+   </property>
+  </action>
+  <action name="miProjectAudio">
+   <property name="text">
+    <string>Audio Manager</string>
    </property>
   </action>
  </widget>
