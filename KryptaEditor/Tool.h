@@ -2,13 +2,14 @@
 #define TOOL_H
 
 #include <Graphics\Primitives.h>
-#include <QObject>
+#include <QString>
 #include <memory>
 
 enum class ToolType
 {
 	POINTER,
 	PAINT,
+	PAINT_COPY,
 	WAYPOINT
 };
 
@@ -51,7 +52,7 @@ class Tool
 		ToolType getType();
 
 		static std::shared_ptr<Tool> getTool();
-		static void switchTool(ToolType type);
+		static void switchTool(ToolType type, QString& message);
 
 	private:
 		Tool(ToolType type);
@@ -96,9 +97,16 @@ std::shared_ptr<Tool<DataType> > Tool<DataType>::getTool()
 }
 
 template <typename DataType>
-void Tool<DataType>::switchTool(ToolType type)
+void Tool<DataType>::switchTool(ToolType type, QString& toupdate)
 {
 	single.reset(new Tool(type));
+	switch (type)
+	{
+		case ToolType::POINTER: toupdate = "Pointer mode."; break;
+		case ToolType::PAINT: toupdate = "Paint mode."; break;
+		case ToolType::PAINT_COPY: toupdate = "Copy mode."; break;
+		case ToolType::WAYPOINT: toupdate = "Waypoint mode."; break;
+	}
 }
 
 template <typename DataType>

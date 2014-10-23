@@ -12,7 +12,7 @@ TODO HIGH(absolutely required):
 [x] finish object/tile copy option
 [x] add tool pane
 [x] add brush tool
-[ ] complete project saving/loading
+[ ] complete project saving/loading [DOING]
 [x] complete project save/load dialogs
 [x] finish opengl panel
 [x] complete map structure
@@ -21,10 +21,11 @@ TODO HIGH(absolutely required):
 [x] add properties that link to hardcoded properties
 [x] finish different property types (in the dialogs) for object hardtype settings [FLUX]
 [x] change entity/environment dialogs to suit types
-[ ] complete exporting (remove hardcoded stuff, update) [FLUX]
+[ ] complete exporting (remove hardcoded stuff, update) [DOING] [FLUX]
 [x] finish pivot editing for objects
 [x] add object waypoints
-[ ] add waypoint options dialog/manual placement [DOING]
+[x] add waypoint options dialog/manual placement
+[ ] fix waypoint right clicking (its off position for some reason)
 [ ] make some of the type widgets affect the tile/entity (change floor, set animation, etc.)(set animation done, floor half done)
 [x] add tile/object IDs
 [X] add skins structures
@@ -52,9 +53,11 @@ TODO MEDIUM(will pass fine without being added):
 [ ] add boundingbox overlay
 [ ] undo history/command
 [ ] add keyboard shortcuts
+[ ] add a clone button for the layer browser
 
 TODO LOW(extra fluff for polish):
 [ ] add grid overlay/toggle
+[ ] finish grid toggle action
 [ ] add placement follower as a sorted renderable
 [ ] add background options per layer
 [ ] add a help dialog (maybe using HTML pages)
@@ -67,11 +70,11 @@ TODO LOW(extra fluff for polish):
 
 BUGS:
 * flip x/y of tile positions (crash from exporting, rectangle maps are the wrong way around)
-* apply all is broken (hasn't been updated)
-* weird bug when changing an object's animation, copying it, then selecting that object from the entity list makes that object's skin change to the copy's skin'
-* creating a new map while there is already a map makes everything disappear
+* apply all is broken in the object settings dialog (hasn't been updated)
+* creating a new map while there is already a map makes everything disappear (wot)
 * toolbar options for tools dont remove properly (what's up Qt?)
-* some tile icons appear as missing.png, dunno why
+* wall icons appear as missing.png only on the first time editing it (wot)
+* right clicking on waypoints is off by a hundred or so? not sure
 
 TO TEST:
 * press the animate button and dont stop it while switching tabs/animations

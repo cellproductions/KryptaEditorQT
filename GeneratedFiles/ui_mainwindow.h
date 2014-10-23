@@ -51,6 +51,8 @@ public:
     QAction *miProjectAnims;
     QAction *miProjectAudio;
     QAction *miProjectItems;
+    QAction *miViewGrid;
+    QAction *miViewWaypoint;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -85,6 +87,7 @@ public:
     QMenu *menuEdit;
     QMenu *menuProject;
     QMenu *menuAbout;
+    QMenu *menuView;
     QToolBar *toolMain;
     QStatusBar *statusBar;
 
@@ -129,6 +132,11 @@ public:
         miProjectAudio->setObjectName(QStringLiteral("miProjectAudio"));
         miProjectItems = new QAction(MainWindow);
         miProjectItems->setObjectName(QStringLiteral("miProjectItems"));
+        miViewGrid = new QAction(MainWindow);
+        miViewGrid->setObjectName(QStringLiteral("miViewGrid"));
+        miViewGrid->setCheckable(true);
+        miViewWaypoint = new QAction(MainWindow);
+        miViewWaypoint->setObjectName(QStringLiteral("miViewWaypoint"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -320,6 +328,8 @@ public:
         layerProperties->setRowCount(3);
         layerProperties->setColumnCount(2);
         layerProperties->horizontalHeader()->setVisible(false);
+        layerProperties->horizontalHeader()->setDefaultSectionSize(70);
+        layerProperties->horizontalHeader()->setMinimumSectionSize(27);
         layerProperties->horizontalHeader()->setStretchLastSection(true);
         layerProperties->verticalHeader()->setVisible(false);
         layerProperties->verticalHeader()->setStretchLastSection(false);
@@ -360,6 +370,8 @@ public:
         menuProject->setObjectName(QStringLiteral("menuProject"));
         menuAbout = new QMenu(menuBar);
         menuAbout->setObjectName(QStringLiteral("menuAbout"));
+        menuView = new QMenu(menuBar);
+        menuView->setObjectName(QStringLiteral("menuView"));
         MainWindow->setMenuBar(menuBar);
         toolMain = new QToolBar(MainWindow);
         toolMain->setObjectName(QStringLiteral("toolMain"));
@@ -377,6 +389,7 @@ public:
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuEdit->menuAction());
+        menuBar->addAction(menuView->menuAction());
         menuBar->addAction(menuProject->menuAction());
         menuBar->addAction(menuAbout->menuAction());
         menuFile->addAction(miFileNew);
@@ -392,6 +405,8 @@ public:
         menuProject->addAction(miProjectAnims);
         menuProject->addAction(miProjectAudio);
         menuProject->addAction(miProjectItems);
+        menuView->addAction(miViewGrid);
+        menuView->addAction(miViewWaypoint);
 
         retranslateUi(MainWindow);
 
@@ -417,6 +432,8 @@ public:
         miProjectAnims->setText(QApplication::translate("MainWindow", "Animation Manager", 0));
         miProjectAudio->setText(QApplication::translate("MainWindow", "Audio Manager", 0));
         miProjectItems->setText(QApplication::translate("MainWindow", "Item Manager", 0));
+        miViewGrid->setText(QApplication::translate("MainWindow", "Toggle Grid", 0));
+        miViewWaypoint->setText(QApplication::translate("MainWindow", "Waypoint Mode", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));
@@ -449,11 +466,12 @@ public:
         ___qtablewidgetitem7->setText(QApplication::translate("MainWindow", "Height:", 0));
         layerProperties->setSortingEnabled(__sortingEnabled);
 
-        bLayerMan->setText(QApplication::translate("MainWindow", "Floor manager", 0));
+        bLayerMan->setText(QApplication::translate("MainWindow", "Floor browser", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         menuEdit->setTitle(QApplication::translate("MainWindow", "Edit", 0));
         menuProject->setTitle(QApplication::translate("MainWindow", "Project", 0));
         menuAbout->setTitle(QApplication::translate("MainWindow", "Help", 0));
+        menuView->setTitle(QApplication::translate("MainWindow", "View", 0));
         toolMain->setWindowTitle(QApplication::translate("MainWindow", "Krypta Map Editor", 0));
     } // retranslateUi
 

@@ -97,7 +97,7 @@ const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& Resource
 
 std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::getEditorTexture(EditorResource texture)
 {
-	return editortextures[unsigned(texture)];
+	return editortextures[static_cast<std::underlying_type<EditorResource>::type>(texture)];
 }
 
 size_t Resources::getAnimationIndex(std::shared_ptr<Animation<>> animation)

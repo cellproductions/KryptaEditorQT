@@ -22,12 +22,12 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 	{
 		ui->bDown->click();
 	});
-	connect(ui->lbLayers->selectionModel(), &QItemSelectionModel::selectionChanged, [this](const QItemSelection&, const QItemSelection&)
+	connect(ui->lbLayers, &QListWidget::currentRowChanged, [this](int row)
 	{
-		if (ui->lbLayers->count() <= 0)
+		if (row < 0)
 			return;
-
-		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->selectedItems()[0]);
+		
+		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->item(row));
 		ui->tbDescription->setText(option->getDescription());
 		ui->sbWidth->setValue(option->getWidth());
 		ui->sbHeight->setValue(option->getHeight());
@@ -43,21 +43,32 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 
 		ui->tbDescription->clear();
 		ui->tbDescription->setFocus();
+		ui->bDelete->setEnabled(true);
 	});
 	connect(ui->bDelete, &QPushButton::clicked, [this](bool)
 	{
-		if (QMessageBox::warning(this, "Delete Layer", "Are you sure you would like to delete ''?", QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
-			todelete.push_back(dynamic_cast<LayerOptionsItem*>(ui->lbLayers->takeItem(ui->lbLayers->currentRow())));
+		if (QMessageBox::warning(this, "Delete Layer", "Are you sure you would like to delete this floor?", QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
+		{
+			auto item = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->takeItem(ui->lbLayers->currentRow()));
+			todelete.push_back(item->getLayer());
+			delete item;
+			if (ui->lbLayers->count() > -1)
+				ui->lbLayers->setCurrentRow(0);
+		}
+		if (ui->lbLayers->count() <= 0)
+			ui->bDelete->setEnabled(false);
 	});
 	connect(ui->bChange, &QPushButton::clicked, [this](bool)
 	{
-		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->selectedItems()[0]);
+		if (ui->lbLayers->currentRow() < 0)
+			return;
+		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->currentItem());
 		option->setDescription(ui->tbDescription->text());
 		option->setWidth(ui->sbWidth->value());
 		option->setHeight(ui->sbHeight->value());
 		option->setText(ui->tbDescription->text() + ": " + QString::number(ui->sbWidth->value()) + 'x' + QString::number(ui->sbHeight->value()) + " tiles");
 	});
-	connect(ui->bUp, &QPushButton::clicked, [this]()
+	connect(ui->bUp, &QPushButton::clicked, [this](bool)
 	{
 		if (ui->lbLayers->count() <= 1)
 			return;
@@ -101,17 +112,63 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 			return;
 		}
 
-		/** #TODO(change) maybe move this to the MainWindow connect? */
-		// delete layers in todelete, remove them from the current map
-		// add layers that are new to the list
-		// resize layers who's dimensions have been changed
-		for (int i = 0; i < ui->lbLayers->count(); ++i) /** #TODO(bug) crash here when adding new layer. also, change the name "Layer" to "Floor" */
+		for (auto itemlayer : todelete) /** #TODO(bug) crash here when adding new layer */
 		{
-			LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->item(i));
-			option->getLayer()->description = option->getDescription();
+			auto& layers = Map::getMap()->getLayers();
+			for (auto itr = layers.begin(); itr != layers.end(); ++itr)
+			{
+				if (itr->get() == itemlayer)
+				{
+					Map::getMap()->getLayers().erase(itr);
+					break;
+				}
+			}
+		}
+		todelete.clear();
+
+		auto oldlayers = Map::getMap()->getLayers();
+		Map::getMap()->getLayers().clear();
+		for (int i = 0; i < ui->lbLayers->count(); ++i)
+		{
+			auto item = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->item(i));
+			if (i < oldlayers.size() && item->getLayer() == oldlayers[i].get())
+			{
+				auto layer = oldlayers[i];
+				Map::getMap()->getLayers().push_back(layer);
+				kry::Util::Vector2i size(item->getWidth(), item->getHeight());
+				if (layer->size != size)
+				{
+					if (layer->size[0] < size[0]) /** #TODO(incomplete) finish these */
+					{
+						// add new tiles to the x axis
+					}
+					else if (layer->size[0] > size[0])
+					{
+						// remove tiles from the x axis
+					}
+					if (layer->size[1] < size[1])
+					{
+						// add new tiles to the y axis
+					}
+					else if (layer->size[1] > size[1])
+					{
+						// remove tiles from the y axis
+					}
+				}
+				unsigned index = 0;
+				for (auto& tile : layer->tiles)
+					tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(i) * 10000u + (index++));
+				layer->index = i;
+			}
+			else
+			{
+				Tile tile;
+				tile.asset = Assets::getTiles()[0].get(); /** #TODO(bug) there might not be any assets */
+				Map::Layer* layer = Map::createLayer(tile, item, i);
+				Map::getMap()->getLayers().emplace_back(layer);
+			}
 		}
 
-		todelete.clear();
 		lastresult = DialogResult::OK;
 		this->close();
 	});
@@ -127,7 +184,7 @@ DialogResult LayerBrowserDialog::showDialog()
 	ui->lbLayers->clear();
 	if (Map::getMap())
 	{
-		for (auto& layer : Map::getMap()->getLayers())
+		for (auto layer : Map::getMap()->getLayers())
 		{
 			LayerOptionsItem* option = new LayerOptionsItem;
 			option->setDescription(layer->description);
@@ -140,8 +197,17 @@ DialogResult LayerBrowserDialog::showDialog()
 
 		if (ui->lbLayers->count() > 0)
 			ui->lbLayers->item(0)->setSelected(true);
+		else
+			ui->bDelete->setEnabled(false);
 	}
+	else
+		return DialogResult::CANCEL;
 
 	this->exec();
 	return lastresult;
+}
+
+size_t LayerBrowserDialog::getSelectedIndex()
+{
+	return ui->lbLayers->currentRow();
 }

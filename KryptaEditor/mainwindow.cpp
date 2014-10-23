@@ -60,6 +60,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		if (configDialog->showDialog() == DialogResult::OK)
 			Configuration::updateConfig(configDialog->getConfig());
 	});
+	connect(ui->miViewGrid, &QAction::triggered, [this](bool triggered)
+	{
+		/** #TODO(incomplete) show/hide grid */
+	});
+	connect(ui->miViewWaypoint, &QAction::triggered, [this]()
+	{
+		QString message;
+		Tool<>::switchTool(ToolType::WAYPOINT, message);
+		WaypointData data;
+		data.looping = false;
+		data.object = nullptr;
+		Tool<WaypointData>::getTool()->setData(data);
+		ui->glWidget->updateCanvas();
+		getStatusMain()->setText("Waypoint viewing mode.");
+	});
 	connect(ui->miProjectSettings, &QAction::triggered, [this]()
 	{
 		if (!Map::getMap())
@@ -152,8 +167,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		{
 			auto map = Map::getMap();
 			ui->cbLayers->clear();
-			for (auto& layer : map->getLayers())
-				ui->cbLayers->addItem(layer->description);
+			for (auto layer : map->getLayers())
+				ui->cbLayers->addItem(QString::number(layer->index) + ':' + layer->description);
+			if (layerbrowseDialog->getSelectedIndex() >= 0)
+				ui->cbLayers->setCurrentIndex(layerbrowseDialog->getSelectedIndex());
 			ui->layerProperties->setItem(0, 1, new QTableWidgetItem(map->getCurrentLayer()->description));
 			ui->layerProperties->setItem(1, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[0])));
 			ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));
@@ -171,7 +188,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		else
 			return;
 		Map::getMap()->setCurrentLayer(index);
-		//ui->glWidget->resetCamera();
 		ui->glWidget->updateCanvas();
 	});
 
@@ -180,8 +196,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		//for (QObject* child : ui->toolMain->children())
 		//	dynamic_cast<QWidget*>(child)->setVisible(false);
 
-		Tool<>::switchTool(ToolType::POINTER);
-		getStatusMain()->setText("Pointer mode.");
+		QString message;
+		Tool<>::switchTool(ToolType::POINTER, message);
+		getStatusMain()->setText(message);
 	});
 	connect(ui->bPaint, &QToolButton::clicked, [this]()
 	{
@@ -200,16 +217,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 			ui->toolMain->addWidget(lSpin);
 			ui->toolMain->addWidget(spin);
 		}
-
+		
 		if (prevAsset != nullptr)
 		{
-			Tool<>::switchTool(ToolType::PAINT);
+			QString message;
+			Tool<>::switchTool(ToolType::PAINT, message);
 			PaintData data;
 			data.size = spin->value();
 			data.asset = prevAsset;
 			Tool<PaintData>::getTool()->setData(data);
+			getStatusMain()->setText(message);
 		}
-		getStatusMain()->setText("Paint mode.");
 	});
 }
 
@@ -225,7 +243,6 @@ void MainWindow::init()
         if (Configuration::loadFromFile("editor.cfg")["editor"]["maximised"] == "true")
             this->showMaximized();
 		configDialog->setConfigData(Configuration::getConfig());
-		Resources::initEditorTextures();
 		//EventSystem::createSystem();
     }
     catch (const kry::Util::Exception&)
@@ -243,7 +260,10 @@ void MainWindow::onNewTrigger()
             this->setWindowTitle("Krypta Map Editor - " + prjsetupDialog->getUI()->tbPrjName->text());
 
             if (!Assets::isLoaded())
+			{
                 Assets::loadAssets("assets");
+				Resources::initEditorTextures();
+			}
 
             if (Map::getMap())
                 Map::getMap()->resetMap();
@@ -255,8 +275,8 @@ void MainWindow::onNewTrigger()
 			saved = false;
 			prjsettingsDialog->resetSettings();
 			ui->cbLayers->clear();
-			for (auto& layer : map->getLayers())
-				ui->cbLayers->addItem(layer->description);
+			for (auto layer : map->getLayers())
+				ui->cbLayers->addItem(QString::number(layer->index) + ':' + layer->description);
 			ui->layerProperties->setItem(0, 1, new QTableWidgetItem(map->getCurrentLayer()->description));
             ui->layerProperties->setItem(1, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[0])));
             ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));
@@ -279,7 +299,10 @@ void MainWindow::onOpenTrigger()
 	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
 	this->setWindowTitle(mainTitle + " - " + prjname);
 	if (!Assets::isLoaded())
+	{
 		Assets::loadAssets("assets");
+		Resources::initEditorTextures();
+	}
 	try
 	{
 		Map::setProjectName(prjname);
@@ -287,7 +310,7 @@ void MainWindow::onOpenTrigger()
 		prjsettingsDialog->resetSettings();
 		ui->cbLayers->clear();
 		for (auto& layer : map->getLayers())
-			ui->cbLayers->addItem(layer->description);
+			ui->cbLayers->addItem( layer->description);
 		ui->layerProperties->setItem(0, 1, new QTableWidgetItem(map->getCurrentLayer()->description));
 		ui->layerProperties->setItem(1, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[0])));
 		ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));

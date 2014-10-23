@@ -91,7 +91,7 @@ kry::Util::String Assets::getParentType(const kry::Util::String& hardtype) /** #
 {
 	if (hardtype == "itemloot" || hardtype == "itemkey")
 		return kry::Util::String("item");
-	else if (hardtype == "void" || hardtype == "solid" || hardtype == "wall")
+	if (hardtype == "void" || hardtype == "solid" || hardtype == "wall")
 		return kry::Util::String("floor");
 	return kry::Util::String("all");
 }

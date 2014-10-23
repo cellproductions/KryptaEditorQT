@@ -38,6 +38,32 @@ void Map::resetMap()
 	currentLayer.reset();
 }
 
+Map::Layer* Map::createLayer(const Tile& defaulttile, LayerOptionsItem* layeritem, unsigned id)
+{
+	Layer* layer = new Layer { std::move(std::vector<Tile>(layeritem->getWidth() * layeritem->getHeight(), defaulttile)), layeritem->getDescription(),
+								{layeritem->getWidth(), layeritem->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(id) };
+	unsigned resourceindex = 0;
+	for (auto& resource : Resources::getAnimations())
+	{
+		if (resource.get() == defaulttile.asset->resource)
+			break;
+		++resourceindex;
+	}
+	unsigned index = 0;
+	for (Tile& tile : layer->tiles)
+	{
+		tile.properties = defaulttile.asset->properties;
+		tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(id) * 10000u + (index++));
+		auto type = tile.properties["global"]["hardtype"];
+		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
+			tile.hardproperties["floor"][key] = "";
+		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+			tile.hardproperties[type][key] = "";
+		tile.hardproperties["floor"]["skin"] = kry::Util::toString(resourceindex);
+	}
+	return layer;
+}
+
 std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile, QListWidget* layerList)
 {
 	single.reset(new Map(name, layerList->count()));
@@ -47,27 +73,7 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 		if (layerList->item(i)->type() != LayerOptionsItem::LayerOptionType)
             continue;
 		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(layerList->item(i));
-		Layer* layer = new Layer { std::move(std::vector<Tile>(option->getWidth() * option->getHeight(), defaulttile)), option->getDescription(),
-									{option->getWidth(), option->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(i) };
-		unsigned resourceindex = 0;
-		for (auto& resource : Resources::getAnimations())
-		{
-			if (resource.get() == defaulttile.asset->resource)
-				break;
-			++resourceindex;
-		}
-		unsigned index = 0;
-		for (Tile& tile : layer->tiles)
-		{
-			tile.properties = defaulttile.asset->properties;
-			tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(i) * 10000u + (index++));
-			auto type = tile.properties["global"]["hardtype"];
-			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
-				tile.hardproperties["floor"][key] = "";
-			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-				tile.hardproperties[type][key] = "";
-			tile.hardproperties["floor"]["skin"] = kry::Util::toString(resourceindex);
-		}
+		Layer* layer = createLayer(defaulttile, option, i);
 
         single->layers.emplace_back(layer);
     }
@@ -559,7 +565,7 @@ bool operator==(const UsedAnim& left, const UsedAnim& right)
 
 void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #TODO(note) if a key is empty, dont export it (let the game crash or print error, etc.) */
 {
-	using namespace kry;
+	using namespace kry;	/** #TODO(note) remember to convert positions to ExpPositions (and positions in arrays) */
 
 	try
 	{
