@@ -50,6 +50,7 @@ public:
     QAction *miProjectEvents;
     QAction *miProjectAnims;
     QAction *miProjectAudio;
+    QAction *miProjectItems;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -126,6 +127,8 @@ public:
         miProjectAnims->setEnabled(true);
         miProjectAudio = new QAction(MainWindow);
         miProjectAudio->setObjectName(QStringLiteral("miProjectAudio"));
+        miProjectItems = new QAction(MainWindow);
+        miProjectItems->setObjectName(QStringLiteral("miProjectItems"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -388,6 +391,7 @@ public:
         menuProject->addAction(miProjectSettings);
         menuProject->addAction(miProjectAnims);
         menuProject->addAction(miProjectAudio);
+        menuProject->addAction(miProjectItems);
 
         retranslateUi(MainWindow);
 
@@ -412,6 +416,7 @@ public:
         miProjectEvents->setText(QApplication::translate("MainWindow", "Event Manager", 0));
         miProjectAnims->setText(QApplication::translate("MainWindow", "Animation Manager", 0));
         miProjectAudio->setText(QApplication::translate("MainWindow", "Audio Manager", 0));
+        miProjectItems->setText(QApplication::translate("MainWindow", "Item Manager", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));
@@ -422,7 +427,7 @@ public:
         lEnv->setText(QString());
         lEnvName->setText(QApplication::translate("MainWindow", "None", 0));
         bBrowseEnv->setText(QApplication::translate("MainWindow", "Browse env", 0));
-        layerGroup->setTitle(QApplication::translate("MainWindow", "Layer", 0));
+        layerGroup->setTitle(QApplication::translate("MainWindow", "Floors", 0));
         QTableWidgetItem *___qtablewidgetitem = layerProperties->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "Property", 0));
         QTableWidgetItem *___qtablewidgetitem1 = layerProperties->horizontalHeaderItem(1);
@@ -444,7 +449,7 @@ public:
         ___qtablewidgetitem7->setText(QApplication::translate("MainWindow", "Height:", 0));
         layerProperties->setSortingEnabled(__sortingEnabled);
 
-        bLayerMan->setText(QApplication::translate("MainWindow", "Layer manager", 0));
+        bLayerMan->setText(QApplication::translate("MainWindow", "Floor manager", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         menuEdit->setTitle(QApplication::translate("MainWindow", "Edit", 0));
         menuProject->setTitle(QApplication::translate("MainWindow", "Project", 0));

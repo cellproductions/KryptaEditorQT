@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Layer Browser</string>
+   <string>Floor Browser</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -26,14 +26,14 @@
          <item>
           <widget class="QLineEdit" name="tbDescription">
            <property name="placeholderText">
-            <string>Layer description...</string>
+            <string>Floor description...</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Layer dimensions [w, h]:</string>
+            <string>Floor dimensions [w, h]:</string>
            </property>
           </widget>
          </item>

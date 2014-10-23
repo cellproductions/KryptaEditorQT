@@ -1,6 +1,5 @@
 #include <glew.h>
 #include "GLPanel.h"
-#include "Map.h"
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include "Resources.h"
@@ -66,17 +65,28 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 				if (tile.hardproperties["floor"]["skin"] == "-1")
 					tile.sprite.texture = Resources::getEditorTexture(EditorResource::MISSING_TILE).get()->rawresource;
 				else
-					tile.sprite.texture = Resources::getAnimations()[kry::Util::toIntegral<size_t>(tile.hardproperties["floor"]["skin"])].get()->rawresource;
+					tile.sprite.texture = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(tile.hardproperties["floor"]["skin"])].get()->rawresource;
 				tile.sprite.dimensions = tile.sprite.texture->getDimensions();
 
 				zorder.insert(std::pair<kry::Util::Vector3f, Object*>({pos[0], pos[1], 0.0f}, &tile));
 				for (auto& object : tile.objects)
 				{
 					auto& p = object->sprite.position;
-					if (object->hardproperties["all"]["skinIdle"] == "-1")
-						object->sprite.texture = Resources::getEditorTexture(EditorResource::MISSING_TILE).get()->rawresource;
-					else
-						object->sprite.texture = Resources::getAnimations()[kry::Util::toIntegral<size_t>(object->hardproperties["all"]["skinIdle"])].get()->rawresource;
+					auto parent = Assets::getParentType(object->properties["global"]["hardtype"]);
+					if (parent == "all")
+					{
+						if (object->hardproperties[parent]["skinIdle"] == "-1")
+							object->sprite.texture = Resources::getEditorTexture(EditorResource::MISSING_TILE).get()->rawresource;
+						else
+							object->sprite.texture = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(object->hardproperties[parent]["skinIdle"])].get()->rawresource;
+					}
+					else // wall object
+					{
+						if (object->hardproperties[parent]["skin"] == "-1")
+							object->sprite.texture = Resources::getEditorTexture(EditorResource::MISSING_TILE).get()->rawresource;
+						else
+							object->sprite.texture = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(object->hardproperties[parent]["skin"])].get()->rawresource;
+					}
 					object->sprite.dimensions = object->sprite.texture->getDimensions();
 					
 					zorder.insert(std::pair<kry::Util::Vector3f, Object*>({p[0], p[1], 1.0f},
@@ -203,10 +213,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 			{
 				case ToolType::PAINT:
 					{
-						if (!isValidTileCoord(coord))
+						if (!isValidTileCoord(coord, Map::getMap()->getCurrentLayer()))
 							break;
-						size_t index = this->tileCoordToIndex(coord);
-						if (!isValidIndex(index))
+						size_t index = this->tileCoordToIndex(coord, Map::getMap()->getCurrentLayer());
+						if (!isValidIndex(index, Map::getMap()->getCurrentLayer()))
 							break;
 
 						if (Tool<PaintData>::getTool()->getData().asset == nullptr)
@@ -242,7 +252,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 									++index;
 								}
 								if (parenttype == "all")
+								{
 									tile.hardproperties["all"]["skinIdle"] = kry::Util::toString(index);
+									tile.hardproperties["all"]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
+								}
 								else
 									tile.hardproperties["floor"]["skin"] = kry::Util::toString(index);
 							}
@@ -284,27 +297,37 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 										break;
 									++index;
 								}
-								object->hardproperties["all"]["skinIdle"] = kry::Util::toString(index);
+								auto parent = Assets::getParentType(object->properties["global"]["hardtype"]);
+								if (parent == "all")
+								{
+									object->hardproperties[parent]["skinIdle"] = kry::Util::toString(index);
+									object->hardproperties[parent]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
+								}
+								else if (parent == "floor")
+									object->hardproperties[parent]["skin"] = kry::Util::toString(index);
 								//for (size_t i = 0; i < EventSystem::getSystem()->getEvents().size(); ++i)
 								//	object->events.push_back(parseEvent(EventSystem::getSystem()->getEvents()[i].name, object->properties["events"][kry::Util::toString(i)]));
 							}
 							object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
 							object->properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(change) this is for map save/load */
 							object->properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
-							try
+							if (Assets::getParentType(object->properties["global"]["hardtype"]) == "all")
 							{
-								kry::Util::Vector2f rel;
-								rel[0] = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]);
-								rel[1] = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
-								auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions);
-								object->hardproperties["all"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
-							}
-							catch (const kry::Util::Exception& e)
-							{
-								QMessageBox::information(nullptr, "Internal Error", QStringLiteral("Object: ") + e.what(), QMessageBox::Ok);
-								Tool<>::switchTool(ToolType::POINTER);
-								follower.sprite.texture = nullptr;
-								follower.sprite.rgba = 0.0f;
+								try
+								{
+									kry::Util::Vector2f rel;
+									rel[0] = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]);
+									rel[1] = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
+									auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions);
+									object->hardproperties["all"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
+								}
+								catch (const kry::Util::Exception& e)
+								{
+									QMessageBox::information(nullptr, "Internal Error", QStringLiteral("Object: ") + e.what(), QMessageBox::Ok);
+									Tool<>::switchTool(ToolType::POINTER);
+									follower.sprite.texture = nullptr;
+									follower.sprite.rgba = 0.0f;
+								}
 							}
 							/** #TODO(incomplete) also add this to map loading */
 
@@ -316,10 +339,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 				case ToolType::WAYPOINT:
 					{
 							qDebug() << "waypoint click";
-						if (!isValidTileCoord(coord))
+						if (!isValidTileCoord(coord, Map::getMap()->getCurrentLayer()))
 							break;
-						size_t index = this->tileCoordToIndex(coord);
-						if (!isValidIndex(index))
+						size_t index = this->tileCoordToIndex(coord, Map::getMap()->getCurrentLayer());
+						if (!isValidIndex(index, Map::getMap()->getCurrentLayer()))
 							break;
 
 						if (Tool<WaypointData>::getTool()->getData().object == nullptr)
@@ -360,6 +383,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 				Tool<>::switchTool(ToolType::POINTER);
 				follower.sprite.texture = nullptr;
 				follower.sprite.rgba = 0.0f;
+				dynamic_cast<MainWindow*>(this->parent()->parent())->getStatusMain()->setText("Pointer mode.");
 				//updateCanvas();
 				paintGL();
 				return;
@@ -421,10 +445,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 			}
 
 			auto coord = this->coordToTileCoord({(float)event->x(), (float)event->y()});
-			if (!isValidTileCoord(coord))
+			if (!isValidTileCoord(coord, Map::getMap()->getCurrentLayer()))
 				return;
-			size_t index = this->tileCoordToIndex(coord);
-			if (!isValidIndex(index))
+			size_t index = this->tileCoordToIndex(coord, Map::getMap()->getCurrentLayer());
+			if (!isValidIndex(index, Map::getMap()->getCurrentLayer()))
 				return;
 
 			Tile& tile = Map::getMap()->getCurrentLayer()->tiles[index];
@@ -514,7 +538,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 			};
 
 			// add the name of the thing that was clicked, then a separator
-			connect(copyaction, &QAction::triggered, [this, &findSelected, tileaction, index, event](bool)
+			connect(copyaction, &QAction::triggered, [this, &findSelected, tileaction, event](bool)
 			{
 				auto toedit = findSelected();
 				if (toedit != nullptr)
@@ -526,9 +550,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 					data.asset = toedit->getObject()->asset;
 					data.object = toedit->getObject();
 					Tool<CopyObjectData>::getTool()->setData(data);
+					dynamic_cast<MainWindow*>(this->parent()->parent())->getStatusMain()->setText("Copy mode.");
 				}
 			});
-			connect(editaction, &QAction::triggered, [this, &findSelected, tileaction, index](bool)
+			connect(editaction, &QAction::triggered, [this, &findSelected, tileaction, index, &tile, coord](bool)
 			{
 				auto toedit = findSelected();
 				if (toedit != nullptr)
@@ -545,12 +570,47 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							auto floor = hardproperties["all"]["floor"];
 							if (!floor.isEmpty() && floor != object->hardproperties["all"]["floor"])
 							{
-								/** #TODO(incomplete) actually change the floor here */
+								size_t floorid = kry::Util::toUIntegral<size_t>(floor);
+								auto layer = Map::getMap()->getLayers()[floorid];
+								auto switchLayer = [&tile, object, &layer](int newindex)
+								{
+									std::shared_ptr<Object> tmp;
+									auto end = tile.objects.end();
+									unsigned i = 0;
+									for (auto itr = tile.objects.begin(); itr != end; ++itr)
+									{
+										if (object == itr->get())
+										{
+											tmp = *itr;
+											tile.objects.erase(itr);
+											break;
+										}
+										++i;
+									}
+									if (i >= layer->tiles[newindex].objects.size())
+										layer->tiles[newindex].objects.push_back(tmp);
+									else
+										layer->tiles[newindex].objects.insert(layer->tiles[newindex].objects.begin() + i, tmp);
+								};
+								if (isValidTileCoord(coord, layer))
+									switchLayer(tileCoordToIndex(coord, layer));
+								else
+								{
+									auto newcoord = coord;
+									if (newcoord[0] >= layer->size[0])
+										newcoord[0] = layer->size[0] - 1;
+									if (newcoord[1] >= layer->size[1])
+										newcoord[1] = layer->size[1] - 1;
+
+									switchLayer(tileCoordToIndex(newcoord, layer));
+									object->sprite.position = tileCoordToCoord(newcoord, layer);
+									/** #TODO(incomplete) actually set the objects sprite position to the new pos */
+								}
 							}
 						}
 						else // floor
 						{
-							
+							// not sure what should happen here
 						}
 
 						object->properties = properties;
@@ -619,8 +679,8 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 			dynamic_cast<MainWindow*>(this->parent()->parent())->getStatusTile()->setText(QString::number(coord[0]) + 'x' + QString::number(coord[1]));
 		}
 
-		size_t tileindex = tileCoordToIndex(coordToTileCoord(canvascoord));
-		if (isValidIndex(tileindex))
+		size_t tileindex = tileCoordToIndex(coordToTileCoord(canvascoord), Map::getMap()->getCurrentLayer());
+		if (isValidIndex(tileindex, Map::getMap()->getCurrentLayer()))
 		{
 			kry::Util::Vector2f tilecoord = Map::getMap()->getCurrentLayer()->tiles[tileindex].sprite.position;
 			switch (Tool<>::getTool()->getType())
@@ -637,25 +697,57 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 						follower.sprite.position = tilecoord;
 						if (Tool<PaintData>::getTool()->getData().asset != nullptr) /** #TODO(incomplete) check if  .object is not null. if so, we're copying, so use the object's data instead of the asset */
 						{
-							auto asset = Tool<PaintData>::getTool()->getData().asset;
-							follower.sprite.texture = asset->resource->rawresource;
-							follower.sprite.dimensions = follower.sprite.texture->getDimensions();
-							follower.asset = asset;
-
-							if (asset->type == AssetType::ENTITY)
+							if (Tool<CopyObjectData>::getTool()->getData().object != nullptr)
 							{
-								bool snap = true;
-								if (asset->properties["global"]["gridsnap"] == "false")
-									snap = false;
-
-								kry::Util::Vector2f pos = 0.5f;
-								pos[0] = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]); /** #TODO(check) not sure if this is still right */
-								pos[1] = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
-								pos = follower.sprite.dimensions * pos; // texture pivot
-								if (snap)
-									follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
+								auto object = Tool<CopyObjectData>::getTool()->getData().object;
+								auto parent = Assets::getParentType(object->properties["global"]["hardtype"]);
+								kry::Util::String value = parent == "all" ? object->hardproperties[parent]["skinIdle"] : object->hardproperties[parent]["skin"];
+								assert(!value.isEmpty());
+								if (value != "-1")
+									follower.sprite.texture = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(value)]->rawresource;
 								else
-									follower.sprite.position = canvas.getCoord(canvascoord) - pos;
+									follower.sprite.texture = Resources::getEditorTexture(EditorResource::MISSING_TILE)->rawresource;
+
+								follower.sprite.dimensions = follower.sprite.texture->getDimensions();
+								follower.asset = Tool<CopyObjectData>::getTool()->getData().asset;
+								if (follower.asset->type == AssetType::ENTITY)
+								{
+									bool snap = true;
+									if (follower.asset->properties["global"]["gridsnap"] == "false")
+										snap = false;
+
+									kry::Util::Vector2f pos = 0.5f;
+									pos[0] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativex"]); /** #TODO(change) should probably use the pivot from the animation? */
+									pos[1] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativey"]);
+									pos = follower.sprite.dimensions * pos; // texture pivot
+									if (snap)
+										follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
+									else
+										follower.sprite.position = canvas.getCoord(canvascoord) - pos;
+								}
+							}
+							else
+							{
+								auto asset = Tool<PaintData>::getTool()->getData().asset;
+								follower.sprite.texture = asset->resource->rawresource;
+								follower.sprite.dimensions = follower.sprite.texture->getDimensions();
+								follower.asset = asset;
+
+								if (asset->type == AssetType::ENTITY)
+								{
+									bool snap = true;
+									if (asset->properties["global"]["gridsnap"] == "false")
+										snap = false;
+
+									kry::Util::Vector2f pos = 0.5f;
+									pos[0] = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]); /** #TODO(check) not sure if this is still right */
+									pos[1] = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
+									pos = follower.sprite.dimensions * pos; // texture pivot
+									if (snap)
+										follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
+									else
+										follower.sprite.position = canvas.getCoord(canvascoord) - pos;
+								}
 							}
 						}
 						redraw = true;
@@ -732,9 +824,9 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		//	this->setCursor(QCursor(Qt::ArrowCursor));
 	}
 
-	size_t GLPanel::tileCoordToIndex(const kry::Util::Vector2i& coord)
+	size_t GLPanel::tileCoordToIndex(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer)
 	{
-		auto& size = Map::getMap()->getCurrentLayer()->size;
+		auto& size = layer->size;
 
 		return coord[1] * size[1] + coord[0];
     }
@@ -754,7 +846,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 	kry::Util::Vector2f GLPanel::coordToExpTileCoord(const kry::Util::Vector2f& coord)
 	{
 		kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tilesize;
-		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
+		kry::Util::Vector2f halfdim = { static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f };
 
 		float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;  // black magic goin on here?
 		float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1;
@@ -762,29 +854,32 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		return {x, y};
 	}
 
-	kry::Util::Vector2f GLPanel::tileCoordToCoord(const kry::Util::Vector2i& coord)
+	kry::Util::Vector2f GLPanel::tileCoordToCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer)
 	{
-		kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tilesize;
+		kry::Util::Vector2i dim = layer->tilesize;
 		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
 
+		float x = (coord[0] * halfdim[0] - coord[1] * halfdim[0]) * 0.5f; /** #TODO(incomplete) fix this */
+		float y = (coord[0] * halfdim[1] + coord[1] * halfdim[1]) * 0.5f; /** #TODO(complete) */
 		//float x = (coord[1] * halfdim[1] - coord[0] * halfdim[0]) * 2.0f + 1.0f;
 		//float y = ((coord[1] * halfdim[1] + coord[0] * halfdim[0]) * 2.0f) * -1.0f + 1.0f;
+		/*
 		kry::Util::Vector2f pos = {coord[0] + 1.0f, coord[1] * -1.0f - 1.0f};
 		float x = (pos[0] - pos[1]) * halfdim[0];
-		float y = (pos[0] + pos[1]) * halfdim[1] - halfdim[1];
+		float y = (pos[0] + pos[1]) * halfdim[1] - halfdim[1];*/
 
 		return {x, y};
 	}
 
-	bool GLPanel::isValidTileCoord(const kry::Util::Vector2i& coord)
+	bool GLPanel::isValidTileCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer)
 	{
-		auto& size = Map::getMap()->getCurrentLayer()->size;
+		auto& size = layer->size;
 
 		return (coord[0] >= 0 && coord[0] < size[0]) && (coord[1] >= 0 && coord[1] < size[1]);
 	}
 
-	bool GLPanel::isValidIndex(size_t index)
+	bool GLPanel::isValidIndex(size_t index, const std::shared_ptr<Map::Layer>& layer)
 	{
-		return index >= 0 && index < Map::getMap()->getCurrentLayer()->tiles.size();
+		return index >= 0 && index < layer->tiles.size();
 	}
 }

@@ -54,6 +54,7 @@ class Resources
 		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>>& getTextures(); /** #TODO(note) should this be replaced with Anim's? */
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>& getSounds();
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>& getMusic();
+		inline static size_t getAnimationIndex(std::shared_ptr<Animation<>> animation);
 		static void initEditorTextures();
 		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>>& getEditorTextures();
 		inline static std::shared_ptr<Resource<kry::Graphics::Texture>> getEditorTexture(EditorResource texture);
@@ -97,6 +98,19 @@ const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture> > >& Resource
 std::shared_ptr<Resource<kry::Graphics::Texture> > Resources::getEditorTexture(EditorResource texture)
 {
 	return editortextures[unsigned(texture)];
+}
+
+size_t Resources::getAnimationIndex(std::shared_ptr<Animation<>> animation)
+{
+	size_t index = 0;
+	for (auto& anim : animations)
+	{
+		if (anim == animation)
+			return index;
+		++index;
+	}
+	assert(index != 0);
+	return index;
 }
 
 #endif // ASSETS_H

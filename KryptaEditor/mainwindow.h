@@ -13,6 +13,7 @@ class ConfigDialog;
 class PrjSettingsDialog;
 class AnimManagerDialog;
 class AudioManagerDialog;
+class ItemManagerDialog;
 
 template <typename Resource>
 struct Asset;
@@ -60,6 +61,7 @@ class MainWindow : public QMainWindow
 		PrjSettingsDialog* prjsettingsDialog;
 		AnimManagerDialog* animmanagerDialog;
 		AudioManagerDialog* audiomanagerDialog;
+		ItemManagerDialog* itemmanagerDialog;
 		bool saved;
 };
 

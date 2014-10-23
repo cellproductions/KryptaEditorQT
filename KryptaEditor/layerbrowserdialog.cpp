@@ -105,7 +105,7 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 		// delete layers in todelete, remove them from the current map
 		// add layers that are new to the list
 		// resize layers who's dimensions have been changed
-		for (int i = 0; i < ui->lbLayers->count(); ++i)
+		for (int i = 0; i < ui->lbLayers->count(); ++i) /** #TODO(bug) crash here when adding new layer. also, change the name "Layer" to "Floor" */
 		{
 			LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(ui->lbLayers->item(i));
 			option->getLayer()->description = option->getDescription();

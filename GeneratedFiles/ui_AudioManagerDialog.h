@@ -33,8 +33,8 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *bDone;
     QPushButton *bPlay;
-    QPushButton *bDelete;
     QPushButton *bAdd;
+    QPushButton *bDelete;
 
     void setupUi(QDialog *AudioManagerDialog)
     {
@@ -85,15 +85,15 @@ public:
 
         horizontalLayout->addWidget(bPlay);
 
-        bDelete = new QPushButton(AudioManagerDialog);
-        bDelete->setObjectName(QStringLiteral("bDelete"));
-
-        horizontalLayout->addWidget(bDelete);
-
         bAdd = new QPushButton(AudioManagerDialog);
         bAdd->setObjectName(QStringLiteral("bAdd"));
 
         horizontalLayout->addWidget(bAdd);
+
+        bDelete = new QPushButton(AudioManagerDialog);
+        bDelete->setObjectName(QStringLiteral("bDelete"));
+
+        horizontalLayout->addWidget(bDelete);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -119,8 +119,8 @@ public:
         ___qtablewidgetitem1->setText(QApplication::translate("AudioManagerDialog", "Value", 0));
         bDone->setText(QApplication::translate("AudioManagerDialog", "Done", 0));
         bPlay->setText(QApplication::translate("AudioManagerDialog", "Preview", 0));
-        bDelete->setText(QApplication::translate("AudioManagerDialog", "Delete Audio", 0));
         bAdd->setText(QApplication::translate("AudioManagerDialog", "Add New Audio", 0));
+        bDelete->setText(QApplication::translate("AudioManagerDialog", "Delete Audio", 0));
     } // retranslateUi
 
 };

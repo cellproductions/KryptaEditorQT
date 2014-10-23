@@ -4,6 +4,7 @@
 #include <QGLWidget>
 #include <Graphics/Renderer.h>
 #include <Graphics/Canvas.h>
+#include <Map.h>
 
 class ObjectSettingsDialog;
 struct Object;
@@ -37,12 +38,12 @@ namespace Kryed
 			void leaveEvent(QEvent* event);
 
         private:
-			size_t tileCoordToIndex(const kry::Util::Vector2i& coord);
+			size_t tileCoordToIndex(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
 			kry::Util::Vector2i coordToTileCoord(const kry::Util::Vector2f& coord);
 			kry::Util::Vector2f coordToExpTileCoord(const kry::Util::Vector2f& coord);
-			kry::Util::Vector2f tileCoordToCoord(const kry::Util::Vector2i& coord);
-			bool isValidTileCoord(const kry::Util::Vector2i& coord);
-			bool isValidIndex(size_t index);
+			kry::Util::Vector2f tileCoordToCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
+			bool isValidTileCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
+			bool isValidIndex(size_t index, const std::shared_ptr<Map::Layer>& layer);
 
 			ObjectSettingsDialog* objsettingsDialog;
             bool empty;

@@ -199,9 +199,9 @@ public:
 
     void retranslateUi(QDialog *LayerBrowserDialog)
     {
-        LayerBrowserDialog->setWindowTitle(QApplication::translate("LayerBrowserDialog", "Layer Browser", 0));
-        tbDescription->setPlaceholderText(QApplication::translate("LayerBrowserDialog", "Layer description...", 0));
-        label->setText(QApplication::translate("LayerBrowserDialog", "Layer dimensions [w, h]:", 0));
+        LayerBrowserDialog->setWindowTitle(QApplication::translate("LayerBrowserDialog", "Floor Browser", 0));
+        tbDescription->setPlaceholderText(QApplication::translate("LayerBrowserDialog", "Floor description...", 0));
+        label->setText(QApplication::translate("LayerBrowserDialog", "Floor dimensions [w, h]:", 0));
         sbWidth->setSuffix(QApplication::translate("LayerBrowserDialog", " tiles", 0));
         bAdd->setText(QApplication::translate("LayerBrowserDialog", "Add", 0));
         bDelete->setText(QApplication::translate("LayerBrowserDialog", "Delete", 0));

@@ -13,6 +13,7 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QLineEdit>
 #include <QDebug>
 
 ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ObjectSettingsDialog), lastresult(DialogResult::CANCEL)
@@ -46,12 +47,17 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 				}
 
 				auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (type.isEmpty() || type == "COUNT" || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE") /** #TODO(change) add these 2 types as widgets instead */
+				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE") /** #TODO(change) add these 2 types as widgets instead */
 					hardtypesettings[section][key] = qToKString(table->item(rowindex, 1)->text());
 				else if (type == "FLOOR_ID")
 				{
 					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
 					text = text.left(text.indexOf(':'));
+					hardtypesettings[section][key] = qToKString(text);
+				}
+				else if (type == "INT" || type == "FLOAT")
+				{
+					auto text = dynamic_cast<QLineEdit*>(table->cellWidget(rowindex, 1))->text();
 					hardtypesettings[section][key] = qToKString(text);
 				}
 				else if (type == "BOOL")
@@ -93,6 +99,12 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : QDialog(parent), u
 					text = text.left(text.indexOf(':'));
 					if (text != "-1")
 						hardtypesettings[section][key] = qToKString(text);
+				}
+				else if (type == "ITEM_ID")
+				{
+					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
+					text = text.left(text.indexOf(':'));
+					hardtypesettings[section][key] = qToKString(text);
 				}
 
 				/** #TODO(incomplete) add parts for whatever else that comes along */
@@ -137,7 +149,12 @@ DialogResult ObjectSettingsDialog::showDialog(const kry::Util::String& title, Ob
 	this->setWindowTitle(t);
 	settings = object->properties;
 	hardtypesettings = object->hardproperties;
-	ui->lObject->setPixmap(QIcon(kryToQString(settings["global"]["resource"])).pixmap(ui->lObject->size()));
+	auto parent = Assets::getParentType(settings["global"]["hardtype"]);
+	kry::Util::String value = parent == "all" ? hardtypesettings[parent]["skinIdle"] : hardtypesettings[parent]["skin"];
+	assert(!value.isEmpty());
+	auto anim = value == "-1" ? Resources::getEditorTexture(EditorResource::MISSING_TILE) : Resources::getAnimations()[kry::Util::toUIntegral<size_t>(value)];
+	ui->lObject->setPixmap(QIcon(anim->path).pixmap(ui->lObject->size()));
+
 	updateTables(object);
 
 	this->exec();
@@ -185,8 +202,20 @@ void ObjectSettingsDialog::updateTables(Object* object)
 			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-			if (type.isEmpty() || type == "COUNT" || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE")
+			if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE")
 				table->setItem(index, 1, new QTableWidgetItem(kryToQString(hardtypesettings[section][key])));
+			else if (type == "INT")
+			{
+				QLineEdit* edit = new QLineEdit(kryToQString(hardtypesettings[section][key]), table);
+				edit->setValidator(new QIntValidator(edit));
+				table->setCellWidget(index, 1, edit);
+			}
+			else if (type == "FLOAT")
+			{
+				QLineEdit* edit = new QLineEdit(kryToQString(hardtypesettings[section][key]), table);
+				edit->setValidator(new QDoubleValidator(edit));
+				table->setCellWidget(index, 1, edit);
+			}
 			else if (type == "FLOOR_ID")
 			{
 				QComboBox* box = new QComboBox(table);
@@ -231,12 +260,12 @@ void ObjectSettingsDialog::updateTables(Object* object)
 				QComboBox* box = new QComboBox(table);
 				table->setCellWidget(index, 1, box);
 				void(QComboBox::* animsSignal)(int) = &QComboBox::currentIndexChanged;
-				connect(box, animsSignal, [this, table, index](int index)
+				connect(box, animsSignal, [this, table, box, index](int)
 				{
 					auto key = qToKString(table->item(index, 0)->text());
 					if (key == "skin" || key == "skinIdle")
 					{
-						auto text = dynamic_cast<QComboBox*>(table->cellWidget(index, 1))->currentText();
+						auto text = dynamic_cast<QComboBox*>(box)->currentText();
 						text = text.left(text.indexOf(':'));
 						if (text != "-1")
 							ui->lObject->setPixmap(QIcon(Resources::getAnimations()[text.toInt()]->path).pixmap(ui->lObject->size()));
@@ -300,48 +329,27 @@ void ObjectSettingsDialog::updateTables(Object* object)
 					box->setCurrentIndex(kry::Util::toIntegral<int>(hardtypesettings[section][key]) + 1);
 				table->setCellWidget(index, 1, box);
 			}
+			else if (type == "ITEM_ID")
+			{
+				QComboBox* box = new QComboBox(table);
+				box->setEditable(false);
+				int index = 0;
+				int currindex = 0;
+				for (auto& pair : Map::getMap()->getItems())
+				{
+					box->addItem(kryToQString(pair.first) + ':' + pair.second->name);
+					if (hardtypesettings[section][key] == pair.first)
+						currindex = index;
+					++index;
+				}
+				box->setCurrentIndex(currindex);
+				table->setCellWidget(index, 1, box);
+			}
 			/** #TODO(incomplete) add parts for whatever else that comes along */
 		}
 	};
 	setupHard(object->asset->type == AssetType::TILE ? kry::Util::String("floor") : kry::Util::String("all"));
 	setupHard(type);
-	/*
-	connect(table, &QTableWidget::itemChanged, [this, table, object](QTableWidgetItem* item)
-	{
-		if (item->column() != 1)
-			return;
-
-		auto key = qToKString(table->item(item->row(), 0)->text());
-		if (hardtypesettings.sectionExists("all"))
-		{
-			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())["all"][key];
-			if (type == "ANIM_ID")
-			{
-				auto text = dynamic_cast<QComboBox*>(table->cellWidget(item->row(), 1))->currentText();
-				if (key == "skinIdle" && !text.isEmpty())
-				{
-					text = text.left(text.indexOf(':'));
-					if (text != "-1")
-						ui->lObject->setPixmap(QIcon(Resources::getAnimations()[text.toInt()]->path).pixmap(ui->lObject->size()));
-				}
-			}
-		}
-		else // floor
-		{
-			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"][key];
-			if (type == "ANIM_ID")
-			{
-				auto text = dynamic_cast<QComboBox*>(table->cellWidget(item->row(), 1))->currentText();
-				if (key == "skin" && !text.isEmpty())
-				{
-					text = text.left(text.indexOf(':'));
-					if (text != "-1")
-						ui->lObject->setPixmap(QIcon(Resources::getAnimations()[text.toInt()]->path).pixmap(ui->lObject->size()));
-				}
-			}
-		}
-	});
-	*/
 #if 0
 	table = initTable(new QTableWidget(ui->tabs));
 	ui->tabs->addTab(table, "events");
@@ -370,7 +378,6 @@ void ObjectSettingsDialog::updateTables(Object* object)
 		ui->tabs->addTab(table, "Waypoints");
 		table->insertRow(0);
 		QPushButton* button = new QPushButton("Edit Waypoints", table); /** #TODO(note) 2 options for waypointcanvas. remove it from the renderer if its not needed, or place the waypoints in the normal canvas instead (after everything else), updateCanvas instead of waypointcanvas */
-		button->setEnabled(false); /** #TODO(change) remove this line after committing */
 		button->setToolTip("Saves and closes the Object Settings window and begins recording of waypoint placement.");
 		connect(button, &QPushButton::clicked, [this, table, object](bool)
 		{
@@ -379,7 +386,7 @@ void ObjectSettingsDialog::updateTables(Object* object)
 			WaypointData data;
 			if (!table->item(1, 1)->text().isEmpty())
 			{
-				auto list = qToKString(table->item(1, 1)->text()).explode("},"); /** #TODO(bug) there's an exception thrown from here if the string is empty */
+				auto list = qToKString(table->item(1, 1)->text()).explode("},");
 				for (auto& vec : list)
 				{
 					Waypoint waypoint;
@@ -392,13 +399,13 @@ void ObjectSettingsDialog::updateTables(Object* object)
 			data.looping = table->item(2, 1)->text() == "true";
 			Tool<WaypointData>::getTool()->setData(data);
 			dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getUI()->glWidget->updateWaypointCanvas();
+			dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getStatusMain()->setText("Waypoint mode.");
 
 			lastresult = DialogResult::OK;
 			close();
 		});
 		table->setCellWidget(0, 0, button);
 		button = new QPushButton("Clear Waypoints", table);
-		button->setEnabled(false); /** #TODO(change) remove this line after committing */
 		connect(button, &QPushButton::clicked, [this, table, object](bool)
 		{
 			table->item(1, 1)->setText("");

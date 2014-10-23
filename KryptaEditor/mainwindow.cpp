@@ -10,6 +10,7 @@
 #include "PrjSettingsDialog.h"
 #include "AnimManagerDialog.h"
 #include "AudioManagerDialog.h"
+#include "ItemManagerDialog.h"
 #include "Configuration.h"
 #include "Map.h"
 #include "Resources.h"
@@ -27,7 +28,8 @@ static const QString mainTitle("Krypta Map Editor");
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), prjsetupDialog(new PrjSetupDialog(this)),
 	entbrowseDialog(new EntBrowserDialog(this)), envbrowseDialog(new EnvBrowserDialog(this)), layerbrowseDialog(new LayerBrowserDialog(this)), configDialog(new ConfigDialog(this)),
-	prjsettingsDialog(new PrjSettingsDialog(this)), animmanagerDialog(new AnimManagerDialog(this)), audiomanagerDialog(new AudioManagerDialog(this)), saved(true)
+	prjsettingsDialog(new PrjSettingsDialog(this)), animmanagerDialog(new AnimManagerDialog(this)), audiomanagerDialog(new AudioManagerDialog(this)), itemmanagerDialog(new ItemManagerDialog(this)), 
+	saved(true)
 {
 	ui->setupUi(this);
 
@@ -81,6 +83,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		if (!Map::getMap())
 			return;
 		if (audiomanagerDialog->showDialog() == DialogResult::OK)
+		{
+
+		}
+	});
+	connect(ui->miProjectItems, &QAction::triggered, [this]()
+	{
+		if (!Map::getMap())
+			return;
+		if (itemmanagerDialog->showDialog() == DialogResult::OK)
 		{
 
 		}
@@ -170,6 +181,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		//	dynamic_cast<QWidget*>(child)->setVisible(false);
 
 		Tool<>::switchTool(ToolType::POINTER);
+		getStatusMain()->setText("Pointer mode.");
 	});
 	connect(ui->bPaint, &QToolButton::clicked, [this]()
 	{
@@ -197,6 +209,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 			data.asset = prevAsset;
 			Tool<PaintData>::getTool()->setData(data);
 		}
+		getStatusMain()->setText("Paint mode.");
 	});
 }
 

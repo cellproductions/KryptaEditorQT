@@ -50,6 +50,41 @@
              <string>Project path</string>
             </property>
            </row>
+           <row>
+            <property name="text">
+             <string>Icon</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>FoW</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>RFoW</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Fog tint</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Floor fade time</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Loading sound</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Loading image</string>
+            </property>
+           </row>
            <column>
             <property name="text">
              <string>Property</string>
@@ -73,6 +108,41 @@
            <item row="1" column="0">
             <property name="text">
              <string>Project path:</string>
+            </property>
+           </item>
+           <item row="2" column="0">
+            <property name="text">
+             <string>Icon:</string>
+            </property>
+           </item>
+           <item row="3" column="0">
+            <property name="text">
+             <string>Fog of War:</string>
+            </property>
+           </item>
+           <item row="4" column="0">
+            <property name="text">
+             <string>Reveal Fog of War:</string>
+            </property>
+           </item>
+           <item row="5" column="0">
+            <property name="text">
+             <string>Fog Tint:</string>
+            </property>
+           </item>
+           <item row="6" column="0">
+            <property name="text">
+             <string>Floor Fade Time:</string>
+            </property>
+           </item>
+           <item row="7" column="0">
+            <property name="text">
+             <string>Loading Sound:</string>
+            </property>
+           </item>
+           <item row="8" column="0">
+            <property name="text">
+             <string>Loading Image:</string>
             </property>
            </item>
           </widget>
@@ -100,7 +170,7 @@
            </attribute>
            <row>
             <property name="text">
-             <string>Start layer</string>
+             <string>Start floor</string>
             </property>
            </row>
            <row>
@@ -115,7 +185,7 @@
            </row>
            <row>
             <property name="text">
-             <string>Direction</string>
+             <string>Directions</string>
             </property>
            </row>
            <row>
@@ -170,7 +240,22 @@
            </row>
            <row>
             <property name="text">
+             <string>Death animation</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
              <string>Health</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Direction</string>
+            </property>
+           </row>
+           <row>
+            <property name="text">
+             <string>Group</string>
             </property>
            </row>
            <column>
@@ -185,7 +270,7 @@
            </column>
            <item row="0" column="0">
             <property name="text">
-             <string>Spawn layer:</string>
+             <string>Spawn floor:</string>
             </property>
            </item>
            <item row="1" column="0">
@@ -200,7 +285,7 @@
            </item>
            <item row="3" column="0">
             <property name="text">
-             <string>Direction:</string>
+             <string>Directions:</string>
             </property>
            </item>
            <item row="4" column="0">
@@ -285,12 +370,27 @@
            </item>
            <item row="14" column="0">
             <property name="text">
+             <string>Death animation:</string>
+            </property>
+           </item>
+           <item row="15" column="0">
+            <property name="text">
              <string>Health:</string>
             </property>
            </item>
-           <item row="14" column="1">
+           <item row="15" column="1">
             <property name="text">
              <string/>
+            </property>
+           </item>
+           <item row="16" column="0">
+            <property name="text">
+             <string>Direction:</string>
+            </property>
+           </item>
+           <item row="17" column="0">
+            <property name="text">
+             <string>Group:</string>
             </property>
            </item>
           </widget>

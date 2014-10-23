@@ -25,40 +25,55 @@ TODO HIGH(absolutely required):
 [x] finish pivot editing for objects
 [x] add object waypoints
 [ ] add waypoint options dialog/manual placement [DOING]
-[ ] make some of the type widgets affect the tile/entity (change floor, set animation, etc.)
+[ ] make some of the type widgets affect the tile/entity (change floor, set animation, etc.)(set animation done, floor half done)
 [x] add tile/object IDs
 [X] add skins structures
 [x] add skins management dialog
 [x] add directions to skins dialog
-[ ] add items (inherits object? simplicity)
-[ ] add item dialog
-[ ] add sound/music
-[ ] add sound/music dialogs
+[x] add items
+[ ] finish item keys for types.ini [FLUX]
+[x] add item dialog
+[x] add sound/music
+[x] add sound/music dialogs
 [ ] add object spawn options using the ObjectSettingsDialog
+[x] include add button for environment
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
 [x] finish zorder sorting for renderables
 [x] finish pointer tool
 [ ] finish brush tool (brush sizes)
-[ ] add clone tool
-[ ] add objectives (add exit here too?)/objective settings
+[ ] add stamp tool
+[ ] add objectives (add exit here too?)/objective settings (is this still a thing?)
 [x] move pivoting to the skins manager
 [ ] add map uploading (requires login)
-[ ] finish the COUNT/VEC_2 type for hardtypes in the ObjectSettingsDialog
+[ ] finish the COUNT/VEC_2/etc type for hardtypes in the ObjectSettingsDialog
 [ ] finish layer editing (can already delete/add layers)
 [ ] add boundingbox overlay
+[ ] undo history/command
+[ ] add keyboard shortcuts
 
 TODO LOW(extra fluff for polish):
 [ ] add grid overlay/toggle
 [ ] add placement follower as a sorted renderable
 [ ] add background options per layer
 [ ] add a help dialog (maybe using HTML pages)
+[ ] add Key struct with name, type, descr, etc, and a lookup for quick access from properties
 [ ] add key names/descriptions for keys in types.ini for hover help/table names
 [ ] finish tooltips for everything
 [ ] add debug overlay
+[ ] cursor change to tool type
+[ ] change border as well when clicking an entity/env in the main window
 
 BUGS:
-* object settings dialog does not clear the icon pane after closing
 * flip x/y of tile positions (crash from exporting, rectangle maps are the wrong way around)
-* object pivot point does not move correctly
+* apply all is broken (hasn't been updated)
+* weird bug when changing an object's animation, copying it, then selecting that object from the entity list makes that object's skin change to the copy's skin'
+* creating a new map while there is already a map makes everything disappear
+* toolbar options for tools dont remove properly (what's up Qt?)
+* some tile icons appear as missing.png, dunno why
+
+TO TEST:
+* press the animate button and dont stop it while switching tabs/animations
+* 
+

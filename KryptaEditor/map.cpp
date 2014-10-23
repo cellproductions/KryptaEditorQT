@@ -289,8 +289,8 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 	return single;
 }
 
-void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings)
-{
+void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #TODO(note) when saving project settings, must save the objectidindex as well so id's can continue to be generated from where they were left off */
+{																		/** #TODO(note) same with item id count */
 	using namespace kry;
 
 	QFile file(name);
@@ -539,7 +539,25 @@ bool operator==(const ExpTile& left, const ExpTile& right)
 	return left.tile == right.tile;
 }
 
-void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
+struct UsedAnim
+{
+	std::shared_ptr<Animation<>> animation;
+	kry::Util::String skinfile;
+	unsigned directions;
+	size_t animid;
+};
+
+bool operator<(const UsedAnim& left, const UsedAnim& right)
+{
+	return left.animid < right.animid && left.animation.get() < right.animation.get() && left.directions < right.directions;
+}
+
+bool operator==(const UsedAnim& left, const UsedAnim& right)
+{
+	return left.animid == right.animid && left.directions == right.directions;
+}
+
+void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #TODO(note) if a key is empty, dont export it (let the game crash or print error, etc.) */
 {
 	using namespace kry;
 
@@ -553,15 +571,15 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 // MAP SETTINGS
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
-		lines.push_back("iconImage = icon.png");
+		lines.push_back("iconImage = " + prjconfig["project"]["iconImage"]);
 		lines.push_back("checksum = ce114e4501d2f4e2dcea3e17b546f339");
-		lines.push_back("fogOfWar = 1");
-		lines.push_back("revealOfWar = 1");
-		lines.push_back("fogTint = { 0.4, 0.4, 0.4, 1.0 }");
-		lines.push_back("tileDimensions = 700");
-		lines.push_back("floorFadeTime = 250");
-		lines.push_back("loadingSound = sounds/loading.mp3");
-		lines.push_back("loadingImage = images/loading.png");
+		lines.push_back("fogOfWar = " + prjconfig["project"]["fogOfWar"]);
+		lines.push_back("revealOfWar = " + prjconfig["project"]["revealOfWar"]);
+		lines.push_back("fogTint = " + prjconfig["project"]["fogTint"]);
+		lines.push_back("tileDimensions = 700"); /** #TODO(change) hardcoded */
+		lines.push_back("floorFadeTime = " + prjconfig["project"]["floorFadeTime"]);
+		lines.push_back("loadingSound = " + prjconfig["project"]["loadingSound"]);
+		lines.push_back("loadingImage = " + prjconfig["project"]["loadingImage"]);
 // OBJECTIVE SETTINGS
 		lines.push_back("[Objectives]");
 // FLOORS/FLOOR SETTINGS
@@ -577,6 +595,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 		}
 // ENTITY DECLARATIONS
 		std::vector<Object*> objects;
+		std::set<UsedAnim> objectanimsused;
 		lines.push_back("[Entities]");
 		lines.push_back("player=-1");
 		unsigned count = 0;
@@ -596,22 +615,64 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 // ENTITY SETTINGS /** #TODO(incomplete) add the keys 'path' and 'loopPath' to these settings (player doesnt need them) */
 		lines.push_back("[player]");
 		lines.push_back("type=player");
-		lines.push_back("floor=" + prjconfig["player"]["layer"]);
-		lines.push_back("position= { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
-		lines.push_back("dimensions= { " + prjconfig["player"]["dimensionsx"] + ", " + prjconfig["player"]["dimensionsy"] + " }");
-		lines.push_back("direction=" + prjconfig["player"]["direction"]);
-		lines.push_back("seeInFog=" + prjconfig["player"]["seeInFog"]);
-		lines.push_back("directions=" + prjconfig["player"]["directions"]);
-		lines.push_back("maxHeuristic=" + prjconfig["player"]["maxHeuristic"]);
-		lines.push_back("viewDistance=" + prjconfig["player"]["viewDistance"]);
-		lines.push_back("moveAcceleration=" + prjconfig["player"]["moveAcceleration"]);
-		lines.push_back("turnAcceleration=" + prjconfig["player"]["turnAcceleration"]);
-		lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
-		lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
-		lines.push_back("skinConfig=PlayerSkins.txt");
-		lines.push_back("skinIdle=" + prjconfig["player"]["skinIdle"]);
-		lines.push_back("skinRun=" + prjconfig["player"]["skinRun"]);
-		lines.push_back("health=" + prjconfig["player"]["health"]);
+		if (!prjconfig["player"]["floor"].isEmpty())
+			lines.push_back("floor=" + prjconfig["player"]["floor"]);
+		if (!prjconfig["player"]["position"].isEmpty())
+			lines.push_back("position=" + prjconfig["player"]["position"]);
+		if (!prjconfig["player"]["dimensions"].isEmpty())
+			lines.push_back("dimensions=" + prjconfig["player"]["dimensions"]);
+		if (!prjconfig["player"]["seeInFog"].isEmpty())
+			lines.push_back("seeInFog=" + prjconfig["player"]["seeInFog"]);
+		if (!prjconfig["player"]["directions"].isEmpty())
+			lines.push_back("directions=" + prjconfig["player"]["directions"]);
+		if (!prjconfig["player"]["maxHeuristic"].isEmpty())
+			lines.push_back("maxHeuristic=" + prjconfig["player"]["maxHeuristic"]);
+		if (!prjconfig["player"]["viewDistance"].isEmpty())
+			lines.push_back("viewDistance=" + prjconfig["player"]["viewDistance"]);
+		if (!prjconfig["player"]["moveAcceleration"].isEmpty())
+			lines.push_back("moveAcceleration=" + prjconfig["player"]["moveAcceleration"]);
+		if (!prjconfig["player"]["turnAcceleration"].isEmpty())
+			lines.push_back("turnAcceleration=" + prjconfig["player"]["turnAcceleration"]);
+		if (!prjconfig["player"]["maxMoveSpeed"].isEmpty())
+			lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
+		if (!prjconfig["player"]["maxTurnSpeed"].isEmpty())
+			lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
+		if (!prjconfig["player"]["skinIdle"].isEmpty() || !prjconfig["player"]["skinRun"].isEmpty() || !prjconfig["player"]["skinDead"].isEmpty())
+			if (prjconfig["player"]["skinIdle"] != "-1" || prjconfig["player"]["skinRun"] != "-1" || prjconfig["player"]["skinDead"] != "-1")
+				lines.push_back("skinConfig=PlayerSkins.txt");
+		if (!prjconfig["player"]["skinIdle"].isEmpty())
+			lines.push_back("skinIdle=" + prjconfig["player"]["skinIdle"]);
+		if (!prjconfig["player"]["skinRun"].isEmpty())
+			lines.push_back("skinRun=" + prjconfig["player"]["skinRun"]);
+		if (!prjconfig["player"]["skinDead"].isEmpty())
+			lines.push_back("skinDead=" + prjconfig["player"]["skinDead"]);
+		if (!prjconfig["player"]["health"].isEmpty())
+			lines.push_back("health=" + prjconfig["player"]["health"]);
+		if (!prjconfig["player"]["direction"].isEmpty())
+			lines.push_back("direction=" + prjconfig["player"]["direction"]);
+		if (!prjconfig["player"]["group"].isEmpty())
+			lines.push_back("group=" + prjconfig["player"]["group"]);
+		{
+			auto directions = 1;
+			if (!prjconfig["player"]["directions"].isEmpty())
+				directions = kry::Util::toUIntegral<unsigned>(prjconfig["player"]["directions"]);
+			auto skinsfile = prjconfig["player"]["directions"] + "EntitySkins.txt";
+			if (!prjconfig["player"]["skinIdle"].isEmpty() && prjconfig["player"]["skinIdle"] != "-1")
+			{
+				auto index = Util::toUIntegral<size_t>(prjconfig["player"]["skinIdle"]);
+				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+			}
+			if (!prjconfig["player"]["skinRun"].isEmpty() && prjconfig["player"]["skinRun"] != "-1")
+			{
+				auto index = Util::toUIntegral<size_t>(prjconfig["player"]["skinRun"]);
+				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+			}
+			if (!prjconfig["player"]["skinDead"].isEmpty() && prjconfig["player"]["skinDead"] != "-1")
+			{
+				auto index = Util::toUIntegral<size_t>(prjconfig["player"]["skinDead"]);
+				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+			}
+		}
 
 		count = 0;
 		for (auto& object : objects)
@@ -619,14 +680,39 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			auto section = object->hardproperties["Skins"]["name"];
 			lines.push_back("[entity" + Util::toString(count++) + ']');
 			lines.push_back("type=" + object->properties["global"]["hardtype"]);
-			if (object->hardproperties["all"]["directions"] == "1")
-				object->hardproperties["all"]["skinConfig"] = "EntitySkins.txt"; /** #TODO(incomplete) what if there is no skin? does the game handle empty skins? */
-			else
-				object->hardproperties["all"]["skinConfig"] = Util::toString(getAnimIndex(object->asset->resource)) + "Skins.txt"; /** #TODO(note) remember this while exporting animations */
+			auto skinsfile = object->hardproperties["all"]["directions"] + "EntitySkins.txt";
+			object->hardproperties["all"]["skinConfig"] = skinsfile;
+			auto directions = Util::toUIntegral<unsigned>(object->hardproperties["all"]["directions"]);
 			for (auto& key : object->hardproperties["all"].getKeyNames())
-				lines.push_back(key + '=' + object->hardproperties["all"][key]);
+			{
+				if (!object->hardproperties["all"][key].isEmpty())
+				{
+					lines.push_back(key + '=' + object->hardproperties["all"][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())["all"][key] == "ANIM_ID")
+					{
+						if (object->hardproperties["all"][key] != "-1")
+						{
+							auto index = Util::toUIntegral<size_t>(object->hardproperties["all"][key]);
+							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+						}
+					}
+				}
+			}
 			for (auto& key : object->hardproperties[section].getKeyNames())
-				lines.push_back(key + '=' + object->hardproperties[section][key]);
+			{
+				if (!object->hardproperties[section][key].isEmpty())
+				{
+					lines.push_back(key + '=' + object->hardproperties[section][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())[section][key] == "ANIM_ID")
+					{
+						if (object->hardproperties[section][key] != "-1")
+						{
+							auto index = Util::toUIntegral<size_t>(object->hardproperties[section][key]);
+							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+						}
+					}
+				}
+			}
 		}
 
 		std::set<ExpTile> tilesused;
@@ -658,21 +744,44 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			lines.push_back("[tile" + Util::toString(count++) + ']');
 			Object* object = exptile.wall != nullptr ? exptile.wall : exptile.tile;
 			auto type = object->properties["global"]["hardtype"];
-			object->hardproperties["floor"]["skinConfig"] = "TileSkins.txt";
-			object->hardproperties["floor"]["skin"] = qToKString(object->asset->resource->name);
-			object->hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }"; /** #TODO(change) hardcoded (there are no defaults available yet) */
-			object->hardproperties["floor"]["sortDepth"] = "0";
-			object->hardproperties["floor"]["heuristic"] = "1";
+			Util::String skinsfile = "1TileSkins.txt";
+			object->hardproperties["floor"]["skinConfig"] = skinsfile;
 			if (type == "wall")
 			{
-				object->hardproperties[type]["floorTile"] = Util::toString(getAssetIndex(exptile.tile->asset, Assets::getTiles()));
+				object->hardproperties[type]["floorTile"] = Util::toString(getAssetIndex(exptile.tile->asset, Assets::getTiles())); /** #TODO(change) not sure about this */
 				object->hardproperties["floor"]["sortDepth"] = "1";
 				object->hardproperties["floor"]["heuristic"] = "0";
 			}
 			for (auto& key : object->hardproperties["floor"].getKeyNames())
-				lines.push_back(key + '=' + object->hardproperties["floor"][key]);
+			{
+				if (!object->hardproperties["floor"][key].isEmpty())
+				{
+					lines.push_back(key + '=' + object->hardproperties["floor"][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())["floor"][key] == "ANIM_ID")
+					{
+						if (object->hardproperties["floor"][key] != "-1")
+						{
+							auto index = Util::toUIntegral<size_t>(object->hardproperties["floor"][key]);
+							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, 1, index });
+						}
+					}
+				}
+			}
 			for (auto& key : object->hardproperties[type].getKeyNames())
-				lines.push_back(key + '=' + object->hardproperties[type][key]);
+			{
+				if (!object->hardproperties[type][key].isEmpty())
+				{
+					lines.push_back(key + '=' + object->hardproperties[type][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())[type][key] == "ANIM_ID")
+					{
+						if (object->hardproperties[type][key] != "-1")
+						{
+							auto index = Util::toUIntegral<size_t>(object->hardproperties[type][key]);
+							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, 1, index });
+						}
+					}
+				}
+			}
 		}
 
 		zipfile[""]["Map.txt"] = linesToBin(lines);
@@ -696,8 +805,6 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 							break;
 						}
 					}
-
-
 					line += Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getTiles()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())) + ' ';
 				}
 				line = line.substring(0, line.getLength() - 1);
@@ -708,7 +815,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig)
 			lines.clear();
 		}
 
-		/** #TODO(note) when exporting animations, if an object has 1 direction (tiles/some objects), place in Tile/EntitySkins.txt. otherwise, place in their own Skins file (avoids possible name collisions) */
+// SKIN FILES
 		/** #TODO(note) if an object has 1 direction, export North(0), else if 4, export every second starting from 0, otherwise, export all. (section name end numbers must be sequential (0-8)) */
 #if 0
 		lines.push_back("[Settings]");

@@ -26,6 +26,12 @@ struct Tile : public Object
 	std::vector<std::shared_ptr<Object> > objects;
 };
 
+struct Item /** #TODO(change) this could be typedef'd if nothing else goes in here */
+{
+	QString name;
+	kry::Media::Config properties;
+};
+
 class Map
 {
     public:
@@ -41,7 +47,8 @@ class Map
 		inline void setCurrentLayer(size_t index);
         inline std::vector<Tile>& getTiles(size_t layerindex);
         inline const kry::Util::Vector2i& getSize(size_t layerindex) const;
-        inline std::vector<std::shared_ptr<Layer> >& getLayers();
+        inline std::vector<std::shared_ptr<Layer>>& getLayers();
+        inline std::map<kry::Util::String, std::shared_ptr<Item>>& getItems();
         inline std::shared_ptr<Layer>& getCurrentLayer();
         inline const QString& getName() const;
         void resetMap();
@@ -57,7 +64,8 @@ class Map
     private:
         Map(const QString& name, size_t layerCount);
 
-        std::vector<std::shared_ptr<Layer> > layers;
+        std::vector<std::shared_ptr<Layer>> layers;
+        std::map<kry::Util::String, std::shared_ptr<Item>> items;
         QString name;
         std::shared_ptr<Layer> currentLayer;
 
@@ -81,9 +89,14 @@ const kry::Util::Vector2i& Map::getSize(size_t layerindex) const
     return layers[layerindex]->size;
 }
 
-std::vector<std::shared_ptr<Map::Layer> >& Map::getLayers()
+std::vector<std::shared_ptr<Map::Layer>>& Map::getLayers()
 {
     return layers;
+}
+
+std::map<kry::Util::String, std::shared_ptr<Item>>& Map::getItems()
+{
+    return items;
 }
 
 std::shared_ptr<Map::Layer>& Map::getCurrentLayer()

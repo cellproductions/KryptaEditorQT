@@ -39,6 +39,7 @@ public:
     QTableWidget *resProperties;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *bSelect;
+    QPushButton *bAdd;
     QSpacerItem *horizontalSpacer;
     QPushButton *bClose;
 
@@ -134,6 +135,11 @@ public:
 
         horizontalLayout_2->addWidget(bSelect);
 
+        bAdd = new QPushButton(EnvBrowserDialog);
+        bAdd->setObjectName(QStringLiteral("bAdd"));
+
+        horizontalLayout_2->addWidget(bAdd);
+
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer);
@@ -144,8 +150,8 @@ public:
         horizontalLayout_2->addWidget(bClose);
 
         horizontalLayout_2->setStretch(0, 20);
-        horizontalLayout_2->setStretch(1, 60);
-        horizontalLayout_2->setStretch(2, 20);
+        horizontalLayout_2->setStretch(2, 60);
+        horizontalLayout_2->setStretch(3, 20);
 
         verticalLayout->addLayout(horizontalLayout_2);
 
@@ -170,6 +176,7 @@ public:
         QTableWidgetItem *___qtablewidgetitem1 = resProperties->horizontalHeaderItem(1);
         ___qtablewidgetitem1->setText(QApplication::translate("EnvBrowserDialog", "Value", 0));
         bSelect->setText(QApplication::translate("EnvBrowserDialog", "Select and Close", 0));
+        bAdd->setText(QApplication::translate("EnvBrowserDialog", "Add Environment Piece", 0));
         bClose->setText(QApplication::translate("EnvBrowserDialog", "Close", 0));
     } // retranslateUi
 

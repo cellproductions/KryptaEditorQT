@@ -2,6 +2,7 @@
 #include "ui_envbrowserdialog.h"
 #include "Resources.h"
 #include "Utilities.h"
+#include <QInputDialog>
 
 EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui::EnvBrowserDialog), selected(nullptr), lastresult(DialogResult::CANCEL)
 {
@@ -36,6 +37,40 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 		lastresult = ui->lbIcons->selectedItems().size() <= 0 ? DialogResult::CANCEL : DialogResult::OK;
         close();
     });
+	connect(ui->bAdd, &QPushButton::clicked, [this]()
+	{
+		/** #TODO(incomplete) not entirely sure what to do with this */
+		auto name = QInputDialog::getText(this, "Create New Environment Piece", "Enter a name for the piece:");
+		if (name.isNull() || name.trimmed().isEmpty())
+			return;
+		QStringList list { "solid", "void", "wall" };
+		auto type = QInputDialog::getItem(this, "Create New Environment Piece", "Select a type for your piece:", list, 0, false);
+		if (type.isNull() || type.trimmed().isEmpty())
+			return;
+		list.clear();
+		unsigned index = 0;
+		for (auto& anim : Resources::getAnimations())
+			list.push_back(QString::number(index++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
+		auto stranim = QInputDialog::getItem(this, "Create New Environment Piece", "Select an animation for your piece:", list, 0, false);
+		if (stranim.isNull() || stranim.trimmed().isEmpty())
+			return;
+		auto animation = Resources::getAnimations()[stranim.left(stranim.indexOf(':')).toUInt()];
+
+		Asset<kry::Graphics::Texture>* asset = new Asset<kry::Graphics::Texture>;
+		asset->path = "";
+		asset->type = AssetType::TILE;
+		asset->properties["global"]["name"] = qToKString(name);
+		asset->properties["global"]["resource"] = qToKString(animation->path);
+		asset->properties["global"]["type"] = type == "wall" ? kry::Util::String("ENTITY") : kry::Util::String("TILE");
+		asset->properties["global"]["hardtype"] = qToKString(type);
+		asset->properties["global"]["gridsnap"] = "true";
+		asset->properties["global"]["relativex"] = "0.5";
+		asset->properties["global"]["relativey"] = "0.5";
+		asset->resource = animation.get();
+
+		const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getTiles()).emplace_back(asset);
+		ui->lbIcons->addItem(new AssetListItem(asset, QIcon(asset->resource->path), kryToQString(asset->properties["global"]["name"])));
+	});
     connect(ui->bClose, &QPushButton::clicked, [this]()
     {
         lastresult = DialogResult::CANCEL;
