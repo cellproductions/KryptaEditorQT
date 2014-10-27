@@ -67,7 +67,7 @@
            <property name="spacing">
             <number>3</number>
            </property>
-           <item row="2" column="0">
+           <item row="3" column="0">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -79,23 +79,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item row="0" column="0">
-            <widget class="QToolButton" name="bPointer">
-             <property name="minimumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../Win32/Debug/editor/pointer.png</normaloff>../Win32/Debug/editor/pointer.png</iconset>
-             </property>
-            </widget>
            </item>
            <item row="1" column="0">
             <widget class="QToolButton" name="bPaint">
@@ -117,6 +100,40 @@
              <property name="icon">
               <iconset>
                <normaloff>../Win32/Debug/editor/paint.png</normaloff>../Win32/Debug/editor/paint.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QToolButton" name="bPointer">
+             <property name="minimumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../Win32/Debug/editor/pointer.png</normaloff>../Win32/Debug/editor/pointer.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QToolButton" name="bSelect">
+             <property name="minimumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../editor/Select.png</normaloff>../editor/Select.png</iconset>
              </property>
             </widget>
            </item>

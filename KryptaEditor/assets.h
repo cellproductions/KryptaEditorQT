@@ -39,11 +39,11 @@ class Assets
         inline static const std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& getSounds();
 		inline static const std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& getMusic();
 		static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>> getAllTextureAssets();
-		static std::shared_ptr<Asset<kry::Graphics::Texture>>& getTileByIni(const QString& path); /** #TODO(note) not sure these are needed now */
-		static std::shared_ptr<Asset<kry::Graphics::Texture>>& getEntityByIni(const QString& path);
 		inline static const kry::Media::Config& getHardTypes();
         inline static bool isLoaded();
 		inline static kry::Util::String getParentType(const kry::Util::String& hardtype);
+		static std::shared_ptr<Asset<kry::Graphics::Texture>> getTileByHardtype(const kry::Util::String& type);
+		static std::shared_ptr<Asset<kry::Graphics::Texture>> getEntityByHardtype(const kry::Util::String& type);
 
     private:
         Assets();
@@ -93,7 +93,7 @@ kry::Util::String Assets::getParentType(const kry::Util::String& hardtype) /** #
 		return kry::Util::String("item");
 	if (hardtype == "void" || hardtype == "solid" || hardtype == "wall")
 		return kry::Util::String("floor");
-	return kry::Util::String("all");
+	return kry::Util::String("entity");
 }
 
 #endif // ASSETS_H

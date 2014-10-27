@@ -31,6 +31,21 @@ struct TextElement
 std::shared_ptr<Map> Map::single;
 QString Map::projectname;
 
+kry::Util::Vector2f getObjectPivot(Object* object)
+{
+	auto type = object->properties["global"]["hardtype"];
+	auto stranim = Assets::getParentType(type) == "entity" ? object->hardproperties["entity"]["skinIdle"] : object->hardproperties["floor"]["skin"];
+	assert(!stranim.isEmpty());
+				
+	auto anim = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(stranim)];
+	auto name = anim->properties[0]["Skins"]["name"];
+	auto strpivot = anim->properties[0][name]["framePivot"];
+	kry::Util::Vector2f pivot(0.5f, 0.5f);
+	if (!strpivot.isEmpty())
+		pivot = kry::Util::Vector2f::Vector(strpivot);
+	return pivot;
+}
+
 void Map::resetMap()
 {
     layers.clear();
@@ -221,7 +236,7 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 						element = readElement(reader);
 						reader.readNext();
 						element = readElement(reader);
-						tile.asset = Assets::getTileByIni(element.text).get();
+						//tile.asset = Assets::getTileByIni(element.text).get();
 						reader.readNext();
 						element = readElement(reader);
 						size_t objectcount = element.text.toUInt();
@@ -246,8 +261,8 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 									reader.readNext();
 									element = readElement(reader);
 									auto assetpath = element.text;
-									if (assetpath.startsWith("assets\\entities"))
-										object->asset = Assets::getEntityByIni(assetpath).get();
+									//if (assetpath.startsWith("assets\\entities"))
+										//object->asset = Assets::getEntityByIni(assetpath).get();
 									reader.readNext();
 									reader.readNext(); // properties
 									int sections = reader.attributes()[0].value().toInt();
@@ -466,16 +481,6 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 	file.close();
 }
 
-template <typename TypeAsset, typename TypeContainer>
-size_t getAssetIndex(TypeAsset* asset, const TypeContainer& container)
-{
-	size_t index = 0;
-	for ( ; index < container.size(); ++index)
-		if (container[index].get() == asset)
-			return index;
-	return ~0;
-}
-
 size_t getAnimIndex(Resource<kry::Graphics::Texture>* anim)
 {
 	size_t index = 0;
@@ -527,22 +532,39 @@ kry::Util::String boolToKBool(const kry::Util::String& boolean) /** #TODO(note) 
 	return boolean == "true" ? kry::Util::String("1") : kry::Util::String("0");
 }
 
-struct ExpTile
+kry::Util::String getIdFromFrame(const kry::Util::String& framename)
 {
-	Object* tile;
-	Object* wall;
-};
-
-bool operator<(const ExpTile& left, const ExpTile& right)
-{
-	return left.tile < right.tile && left.wall < right.wall;
+	assert(!framename.isEmpty());
+	unsigned index = framename.getLength() - 1;
+	assert(index != 0); // there should be characters before the number
+	while (index != 0 && framename[index] >= '0' && framename[index] <= '9')
+		--index;
+	assert(index != framename.getLength() - 1); // there should be at least 1 digit on the end
+	return framename.substring(index + 1);
 }
 
+struct ExpTile
+{
+	Tile* tile;
+	Object* wall;
+};
+/*
+bool operator<(const ExpTile& left, const ExpTile& right)
+{
+	return left.tile->sprite.texture < right.tile->sprite.texture;
+}
+*/
 bool operator==(const ExpTile& left, const ExpTile& right)
 {
+	bool result = true;
 	if (left.wall != nullptr || right.wall != nullptr)
-		return left.wall == right.wall;
-	return left.tile == right.tile;
+	{
+		if (left.wall != nullptr && right.wall != nullptr)
+			result = left.wall->sprite.texture == right.wall->sprite.texture;
+		else
+			result = false;
+	}
+	return (left.tile->sprite.texture == right.tile->sprite.texture) && result;
 }
 
 struct UsedAnim
@@ -551,11 +573,12 @@ struct UsedAnim
 	kry::Util::String skinfile;
 	unsigned directions;
 	size_t animid;
+	bool usedbytiles;
 };
 
 bool operator<(const UsedAnim& left, const UsedAnim& right)
 {
-	return left.animid < right.animid && left.animation.get() < right.animation.get() && left.directions < right.directions;
+	return left.animid < right.animid && left.directions < right.directions;
 }
 
 bool operator==(const UsedAnim& left, const UsedAnim& right)
@@ -577,7 +600,7 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 // MAP SETTINGS
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
-		lines.push_back("iconImage = " + prjconfig["project"]["iconImage"]);
+		lines.push_back("iconImage = " + prjconfig["project"]["iconImage"]); /** #TODO(change) make this path relative to the zip, dont forget to copy the image as well */
 		lines.push_back("checksum = ce114e4501d2f4e2dcea3e17b546f339");
 		lines.push_back("fogOfWar = " + prjconfig["project"]["fogOfWar"]);
 		lines.push_back("revealOfWar = " + prjconfig["project"]["revealOfWar"]);
@@ -599,9 +622,10 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 			lines.push_back("dimensions= { " + Util::toString(floor->size[0]) + ", " + Util::toString(floor->size[1]) + " }");
 			lines.push_back("floorBinary=floors/floor" + Util::toString(floor->index) + ".txt");
 		}
-// ENTITY DECLARATIONS
+// ENTITY DECLARATIONS + ENTITY/TILE COLLECTION
 		std::vector<Object*> objects;
-		std::set<UsedAnim> objectanimsused;
+		std::map<Util::String, std::set<UsedAnim>> objectanimsused;
+		std::vector<ExpTile> tilesused;
 		lines.push_back("[Entities]");
 		lines.push_back("player=-1");
 		unsigned count = 0;
@@ -609,18 +633,70 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 		{
 			for (auto& tile : floor->tiles)
 			{
+				ExpTile exptile { &tile, nullptr };
+				ExpTile exptilewall { &tile, nullptr };
 				for (auto& object : tile.objects)
 				{
 					if (object->properties["global"]["hardtype"] == "wall")
-						continue;
-					lines.push_back("entity" + Util::toString(count++) + '=' + object->properties["global"]["id"]);
-					objects.push_back(object.get());
+						exptilewall.wall = object.get(); /** #TODO(note) cheeky as, only takes the last wall from the tile, might change this one day */
+					else
+					{
+						lines.push_back("entity" + Util::toString(count++) + '=' + object->properties["global"]["id"]);
+						objects.push_back(object.get());
+					}
+				}
+				if (std::find(tilesused.rbegin(), tilesused.rend(), exptile) == tilesused.rend())
+					tilesused.push_back(exptile); // add the tile itself
+				if (std::find(tilesused.rbegin(), tilesused.rend(), exptilewall) == tilesused.rend())
+					tilesused.push_back(exptilewall); // add the tile and the wall (if any)
+			}
+		}
+// ENTITY SETTINGS /** #TODO(incomplete) path positions need to be converted to expPositions (either here or in object settingss) */
+		{
+			Util::String section = "player";
+			lines.push_back("[player]");
+			lines.push_back("type=player");
+			auto skinsfile = prjconfig["entity"]["directions"] + "EntitySkins.txt";
+			prjconfig["entity"]["skinConfig"] = skinsfile;
+			auto directions = Util::toUIntegral<unsigned>(prjconfig["entity"]["directions"]);
+			for (auto& key : prjconfig["entity"].getKeyNames())
+			{
+				if (!prjconfig["entity"][key].isEmpty())
+				{
+					lines.push_back(key + '=' + prjconfig["entity"][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())["entity"][key] == "ANIM_ID")
+					{
+						if (prjconfig["entity"][key] != "-1")
+						{
+							auto index = Util::toUIntegral<size_t>(prjconfig["entity"][key]);
+							std::pair<Util::String, std::set<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
+							objectanimsused.insert(pair);
+						}
+					}
+				}
+			}
+			for (auto& key : prjconfig[section].getKeyNames())
+			{
+				if (!prjconfig[section][key].isEmpty())
+				{
+					lines.push_back(key + '=' + prjconfig[section][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())[section][key] == "ANIM_ID")
+					{
+						if (prjconfig[section][key] != "-1")
+						{
+							auto index = Util::toUIntegral<size_t>(prjconfig[section][key]);
+							std::pair<Util::String, std::set<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
+							objectanimsused.insert(pair);
+						}
+					}
 				}
 			}
 		}
-// ENTITY SETTINGS /** #TODO(incomplete) add the keys 'path' and 'loopPath' to these settings (player doesnt need them) */
-		lines.push_back("[player]");
-		lines.push_back("type=player");
+		/*
 		if (!prjconfig["player"]["floor"].isEmpty())
 			lines.push_back("floor=" + prjconfig["player"]["floor"]);
 		if (!prjconfig["player"]["position"].isEmpty())
@@ -679,27 +755,31 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
 			}
 		}
+		*/
 
 		count = 0;
 		for (auto& object : objects)
 		{
-			auto section = object->hardproperties["Skins"]["name"];
+			auto section = object->properties["global"]["hardtype"];
 			lines.push_back("[entity" + Util::toString(count++) + ']');
 			lines.push_back("type=" + object->properties["global"]["hardtype"]);
-			auto skinsfile = object->hardproperties["all"]["directions"] + "EntitySkins.txt";
-			object->hardproperties["all"]["skinConfig"] = skinsfile;
-			auto directions = Util::toUIntegral<unsigned>(object->hardproperties["all"]["directions"]);
-			for (auto& key : object->hardproperties["all"].getKeyNames())
+			auto skinsfile = object->hardproperties["entity"]["directions"] + "EntitySkins.txt";
+			object->hardproperties["entity"]["skinConfig"] = skinsfile;
+			auto directions = Util::toUIntegral<unsigned>(object->hardproperties["entity"]["directions"]);
+			for (auto& key : object->hardproperties["entity"].getKeyNames())
 			{
-				if (!object->hardproperties["all"][key].isEmpty())
+				if (!object->hardproperties["entity"][key].isEmpty())
 				{
-					lines.push_back(key + '=' + object->hardproperties["all"][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())["all"][key] == "ANIM_ID")
+					lines.push_back(key + '=' + object->hardproperties["entity"][key]);
+					if (const_cast<Media::Config&>(Assets::getHardTypes())["entity"][key] == "ANIM_ID")
 					{
-						if (object->hardproperties["all"][key] != "-1")
+						if (object->hardproperties["entity"][key] != "-1")
 						{
-							auto index = Util::toUIntegral<size_t>(object->hardproperties["all"][key]);
-							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+							auto index = Util::toUIntegral<size_t>(object->hardproperties["entity"][key]);
+							std::pair<Util::String, std::set<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
+							objectanimsused.insert(pair);
 						}
 					}
 				}
@@ -714,35 +794,23 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 						if (object->hardproperties[section][key] != "-1")
 						{
 							auto index = Util::toUIntegral<size_t>(object->hardproperties[section][key]);
-							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
+							std::pair<Util::String, std::set<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
+							objectanimsused.insert(pair);
 						}
 					}
 				}
-			}
-		}
-
-		std::set<ExpTile> tilesused;
-		for (auto& layer : Map::getMap()->getLayers())
-		{
-			for (auto& tile : layer->tiles)
-			{
-				ExpTile exptile { &tile, nullptr };
-				for (auto& object : tile.objects)
-				{
-					if (object->properties["global"]["hardtype"] == "wall")
-					{
-						exptile.wall = object.get();
-						break;
-					}
-				}
-				tilesused.insert(exptile);
 			}
 		}
 // TILE/WALL DECLARATIONS
 		lines.push_back("[Tiles]");
 		count = 0;
 		for (auto& exptile : tilesused)
-			lines.push_back("tile" + Util::toString(count++) + '=' + Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getTiles()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())));
+		{
+			lines.push_back("tile" + Util::toString(count) + '=' + Util::toString(count));
+			++count;
+		}
 // TILE/WALL SETTINGS 
 		count = 0;
 		for (auto& exptile : tilesused)
@@ -754,8 +822,17 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 			object->hardproperties["floor"]["skinConfig"] = skinsfile;
 			if (type == "wall")
 			{
-				object->hardproperties[type]["floorTile"] = Util::toString(getAssetIndex(exptile.tile->asset, Assets::getTiles())); /** #TODO(change) not sure about this */
-				object->hardproperties["floor"]["sortDepth"] = "1";
+				ExpTile checkexptile { exptile.tile, nullptr };
+				unsigned expindex = 0;
+				for (auto& exptile : tilesused)
+				{
+					if (exptile == checkexptile)
+						break;
+					++expindex;
+				}
+				assert(expindex != tilesused.size());
+				object->hardproperties[type]["floorTile"] = Util::toString(expindex);
+				object->hardproperties["floor"]["sortDepth"] = "1"; /** #TODO(change) remove this from the final version */
 				object->hardproperties["floor"]["heuristic"] = "0";
 			}
 			for (auto& key : object->hardproperties["floor"].getKeyNames())
@@ -768,7 +845,10 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 						if (object->hardproperties["floor"][key] != "-1")
 						{
 							auto index = Util::toUIntegral<size_t>(object->hardproperties["floor"][key]);
-							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, 1, index });
+							std::pair<Util::String, std::set<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.insert({ Resources::getAnimations()[index], skinsfile, 1, index, true });
+							objectanimsused.insert(pair);
 						}
 					}
 				}
@@ -783,7 +863,10 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 						if (object->hardproperties[type][key] != "-1")
 						{
 							auto index = Util::toUIntegral<size_t>(object->hardproperties[type][key]);
-							objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, 1, index });
+							std::pair<Util::String, std::set<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.insert({ Resources::getAnimations()[index], skinsfile, 1, index, true });
+							objectanimsused.insert(pair);
 						}
 					}
 				}
@@ -796,22 +879,30 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 		count = 0;
 		for (auto& layer : Map::getMap()->getLayers())
 		{
-			for (size_t x = 0; x < static_cast<size_t>(layer->size[0]); ++x) // only one floor supported for now
+			for (size_t x = 0; x < static_cast<size_t>(layer->size[0]); ++x)
 			{
 				Util::String line;
 				for (size_t y = 0; y < static_cast<size_t>(layer->size[1]); ++y)
 				{
 					size_t index = y * layer->size[0] + x;
-					ExpTile exptile { &layer->tiles[index], nullptr };
+					ExpTile checkexptile { &layer->tiles[index], nullptr };
 					for (auto& object : layer->tiles[index].objects)
 					{
 						if (object->properties["global"]["hardtype"] == "wall")
 						{
-							exptile.wall = object.get();
+							checkexptile.wall = object.get();
 							break;
 						}
 					}
-					line += Util::toString(exptile.wall != nullptr ? getAssetIndex(exptile.wall->asset, Assets::getTiles()) : getAssetIndex(exptile.tile->asset, Assets::getTiles())) + ' ';
+					unsigned expindex = 0;
+					for (auto& exptile : tilesused)
+					{
+						if (exptile == checkexptile)
+							break;
+						++expindex;
+					}
+					assert(expindex != tilesused.size());
+					line += Util::toString(expindex) + ' ';
 				}
 				line = line.substring(0, line.getLength() - 1);
 				lines.push_back(line);
@@ -821,7 +912,47 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 			lines.clear();
 		}
 
-// SKIN FILES
+// SKIN FILES /** #TODO(change) allow -1s for anim_ids, just set the id of the missing tile skin to -1, also add a missing tile skin (hardcode) */
+		for (auto& pair : objectanimsused)
+		{
+			auto skinsfile = pair.first;
+			lines.push_back("[Skins]");
+			if (skinsfile == "1TileSkins.txt")
+			{
+// SKIN DECLARATIONS
+				for (auto& anim : pair.second)
+					lines.push_back(Util::toString(anim.animid) + '=');
+// SKIN DEFINITIONS
+				for (auto& anim : pair.second)
+				{
+					auto strid = Util::toString(anim.animid);
+					auto name = anim.animation->properties[0]["Skins"]["name"];
+					lines.push_back('[' + strid + ']');
+					for (auto& key : anim.animation->properties[0][name].getKeyNames()) // actual animation sheet
+						if (!anim.animation->properties[0][name][key].isEmpty())
+							lines.push_back(key + '=' + anim.animation->properties[0][name][key]);
+					for (auto& section : anim.animation->properties[0].getSectionNames()) // frames
+					{
+						if (section.isEmpty() || section == name)
+							continue;
+						auto framenum = getIdFromFrame(section);
+						lines.push_back('[' + strid + ": " + framenum + ']');
+						for (auto& key : anim.animation->properties[0][section].getKeyNames())
+							if (!anim.animation->properties[0][section][key].isEmpty())
+								lines.push_back(key + '=' + anim.animation->properties[0][section][key]);
+					}
+				}
+			}
+			else
+			{
+				for (auto& anim : pair.second)
+				{
+					
+				}
+			}
+			zipfile[""][skinsfile] = linesToBin(lines);
+			lines.clear();
+		}
 		/** #TODO(note) if an object has 1 direction, export North(0), else if 4, export every second starting from 0, otherwise, export all. (section name end numbers must be sequential (0-8)) */
 #if 0
 		lines.push_back("[Settings]");

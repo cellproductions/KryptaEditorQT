@@ -1,0 +1,2861 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectfile>
+    <project>
+        <name>test</name>
+        <layercount>1</layercount>
+    </project>
+    <player>
+        <layer></layer>
+        <tilex></tilex>
+        <tiley></tiley>
+        <dimensionsx></dimensionsx>
+        <dimensionsy></dimensionsy>
+        <seeInFog></seeInFog>
+        <directions></directions>
+        <maxHeuristic></maxHeuristic>
+        <viewDistance>3</viewDistance>
+        <moveAcceleration>1.3</moveAcceleration>
+        <turnAcceleration>50</turnAcceleration>
+        <maxMoveSpeed>6</maxMoveSpeed>
+        <maxTurnSpeed>700</maxTurnSpeed>
+        <skinIdle></skinIdle>
+        <skinRun></skinRun>
+        <skinDead></skinDead>
+        <health>1</health>
+    </player>
+    <layers>
+        <layer id="0">
+            <description>test</description>
+            <width>10</width>
+            <height>10</height>
+            <tilewidth>700</tilewidth>
+            <tileheight>350</tileheight>
+        </layer>
+    </layers>
+    <tiledata>
+        <tile id="0">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>0</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="1">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>1</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="2">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>2</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="3">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>3</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="4">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>4</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="5">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>5</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="6">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>6</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="7">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>7</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="8">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>8</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="9">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>9</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="10">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>10</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="11">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>11</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="12">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>12</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="13">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>13</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="14">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>14</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="15">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>15</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="16">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>16</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="17">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>17</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="18">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>18</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="19">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>19</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="20">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>20</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="21">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>21</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="22">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>22</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="23">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>23</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="24">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>24</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="25">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>25</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="26">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>26</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="27">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>27</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="28">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>28</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="29">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>29</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="30">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>30</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="31">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>31</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="32">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>32</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="33">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>33</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="34">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>34</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="35">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>35</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="36">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>36</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="37">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>37</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="38">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>38</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="39">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>39</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="40">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>40</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="41">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>41</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="42">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>42</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="43">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>43</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="44">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>44</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="45">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>45</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="46">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>46</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="47">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>47</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="48">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>48</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="49">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>49</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="50">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>50</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="51">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>51</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="52">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>1</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>52</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects>
+                <object id="1">
+                    <tileid>52</tileid>
+                    <asset>assets\tiles\wall.ini</asset>
+                    <properties sections="1">
+                        <global keys="10">
+                            <gridsnap>true</gridsnap>
+                            <hardtype>wall</hardtype>
+                            <id>1</id>
+                            <name>Wall</name>
+                            <posx>2542</posx>
+                            <posy>-1011</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
+                            <resource>assets\resources\images\e_wall_x_soft.png</resource>
+                            <type>ENTITY</type>
+                        </global>
+                    </properties>
+                    <hardproperties sections="1">
+                        <floor keys="5">
+                            <heuristic></heuristic>
+                            <skin>2</skin>
+                            <skinConfig></skinConfig>
+                            <sortDepth></sortDepth>
+                            <sortPivotOffset></sortPivotOffset>
+                        </floor>
+                        <wall keys="1">
+                            <floorTile></floorTile>
+                        </wall>
+                    </hardproperties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="">
+            <layerid>0</layerid>
+            <asset>assets\tiles\void.ini</asset>
+            <objectcount>1</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>void</hardtype>
+                    <id></id>
+                    <name>Void</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\hole1.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>1</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects>
+                <object id="0">
+                    <tileid></tileid>
+                    <asset>assets\tiles\wall.ini</asset>
+                    <properties sections="1">
+                        <global keys="10">
+                            <gridsnap>true</gridsnap>
+                            <hardtype>wall</hardtype>
+                            <id>0</id>
+                            <name>Wall</name>
+                            <posx>2892</posx>
+                            <posy>-836</posy>
+                            <relativex>0.49</relativex>
+                            <relativey>0.785</relativey>
+                            <resource>assets\resources\images\e_wall_x_soft.png</resource>
+                            <type>ENTITY</type>
+                        </global>
+                    </properties>
+                    <hardproperties sections="1">
+                        <floor keys="5">
+                            <heuristic></heuristic>
+                            <skin>2</skin>
+                            <skinConfig></skinConfig>
+                            <sortDepth></sortDepth>
+                            <sortPivotOffset></sortPivotOffset>
+                        </floor>
+                        <wall keys="1">
+                            <floorTile></floorTile>
+                        </wall>
+                    </hardproperties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="">
+            <layerid>0</layerid>
+            <asset>assets\tiles\void.ini</asset>
+            <objectcount>1</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>void</hardtype>
+                    <id></id>
+                    <name>Void</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\hole1.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>1</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects>
+                <object id="2">
+                    <tileid></tileid>
+                    <asset></asset>
+                    <properties sections="0">
+                        <global keys="10">
+                            <gridsnap>true</gridsnap>
+                            <hardtype>wall</hardtype>
+                            <id>2</id>
+                            <name>wall2</name>
+                            <posx>3235</posx>
+                            <posy>-485</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.5</relativey>
+                            <resource>C:/Qt5.3.1/Projects/KryptaEditorQT/Win32/Debug/assets/resources/images/e_wall_y_soft.png</resource>
+                            <type>ENTITY</type>
+                        </global>
+                    </properties>
+                    <hardproperties sections="1">
+                        <floor keys="5">
+                            <heuristic></heuristic>
+                            <skin>11</skin>
+                            <skinConfig></skinConfig>
+                            <sortDepth></sortDepth>
+                            <sortPivotOffset></sortPivotOffset>
+                        </floor>
+                        <wall keys="1">
+                            <floorTile></floorTile>
+                        </wall>
+                    </hardproperties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="55">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>1</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>55</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects>
+                <object id="3">
+                    <tileid>55</tileid>
+                    <asset></asset>
+                    <properties sections="0">
+                        <global keys="10">
+                            <gridsnap>true</gridsnap>
+                            <hardtype>wall</hardtype>
+                            <id>3</id>
+                            <name>wall2</name>
+                            <posx>3585</posx>
+                            <posy>-310</posy>
+                            <relativex>0.5</relativex>
+                            <relativey>0.5</relativey>
+                            <resource>C:/Qt5.3.1/Projects/KryptaEditorQT/Win32/Debug/assets/resources/images/e_wall_y_soft.png</resource>
+                            <type>ENTITY</type>
+                        </global>
+                    </properties>
+                    <hardproperties sections="1">
+                        <floor keys="5">
+                            <heuristic></heuristic>
+                            <skin>11</skin>
+                            <skinConfig></skinConfig>
+                            <sortDepth></sortDepth>
+                            <sortPivotOffset></sortPivotOffset>
+                        </floor>
+                        <wall keys="1">
+                            <floorTile></floorTile>
+                        </wall>
+                    </hardproperties>
+                </object>
+            </objects>
+        </tile>
+        <tile id="56">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>56</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="57">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>57</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="58">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>58</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="59">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>59</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="60">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>60</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="61">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>61</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="62">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>62</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="63">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>63</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="64">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>64</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="65">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>65</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="66">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>66</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="67">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>67</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="68">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>68</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="69">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>69</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="70">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>70</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="71">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>71</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="72">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>72</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="73">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>73</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="74">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>74</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="75">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>75</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="76">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>76</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="77">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>77</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="78">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>78</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="79">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>79</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="80">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>80</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="81">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>81</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="82">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>82</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="83">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>83</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="84">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>84</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="85">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>85</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="86">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>86</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="87">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>87</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="88">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>88</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="89">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>89</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="90">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>90</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="91">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>91</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="92">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>92</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="93">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>93</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="94">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>94</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="95">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>95</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="96">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>96</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="97">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>97</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="98">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>98</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+        <tile id="99">
+            <layerid>0</layerid>
+            <asset>assets\tiles\solid.ini</asset>
+            <objectcount>0</objectcount>
+            <properties sections="1">
+                <global keys="8">
+                    <gridsnap>true</gridsnap>
+                    <hardtype>solid</hardtype>
+                    <id>99</id>
+                    <name>Solid</name>
+                    <relativex>0.5</relativex>
+                    <relativey>0.5</relativey>
+                    <resource>assets\resources\images\e_tile_x.png</resource>
+                    <type>TILE</type>
+                </global>
+            </properties>
+            <hardproperties sections="0">
+                <floor keys="5">
+                    <heuristic></heuristic>
+                    <skin>0</skin>
+                    <skinConfig></skinConfig>
+                    <sortDepth></sortDepth>
+                    <sortPivotOffset></sortPivotOffset>
+                </floor>
+            </hardproperties>
+            <objects/>
+        </tile>
+    </tiledata>
+</projectfile>

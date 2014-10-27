@@ -53,10 +53,8 @@ c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_savedialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_prjsetupdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_prjsettingsdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_pivotview.cpp
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_objectsettingsdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_objectaction.cpp
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_mainwindow.cpp
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_glpanel.cpp
+c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_layerbrowserdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_envbrowserdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_entbrowserdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_csdialog.cpp
@@ -72,9 +70,10 @@ c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_objectsettingsdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_prjsettingsdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_prjsetupdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_savedialog.h
-c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_layerbrowserdialog.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_layerbrowserdialog.h
 c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\ui_mainwindow.h
+c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_mainwindow.cpp
+c:\qt5.3.1\projects\kryptaeditorqt\generatedfiles\debug\moc_glpanel.cpp
 c:\qt5.3.1\projects\kryptaeditorqt\win32\debug\kryptaeditorqt.ilk
 c:\qt5.3.1\projects\kryptaeditorqt\win32\debug\kryptaeditorqt.exe
 c:\qt5.3.1\projects\kryptaeditorqt\win32\debug\kryptaeditorqt.pdb

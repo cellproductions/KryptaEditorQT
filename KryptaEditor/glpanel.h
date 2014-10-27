@@ -23,6 +23,9 @@ namespace Kryed
 			void updateWaypointCanvas();
             void setGrid(bool gridon);
 			void resetCamera();
+			bool handleToolSwitch(QMouseEvent* event = nullptr, bool switchtopointer = true);
+			void handleSelectionEdit();
+			void updateObject(const kry::Util::Vector2i& coord, Tile& tile, Object* object, const kry::Util::String& type, kry::Media::Config& hardproperties);
 
         protected:
             void initializeGL();
@@ -33,13 +36,15 @@ namespace Kryed
             void mouseReleaseEvent(QMouseEvent* event);
             void mouseMoveEvent(QMouseEvent* event);
             void keyPressEvent(QKeyEvent* event);
+            void keyReleaseEvent(QKeyEvent* event);
 			void enterEvent(QEvent* event);
 			void leaveEvent(QEvent* event);
 
         private:
 			size_t tileCoordToIndex(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
-			kry::Util::Vector2i coordToTileCoord(const kry::Util::Vector2f& coord);
-			kry::Util::Vector2f coordToExpTileCoord(const kry::Util::Vector2f& coord);
+			kry::Util::Vector2i coordToTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
+			kry::Util::Vector2f coordToExpTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
+			kry::Util::Vector2f expTileCoordToCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
 			kry::Util::Vector2f tileCoordToCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
 			bool isValidTileCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
 			bool isValidIndex(size_t index, const std::shared_ptr<Map::Layer>& layer);

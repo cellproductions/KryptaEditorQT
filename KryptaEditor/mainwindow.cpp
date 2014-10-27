@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 	ui->bPointer->setIcon(QIcon("editor\\pointer.png"));
 	ui->bPaint->setIcon(QIcon("editor\\paint.png"));
+	ui->bSelect->setIcon(QIcon("editor\\select.png"));
 
     ui->layerProperties->horizontalHeader()->resizeSections(QHeaderView::Interactive);
     ui->layerProperties->item(0, 0)->setFlags(ui->layerProperties->item(0, 0)->flags() ^ Qt::ItemIsEditable);
@@ -115,8 +116,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	{
 		if (entbrowseDialog->showDialog() == DialogResult::OK)
 		{
-			ui->lEntityName->setText(entbrowseDialog->getSelectedAssetItem()->text());
-			ui->lEntity->setPixmap(entbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEntity->size()));
+			ui->lEntityName->setText(entbrowseDialog->getSelectedItem()->text());
+			ui->lEntity->setPixmap(entbrowseDialog->getSelectedItem()->icon().pixmap(ui->lEntity->size()));
 
 			ui->lEntity->clicked();
 		}
@@ -129,19 +130,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->lEntity->setGraphicsEffect(effect);
 		ui->lEnv->setGraphicsEffect(nullptr);
 
-		if (entbrowseDialog->getSelectedAssetItem() != nullptr)
+		if (entbrowseDialog->getSelectedItem() != nullptr)
 		{
 			if (Tool<>::getTool()->getType() == ToolType::PAINT)
-				Tool<PaintData>::getTool()->getData().asset = entbrowseDialog->getSelectedAssetItem()->asset;
-			prevAsset = entbrowseDialog->getSelectedAssetItem()->asset;
+				Tool<PaintData>::getTool()->getData().objectasset = entbrowseDialog->getSelectedItem()->object;
+			prevObject = entbrowseDialog->getSelectedItem()->object;
 		}
 	});
     connect(ui->bBrowseEnv, &QPushButton::clicked, [this]()
     {
         if (envbrowseDialog->showDialog() == DialogResult::OK)
         {
-            ui->lEnvName->setText(envbrowseDialog->getSelectedAssetItem()->text());
-            ui->lEnv->setPixmap(envbrowseDialog->getSelectedAssetItem()->icon().pixmap(ui->lEnv->size()));
+            ui->lEnvName->setText(envbrowseDialog->getSelectedItem()->text());
+            ui->lEnv->setPixmap(envbrowseDialog->getSelectedItem()->icon().pixmap(ui->lEnv->size()));
 
 			ui->lEnv->clicked();
         }
@@ -154,11 +155,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		ui->lEnv->setGraphicsEffect(effect);
 		ui->lEntity->setGraphicsEffect(nullptr);
 
-		if (envbrowseDialog->getSelectedAssetItem() != nullptr)
+		if (envbrowseDialog->getSelectedItem() != nullptr)
 		{
 			if (Tool<>::getTool()->getType() == ToolType::PAINT)
-				Tool<PaintData>::getTool()->getData().asset = envbrowseDialog->getSelectedAssetItem()->asset;
-			prevAsset = envbrowseDialog->getSelectedAssetItem()->asset;
+				Tool<PaintData>::getTool()->getData().objectasset = envbrowseDialog->getSelectedItem()->object;
+			prevObject = envbrowseDialog->getSelectedItem()->object;
 		}
 	});
 	connect(ui->bLayerMan, &QPushButton::clicked, [this]()
@@ -193,41 +194,67 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 	connect(ui->bPointer, &QToolButton::clicked, [this]()
 	{
-		//for (QObject* child : ui->toolMain->children())
-		//	dynamic_cast<QWidget*>(child)->setVisible(false);
-
-		QString message;
-		Tool<>::switchTool(ToolType::POINTER, message);
-		getStatusMain()->setText(message);
+		if (Tool<>::getTool()->getType() == ToolType::POINTER)
+			return;
+		ui->glWidget->handleToolSwitch(nullptr);
 	});
 	connect(ui->bPaint, &QToolButton::clicked, [this]()
 	{
-		//for (QObject* child : ui->toolMain->children())
-		//	dynamic_cast<QWidget*>(child)->setVisible(false);
+		if (Tool<>::getTool()->getType() == ToolType::PAINT)
+			return;
+		ui->glWidget->handleToolSwitch(nullptr, false);
+		for (auto item : toolbarItems)
+			ui->toolMain->removeAction(item.action);
+		toolbarItems.clear();
 
-		static QLabel* lSpin = nullptr;
-		static QSpinBox* spin = nullptr;
-		if (lSpin == nullptr)
-		{
-			lSpin = new QLabel("Brush size: ", ui->toolMain);
-			spin = new QSpinBox(ui->toolMain);
-			spin->setMaximum(10);
-			spin->setMinimum(1);
-			spin->setSuffix(" tiles");
-			ui->toolMain->addWidget(lSpin);
-			ui->toolMain->addWidget(spin);
-		}
+		QLabel* lSpin = nullptr;
+		QSpinBox* spin = nullptr;
+		lSpin = new QLabel("Brush size: ", ui->toolMain);
+		spin = new QSpinBox(ui->toolMain);
+		spin->setMaximum(10);
+		spin->setMinimum(1);
+		spin->setSuffix(" tiles");
+		ToolBarItem item1 { ui->toolMain->addWidget(lSpin), lSpin };
+		ToolBarItem item2 { ui->toolMain->addWidget(spin), spin };
+		toolbarItems.push_back(item1);
+		toolbarItems.push_back(item2);
 		
-		if (prevAsset != nullptr)
+		QString message;
+		Tool<>::switchTool(ToolType::PAINT, message);
+		if (prevObject)
 		{
-			QString message;
-			Tool<>::switchTool(ToolType::PAINT, message);
 			PaintData data;
 			data.size = spin->value();
-			data.asset = prevAsset;
+			data.objectasset = prevObject;
 			Tool<PaintData>::getTool()->setData(data);
-			getStatusMain()->setText(message);
 		}
+		getStatusMain()->setText(message);
+	});
+	connect(ui->bSelect, &QToolButton::clicked, [this]()
+	{
+		if (Tool<>::getTool()->getType() == ToolType::SELECTION)
+			return;
+		ui->glWidget->handleToolSwitch(nullptr, false);
+		for (auto item : toolbarItems)
+			ui->toolMain->removeAction(item.action);
+		toolbarItems.clear();
+
+		QString message;
+		Tool<>::switchTool(ToolType::SELECTION, message);
+		QLabel* lObjCount = new QLabel("Objects selected: 0", ui->toolMain);
+		QToolButton* bEdit = new QToolButton(ui->toolMain);
+		bEdit->setText("Edit Selected Objects");
+		connect(bEdit, &QToolButton::clicked, [this](bool)
+		{
+			ui->glWidget->handleSelectionEdit();
+		});
+		ToolBarItem item1 { ui->toolMain->addWidget(lObjCount), lObjCount };
+		ToolBarItem item2 { ui->toolMain->addSeparator(), nullptr };
+		ToolBarItem item3 { ui->toolMain->addWidget(bEdit), bEdit };
+		toolbarItems.push_back(item1);
+		toolbarItems.push_back(item2);
+		toolbarItems.push_back(item3);
+		getStatusMain()->setText(message);
 	});
 }
 
@@ -249,6 +276,17 @@ void MainWindow::init()
     {
         QMessageBox::information(this, "Config Error", "Failed to open config file!", QMessageBox::Ok);
     }
+}
+
+void MainWindow::clearAndSwitchTool()
+{
+	for (auto item : toolbarItems)
+		ui->toolMain->removeAction(item.action);
+	toolbarItems.clear();
+
+	QString message;
+	Tool<>::switchTool(ToolType::POINTER, message);
+	getStatusMain()->setText(message);
 }
 
 void MainWindow::onNewTrigger()

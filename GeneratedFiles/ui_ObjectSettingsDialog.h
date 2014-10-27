@@ -39,7 +39,7 @@ public:
     {
         if (ObjectSettingsDialog->objectName().isEmpty())
             ObjectSettingsDialog->setObjectName(QStringLiteral("ObjectSettingsDialog"));
-        ObjectSettingsDialog->resize(320, 450);
+        ObjectSettingsDialog->resize(380, 480);
         verticalLayout_2 = new QVBoxLayout(ObjectSettingsDialog);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout = new QVBoxLayout();
@@ -81,8 +81,8 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        verticalLayout->setStretch(0, 50);
-        verticalLayout->setStretch(1, 45);
+        verticalLayout->setStretch(0, 45);
+        verticalLayout->setStretch(1, 50);
         verticalLayout->setStretch(2, 5);
 
         verticalLayout_2->addLayout(verticalLayout);

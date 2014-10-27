@@ -38,6 +38,14 @@ TODO HIGH(absolutely required):
 [x] add sound/music dialogs
 [ ] add object spawn options using the ObjectSettingsDialog
 [x] include add button for environment
+[ ] remove list icon for each other direction besides North (to start with), prevent remove image from working if there are no images
+[x] add a selection tool for mass editing (add all common settings from each type as tabs, save+close applies to each selected)
+[ ] tint the background a bit while in waypoint mode (except for the object being edited)
+[ ] add lines to waypoints in waypoint mode (and maybe a number above each line?)
+[x] add a setting to choose an icon for the map
+[ ] after adding a second frame, update the first's image key
+[ ] after adding/removing a frame, update the sheet's "frames" key
+[ ] make sure the animation manager selects the first direction when it starts up for the first time
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
@@ -54,6 +62,11 @@ TODO MEDIUM(will pass fine without being added):
 [ ] undo history/command
 [ ] add keyboard shortcuts
 [ ] add a clone button for the layer browser
+[ ] add a centre camera button
+[ ] give the selection tool the ability to select everything inside a box
+[ ] add a basic ai that checks if the player can reach the end of the map
+[ ] add a "test in game" button that launches the map in the game with debug on
+[ ] create a file for animation keys similar to types.ini
 
 TODO LOW(extra fluff for polish):
 [ ] add grid overlay/toggle
@@ -62,19 +75,32 @@ TODO LOW(extra fluff for polish):
 [ ] add background options per layer
 [ ] add a help dialog (maybe using HTML pages)
 [ ] add Key struct with name, type, descr, etc, and a lookup for quick access from properties
+[ ] change structure of types.ini so that it can support the stuff in the struct aboves
 [ ] add key names/descriptions for keys in types.ini for hover help/table names
 [ ] finish tooltips for everything
 [ ] add debug overlay
 [ ] cursor change to tool type
 [ ] change border as well when clicking an entity/env in the main window
+[ ] add object browser
+[ ] add better spritesheet support for animation manager
+[ ] add an add/remove button for entity browser as well for consistency
 
 BUGS:
 * flip x/y of tile positions (crash from exporting, rectangle maps are the wrong way around)
 * apply all is broken in the object settings dialog (hasn't been updated)
 * creating a new map while there is already a map makes everything disappear (wot)
-* toolbar options for tools dont remove properly (what's up Qt?)
 * wall icons appear as missing.png only on the first time editing it (wot)
 * right clicking on waypoints is off by a hundred or so? not sure
+* crash when deleting a frame from an animation
+* crash when deleting an animation
+* can set a pivot in animations without being in pivot mode
+* selection tool suddenly broke (probably has something to do with switching the vec2is to fs)
+* after cancelling an environment piece creation, it still gets added
+* selection quad wont dissapear when releasing the mouse button
+
+OPTIMIZATIONS:
+* object placement during painting (especially on large maps, investigate)
+* selection using box selection
 
 TO TEST:
 * press the animate button and dont stop it while switching tabs/animations

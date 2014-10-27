@@ -28,7 +28,9 @@ struct Tile : public Object
 	std::vector<std::shared_ptr<Object> > objects;
 };
 
-struct Item /** #TODO(change) this could be typedef'd if nothing else goes in here */
+kry::Util::Vector2f getObjectPivot(Object* object);
+
+struct Item
 {
 	QString name;
 	kry::Media::Config properties;

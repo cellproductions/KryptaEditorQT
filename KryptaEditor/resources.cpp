@@ -190,10 +190,17 @@ void Resources::initEditorTextures()
 		flag_green->name = QString("flag_green.png");
 		flag_green->type = ResourceType::TEXTURE;
 		flag_green->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\flag_green.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
+		
+		Resource<kry::Graphics::Texture>* group = new Resource<kry::Graphics::Texture>;
+		group->path = QString("editor\\group.png");
+		group->name = QString("group.png");
+		group->type = ResourceType::TEXTURE;
+		group->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture("editor\\group.png", Configuration::getConfig()["editor"]["mipmapping"] == "true"));
 
 		editortextures.emplace_back(missing);
 		editortextures.emplace_back(flag_red);
 		editortextures.emplace_back(flag_green);
+		editortextures.emplace_back(group);
 	}
 	catch (const kry::Util::Exception& e)
 	{

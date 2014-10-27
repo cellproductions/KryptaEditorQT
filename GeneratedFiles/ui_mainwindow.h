@@ -60,8 +60,9 @@ public:
     QVBoxLayout *verticalLayout_4;
     QGridLayout *gridLayout;
     QSpacerItem *verticalSpacer;
-    QToolButton *bPointer;
     QToolButton *bPaint;
+    QToolButton *bPointer;
+    QToolButton *bSelect;
     Kryed::GLPanel *glWidget;
     QVBoxLayout *utilLayout;
     QGroupBox *entityGroup;
@@ -163,16 +164,7 @@ public:
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        gridLayout->addItem(verticalSpacer, 2, 0, 1, 1);
-
-        bPointer = new QToolButton(frameTool);
-        bPointer->setObjectName(QStringLiteral("bPointer"));
-        bPointer->setMinimumSize(QSize(40, 40));
-        QIcon icon;
-        icon.addFile(QStringLiteral("../Win32/Debug/editor/pointer.png"), QSize(), QIcon::Normal, QIcon::Off);
-        bPointer->setIcon(icon);
-
-        gridLayout->addWidget(bPointer, 0, 0, 1, 1);
+        gridLayout->addItem(verticalSpacer, 3, 0, 1, 1);
 
         bPaint = new QToolButton(frameTool);
         bPaint->setObjectName(QStringLiteral("bPaint"));
@@ -182,11 +174,29 @@ public:
         sizePolicy1.setHeightForWidth(bPaint->sizePolicy().hasHeightForWidth());
         bPaint->setSizePolicy(sizePolicy1);
         bPaint->setMinimumSize(QSize(40, 40));
-        QIcon icon1;
-        icon1.addFile(QStringLiteral("../Win32/Debug/editor/paint.png"), QSize(), QIcon::Normal, QIcon::Off);
-        bPaint->setIcon(icon1);
+        QIcon icon;
+        icon.addFile(QStringLiteral("../Win32/Debug/editor/paint.png"), QSize(), QIcon::Normal, QIcon::Off);
+        bPaint->setIcon(icon);
 
         gridLayout->addWidget(bPaint, 1, 0, 1, 1);
+
+        bPointer = new QToolButton(frameTool);
+        bPointer->setObjectName(QStringLiteral("bPointer"));
+        bPointer->setMinimumSize(QSize(40, 40));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral("../Win32/Debug/editor/pointer.png"), QSize(), QIcon::Normal, QIcon::Off);
+        bPointer->setIcon(icon1);
+
+        gridLayout->addWidget(bPointer, 0, 0, 1, 1);
+
+        bSelect = new QToolButton(frameTool);
+        bSelect->setObjectName(QStringLiteral("bSelect"));
+        bSelect->setMinimumSize(QSize(40, 40));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral("../editor/Select.png"), QSize(), QIcon::Normal, QIcon::Off);
+        bSelect->setIcon(icon2);
+
+        gridLayout->addWidget(bSelect, 2, 0, 1, 1);
 
 
         verticalLayout_4->addLayout(gridLayout);
@@ -434,8 +444,9 @@ public:
         miProjectItems->setText(QApplication::translate("MainWindow", "Item Manager", 0));
         miViewGrid->setText(QApplication::translate("MainWindow", "Toggle Grid", 0));
         miViewWaypoint->setText(QApplication::translate("MainWindow", "Waypoint Mode", 0));
-        bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
+        bPointer->setText(QApplication::translate("MainWindow", "...", 0));
+        bSelect->setText(QString());
         entityGroup->setTitle(QApplication::translate("MainWindow", "Entity", 0));
         lEntity->setText(QString());
         lEntityName->setText(QApplication::translate("MainWindow", "None", 0));

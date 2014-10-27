@@ -1,9 +1,10 @@
 #ifndef OBJECTSETTINGSDIALOG_H
 #define OBJECTSETTINGSDIALOG_H
 
-#include "DialogResult.h"
+#include "CSDialog.h"
 #include <Media/ConfigFactory.h>
-#include <QDialog>
+#include <Utilities\BasicString.h>
+#include <set>
 
 struct Object;
 
@@ -12,25 +13,41 @@ namespace Ui
 	class ObjectSettingsDialog;
 }
 
-class ObjectSettingsDialog : public QDialog
+struct ObjectProperties
 {
-		Q_OBJECT
+	kry::Util::String type;
+	mutable kry::Media::Config settings;
+	mutable kry::Media::Config hardtypesettings;
+};
 
+inline bool operator<(const ObjectProperties& left, const ObjectProperties& right);
+
+class ObjectSettingsDialog : public CSDialog
+{
 	public:
 		explicit ObjectSettingsDialog(QWidget *parent = 0);
 		~ObjectSettingsDialog();
 
-		DialogResult showDialog(const kry::Util::String& title, Object* object);
-		kry::Media::Config getSettings() const;
-		kry::Media::Config getHardTypeSettings() const;
+		DialogResult showDialog(const kry::Util::String& title, std::set<Object*>& objects, bool group = false);
+		inline std::set<ObjectProperties> getAllProperties();
 
 	private:
-		void updateTables(Object* object);
+		void updateTables(std::set<Object*>& objects);
 
-		kry::Media::Config settings;
-		kry::Media::Config hardtypesettings;
+		std::set<ObjectProperties> objectprops;
 		Ui::ObjectSettingsDialog *ui;
-		DialogResult lastresult;
+		bool ingroup;
 };
+
+
+bool operator<(const ObjectProperties& left, const ObjectProperties& right)
+{
+	return left.type < right.type;
+}
+
+std::set<ObjectProperties> ObjectSettingsDialog::getAllProperties()
+{
+	return objectprops;
+}
 
 #endif // OBJECTSETTINGSDIALOG_H

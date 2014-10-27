@@ -1,7 +1,7 @@
 #ifndef ENTBROWSERDIALOG_H
 #define ENTBROWSERDIALOG_H
 
-#include "AssetListItem.h"
+#include "ObjectListItem.h"
 #include "DialogResult.h"
 #include <QDialog>
 
@@ -12,23 +12,24 @@ namespace Ui
 
 class EntBrowserDialog : public QDialog
 {
-		Q_OBJECT
+	Q_OBJECT
 
 	public:
 		explicit EntBrowserDialog(QWidget *parent = 0);
 		~EntBrowserDialog();
 
 		DialogResult showDialog();
-		inline AssetListItem* getSelectedAssetItem();
+		inline ObjectListItem* getSelectedItem();
 
 	private:
 		Ui::EntBrowserDialog *ui;
-		AssetListItem* selected;
+		ObjectListItem* selected;
 		DialogResult lastresult;
+		bool firstLoad;
 };
 
 
-AssetListItem* EntBrowserDialog::getSelectedAssetItem()
+ObjectListItem* EntBrowserDialog::getSelectedItem()
 {
 	return selected;
 }

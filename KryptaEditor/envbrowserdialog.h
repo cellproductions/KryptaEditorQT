@@ -1,7 +1,7 @@
 #ifndef ENVBROWSERDIALOG_H
 #define ENVBROWSERDIALOG_H
 
-#include "AssetListItem.h"
+#include "ObjectListItem.h"
 #include "DialogResult.h"
 #include <QDialog>
 
@@ -19,16 +19,17 @@ class EnvBrowserDialog : public QDialog
         ~EnvBrowserDialog();
 
         DialogResult showDialog();
-        inline AssetListItem* getSelectedAssetItem();
+        inline ObjectListItem* getSelectedItem();
 
     private:
         Ui::EnvBrowserDialog *ui;
-        AssetListItem* selected;
+        ObjectListItem* selected;
         DialogResult lastresult;
+		bool firstLoad;
 };
 
 
-AssetListItem* EnvBrowserDialog::getSelectedAssetItem()
+ObjectListItem* EnvBrowserDialog::getSelectedItem()
 {
     return selected;
 }

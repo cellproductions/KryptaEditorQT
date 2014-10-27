@@ -102,7 +102,7 @@ const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > Assets::getA
 
 	return assets;
 }
-
+/*
 std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getTileByIni(const QString& path)
 {
 	for (auto& asset : tiles)
@@ -117,6 +117,22 @@ std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getEntityByIni(const QS
 		if (asset->path == path)
 			return asset;
 	throw kry::Util::Exception("Entity ini does not exist! [path=" + qToKString(path) + ']', KRY_EXCEPTION_DATA);
+}
+*/
+std::shared_ptr<Asset<kry::Graphics::Texture>> Assets::getTileByHardtype(const kry::Util::String& type)
+{
+	for (auto asset : getTiles())
+		if (asset->properties["global"]["type"] == type)
+			return asset;
+	return std::shared_ptr<Asset<kry::Graphics::Texture>>(); // null
+}
+
+std::shared_ptr<Asset<kry::Graphics::Texture>> Assets::getEntityByHardtype(const kry::Util::String& type)
+{
+	for (auto asset : getEntities())
+		if (asset->properties["global"]["type"] == type)
+			return asset;
+	return std::shared_ptr<Asset<kry::Graphics::Texture>>(); // null
 }
 
 Assets::Assets()

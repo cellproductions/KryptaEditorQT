@@ -4,29 +4,33 @@
 #include <Graphics\Primitives.h>
 #include <QString>
 #include <memory>
+#include <set>
 
 enum class ToolType
 {
 	POINTER,
 	PAINT,
 	PAINT_COPY,
-	WAYPOINT
+	WAYPOINT,
+	SELECTION
 };
 
 struct PointerData
 {
 };
 
+struct Object;
 struct PaintData
 {
 	unsigned size = 1;
-	Asset<kry::Graphics::Texture>* asset = nullptr;
+	std::shared_ptr<Object> objectasset;
 };
 
-struct Object;
-struct CopyObjectData : PaintData
+struct CopyObjectData
 {
 	Object* object = nullptr;
+	Asset<kry::Graphics::Texture>* asset;
+	unsigned size = 1;
 };
 
 struct Waypoint
@@ -40,6 +44,12 @@ struct WaypointData
 	std::vector<Waypoint> waypoints;
 	Object* object;
 	bool looping = false;
+};
+
+struct SelectionData
+{
+	std::set<Object*> objects;
+	bool ctrldown = false;
 };
 
 template <typename DataType = PointerData>
@@ -106,6 +116,7 @@ void Tool<DataType>::switchTool(ToolType type, QString& toupdate)
 		case ToolType::PAINT: toupdate = "Paint mode."; break;
 		case ToolType::PAINT_COPY: toupdate = "Copy mode."; break;
 		case ToolType::WAYPOINT: toupdate = "Waypoint mode."; break;
+		case ToolType::SELECTION: toupdate = "Selection mode."; break;
 	}
 }
 

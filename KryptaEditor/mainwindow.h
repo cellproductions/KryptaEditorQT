@@ -15,8 +15,7 @@ class AnimManagerDialog;
 class AudioManagerDialog;
 class ItemManagerDialog;
 
-template <typename Resource>
-struct Asset;
+struct Object;
 
 namespace Ui
 {
@@ -31,11 +30,20 @@ class MainWindow : public QMainWindow
         explicit MainWindow(QWidget *parent = 0);
         ~MainWindow();
         void init();
+		void clearAndSwitchTool();
 
         inline Ui::MainWindow* getUI() const;
 		inline QLabel* getStatusMain() const;
 		inline QLabel* getStatusPos() const;
 		inline QLabel* getStatusTile() const;
+
+		struct ToolBarItem
+		{
+			QAction* action;
+			QWidget* widget;
+		};
+
+		inline std::vector<ToolBarItem>& getToolbarItems();
 
     public slots:
         void onNewTrigger();
@@ -49,13 +57,14 @@ class MainWindow : public QMainWindow
 		void closeEvent(QCloseEvent*);
 
         Ui::MainWindow *ui;
+		std::vector<ToolBarItem> toolbarItems;
 		QLabel* statusMain;
 		QLabel* statusPos;
 		QLabel* statusTile;
         PrjSetupDialog* prjsetupDialog;
 		EntBrowserDialog* entbrowseDialog;
         EnvBrowserDialog* envbrowseDialog;
-		Asset<kry::Graphics::Texture>* prevAsset = nullptr;
+		std::shared_ptr<Object> prevObject;
 		LayerBrowserDialog* layerbrowseDialog;
 		ConfigDialog* configDialog;
 		PrjSettingsDialog* prjsettingsDialog;
@@ -84,6 +93,11 @@ QLabel* MainWindow::getStatusPos() const
 QLabel* MainWindow::getStatusTile() const
 {
 	return statusTile;
+}
+
+std::vector<MainWindow::ToolBarItem>& MainWindow::getToolbarItems()
+{
+	return toolbarItems;
 }
 
 #endif // MAINWINDOW_H

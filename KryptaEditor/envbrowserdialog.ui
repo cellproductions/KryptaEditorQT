@@ -125,7 +125,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="20,0,60,20">
+      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="20,0,0,60,20">
        <item>
         <widget class="QPushButton" name="bSelect">
          <property name="text">
@@ -137,6 +137,13 @@
         <widget class="QPushButton" name="bAdd">
          <property name="text">
           <string>Add Environment Piece</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="bRemove">
+         <property name="text">
+          <string>Remove Environment Piece</string>
          </property>
         </widget>
        </item>
