@@ -38,17 +38,16 @@ TODO HIGH(absolutely required):
 [x] add sound/music dialogs
 [ ] add object spawn options using the ObjectSettingsDialog
 [x] include add button for environment
-[ ] remove list icon for each other direction besides North (to start with), prevent remove image from working if there are no images
 [x] add a selection tool for mass editing (add all common settings from each type as tabs, save+close applies to each selected)
-[ ] tint the background a bit while in waypoint mode (except for the object being edited)
-[ ] add lines to waypoints in waypoint mode (and maybe a number above each line?)
 [x] add a setting to choose an icon for the map
 [ ] after adding a second frame, update the first's image key
 [ ] after adding/removing a frame, update the sheet's "frames" key
-[ ] make sure the animation manager selects the first direction when it starts up for the first time
+[x] make sure the animation manager selects the first direction when it starts up for the first time
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
+[ ] tint the background a bit while in waypoint mode (except for the object being edited)
+[ ] add lines to waypoints in waypoint mode (and maybe a number above each line?)
 [x] finish zorder sorting for renderables
 [x] finish pointer tool
 [ ] finish brush tool (brush sizes)

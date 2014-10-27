@@ -122,7 +122,7 @@ std::shared_ptr<Asset<kry::Graphics::Texture> >& Assets::getEntityByIni(const QS
 std::shared_ptr<Asset<kry::Graphics::Texture>> Assets::getTileByHardtype(const kry::Util::String& type)
 {
 	for (auto asset : getTiles())
-		if (asset->properties["global"]["type"] == type)
+		if (asset->properties["global"]["hardtype"] == type)
 			return asset;
 	return std::shared_ptr<Asset<kry::Graphics::Texture>>(); // null
 }
@@ -130,7 +130,7 @@ std::shared_ptr<Asset<kry::Graphics::Texture>> Assets::getTileByHardtype(const k
 std::shared_ptr<Asset<kry::Graphics::Texture>> Assets::getEntityByHardtype(const kry::Util::String& type)
 {
 	for (auto asset : getEntities())
-		if (asset->properties["global"]["type"] == type)
+		if (asset->properties["global"]["hardtype"] == type)
 			return asset;
 	return std::shared_ptr<Asset<kry::Graphics::Texture>>(); // null
 }

@@ -31,6 +31,7 @@ class AnimManagerDialog : public CSDialog
 
 		Ui::AnimManagerDialog* ui;
 		int lastindex;
+		bool firstLoad;
 };
 
 

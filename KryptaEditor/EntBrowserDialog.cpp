@@ -12,6 +12,9 @@ namespace
 		object->asset = asset;
 		object->properties = asset->properties;
 		auto type = asset->properties["global"]["hardtype"];
+		auto parent = Assets::getParentType(type);
+		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[parent].getKeyNames())
+			object->hardproperties[parent][key] = "";
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
 			object->hardproperties[type][key] = "";
 		return new ObjectListItem(object, QIcon(imagefile), name);

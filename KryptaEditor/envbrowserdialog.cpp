@@ -15,9 +15,9 @@ namespace
 		object->properties = asset->properties;
 		auto type = asset->properties["global"]["hardtype"];
 		auto parent = Assets::getParentType(type);
-		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-			object->hardproperties[type][key] = "";
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[parent].getKeyNames())
+			object->hardproperties[parent][key] = "";
+		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
 			object->hardproperties[type][key] = "";
 		return new ObjectListItem(object, QIcon(imagefile), name);
 	}
@@ -76,6 +76,7 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 
 		auto asset = Assets::getTileByHardtype(qToKString(type));
 		auto item = createListItem(asset.get(), animation->path, name);
+		item->object->hardproperties["floor"]["skin"] = kry::Util::toString(Resources::getAnimationIndex(animation));
 
 		ObjectSettingsDialog dialog(this);
 		std::set<Object*> tmp = { item->object.get() };
@@ -85,29 +86,13 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 			item->object->hardproperties = (*results.begin()).hardtypesettings;
 		}
 		item->object->properties["global"]["name"] = qToKString(name);
-		
-		// set up the object for use as a template outside (using the object settings dialog)
-		/** #TODO(continue) */
-		/*
-		Asset<kry::Graphics::Texture>* asset = new Asset<kry::Graphics::Texture>;
-		asset->path = "";
-		asset->type = type == "wall" ? AssetType::ENTITY : AssetType::TILE;
-		asset->properties["global"]["name"] = qToKString(name);
-		asset->properties["global"]["resource"] = qToKString(animation->path);
-		asset->properties["global"]["type"] = type == "wall" ? kry::Util::String("ENTITY") : kry::Util::String("TILE");
-		asset->properties["global"]["hardtype"] = qToKString(type);
-		asset->properties["global"]["gridsnap"] = "true";
-		asset->properties["global"]["relativex"] = "0.5";
-		asset->properties["global"]["relativey"] = "0.5";
-		asset->resource = animation.get();
-		*/
 
 		ui->lbIcons->addItem(item);
-		ui->bRemove->setEnabled(false);
+		ui->bRemove->setEnabled(true);
 	});
 	connect(ui->bRemove, &QPushButton::clicked, [this](bool)
 	{
-		if (ui->lbIcons->currentRow() < 0)
+		if (ui->lbIcons->currentItem() == nullptr)
 			return;
 		ui->lbIcons->removeItemWidget(ui->lbIcons->currentItem());
 		if (ui->lbIcons->count() <= 0)
