@@ -1,4 +1,4 @@
-﻿Build started 10/29/2014 3:50:26 AM.
+﻿Build started 10/29/2014 4:03:28 AM.
      1>Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" on node 2 (Build target(s)).
      1>Link:
          KryptaEditorQT.vcxproj -> C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Debug\KryptaEditorQT.exe
@@ -6,4 +6,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.10
+Time Elapsed 00:00:00.14
