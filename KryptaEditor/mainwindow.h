@@ -36,6 +36,7 @@ class MainWindow : public QMainWindow
 		inline QLabel* getStatusMain() const;
 		inline QLabel* getStatusPos() const;
 		inline QLabel* getStatusTile() const;
+		inline EnvBrowserDialog* getEnvBrowser() const;
 
 		struct ToolBarItem
 		{
@@ -93,6 +94,11 @@ QLabel* MainWindow::getStatusPos() const
 QLabel* MainWindow::getStatusTile() const
 {
 	return statusTile;
+}
+
+EnvBrowserDialog* MainWindow::getEnvBrowser() const
+{
+	return envbrowseDialog;
 }
 
 std::vector<MainWindow::ToolBarItem>& MainWindow::getToolbarItems()

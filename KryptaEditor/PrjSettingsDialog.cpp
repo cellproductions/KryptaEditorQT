@@ -22,14 +22,13 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 
 	connect(ui->bCancel, &QPushButton::clicked, [this](bool)
 	{
-		setTableData();
-
 		lastresult = DialogResult::CANCEL;
 		this->close();
 	});
 
 	connect(ui->bSave, &QPushButton::clicked, [this](bool)
 	{
+		/*
 		settings["project"]["name"] = qToKString(ui->projectProperties->item(0, 1)->text());
 		settings["project"]["path"] = qToKString(ui->projectProperties->item(1, 1)->text());
 		settings["project"]["iconImage"] = qToKString(ui->projectProperties->item(2, 1)->text());
@@ -37,12 +36,12 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 		settings["project"]["revealOfWar"] = qToKString(ui->projectProperties->item(4, 1)->text());
 		settings["project"]["fogTint"] = qToKString(ui->projectProperties->item(5, 1)->text());
 		settings["project"]["floorFadeTime"] = qToKString(ui->projectProperties->item(6, 1)->text());
-		settings["project"]["loadingSound"] = qToKString(ui->projectProperties->item(7, 1)->text());
-		settings["project"]["loadingImage"] = qToKString(ui->projectProperties->item(8, 1)->text());
+		settings["project"]["tileDimensions"] = qToKString(ui->projectProperties->item(7, 1)->text());
+		settings["project"]["soudtrackSize"] = qToKString(ui->projectProperties->item(8, 1)->text());
+		settings["project"]["randomizeSoundtrack"] = qToKString(ui->projectProperties->item(9, 1)->text());*/
 		
-		auto saveHard = [this](const kry::Util::String& section)
+		auto saveHard = [this](QTableWidget* table, const kry::Util::String& section)
 		{
-			QTableWidget* table = ui->playerProperties;
 			for (auto& key : settings[section].getKeyNames())
 			{
 				int rowindex = 0;
@@ -56,7 +55,7 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 				}
 
 				auto tvalue = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_ARR" || tvalue == "ITEM_ID" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
+				if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_POS" || tvalue == "VEC_4" || tvalue == "VEC_2_ARR" || tvalue == "ITEM_ID" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
 					tvalue == "ENTITY_GROUP_ARR" || tvalue == "ITEM_ARR") /** #TODO(change) add these types as widgets instead */
 					settings[section][key] = qToKString(table->item(rowindex, 1)->text());
 				else if (tvalue == "FLOOR_ID")
@@ -65,13 +64,18 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 					text = text.left(text.indexOf(':'));
 					settings[section][key] = qToKString(text);
 				}
+				else if (tvalue == "IMAGE_FILE")
+				{
+					auto text = dynamic_cast<QPushButton*>(table->cellWidget(rowindex, 1))->text();
+					settings[section][key] = qToKString(text);
+				}
 				else if (tvalue == "INT" || tvalue == "FLOAT")
 				{
 					auto text = dynamic_cast<QLineEdit*>(table->cellWidget(rowindex, 1))->text();
 					settings[section][key] = qToKString(text);
 				}
 				else if (tvalue == "BOOL")
-					settings[section][key] = qToKString(dynamic_cast<QCheckBox*>(table->cellWidget(rowindex, 1))->isChecked() ? "true" : "false");
+					settings[section][key] = dynamic_cast<QCheckBox*>(table->cellWidget(rowindex, 1))->isChecked() ? kry::Util::String("true") : kry::Util::String("false");
 				else if (tvalue == "OBJECT_ID")
 				{
 					auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
@@ -124,27 +128,9 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 				/** #TODO(incomplete) add parts for whatever else that comes along */
 			}
 		};
-		saveHard("entity");
-		saveHard("player");
-		/*
-		settings["player"]["floor"] = kry::Util::toString(dynamic_cast<QComboBox*>(ui->playerProperties->cellWidget(0, 1))->currentIndex());
-		settings["player"]["position"] = qToKString(ui->playerProperties->item(1, 1)->text());
-		settings["player"]["dimensions"] = qToKString(ui->playerProperties->item(2, 1)->text());
-		settings["player"]["seeInFog"] = qToKString(ui->playerProperties->item(3, 1)->text());
-		settings["player"]["directions"] = qToKString(ui->playerProperties->item(4, 1)->text());
-		settings["player"]["maxHeuristic"] = qToKString(ui->playerProperties->item(5, 1)->text());
-		settings["player"]["viewDistance"] = qToKString(ui->playerProperties->item(6, 1)->text());
-		settings["player"]["moveAcceleration"] = qToKString(ui->playerProperties->item(7, 1)->text());
-		settings["player"]["turnAcceleration"] = qToKString(ui->playerProperties->item(8, 1)->text());
-		settings["player"]["maxMoveSpeed"] = qToKString(ui->playerProperties->item(9, 1)->text());
-		settings["player"]["maxTurnSpeed"] = qToKString(ui->playerProperties->item(10, 1)->text());
-		settings["player"]["skinIdle"] = qToKString(ui->playerProperties->item(11, 1)->text());
-		settings["player"]["skinRun"] = qToKString(ui->playerProperties->item(12, 1)->text());
-		settings["player"]["skinDead"] = qToKString(ui->playerProperties->item(13, 1)->text());
-		settings["player"]["health"] = qToKString(ui->playerProperties->item(14, 1)->text());
-		settings["player"]["direction"] = qToKString(ui->playerProperties->item(15, 1)->text());
-		settings["player"]["group"] = qToKString(ui->playerProperties->item(16, 1)->text());
-		*/
+		saveHard(ui->projectProperties, "project");
+		saveHard(ui->playerProperties, "entity");
+		saveHard(ui->playerProperties, "player");
 
 		lastresult = DialogResult::OK;
 		this->close();
@@ -177,12 +163,18 @@ void PrjSettingsDialog::resetSettings()
 	settings["project"]["name"] = qToKString(Map::getProjectName());
 	settings["project"]["path"] = ""; // set from map probably?
 	settings["project"]["iconImage"] = "icon.png";
-	settings["project"]["fogOfWar"] = "1";
-	settings["project"]["revealOfWar"] = "1";
+	settings["project"]["fogOfWar"] = "true";
+	settings["project"]["revealOfWar"] = "true";
 	settings["project"]["fogTint"] = "{ 0.4, 0.4, 0.4, 1.0 }";
+	settings["project"]["fogThroughWalls"] = "false";
+	settings["project"]["fogTillLastWall"] = "true";
+	settings["project"]["tileDimensions"] = "700";
 	settings["project"]["floorFadeTime"] = "250";
-	settings["project"]["loadingSound"] = "sounds/loading.mp3";
-	settings["project"]["loadingImage"] = "images/loading.png";
+	settings["project"]["cameraScale"] = "0.2";
+	settings["project"]["deathFadeTime"] = "5000";
+	settings["project"]["gameOverSkin"] = "0";
+	settings["project"]["soundtrackSize"] = "0";
+	settings["project"]["randomizeSoundtrack"] = "true";
 	
 	if (!settings["entity"].keyExists("skinConfig"))
 		settings["entity"]["skinConfig"] = "";
@@ -193,34 +185,34 @@ void PrjSettingsDialog::resetSettings()
 	if (!settings["entity"].keyExists("skinDead"))
 		settings["entity"]["skinDead"] = "-1";
 	if (!settings["entity"].keyExists("position"))
-		settings["entity"]["position"] = "{ 0.5, 0.5 }";
+		settings["entity"]["position"] = "{ 350, 0 }";
 	if (!settings["entity"].keyExists("dimensions"))
 		settings["entity"]["dimensions"] = "{ 1, 1 }";
 	if (!settings["entity"].keyExists("floor"))
 		settings["entity"]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
 	if (!settings["entity"].keyExists("direction"))
-		settings["entity"]["direction"] = kry::Util::toString(0);
+		settings["entity"]["direction"] = "0";
 	if (!settings["entity"].keyExists("directions"))
-		settings["entity"]["directions"] = kry::Util::toString(8);
+		settings["entity"]["directions"] = "1";
 	if (!settings["entity"].keyExists("seeInFog"))
-		settings["entity"]["seeInFog"] = kry::Util::toString(1);
+		settings["entity"]["seeInFog"] = "true";
 	if (!settings["entity"].keyExists("maxHeuristic"))
-		settings["entity"]["maxHeuristic"] = kry::Util::toString(0);
+		settings["entity"]["maxHeuristic"] = "0";
 	if (!settings["entity"].keyExists("group"))
-		settings["entity"]["group"] = "";
+		settings["entity"]["group"] = "-1";
 
 	if (!settings["player"].keyExists("viewDistance"))
-		settings["player"]["viewDistance"] = kry::Util::toString(3);
+		settings["player"]["viewDistance"] = "3";
 	if (!settings["player"].keyExists("moveAcceleration"))
-		settings["player"]["moveAcceleration"] = kry::Util::toString(1.3);
+		settings["player"]["moveAcceleration"] = "1.3";
 	if (!settings["player"].keyExists("turnAcceleration"))
-		settings["player"]["turnAcceleration"] = kry::Util::toString(50);
+		settings["player"]["turnAcceleration"] = "50";
 	if (!settings["player"].keyExists("maxMoveSpeed"))
-		settings["player"]["maxMoveSpeed"] = kry::Util::toString(6);
+		settings["player"]["maxMoveSpeed"] = "6";
 	if (!settings["player"].keyExists("maxTurnSpeed"))
-		settings["player"]["maxTurnSpeed"] = kry::Util::toString(700);
+		settings["player"]["maxTurnSpeed"] = "700";
 	if (!settings["player"].keyExists("health"))
-		settings["player"]["health"] = kry::Util::toString(1);
+		settings["player"]["health"] = "1";
 	if (!settings["player"].keyExists("idleSound"))
 		settings["player"]["idleSound"] = "-1";
 	if (!settings["player"].keyExists("runSound"))
@@ -229,10 +221,30 @@ void PrjSettingsDialog::resetSettings()
 		settings["player"]["deadSound"] = "-1";
 	if (!settings["player"].keyExists("inventory"))
 		settings["player"]["inventory"] = "";
+	if (!settings["player"].keyExists("invincibilityTime"))
+		settings["player"]["invincibilityTime"] = "1000";
+	if (!settings["player"].keyExists("invincibilityFlickerTime"))
+		settings["player"]["invincibilityFlickerTime"] = "75";
+	if (!settings["player"].keyExists("dieingTime"))
+		settings["player"]["dieingTime"] = "1000";
+	if (!settings["player"].keyExists("idleSound"))
+		settings["player"]["idleSound"] = "-1";
+	if (!settings["player"].keyExists("runSound"))
+		settings["player"]["runSound"] = "-1";
+	if (!settings["player"].keyExists("deadSound"))
+		settings["player"]["deadSound"] = "-1";
+	if (!settings["player"].keyExists("hurtSound"))
+		settings["player"]["hurtSound"] = "-1";
+	if (!settings["player"].keyExists("dieingSound"))
+		settings["player"]["dieingSound"] = "-1";
 }
 
 void PrjSettingsDialog::setTableData()
 {
+	while (ui->projectProperties->rowCount() > 0)
+		ui->projectProperties->removeRow(0);
+	settings["project"]["soundtrackSize"] = kry::Util::toString(Assets::getMusic().size());
+	/*
 	ui->projectProperties->setItem(0, 1, new QTableWidgetItem(kryToQString(settings["project"]["name"])));
 	ui->projectProperties->item(0, 1)->setFlags(Qt::ItemIsSelectable);
 	ui->projectProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["project"]["path"])));
@@ -242,14 +254,15 @@ void PrjSettingsDialog::setTableData()
 	ui->projectProperties->setItem(4, 1, new QTableWidgetItem(kryToQString(settings["project"]["revealOfWar"])));
 	ui->projectProperties->setItem(5, 1, new QTableWidgetItem(kryToQString(settings["project"]["fogTint"])));
 	ui->projectProperties->setItem(6, 1, new QTableWidgetItem(kryToQString(settings["project"]["floorFadeTime"])));
-	ui->projectProperties->setItem(7, 1, new QTableWidgetItem(kryToQString(settings["project"]["loadingSound"])));
-	ui->projectProperties->setItem(8, 1, new QTableWidgetItem(kryToQString(settings["project"]["loadingImage"])));
+	ui->projectProperties->setItem(7, 1, new QTableWidgetItem(kryToQString(settings["project"]["tileDimensions"])));
+	ui->projectProperties->setItem(8, 1, new QTableWidgetItem(kryToQString(settings["project"]["soundTrackSize"])));
+	ui->projectProperties->setItem(9, 1, new QTableWidgetItem(kryToQString(settings["project"]["randomizeSoundtrack"])));
+	*/
 
 	while (ui->playerProperties->rowCount() > 0)
 		ui->playerProperties->removeRow(0);
-	auto setupHard = [this](const kry::Util::String& section)
+	auto setupHard = [this](QTableWidget* table, const kry::Util::String& section)
 	{
-		QTableWidget* table = ui->playerProperties;
 		for (auto& key : settings[section].getKeyNames())
 		{
 			int index = table->rowCount();
@@ -257,8 +270,25 @@ void PrjSettingsDialog::setTableData()
 			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-			if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
+			if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_4" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
 				table->setItem(index, 1, new QTableWidgetItem(kryToQString(settings[section][key])));
+			else if (type == "BLOCK")
+			{
+				table->setItem(index, 1, new QTableWidgetItem(kryToQString(settings[section][key])));
+				table->item(index, 1)->setFlags(Qt::ItemIsSelectable);
+			}
+			else if (type == "IMAGE_FILE")
+			{
+				QPushButton* button = new QPushButton(kryToQString(settings[section][key]), table);
+				connect(button, &QPushButton::clicked, [this, button](bool)
+				{
+					auto filepath = QFileDialog::getOpenFileName(this, "Select Map Image", QApplication::applicationDirPath(), "Image files (*.jpg *.png *.bmp)");
+					if (filepath.isNull() || filepath.isEmpty())
+						return;
+					button->setText(filepath);
+				});
+				table->setCellWidget(index, 1, button);
+			}
 			else if (type == "INT")
 			{
 				QLineEdit* edit = new QLineEdit(kryToQString(settings[section][key]), table);
@@ -410,30 +440,7 @@ void PrjSettingsDialog::setTableData()
 			/** #TODO(incomplete) add parts for whatever else that comes along */
 		}
 	};
-	setupHard("entity");
-	setupHard("player");
-	/*
-	QComboBox* box = new QComboBox(ui->playerProperties);
-	box->setEditable(false);
-	for (auto& layer : Map::getMap()->getLayers())
-		box->addItem(QString::number(layer->index) + ':' + layer->description);
-	box->setCurrentIndex(kry::Util::toIntegral<int>(settings["player"]["floor"]));
-	ui->playerProperties->setCellWidget(0, 1, box);
-	ui->playerProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["player"]["position"])));
-	ui->playerProperties->setItem(2, 1, new QTableWidgetItem(kryToQString(settings["player"]["dimensions"])));
-	ui->playerProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["player"]["seeInFog"])));
-	ui->playerProperties->setItem(4, 1, new QTableWidgetItem(kryToQString(settings["player"]["directions"])));
-	ui->playerProperties->setItem(5, 1, new QTableWidgetItem(kryToQString(settings["player"]["maxHeuristic"])));
-	ui->playerProperties->setItem(6, 1, new QTableWidgetItem(kryToQString(settings["player"]["viewDistance"])));
-	ui->playerProperties->setItem(7, 1, new QTableWidgetItem(kryToQString(settings["player"]["moveAcceleration"])));
-	ui->playerProperties->setItem(8, 1, new QTableWidgetItem(kryToQString(settings["player"]["turnAcceleration"])));
-	ui->playerProperties->setItem(9, 1, new QTableWidgetItem(kryToQString(settings["player"]["maxMoveSpeed"])));
-	ui->playerProperties->setItem(10, 1, new QTableWidgetItem(kryToQString(settings["player"]["maxTurnSpeed"])));
-	ui->playerProperties->setItem(11, 1, new QTableWidgetItem(kryToQString(settings["player"]["skinIdle"])));
-	ui->playerProperties->setItem(12, 1, new QTableWidgetItem(kryToQString(settings["player"]["skinRun"])));
-	ui->playerProperties->setItem(13, 1, new QTableWidgetItem(kryToQString(settings["player"]["skinDead"])));
-	ui->playerProperties->setItem(14, 1, new QTableWidgetItem(kryToQString(settings["player"]["health"])));
-	ui->playerProperties->setItem(15, 1, new QTableWidgetItem(kryToQString(settings["player"]["direction"])));
-	ui->playerProperties->setItem(16, 1, new QTableWidgetItem(kryToQString(settings["player"]["group"])));
-	*/
+	setupHard(ui->projectProperties, "project");
+	setupHard(ui->playerProperties, "entity");
+	setupHard(ui->playerProperties, "player");
 }

@@ -20,9 +20,11 @@ class EnvBrowserDialog : public QDialog
 
         DialogResult showDialog();
         inline ObjectListItem* getSelectedItem();
+		inline Ui::EnvBrowserDialog* getUI();
+		inline void overrideFirstLoad(bool toggle);
 
     private:
-        Ui::EnvBrowserDialog *ui;
+        Ui::EnvBrowserDialog* ui;
         ObjectListItem* selected;
         DialogResult lastresult;
 		bool firstLoad;
@@ -32,6 +34,16 @@ class EnvBrowserDialog : public QDialog
 ObjectListItem* EnvBrowserDialog::getSelectedItem()
 {
     return selected;
+}
+
+Ui::EnvBrowserDialog* EnvBrowserDialog::getUI()
+{
+	return ui;
+}
+
+void EnvBrowserDialog::overrideFirstLoad(bool toggle)
+{
+	firstLoad = toggle;
 }
 
 #endif // ENVBROWSERDIALOG_H

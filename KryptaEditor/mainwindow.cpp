@@ -4,6 +4,7 @@
 #include "ui_prjsetupdialog.h"
 #include "EntBrowserDialog.h"
 #include "EnvBrowserDialog.h"
+#include "ui_EnvBrowserDialog.h"
 #include "LayerBrowserDialog.h"
 #include "ConfigDialog.h"
 #include "SaveDialog.h"
@@ -336,16 +337,23 @@ void MainWindow::onOpenTrigger()
 	int index = file.lastIndexOf('/') + 1;
 	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
 	this->setWindowTitle(mainTitle + " - " + prjname);
-	if (!Assets::isLoaded())
+
+	if (!Assets::isLoaded()) // first time loading the map
 	{
 		Assets::loadAssets("assets");
 		Resources::initEditorTextures();
 	}
+	else // map's been loaded before, clear it all
+	{
+		//Assets::eraseAll();
+		Resources::eraseAll();
+		while (envbrowseDialog->getUI()->lbIcons->count() > 0)
+			delete envbrowseDialog->getUI()->lbIcons->item(0);
+	}
 	try
 	{
 		Map::setProjectName(prjname);
-		auto map = Map::loadFromFile(file, prjsettingsDialog->getAllSettings());
-		prjsettingsDialog->resetSettings();
+		auto map = Map::loadFromFile(this, file, prjsettingsDialog->getAllSettings());
 		ui->cbLayers->clear();
 		for (auto& layer : map->getLayers())
 			ui->cbLayers->addItem( layer->description);
@@ -365,7 +373,7 @@ void MainWindow::onSaveTrigger()
 {
 	if (!Map::getMap())
 		return;
-	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
+	Map::getMap()->saveToFile(this, Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
 	saved = true;
 }
 
@@ -380,15 +388,17 @@ void MainWindow::onSaveAsTrigger()
 	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
 	this->setWindowTitle(mainTitle + " - " + prjname);
 	Map::setProjectName(prjname);
-	Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
+	Map::getMap()->saveToFile(this, Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
 	saved = true;
 }
 
 void MainWindow::onExportTrigger()
 {
+	if (!Map::getMap())
+		return;
 	if (!saved)
 		onSaveTrigger();
-	Map::getMap()->exportToFile(Map::getMap()->getName(), prjsettingsDialog->getAllSettings()); /** #TODO(change) change all .txt to .map */
+	Map::getMap()->exportToFile(this, Map::getMap()->getName(), prjsettingsDialog->getAllSettings()); /** #TODO(change) change all .txt to .map */
 }
 
 void MainWindow::onExitTrigger()
@@ -410,7 +420,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 	{
 		Configuration::saveToFile("editor.cfg");
 
-		Map::getMap()->saveToFile(Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
+		Map::getMap()->saveToFile(this, Map::getProjectName() + ".kryprj", prjsettingsDialog->getAllSettings());
 	}
 	else if (result == DialogResult::NO)
 	{

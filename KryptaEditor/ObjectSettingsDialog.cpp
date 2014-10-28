@@ -20,7 +20,7 @@
 kry::Util::String getValue(QTableWidget* table, unsigned rowindex, const kry::Util::String& section, kry::Util::String& key) /** #TODO(incomplete) add parts for whatever else that comes along */
 {
 	auto tvalue = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-	if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_ARR" || tvalue == "ITEM_ID" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
+	if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_POS" || tvalue == "VEC_2_ARR" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
 		tvalue == "ENTITY_GROUP_ARR" || tvalue == "ITEM_ARR") /** #TODO(change) add these types as widgets instead */
 		return qToKString(table->item(rowindex, 1)->text());
 	else if (tvalue == "FLOOR_ID")
@@ -139,7 +139,7 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : CSDialog(parent), 
 			{
 				QTableWidget* table = dynamic_cast<QTableWidget*>(ui->tabs->widget(1)); // waypoints tab
 				object.hardtypesettings[type]["path"] = qToKString(table->item(1, 1)->text());
-				object.hardtypesettings[type]["loopPath"] = qToKString(table->item(2, 1)->text());
+				object.hardtypesettings[type]["loopPath"] = dynamic_cast<QCheckBox*>(table->cellWidget(2, 1))->isChecked() ? kry::Util::String("true") : kry::Util::String("false");
 			}
 		}
 
@@ -230,7 +230,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 		ui->tabs->addTab(table, kryToQString(object.type));
 		kry::Util::String type = object.type;
 		kry::Util::String parent = Assets::getParentType(type);
-		auto setupHard = [this, table, &object](const kry::Util::String& section)
+		auto setupHard = [this, &object](QTableWidget* table, const kry::Util::String& section)
 		{
 			for (auto& key : object.hardtypesettings[section].getKeyNames()) /** #TODO(incomplete) some of these should actually do things (change animation, move floor, etc) */
 			{
@@ -239,7 +239,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 				table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 				auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
+				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_2_ARR" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
 					table->setItem(index, 1, new QTableWidgetItem(kryToQString(object.hardtypesettings[section][key])));
 				else if (type == "INT")
 				{
@@ -372,16 +372,10 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				{
 					QComboBox* box = new QComboBox(table);
 					box->setEditable(false);
-					int index = 0;
-					int currindex = 0;
+					box->addItem("-1:none");
 					for (auto& pair : Map::getMap()->getItems())
-					{
 						box->addItem(kryToQString(pair.first) + ':' + pair.second->name);
-						if (object.hardtypesettings[section][key] == pair.first)
-							currindex = index;
-						++index;
-					}
-					box->setCurrentIndex(currindex);
+					box->setCurrentIndex(kry::Util::toIntegral<int>(object.hardtypesettings[section][key]) + 1);
 					table->setCellWidget(index, 1, box);
 				}
 				else if (type == "WEAPONS")
@@ -443,8 +437,8 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				*/
 			}
 		};
-		setupHard(parent);
-		setupHard(type);
+		setupHard(table, parent);
+		setupHard(table, type);
 	}
 #if 0
 	table = initTable(new QTableWidget(ui->tabs));
@@ -525,7 +519,10 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 			{
 				table->setItem(1, 1, new QTableWidgetItem(kryToQString(propobject.hardtypesettings[propobject.type]["path"])));
 				table->item(1, 1)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-				table->setItem(2, 1, new QTableWidgetItem(kryToQString(propobject.hardtypesettings[propobject.type]["loopPath"])));
+				QCheckBox* box = new QCheckBox(table);
+				if (!propobject.hardtypesettings[propobject.type]["loopPath"].isEmpty())
+					box->setChecked(propobject.hardtypesettings[propobject.type]["loopPath"] == "true");
+				table->setCellWidget(2, 1, box);
 				table->item(2, 1)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 			}
 		}

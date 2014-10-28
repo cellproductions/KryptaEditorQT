@@ -19,9 +19,9 @@ TODO HIGH(absolutely required):
 [x] add more player settings [FLUX]
 [x] finish asset/resource loading
 [x] add properties that link to hardcoded properties
-[x] finish different property types (in the dialogs) for object hardtype settings [FLUX]
+[x] finish different property types (in the dialogs) for object hardtype settings
 [x] change entity/environment dialogs to suit types
-[ ] complete exporting (remove hardcoded stuff, update) [DOING] [FLUX]
+[x] complete exporting (remove hardcoded stuff, update) [FLUX]
 [x] finish pivot editing for objects
 [x] add object waypoints
 [x] add waypoint options dialog/manual placement
@@ -40,13 +40,14 @@ TODO HIGH(absolutely required):
 [x] include add button for environment
 [x] add a selection tool for mass editing (add all common settings from each type as tabs, save+close applies to each selected)
 [x] add a setting to choose an icon for the map
-[ ] after adding a second frame, update the first's image key
-[ ] after adding/removing a frame, update the sheet's "frames" key
+[x] after adding a second frame, update the first's image key
+[x] after adding/removing a frame, update the sheet's "frames" key
 [x] make sure the animation manager selects the first direction when it starts up for the first time
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
 [ ] tint the background a bit while in waypoint mode (except for the object being edited)
+[ ] finish that heuristics thing
 [ ] add lines to waypoints in waypoint mode (and maybe a number above each line?)
 [x] finish zorder sorting for renderables
 [x] finish pointer tool
@@ -66,6 +67,8 @@ TODO MEDIUM(will pass fine without being added):
 [ ] add a basic ai that checks if the player can reach the end of the map
 [ ] add a "test in game" button that launches the map in the game with debug on
 [ ] create a file for animation keys similar to types.ini
+[ ] finish export button for animations
+[ ] add an exportTo button (export to location)
 
 TODO LOW(extra fluff for polish):
 [ ] add grid overlay/toggle
@@ -83,19 +86,20 @@ TODO LOW(extra fluff for polish):
 [ ] add object browser
 [ ] add better spritesheet support for animation manager
 [ ] add an add/remove button for entity browser as well for consistency
+[ ] upon deleting the last animation, update everything so that it's all cleared
+[ ] the audio manager could check the paths of tracks and reuse resources, just to be more efficients
+[ ] add map renaming
 
 BUGS:
-* flip x/y of tile positions (crash from exporting, rectangle maps are the wrong way around)
-* apply all is broken in the object settings dialog (hasn't been updated)
+* apply all is broken in the object settings dialog (hasn't been updated, remove? its a bit rubbish now that the selection editor is in)
 * creating a new map while there is already a map makes everything disappear (wot)
 * wall icons appear as missing.png only on the first time editing it (wot)
 * right clicking on waypoints is off by a hundred or so? not sure
-* crash when deleting a frame from an animation
-* crash when deleting an animation
 * can set a pivot in animations without being in pivot mode
-* selection tool suddenly broke (probably has something to do with switching the vec2is to fs)
 * after cancelling an environment piece creation, it still gets added
 * selection quad wont dissapear when releasing the mouse button
+* opening the object settings dialog in the env browser causes the group icon to be small
+* cancelling making a new env crash
 
 OPTIMIZATIONS:
 * object placement during painting (especially on large maps, investigate)

@@ -19,7 +19,20 @@ namespace
 			object->hardproperties[parent][key] = "";
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
 			object->hardproperties[type][key] = "";
-		return new ObjectListItem(object, QIcon(imagefile), name);
+		unsigned index = 0;
+		for (auto& resource : Resources::getAnimations())
+		{
+			if (resource.get() == asset->resource)
+				break;
+			++index;
+		}
+		auto item = new ObjectListItem(object, QIcon(imagefile), name);
+		item->object->hardproperties["floor"]["skin"] = kry::Util::toString(index);
+		item->object->hardproperties["floor"]["heuristic"] = type == "solid" ? kry::Util::String("1") : kry::Util::String("0");
+		item->object->hardproperties["floor"]["sortDepth"] = type == "wall" ? kry::Util::String("1") : kry::Util::String("0");
+		item->object->hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }";
+		item->path = asset->resource->path;
+		return item;
 	}
 }
 
@@ -33,6 +46,15 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 
     connect(ui->lbIcons, &QListWidget::itemClicked, [this](QListWidgetItem* item)
     {
+		if (item == nullptr)
+		{
+			ui->lResName->setText("");
+			ui->lResImage->setPixmap(QIcon().pixmap(ui->lResImage->size()));
+			while (ui->resProperties->rowCount() > 0)
+				ui->resProperties->removeRow(0);
+			return;
+		}
+
         ObjectListItem* objectitem = dynamic_cast<ObjectListItem*>(item);
 
         ui->lResName->setText(kryToQString(objectitem->object->asset->properties["global"]["name"]));
@@ -86,6 +108,7 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 			item->object->hardproperties = (*results.begin()).hardtypesettings;
 		}
 		item->object->properties["global"]["name"] = qToKString(name);
+		item->path = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(item->object->hardproperties["floor"]["skin"])]->path;
 
 		ui->lbIcons->addItem(item);
 		ui->bRemove->setEnabled(true);
@@ -94,7 +117,8 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 	{
 		if (ui->lbIcons->currentItem() == nullptr)
 			return;
-		ui->lbIcons->removeItemWidget(ui->lbIcons->currentItem());
+		delete ui->lbIcons->currentItem();
+		ui->lbIcons->itemClicked(nullptr);
 		if (ui->lbIcons->count() <= 0)
 			ui->bRemove->setEnabled(false);
 	});
@@ -117,14 +141,6 @@ DialogResult EnvBrowserDialog::showDialog()
         for (auto& asset : Assets::getTiles())
 		{
 			auto item = createListItem(asset.get(), asset->resource->path, kryToQString(asset->properties["global"]["name"]));
-			unsigned index = 0;
-			for (auto& resource : Resources::getAnimations())
-			{
-				if (resource.get() == asset->resource)
-					break;
-				++index;
-			}
-			item->object->hardproperties["floor"]["skin"] = kry::Util::toString(index);
             ui->lbIcons->addItem(item);
 		}
 		firstLoad = false;

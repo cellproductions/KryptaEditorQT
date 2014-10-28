@@ -10,9 +10,9 @@
 #include <memory>
 
 template <typename ResType>
-struct Resource; // resources.h
+struct Resource;
 
-enum class AssetType : unsigned char /** #TODO(note) should audio be managed here as well? */
+enum class AssetType : unsigned char
 {
 	TILE,
 	ENTITY,
@@ -40,10 +40,13 @@ class Assets
 		inline static const std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& getMusic();
 		static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>> getAllTextureAssets();
 		inline static const kry::Media::Config& getHardTypes();
+		inline static const kry::Media::Config& getRequiredKeys();
         inline static bool isLoaded();
 		inline static kry::Util::String getParentType(const kry::Util::String& hardtype);
+		inline static bool isParentType(const kry::Util::String& hardtype);
 		static std::shared_ptr<Asset<kry::Graphics::Texture>> getTileByHardtype(const kry::Util::String& type);
 		static std::shared_ptr<Asset<kry::Graphics::Texture>> getEntityByHardtype(const kry::Util::String& type);
+		inline static void eraseAll();
 
     private:
         Assets();
@@ -52,7 +55,9 @@ class Assets
 		static std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>> entities;
         static std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>> sounds;
 		static std::vector<std::shared_ptr<Asset<kry::Audio::Source>>> music;
+
 		static kry::Media::Config hardtypes;
+		static kry::Media::Config requiredkeys;
 		static bool loaded;
 };
 
@@ -82,6 +87,11 @@ const kry::Media::Config& Assets::getHardTypes()
 	return hardtypes;
 }
 
+const kry::Media::Config& Assets::getRequiredKeys()
+{
+	return requiredkeys;
+}
+
 bool Assets::isLoaded()
 {
     return loaded;
@@ -89,11 +99,24 @@ bool Assets::isLoaded()
 
 kry::Util::String Assets::getParentType(const kry::Util::String& hardtype) /** #TODO(incomplete) update this as you go */
 {
-	if (hardtype == "itemloot" || hardtype == "itemkey")
+	if (hardtype == "lootitem" || hardtype == "keyitem" || hardtype == "weaponitem")
 		return kry::Util::String("item");
 	if (hardtype == "void" || hardtype == "solid" || hardtype == "wall")
 		return kry::Util::String("floor");
 	return kry::Util::String("entity");
+}
+
+bool Assets::isParentType(const kry::Util::String& hardtype)
+{
+	return hardtype == "entity" || hardtype == "floor" || hardtype == "item";
+}
+
+void Assets::eraseAll()
+{
+	tiles.clear();
+	entities.clear();
+	sounds.clear();
+	music.clear();
 }
 
 #endif // ASSETS_H

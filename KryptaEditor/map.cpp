@@ -4,13 +4,14 @@
 #include "Resources.h"
 #include "Utilities.h"
 #include "GLPanel.h"
+#include "MainWindow.h"
+#include "EnvBrowserDialog.h"
+#include "ui_EnvBrowserDialog.h"
+#include "ObjectListItem.h"
+#include "ItemManagerDialog.h"
 #include <System/Filesystem.h>
 #include <Utilities/StringConvert.h>
 #include <Media/Zip.h>
-#include <QJSONDocument>
-#include <QJSONObject>
-#include <QJSONArray>
-#include <QJSONValue>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QFile>
@@ -18,6 +19,8 @@
 #include <QDebug>
 #include <set>
 #include <fstream>
+
+#define KRY_DEVELOPER
 
 unsigned Object::increment(0);
 
@@ -75,6 +78,9 @@ Map::Layer* Map::createLayer(const Tile& defaulttile, LayerOptionsItem* layerite
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
 			tile.hardproperties[type][key] = "";
 		tile.hardproperties["floor"]["skin"] = kry::Util::toString(resourceindex);
+		tile.hardproperties["floor"]["heuristic"] = type == "solid" ? kry::Util::String("1") : kry::Util::String("0");
+		tile.hardproperties["floor"]["sortDepth"] = type == "wall" ? kry::Util::String("1") : kry::Util::String("0");
+		tile.hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }";
 	}
 	return layer;
 }
@@ -92,6 +98,13 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 
         single->layers.emplace_back(layer);
     }
+
+	Item* item = new Item;
+	item->name = "Example";
+	item->properties["item"]["type"] = "lootitem";
+	item->properties["item"]["inventorySkin"] = "0";
+	item->properties["lootitem"];
+	single->getItems().insert(std::pair<kry::Util::String, std::shared_ptr<Item>>(kry::Util::toString(single->getItems().size()), std::make_shared<Item>(*item)));
 
     layerList->clear();
 	single->currentLayer = single->layers[0];
@@ -113,7 +126,7 @@ TextElement readElement(QXmlStreamReader& reader)
 	return element;
 }
 
-std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& prjsettings) /** #TODO(change) whole thing will need a readover. things have changed */
+std::shared_ptr<Map> Map::loadFromFile(MainWindow* window, const QString& path, kry::Media::Config& prjsettings)
 {
 	using namespace kry;
 
@@ -128,102 +141,394 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 
 	reader.readNext(); // projectfile
 		reader.readNext();
-		reader.readNext(); // project
+// MAP
+		reader.readNext();
 			reader.readNext();
 			element = readElement(reader);
 			QString name = element.text;
 			reader.readNext();
 			element = readElement(reader);
-			size_t layercount = element.text.toUInt();
-			single.reset(new Map(name, layercount));
+			unsigned objectidcount = element.text.toUInt();
+			reader.readNext();
+			element = readElement(reader);
+			unsigned itemidcount = element.text.toUInt();
 			reader.readNext();
 			reader.readNext();
 		reader.readNext();
-		reader.readNext(); // player
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["layer"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["tilex"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["tiley"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["dimensionsx"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["dimensionsy"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["seeInFog"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["directions"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["maxHeuristic"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["viewDistance"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["moveAcceleration"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["turnAcceleration"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["maxMoveSpeed"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["maxTurnSpeed"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["skinIdle"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["skinRun"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["skinDead"] = qToKString(element.text);
-			reader.readNext();
-			element = readElement(reader);
-			prjsettings["player"]["health"] = qToKString(element.text);
-			reader.readNext();
-			reader.readNext();
+// ANIMATIONS
 		reader.readNext();
-		reader.readNext(); // layers
-			for (size_t i = 0; i < layercount; ++i)
+			unsigned count = reader.attributes()[0].value().toString().toUInt();
+			reader.readNext();
+			if (count > 0)
+			{
+				for (unsigned i = 0; i < count; ++i)
+				{
+					reader.readNext();
+					reader.readNext();
+					element = readElement(reader);
+					auto name = element.text;
+					reader.readNext();
+					element = readElement(reader);
+					auto path = element.text;
+					auto animation = Animation<>::createDefaultAnimation(qToKString(path));
+					for (unsigned dircount = 0; dircount < Animation<>::MAX_DIRECTION_COUNT; ++dircount) // properties for each dir
+					{
+							auto str = reader.name().toString();
+						reader.readNext();
+						str = reader.name().toString();
+						reader.readNext(); // properties
+						str = reader.name().toString();
+						{
+							unsigned dir = reader.attributes()[0].value().toString().toUInt();
+							unsigned sections = reader.attributes()[1].value().toString().toUInt();
+							for (unsigned j = 0; j < sections; ++j)
+							{
+								reader.readNext();
+								reader.readNext(); // section
+								{
+									auto section = qToKString(reader.name().toString());
+									unsigned keys = reader.attributes()[0].value().toString().toUInt();
+									for (unsigned k = 0; k < keys; ++k)
+									{
+										reader.readNext();
+										element = readElement(reader); // key/value
+										animation->properties[dir][section][qToKString(element.name)] = qToKString(element.text);
+									}
+									if (keys > 0)
+									{
+										reader.readNext();
+										str = reader.name().toString();
+										reader.readNext();
+										str = reader.name().toString();
+									}
+								}
+							}
+						}
+						reader.readNext();
+						str = reader.name().toString();
+					}
+					for (unsigned dircount = 0; dircount < Animation<>::MAX_DIRECTION_COUNT; ++dircount) // frames for each dir
+					{
+						reader.readNext();
+						reader.readNext(); // frames
+						{
+							unsigned dir = reader.attributes()[0].value().toString().toUInt();
+							unsigned framecount = reader.attributes()[1].value().toString().toUInt();
+							animation->frames[dir].resize(framecount);
+							for (unsigned n = 0; n < framecount; ++n)
+							{
+								reader.readNext();
+								reader.readNext(); // frame
+								{
+									unsigned sections = reader.attributes()[0].value().toString().toUInt();
+									for (unsigned j = 0; j < sections; ++j)
+									{
+										reader.readNext();
+										reader.readNext(); // section
+										{
+											auto section = qToKString(reader.name().toString());
+											unsigned keys = reader.attributes()[0].value().toString().toUInt();
+											for (unsigned k = 0; k < keys; ++k)
+											{
+												reader.readNext();
+												element = readElement(reader); // key/value
+												animation->frames[dir][n][section][qToKString(element.name)] = qToKString(element.text);
+											}
+											if (keys > 0)
+											{
+												reader.readNext();
+												reader.readNext();
+											}
+										}
+									}
+								}
+								reader.readNext();
+								reader.readNext();
+							}
+						}
+						reader.readNext();
+						reader.readNext();
+					}
+					if (i >= Resources::getAnimations().size())
+						Resources::getAnimations().emplace_back(animation);
+					else
+						Resources::getAnimations()[i].reset(animation);
+					reader.readNext();
+					reader.readNext();
+					reader.readNext();
+				}
+				reader.readNext();
+				reader.readNext();
+			}
+		reader.readNext();
+// SOUNDS
+		reader.readNext();
+			count = reader.attributes()[0].value().toString().toUInt();
+			reader.readNext();
+			if (count > 0)
+			{
+				for (unsigned i = 0; i < count; ++i)
+				{
+					reader.readNext();
+					reader.readNext();
+						element = readElement(reader);
+						auto name = element.text;
+						reader.readNext();
+						element = readElement(reader);
+						reader.readNext();
+						auto path = element.text;
+					reader.readNext();
+					reader.readNext();
+					Resource<kry::Audio::Buffer>* resource = createDefaultSound(qToKString(path));
+					if (i >= Resources::getSounds().size())
+						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>&>(Resources::getSounds()).emplace_back(resource);
+					else
+						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>&>(Resources::getSounds())[i].reset(resource);
+				}
+				reader.readNext();
+				reader.readNext();
+			}
+		reader.readNext();
+// MUSIC
+		reader.readNext();
+			count = reader.attributes()[0].value().toString().toUInt();
+			reader.readNext();
+			if (count > 0)
+			{
+				for (unsigned i = 0; i < count; ++i)
+				{
+					reader.readNext();
+					reader.readNext();
+						element = readElement(reader);
+						auto name = element.text;
+						reader.readNext();
+						element = readElement(reader);
+						reader.readNext();
+						auto path = element.text;
+					reader.readNext();
+					reader.readNext();
+					Resource<kry::Audio::Source>* resource = createDefaultMusic(qToKString(path));
+					if (i >= Resources::getMusic().size())
+						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>&>(Resources::getMusic()).emplace_back(resource);
+					else
+						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>&>(Resources::getMusic())[i].reset(resource);
+				}
+				reader.readNext();
+				reader.readNext();
+			}
+		reader.readNext();
+// SET UP ASSETS
+			Resources::reassignAnimations(const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getTiles()));
+			Resources::reassignAnimations(const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getEntities()));
+			Resources::reassignSounds(const_cast<std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>&>(Assets::getSounds()));
+			Resources::reassignMusic(const_cast<std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>&>(Assets::getMusic()));
+// ENV BROWSER
+		reader.readNext();
+		{
+			count = reader.attributes()[0].value().toString().toUInt();
+			reader.readNext();
+			if (count > 0)
+			{
+				for (unsigned i = 0; i < count; ++i)
+				{
+					reader.readNext();
+					reader.readNext();
+						element = readElement(reader);
+						auto name = element.text;
+						reader.readNext();
+						element = readElement(reader);
+						auto path = element.text;
+						reader.readNext();
+						element = readElement(reader);
+						auto type = qToKString(element.text);
+						auto asset = Assets::getTileByHardtype(type);
+						std::shared_ptr<Object> object(new Object);
+						object->asset = asset.get();
+						reader.readNext();
+						reader.readNext(); // properties
+						{
+							unsigned sections = reader.attributes()[0].value().toString().toUInt();
+							for (unsigned j = 0; j < sections; ++j)
+							{
+								reader.readNext();
+								reader.readNext(); // section
+								{
+									auto section = qToKString(reader.name().toString());
+									unsigned keys = reader.attributes()[0].value().toString().toUInt();
+									for (unsigned k = 0; k < keys; ++k)
+									{
+										reader.readNext();
+										element = readElement(reader); // key/value
+										object->properties[section][qToKString(element.name)] = qToKString(element.text);
+									}
+									if (keys > 0)
+									{
+										reader.readNext();
+										reader.readNext();
+									}
+								}
+							}
+						}
+						reader.readNext();
+						reader.readNext();
+						reader.readNext();
+						reader.readNext(); // hardproperties
+						{
+							unsigned sections = reader.attributes()[0].value().toString().toUInt();
+							for (unsigned j = 0; j < sections; ++j)
+							{
+								reader.readNext();
+								reader.readNext(); // section
+								{
+									auto section = qToKString(reader.name().toString());
+									unsigned keys = reader.attributes()[0].value().toString().toUInt();
+									for (unsigned k = 0; k < keys; ++k)
+									{
+										reader.readNext();
+										element = readElement(reader); // key/value
+										object->hardproperties[section][qToKString(element.name)] = qToKString(element.text);
+									}
+									if (keys > 0)
+									{
+										reader.readNext();
+										reader.readNext();
+									}
+								}
+							}
+						}
+						reader.readNext();
+						reader.readNext();
+						ObjectListItem* item = new ObjectListItem(object, QIcon(path), name);
+						unsigned index = 0;
+						for (auto& resource : Resources::getAnimations())
+						{
+							if (resource.get() == asset->resource)
+								break;
+							++index;
+						}
+						item->object->hardproperties["floor"]["skin"] = kry::Util::toString(index);
+						window->getEnvBrowser()->getUI()->lbIcons->addItem(item);
+						window->getEnvBrowser()->overrideFirstLoad(false);
+					reader.readNext();
+					reader.readNext();
+				}
+				reader.readNext();
+				reader.readNext();
+			}
+		}
+		reader.readNext();
+// PROJECT SETTINGS
+		reader.readNext();
+		{
+			unsigned sections = reader.attributes()[0].value().toString().toUInt();
+			for (unsigned j = 0; j < sections; ++j)
 			{
 				reader.readNext();
-				reader.readNext(); // layer
+				reader.readNext(); // section
+				{
+					auto section = qToKString(reader.name().toString());
+					unsigned keys = reader.attributes()[0].value().toString().toUInt();
+					for (unsigned k = 0; k < keys; ++k)
+					{
+						reader.readNext();
+						element = readElement(reader); // key/value
+						prjsettings[section][qToKString(element.name)] = qToKString(element.text);
+					}
+					if (keys > 0)
+					{
+						reader.readNext();
+						reader.readNext();
+					}
+				}
+			}
+			reader.readNext();
+			reader.readNext();
+		}
+		reader.readNext();
+// ITEMS
+		reader.readNext();
+		{
+			count = reader.attributes()[0].value().toString().toUInt();
+			if (count > 0)
+			{
+				for (unsigned i = 0; i < count; ++i)
+				{
+					reader.readNext();
+					reader.readNext();
+					{
+						reader.readNext();
+						element = readElement(reader); // name
+						reader.readNext();
+						auto name = element.text;
+						reader.readNext(); // properties
+						unsigned sections = reader.attributes()[0].value().toString().toUInt();
+						for (unsigned j = 0; j < sections; ++j)
+						{
+							reader.readNext();
+							reader.readNext(); // section
+							{
+								auto section = qToKString(reader.name().toString());
+								unsigned keys = reader.attributes()[0].value().toString().toUInt();
+								for (unsigned k = 0; k < keys; ++k)
+								{
+									reader.readNext();
+									element = readElement(reader); // key/value
+									prjsettings[section][qToKString(element.name)] = qToKString(element.text);
+								}
+								if (keys > 0)
+								{
+									reader.readNext();
+									reader.readNext();
+								}
+							}
+						}
+						reader.readNext();
+						reader.readNext();
+					}
+					reader.readNext();
+					reader.readNext();
+				}
+
+				reader.readNext();
+				reader.readNext();
+			}
+		}
+		reader.readNext();
+// FLOORS
+		reader.readNext();
+		{
+			count = reader.attributes()[0].value().toString().toUInt();
+			for (int i = 0; i < count; ++i)
+			{
+				reader.readNext();
+				reader.readNext();
+				{
 					reader.readNext();
 					element = readElement(reader);
 					auto description = element.text;
 					reader.readNext();
 					element = readElement(reader);
-					int width = element.text.toInt();
+					auto width = element.text.toInt();
 					reader.readNext();
 					element = readElement(reader);
-					int height = element.text.toInt();
+					auto height = element.text.toInt();
 					reader.readNext();
 					element = readElement(reader);
-					int tilewidth = element.text.toInt();
+					auto tilewidth = element.text.toInt();
 					reader.readNext();
 					element = readElement(reader);
-					int tileheight = element.text.toInt();
+					auto tileheight = element.text.toInt();
 					Layer* layer = new Layer { std::move(std::vector<Tile>(width * height, Tile())), description, {width, height}, {tilewidth, tileheight}, i};
 					single->layers.emplace_back(layer);
-					reader.readNext();
-					reader.readNext();
+				}
+				reader.readNext();
+				reader.readNext();
 			}
-			reader.readNext();
-			reader.readNext();
+		}
 		reader.readNext();
+// TILE DATA
 		reader.readNext(); // tiledata
-			for (size_t i = 0; i < layercount; ++i)
+			for (size_t i = 0; i < single->layers.size(); ++i)
 			{
 				std::shared_ptr<Layer>& layer = single->layers[i];
 
@@ -232,18 +537,70 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 					Tile& tile = layer->tiles[j];
 					reader.readNext();
 					reader.readNext(); // tile
+					{
 						reader.readNext(); // layerid
 						element = readElement(reader);
 						reader.readNext();
 						element = readElement(reader);
-						//tile.asset = Assets::getTileByIni(element.text).get();
+						tile.asset = Assets::getTileByHardtype(qToKString(element.text)).get();
 						reader.readNext();
 						element = readElement(reader);
 						size_t objectcount = element.text.toUInt();
 						tile.objects.reserve(objectcount == 0 ? 1 : objectcount);
 						reader.readNext();
-						reader.readNext(); // properties (IGNORED FOR NOW. MUST BE IMPLEMENTED)
+						reader.readNext(); // properties
+						{
+							unsigned sections = reader.attributes()[0].value().toString().toUInt();
+							for (unsigned j = 0; j < sections; ++j)
+							{
+								reader.readNext();
+								reader.readNext(); // section
+								{
+									auto section = qToKString(reader.name().toString());
+									unsigned keys = reader.attributes()[0].value().toString().toUInt();
+									for (unsigned k = 0; k < keys; ++k)
+									{
+										reader.readNext();
+										element = readElement(reader); // key/value
+										tile.properties[section][qToKString(element.name)] = qToKString(element.text);
+									}
+									if (keys > 0)
+									{
+										reader.readNext();
+										reader.readNext();
+									}
+								}
+							}
+							reader.readNext();
+							reader.readNext();
+						}
 						reader.readNext();
+						reader.readNext(); // hardproperties
+						{
+							unsigned sections = reader.attributes()[0].value().toString().toUInt();
+							for (unsigned j = 0; j < sections; ++j)
+							{
+								reader.readNext();
+								reader.readNext(); // section
+								{
+									auto section = qToKString(reader.name().toString());
+									unsigned keys = reader.attributes()[0].value().toString().toUInt();
+									for (unsigned k = 0; k < keys; ++k)
+									{
+										reader.readNext();
+										element = readElement(reader); // key/value
+										tile.hardproperties[section][qToKString(element.name)] = qToKString(element.text);
+									}
+									if (keys > 0)
+									{
+										reader.readNext();
+										reader.readNext();
+									}
+								}
+							}
+							reader.readNext();
+							reader.readNext();
+						}
 						reader.readNext();
 						reader.readNext(); // objects
 						if (objectcount == 0)
@@ -254,6 +611,7 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 							{
 								reader.readNext();
 								reader.readNext(); // object
+								{
 									Object* object = new Object;
 
 									reader.readNext();
@@ -261,8 +619,7 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 									reader.readNext();
 									element = readElement(reader);
 									auto assetpath = element.text;
-									//if (assetpath.startsWith("assets\\entities"))
-										//object->asset = Assets::getEntityByIni(assetpath).get();
+									object->asset = assetpath == "wall" ? Assets::getTileByHardtype(qToKString(assetpath)).get() : Assets::getEntityByHardtype(qToKString(assetpath)).get();
 									reader.readNext();
 									reader.readNext(); // properties
 									int sections = reader.attributes()[0].value().toInt();
@@ -280,28 +637,81 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 												kry::Util::String strkey = qToKString(element.name);
 												object->properties[strsection][strkey] = qToKString(element.text);
 											}
-											reader.readNext();
-											reader.readNext();
+											if (keys > 0)
+											{
+												reader.readNext();
+												reader.readNext();
+											}
 										}
 										reader.readNext();
 										reader.readNext();
-									object->sprite.texture = object->asset->resource->rawresource;
-									object->sprite.dimensions = object->asset->resource->rawresource->getDimensions();
-									if (assetpath.startsWith("assets\\objects"))
-										object->sprite.position = {kry::Util::toDecimal<float>(object->properties["object"]["posx"]),
-																  kry::Util::toDecimal<float>(object->properties["object"]["posy"])};
-									else if (assetpath.startsWith("assets\\entities"))
-										object->sprite.position = {kry::Util::toDecimal<float>(object->properties["entity"]["posx"]),
-																  kry::Util::toDecimal<float>(object->properties["entity"]["posy"])};
+									reader.readNext();
+									reader.readNext(); // hardproperties
+									sections = reader.attributes()[0].value().toInt();
+										for (int section = 0; section < sections; ++section)
+										{
+											reader.readNext();
+											reader.readNext(); // section
+											int keys = reader.attributes()[0].value().toInt();
+											kry::Util::String strsection = qToKString(reader.name().toString());
+											for (int key = 0; key < keys; ++key)
+											{
+												reader.readNext();
+												element = readElement(reader); // key
+												kry::Util::String strkey = qToKString(element.name);
+												object->hardproperties[strsection][strkey] = qToKString(element.text);
+											}
+											if (keys > 0)
+											{
+												reader.readNext();
+												reader.readNext();
+											}
+										}
+										reader.readNext();
+										reader.readNext();
+									auto parent = Assets::getParentType(qToKString(assetpath));
+									auto key = parent == "entity" ? kry::Util::String("skinIdle") : kry::Util::String("skin");
+									object->sprite.texture = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(object->hardproperties[parent][key])]->rawresource;
+									object->sprite.dimensions = object->sprite.texture->getDimensions();
+									object->sprite.position = {kry::Util::toDecimal<float>(object->properties["global"]["posx"]),
+																kry::Util::toDecimal<float>(object->properties["global"]["posy"])};
+										reader.readNext(); // waypoints
+										unsigned waypoints = reader.attributes()[0].value().toUInt();
+										if (waypoints > 0)
+										{
+											for (unsigned point = 0; point < waypoints; ++point)
+											{
+												reader.readNext();
+												reader.readNext(); // waypoint
+												kry::Graphics::Sprite sprite;
+												reader.readNext();
+												element = readElement(reader);
+												auto pos = element.text;
+												reader.readNext();
+												element = readElement(reader);
+												auto rgba = element.text;
+												sprite.position = kry::Util::Vector2f::Vector(qToKString(pos));
+												sprite.rgba = kry::Util::Vector4f::Vector(qToKString(rgba));
+												sprite.texture = Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource;
+												sprite.dimensions = sprite.texture->getDimensions();
+												object->waypoints.push_back(sprite);
+												reader.readNext();
+												reader.readNext();
+											}
+											reader.readNext();
+											reader.readNext();
+										}
 									tile.objects.emplace_back(object);
 									reader.readNext();
 									reader.readNext();
+								}
 							}
 							reader.readNext();
 							reader.readNext();
 						}
 						reader.readNext();
 						reader.readNext();
+					}
 				}
 			}
 	file.close();
@@ -310,9 +720,10 @@ std::shared_ptr<Map> Map::loadFromFile(const QString& path, kry::Media::Config& 
 	return single;
 }
 
-void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #TODO(note) when saving project settings, must save the objectidindex as well so id's can continue to be generated from where they were left off */
-{																		/** #TODO(note) same with item id count */
+void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config& prjsettings)
+{
 	using namespace kry;
+	window->getStatusMain()->setText("Saving project...");
 
 	QFile file(name);
 	file.open(QIODevice::WriteOnly);
@@ -323,39 +734,225 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 
 	writer.writeStartElement("projectfile");
 	{
-		writer.writeStartElement("project");
+		writer.writeStartElement("map");
 		{
-			writer.writeTextElement("name", single->getName());
-			writer.writeTextElement("layercount", QString::number(single->layers.size()));
+			writer.writeTextElement("name", name);
+			writer.writeTextElement("objectid", QString::number(Object::increment));
+			writer.writeTextElement("itemid", QString::number(ItemManagerDialog::getIDCount()));
 		}
 		writer.writeEndElement();
-		writer.writeStartElement("player");
+// ANIMATIONS
+		writer.writeStartElement("animations");
+		writer.writeAttribute("count", QString::number(Resources::getAnimations().size()));
 		{
-			writer.writeTextElement("layer", kryToQString(prjsettings["player"]["layer"]));
-			writer.writeTextElement("tilex", kryToQString(prjsettings["player"]["tilex"]));
-			writer.writeTextElement("tiley", kryToQString(prjsettings["player"]["tiley"]));
-			writer.writeTextElement("dimensionsx", kryToQString(prjsettings["player"]["dimensionsx"]));
-			writer.writeTextElement("dimensionsy", kryToQString(prjsettings["player"]["dimensionsy"]));
-			writer.writeTextElement("seeInFog", kryToQString(prjsettings["player"]["seeInFog"]));
-			writer.writeTextElement("directions", kryToQString(prjsettings["player"]["directions"]));
-			writer.writeTextElement("maxHeuristic", kryToQString(prjsettings["player"]["maxHeuristic"]));
-			writer.writeTextElement("viewDistance", kryToQString(prjsettings["player"]["viewDistance"]));
-			writer.writeTextElement("moveAcceleration", kryToQString(prjsettings["player"]["moveAcceleration"]));
-			writer.writeTextElement("turnAcceleration", kryToQString(prjsettings["player"]["turnAcceleration"]));
-			writer.writeTextElement("maxMoveSpeed", kryToQString(prjsettings["player"]["maxMoveSpeed"]));
-			writer.writeTextElement("maxTurnSpeed", kryToQString(prjsettings["player"]["maxTurnSpeed"]));
-			writer.writeTextElement("skinIdle", kryToQString(prjsettings["player"]["skinIdle"]));
-			writer.writeTextElement("skinRun", kryToQString(prjsettings["player"]["skinRun"]));
-			writer.writeTextElement("skinDead", kryToQString(prjsettings["player"]["skinDead"]));
-			writer.writeTextElement("health", kryToQString(prjsettings["player"]["health"]));
+			unsigned animindex = 0;
+			for (auto anim : Resources::getAnimations())
+			{
+				writer.writeStartElement("anim" + QString::number(animindex));
+				{
+					writer.writeTextElement("name", anim->name);
+					writer.writeTextElement("path", anim->path);
+					for (int i = 0; i < Animation<>::MAX_DIRECTION_COUNT; ++i)
+					{
+						writer.writeStartElement("properties");
+						writer.writeAttribute("direction", QString::number(i));
+						writer.writeAttribute("sections", QString::number(anim->properties[i].sectionExists("") ? anim->properties[i].getSectionNames().size() - 1 : anim->properties[i].getSectionNames().size()));
+						{
+							for (auto& section : anim->properties[i].getSectionNames())
+							{
+								if (section.isEmpty())
+									continue;
+								writer.writeStartElement(kryToQString(section));
+								writer.writeAttribute("keys", QString::number(anim->properties[i][section].getKeyNames().size()));
+								{
+									for (auto& key : anim->properties[i][section].getKeyNames())
+										writer.writeTextElement(kryToQString(key), kryToQString(anim->properties[i][section][key]));
+								}
+								writer.writeEndElement();
+							}
+						}
+						writer.writeEndElement();
+					}
+					for (int i = 0; i < Animation<>::MAX_DIRECTION_COUNT; ++i)
+					{
+						writer.writeStartElement("frames");
+						writer.writeAttribute("direction", QString::number(i));
+						writer.writeAttribute("framecount", QString::number(anim->frames[i].size()));
+						{
+							for (auto& frame : anim->frames[i])
+							{
+								writer.writeStartElement("frame");
+								writer.writeAttribute("sections", QString::number(frame.sectionExists("") ? frame.getSectionNames().size() - 1 : frame.getSectionNames().size()));
+								{
+									for (auto& section : frame.getSectionNames())
+									{
+										if (section.isEmpty())
+											continue;
+										writer.writeStartElement(kryToQString(section));
+										writer.writeAttribute("keys", QString::number(frame[section].getKeyNames().size()));
+										{
+											for (auto& key : frame[section].getKeyNames())
+												writer.writeTextElement(kryToQString(key), kryToQString(frame[section][key]));
+										}
+										writer.writeEndElement();
+									}
+								}
+								writer.writeEndElement();
+							}
+						}
+						writer.writeEndElement();
+					}
+				}
+				writer.writeEndElement();
+				++animindex;
+			}
 		}
 		writer.writeEndElement();
-		writer.writeStartElement("layers");
+// SOUNDS
+		writer.writeStartElement("sounds");
+		writer.writeAttribute("count", QString::number(Resources::getSounds().size()));
+		{
+			unsigned soundindex = 0;
+			for (auto sound : Resources::getSounds())
+			{
+				writer.writeStartElement("sound" + QString::number(soundindex));
+				{
+					writer.writeTextElement("name", sound->name);
+					writer.writeTextElement("path", sound->path);
+				}
+				writer.writeEndElement();
+				++soundindex;
+			}
+		}
+		writer.writeEndElement();
+// MUSIC
+		writer.writeStartElement("music");
+		writer.writeAttribute("count", QString::number(Resources::getMusic().size()));
+		{
+			unsigned musicindex = 0;
+			for (auto music : Resources::getMusic())
+			{
+				writer.writeStartElement("music" + QString::number(musicindex));
+				{
+					writer.writeTextElement("name", music->name);
+					writer.writeTextElement("path", music->path);
+				}
+				writer.writeEndElement();
+				++musicindex;
+			}
+		}
+		writer.writeEndElement();
+// ENV BROWSER ITEMS /** #TODO(incomplete) if i add an add button to ent browser as well, do one for that too */
+		writer.writeStartElement("envbrowser");
+		writer.writeAttribute("count", QString::number(window->getEnvBrowser()->getUI()->lbIcons->count()));
+		{
+			auto icons = window->getEnvBrowser()->getUI()->lbIcons;
+			for (int i = 0; i < icons->count(); ++i)
+			{
+				auto item = dynamic_cast<ObjectListItem*>(icons->item(i));
+				writer.writeStartElement("env" + QString::number(i));
+				{
+					writer.writeTextElement("text", item->text());
+					writer.writeTextElement("iconpath", item->path);
+					writer.writeTextElement("type", kryToQString(item->object->asset->properties["global"]["hardtype"]));
+					writer.writeStartElement("properties");
+					writer.writeAttribute("sections", QString::number(item->object->properties.sectionExists("") ? item->object->properties.getSectionNames().size() - 1 : item->object->properties.getSectionNames().size()));
+					{
+						for (auto& section : item->object->properties.getSectionNames())
+						{
+							if (section.isEmpty())
+								continue;
+							writer.writeStartElement(kryToQString(section));
+							writer.writeAttribute("keys", QString::number(item->object->properties[section].getKeyNames().size()));
+							{
+								for (auto& key : item->object->properties[section].getKeyNames())
+									writer.writeTextElement(kryToQString(key), kryToQString(item->object->properties[section][key]));
+							}
+							writer.writeEndElement();
+						}
+					}
+					writer.writeEndElement();
+					writer.writeStartElement("hardproperties");
+					writer.writeAttribute("sections", QString::number(item->object->hardproperties.sectionExists("") ? item->object->hardproperties.getSectionNames().size() - 1 : item->object->hardproperties.getSectionNames().size()));
+					{
+						for (auto& section : item->object->hardproperties.getSectionNames())
+						{
+							if (section.isEmpty())
+								continue;
+							writer.writeStartElement(kryToQString(section));
+							writer.writeAttribute("keys", QString::number(item->object->hardproperties[section].getKeyNames().size()));
+							{
+								for (auto& key : item->object->hardproperties[section].getKeyNames())
+									writer.writeTextElement(kryToQString(key), kryToQString(item->object->hardproperties[section][key]));
+							}
+							writer.writeEndElement();
+						}
+					}
+					writer.writeEndElement();
+				}
+				writer.writeEndElement();
+			}
+		}
+		writer.writeEndElement();
+// PROJECT SETTINGS
+		writer.writeStartElement("projectsettings");
+		writer.writeAttribute("sections", QString::number(prjsettings.sectionExists("") ? prjsettings.getSectionNames().size() - 1 : prjsettings.getSectionNames().size()));
+		{
+			for (auto& section : prjsettings.getSectionNames())
+			{
+				if (section.isEmpty())
+					continue;
+				writer.writeStartElement(kryToQString(section));
+				writer.writeAttribute("keys", QString::number(prjsettings[section].getKeyNames().size()));
+				{
+					for (auto& key : prjsettings[section].getKeyNames())
+						writer.writeTextElement(kryToQString(key), kryToQString(prjsettings[section][key]));
+				}
+				writer.writeEndElement();
+			}
+		}
+		writer.writeEndElement();
+// ITEMS
+		writer.writeStartElement("items");
+		writer.writeAttribute("count", QString::number(single->getItems().size()));
+		{
+			unsigned itemindex = 0;
+			for (auto item : single->items)
+			{
+				writer.writeStartElement("item" + QString::number(itemindex));
+				writer.writeAttribute("id", kryToQString(item.first));
+				{
+					writer.writeTextElement("name", item.second->name);
+					writer.writeStartElement("properties");
+					writer.writeAttribute("sections", QString::number(item.second->properties.sectionExists("") ? item.second->properties.getSectionNames().size() - 1 : item.second->properties.getSectionNames().size()));
+					{
+						for (auto& section : item.second->properties.getSectionNames())
+						{
+							if (section.isEmpty())
+								continue;
+							writer.writeStartElement(kryToQString(section));
+							writer.writeAttribute("keys", QString::number(item.second->properties[section].getKeyNames().size()));
+							{
+								for (auto& key : item.second->properties[section].getKeyNames())
+									writer.writeTextElement(kryToQString(key), kryToQString(item.second->properties[section][key]));
+							}
+							writer.writeEndElement();
+						}
+					}
+					writer.writeEndElement();
+				}
+				writer.writeEndElement();
+			}
+		}
+		writer.writeEndElement();
+// FLOORS
+		writer.writeStartElement("floors");
+		writer.writeAttribute("id", QString::number(single->layers.size()));
 		{
 			for (size_t i = 0; i < single->layers.size(); ++i)
 			{
 				std::shared_ptr<Layer>& layer = single->layers[i];
-				writer.writeStartElement("layer");
+				writer.writeStartElement("floors");
 				writer.writeAttribute("id", QString::number(layer->index));
 				{
 					writer.writeTextElement("description", layer->description);
@@ -368,6 +965,7 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 			}
 		}
 		writer.writeEndElement();
+// TILE DATA
 		writer.writeStartElement("tiledata");
 		{
 			for (size_t i = 0; i < single->layers.size(); ++i)
@@ -377,15 +975,15 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 				for (size_t j = 0; j < layer->tiles.size(); ++j)
 				{
 					Tile& tile = layer->tiles[j];
-
+// TILE
 					writer.writeStartElement("tile");
 					writer.writeAttribute("id", kryToQString(tile.properties["global"]["id"]));
 					{
 						writer.writeTextElement("layerid", QString::number(i));
-						writer.writeTextElement("asset", tile.asset->path);
+						writer.writeTextElement("asset", kryToQString(tile.asset->properties["global"]["type"]));
 						writer.writeTextElement("objectcount", QString::number(tile.objects.size()));
 						writer.writeStartElement("properties");
-						writer.writeAttribute("sections", QString::number(tile.properties.getSectionNames().size() == 0 ? 0 : tile.properties.getSectionNames().size() - 1));
+						writer.writeAttribute("sections", QString::number(tile.properties.sectionExists("") ? tile.properties.getSectionNames().size() - 1 : tile.properties.getSectionNames().size()));
 						{
 							for (auto& section : tile.properties.getSectionNames())
 							{
@@ -402,7 +1000,7 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 						}
 						writer.writeEndElement();
 						writer.writeStartElement("hardproperties");
-						writer.writeAttribute("sections", QString::number(tile.hardproperties.getSectionNames().size() == 0 ? 0 : tile.hardproperties.getSectionNames().size() - 1));
+						writer.writeAttribute("sections", QString::number(tile.hardproperties.sectionExists("") ? tile.hardproperties.getSectionNames().size() - 1 : tile.hardproperties.getSectionNames().size()));
 						{
 							for (auto& section : tile.hardproperties.getSectionNames())
 							{
@@ -418,6 +1016,7 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 							}
 						}
 						writer.writeEndElement();
+// TILE OBJECTS
 						writer.writeStartElement("objects");
 						{
 							for (size_t n = 0; n < tile.objects.size(); ++n)
@@ -427,9 +1026,9 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 								writer.writeAttribute("id", kryToQString(object->properties["global"]["id"]));
 								{
 									writer.writeTextElement("tileid", kryToQString(tile.properties["global"]["id"]));
-									writer.writeTextElement("asset", object->asset->path);
+									writer.writeTextElement("asset", kryToQString(object->asset->properties["global"]["type"]));
 									writer.writeStartElement("properties");
-									writer.writeAttribute("sections", QString::number(object->properties.getSectionNames().size() == 0 ? 0 : object->properties.getSectionNames().size() - 1));
+									writer.writeAttribute("sections", QString::number(object->properties.sectionExists("") ? object->properties.getSectionNames().size() - 1 : object->properties.getSectionNames().size()));
 									{
 										for (auto& section : object->properties.getSectionNames())
 										{
@@ -446,7 +1045,7 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 									}
 									writer.writeEndElement();
 									writer.writeStartElement("hardproperties");
-									writer.writeAttribute("sections", QString::number(object->hardproperties.getSectionNames().size() == 0 ? 0 : object->hardproperties.getSectionNames().size() - 1));
+									writer.writeAttribute("sections", QString::number(object->hardproperties.sectionExists("") ? object->hardproperties.getSectionNames().size() - 1 : object->hardproperties.getSectionNames().size()));
 									{
 										for (auto& section : object->hardproperties.getSectionNames())
 										{
@@ -457,6 +1056,20 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 											{
 												for (auto& key : object->hardproperties[section].getKeyNames())
 													writer.writeTextElement(kryToQString(key), kryToQString(object->hardproperties[section][key]));
+											}
+											writer.writeEndElement();
+										}
+									}
+									writer.writeEndElement();
+									writer.writeStartElement("waypoints");
+									writer.writeAttribute("count", QString::number(object->waypoints.size()));
+									{
+										for (auto& waypoint : object->waypoints)
+										{
+											writer.writeStartElement("waypoint");
+											{
+												writer.writeTextElement("position", kryToQString(waypoint.position.toString()));
+												writer.writeTextElement("rgba", kryToQString(waypoint.rgba.toString()));
 											}
 											writer.writeEndElement();
 										}
@@ -479,6 +1092,8 @@ void Map::saveToFile(const QString& name, kry::Media::Config& prjsettings) /** #
 	writer.writeEndDocument();
 
 	file.close();
+	
+	window->getStatusMain()->setText("Project saved successfully!");
 }
 
 size_t getAnimIndex(Resource<kry::Graphics::Texture>* anim)
@@ -490,13 +1105,12 @@ size_t getAnimIndex(Resource<kry::Graphics::Texture>* anim)
 	return ~0;
 }
 
-kry::Util::Vector2f coordToTileCoord(const kry::Util::Vector2f& coord)
+kry::Util::Vector2f coordToExpTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer)
 {
-	kry::Util::Vector2i dim = Map::getMap()->getCurrentLayer()->tiles[0].asset->resource->rawresource->getDimensions();
-	kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
-//	auto pos = coord + halfdim;
+	kry::Util::Vector2f dim = layer->tilesize;
+	kry::Util::Vector2f halfdim = { static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f };
 
-	float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;  // black magic goin on here?
+	float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;
 	float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1;
 
 	return {x, y};
@@ -543,17 +1157,25 @@ kry::Util::String getIdFromFrame(const kry::Util::String& framename)
 	return framename.substring(index + 1);
 }
 
+kry::Util::String getPathFilename(const kry::Util::String& path)
+{
+	auto newpath = path;
+	if (!newpath.isEmpty())
+	{
+		if (newpath.contains('/'))
+			newpath = newpath.substring(newpath.lastIndexOf('/') + 1);
+		else if (newpath.contains('\\'))
+			newpath = newpath.substring(newpath.lastIndexOf('\\') + 1);
+	}
+	return newpath;
+}
+
 struct ExpTile
 {
 	Tile* tile;
 	Object* wall;
 };
-/*
-bool operator<(const ExpTile& left, const ExpTile& right)
-{
-	return left.tile->sprite.texture < right.tile->sprite.texture;
-}
-*/
+
 bool operator==(const ExpTile& left, const ExpTile& right)
 {
 	bool result = true;
@@ -564,7 +1186,7 @@ bool operator==(const ExpTile& left, const ExpTile& right)
 		else
 			result = false;
 	}
-	return (left.tile->sprite.texture == right.tile->sprite.texture) && result;
+	return (left.tile->hardproperties["floor"]["skin"] == right.tile->hardproperties["floor"]["skin"]) && result;
 }
 
 struct UsedAnim
@@ -573,44 +1195,186 @@ struct UsedAnim
 	kry::Util::String skinfile;
 	unsigned directions;
 	size_t animid;
-	bool usedbytiles;
 };
-
-bool operator<(const UsedAnim& left, const UsedAnim& right)
-{
-	return left.animid < right.animid && left.directions < right.directions;
-}
 
 bool operator==(const UsedAnim& left, const UsedAnim& right)
 {
 	return left.animid == right.animid && left.directions == right.directions;
 }
 
-void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #TODO(note) if a key is empty, dont export it (let the game crash or print error, etc.) */
+bool compareAnims(const UsedAnim& left, const UsedAnim& right)
 {
-	using namespace kry;	/** #TODO(note) remember to convert positions to ExpPositions (and positions in arrays) */
+	return left == right;
+}
 
+void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Config& prjconfig) /** #TODO(note) if a key is empty, dont export it (let the game crash or print error, etc.) */
+{
+	using namespace kry;	/** #TODO(note) remember to convert positions (and positions to ExpPositions in arrays) */
+	window->getStatusMain()->setText("Exporting map...");
 	try
 	{
 		Media::Zip zipfile;
 
 		auto kname = qToKString(name);
+		
+		bool doesMissingExist = false;
+		std::map<Util::String, std::vector<UsedAnim>> objectanimsused;
+		typedef decltype(objectanimsused) AnimObjectMap;
+		std::set<Util::String> soundsused;
+		std::set<Util::String> musicused;
 
 		std::vector<Util::String> lines;
 // MAP SETTINGS
 		lines.push_back("[Settings]");
 		lines.push_back("name = " + qToKString(single->getName()));
-		lines.push_back("iconImage = " + prjconfig["project"]["iconImage"]); /** #TODO(change) make this path relative to the zip, dont forget to copy the image as well */
+		auto iconpath = prjconfig["project"]["iconImage"];
+		if (!iconpath.isEmpty())
+		{
+			iconpath = getPathFilename(iconpath);
+			lines.push_back("iconImage = images/" + iconpath);
+			zipfile["images"][iconpath] = fileToBin(kryToQString(prjconfig["project"]["iconImage"]));
+		}
+#if defined(KRY_DEVELOPER)
 		lines.push_back("checksum = ce114e4501d2f4e2dcea3e17b546f339");
-		lines.push_back("fogOfWar = " + prjconfig["project"]["fogOfWar"]);
-		lines.push_back("revealOfWar = " + prjconfig["project"]["revealOfWar"]);
+#else
+		lines.push_back("checksum = "); /** #TODO(incomplete) load this at the end somehow */
+#endif
+		lines.push_back("fogOfWar = " + boolToKBool(prjconfig["project"]["fogOfWar"]));
+		lines.push_back("revealOfWar = " + boolToKBool(prjconfig["project"]["revealOfWar"]));
 		lines.push_back("fogTint = " + prjconfig["project"]["fogTint"]);
-		lines.push_back("tileDimensions = 700"); /** #TODO(change) hardcoded */
+		lines.push_back("fogThroughWalls = " + boolToKBool(prjconfig["project"]["fogThroughWalls"]));
+		lines.push_back("fogTillLastWall = " + boolToKBool(prjconfig["project"]["fogTillLastWall"]));
+		lines.push_back("tileDimensions = " + prjconfig["project"]["tileDimensions"]);
 		lines.push_back("floorFadeTime = " + prjconfig["project"]["floorFadeTime"]);
-		lines.push_back("loadingSound = " + prjconfig["project"]["loadingSound"]);
-		lines.push_back("loadingImage = " + prjconfig["project"]["loadingImage"]);
+		lines.push_back("cameraScale = " + prjconfig["project"]["cameraScale"]);
+		lines.push_back("deathFadeTime = " + prjconfig["project"]["deathFadeTime"]);
+		kry::Util::String gameskins = "GameSkins.txt";
+		lines.push_back("overlaySkinConfig = " + gameskins);
+		bool hasskin = false;
+		if (!prjconfig["project"]["gameOverSkin"].isEmpty() && prjconfig["project"]["gameOverSkin"] != "-1")
+		{
+			doesMissingExist = true;
+			auto index = Util::toUIntegral<size_t>(prjconfig["project"]["gameOverSkin"]);
+			std::pair<Util::String, std::vector<UsedAnim>> pair;
+			pair.first = gameskins;
+			pair.second.push_back({ Resources::getAnimations()[index], gameskins, 1, index });
+			AnimObjectMap::iterator found = objectanimsused.find(gameskins);
+			if (found == objectanimsused.end())
+				objectanimsused.insert(pair);
+			else
+			{
+				auto& foundanims = found->second;
+				if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
+					foundanims.push_back(*pair.second.begin());
+			}
+			lines.push_back("gameOverSkin = " + prjconfig["project"]["gameOverSkin"]);
+			hasskin = true;
+		}
+		if (hasskin)
+			lines.push_back("overlaySkinConfig = " + gameskins);
+		prjconfig["project"]["soundtrackSize"] = Util::toString(Assets::getMusic().size()); /** #TODO(change) would prefer this not to be here, but meh for now */
+		lines.push_back("soundtrackSize = " + prjconfig["project"]["soundtrackSize"]);
+		auto soundtracksize = Util::toUIntegral<unsigned>(prjconfig["project"]["soundtrackSize"]);
+		for (unsigned i = 0; i < soundtracksize; ++i)
+		{
+			auto music = Assets::getMusic()[i];
+			lines.push_back("soundtrack" + Util::toString(i) + "=sounds/" + getPathFilename(qToKString(music->resource->path)));
+			musicused.insert(Util::toString(i));
+		}
+		lines.push_back("randomizeSoundtrack = " + boolToKBool(prjconfig["project"]["randomizeSoundtrack"]));
 // OBJECTIVE SETTINGS
 		lines.push_back("[Objectives]");
+// ITEM DECLARATIONS
+		lines.push_back("[Items]");
+		for (auto itempair : Map::getMap()->getItems())
+			lines.push_back("item" + itempair.first + '=' + itempair.first);
+// ITEM DEFINITIONS
+		auto writeItemProps = [&lines, &objectanimsused, &doesMissingExist, &soundsused, &musicused](Item* item, const kry::Util::String& section, const kry::Util::String& skinsfile)
+		{
+			for (auto& key : item->properties["item"].getKeyNames())
+			{
+				auto value = item->properties["item"][key];
+				auto widgettype = const_cast<Media::Config&>(Assets::getHardTypes())["item"][key];
+				if (widgettype == "ANIM_ID" || widgettype == "ANIM_ID_FORCE")
+				{
+					if (widgettype == "ANIM_ID")
+					{
+						if (value != "-1")
+						{
+							doesMissingExist = true;
+							auto index = Util::toUIntegral<size_t>(value);
+							std::pair<Util::String, std::vector<UsedAnim>> pair;
+							pair.first = skinsfile;
+							pair.second.push_back({ Resources::getAnimations()[index], skinsfile, 1, index });
+							AnimObjectMap::iterator found = objectanimsused.find(skinsfile);
+							if (found == objectanimsused.end())
+								objectanimsused.insert(pair);
+							else
+							{
+								auto& foundanims = found->second;
+								if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
+									foundanims.push_back(*pair.second.begin());
+							}
+						}
+						else
+							value = "";
+					}
+					else
+					{
+						doesMissingExist = true;
+						auto index = Util::toUIntegral<size_t>(value);
+						std::pair<Util::String, std::vector<UsedAnim>> pair;
+						pair.first = skinsfile;
+						pair.second.push_back({ Resources::getAnimations()[index], skinsfile, 1, index });
+						AnimObjectMap::iterator found = objectanimsused.find(skinsfile);
+						if (found == objectanimsused.end())
+							objectanimsused.insert(pair);
+						else
+						{
+							auto& foundanims = found->second;
+							if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
+								foundanims.push_back(*pair.second.begin());
+						}
+					}
+				}
+				else if (widgettype == "SOUND_ID")
+				{
+					if (value != "-1")
+					{
+						soundsused.insert(value);
+						auto path = Resources::getSounds()[Util::toUIntegral<size_t>(value)]->path;
+						value = "sounds/" + getPathFilename(qToKString(path));
+					}
+					else
+						value = "";
+				}
+				else if (widgettype == "MUSIC_ID")
+				{
+					if (value != "-1")
+					{
+						musicused.insert(value);
+						auto path = Resources::getMusic()[Util::toUIntegral<size_t>(value)]->path;
+						value = "sounds/" + getPathFilename(qToKString(path));
+					}
+					else
+						value = "";
+				}
+				else if (widgettype == "BOOL")
+					value = boolToKBool(value);
+				else if (widgettype == "ITEM_TYPE")
+					value = value.substring(0, value.indexOf("item"));
+				if (!value.isEmpty())
+					lines.push_back(key + '=' + value);
+			}
+		};
+		for (auto itempair : Map::getMap()->getItems())
+		{
+			lines.push_back("[item" + itempair.first + ']');
+			auto skinsfile = Util::String("1ItemSkins.txt");
+			auto type = itempair.second->properties["item"]["type"];
+			writeItemProps(itempair.second.get(), "item", skinsfile);
+			writeItemProps(itempair.second.get(), type, skinsfile);
+		}
 // FLOORS/FLOOR SETTINGS
 		lines.push_back("[Floors]");
 		for (auto& floor : Map::getMap()->getLayers())
@@ -619,15 +1383,12 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 		for (auto& floor : Map::getMap()->getLayers())
 		{
 			lines.push_back("[floor" + Util::toString(floor->index) + ']');
-			lines.push_back("dimensions= { " + Util::toString(floor->size[0]) + ", " + Util::toString(floor->size[1]) + " }");
+			lines.push_back("dimensions= { " + Util::toString(floor->size[1]) + ", " + Util::toString(floor->size[0]) + " }");
 			lines.push_back("floorBinary=floors/floor" + Util::toString(floor->index) + ".txt");
 		}
-// ENTITY DECLARATIONS + ENTITY/TILE COLLECTION
+// ENTITY/TILE COLLECTION
 		std::vector<Object*> objects;
-		std::map<Util::String, std::set<UsedAnim>> objectanimsused;
 		std::vector<ExpTile> tilesused;
-		lines.push_back("[Entities]");
-		lines.push_back("player=-1");
 		unsigned count = 0;
 		for (auto& floor : Map::getMap()->getLayers())
 		{
@@ -641,8 +1402,8 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 						exptilewall.wall = object.get(); /** #TODO(note) cheeky as, only takes the last wall from the tile, might change this one day */
 					else
 					{
-						lines.push_back("entity" + Util::toString(count++) + '=' + object->properties["global"]["id"]);
 						objects.push_back(object.get());
+						std::sort(objects.begin(), objects.end(), [](Object* left, Object* right) -> bool { return left->properties["global"]["id"] < right->properties["global"]["id"]; });
 					}
 				}
 				if (std::find(tilesused.rbegin(), tilesused.rend(), exptile) == tilesused.rend())
@@ -651,225 +1412,166 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 					tilesused.push_back(exptilewall); // add the tile and the wall (if any)
 			}
 		}
+// ENTITY DECLARATIONS 
+		count = 0;
+		lines.push_back("[Entities]");
+		lines.push_back("player=-1");
+		for (auto object : objects)
+			lines.push_back("entity" + Util::toString(count++) + '=' + object->properties["global"]["id"]);
 // ENTITY SETTINGS /** #TODO(incomplete) path positions need to be converted to expPositions (either here or in object settingss) */
 		{
-			Util::String section = "player";
+			Util::String playersection = "player";
 			lines.push_back("[player]");
 			lines.push_back("type=player");
-			auto skinsfile = prjconfig["entity"]["directions"] + "EntitySkins.txt";
-			prjconfig["entity"]["skinConfig"] = skinsfile;
-			auto directions = Util::toUIntegral<unsigned>(prjconfig["entity"]["directions"]);
-			for (auto& key : prjconfig["entity"].getKeyNames())
+			auto playerskinsfile = prjconfig["entity"]["directions"] + "EntitySkins.txt";
+			prjconfig["entity"]["skinConfig"] = playerskinsfile;
+			auto playerdirections = Util::toUIntegral<unsigned>(prjconfig["entity"]["directions"]);
+			auto writeObjectProps = [&lines, &objectanimsused, &doesMissingExist, &soundsused, &musicused](kry::Media::Config& hardproperties, const kry::Util::String& section, const kry::Util::String& skinsfile, unsigned directions)
 			{
-				if (!prjconfig["entity"][key].isEmpty())
+				for (auto& key : hardproperties[section].getKeyNames())
 				{
-					lines.push_back(key + '=' + prjconfig["entity"][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())["entity"][key] == "ANIM_ID")
+					auto widgettype = const_cast<Media::Config&>(Assets::getHardTypes())[section][key];
+					auto value = hardproperties[section][key];
+					if (!value.isEmpty())
 					{
-						if (prjconfig["entity"][key] != "-1")
+						if (widgettype == "ANIM_ID" || widgettype == "ANIM_ID_FORCE")
 						{
-							auto index = Util::toUIntegral<size_t>(prjconfig["entity"][key]);
-							std::pair<Util::String, std::set<UsedAnim>> pair;
-							pair.first = skinsfile;
-							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
-							objectanimsused.insert(pair);
+							if (widgettype == "ANIM_ID")
+							{
+								if (value != "-1")
+								{
+									doesMissingExist = true;
+									auto index = Util::toUIntegral<size_t>(value);
+									std::pair<Util::String, std::vector<UsedAnim>> pair;
+									pair.first = skinsfile;
+									pair.second.push_back({ Resources::getAnimations()[index], skinsfile, directions, index });
+									AnimObjectMap::iterator found = objectanimsused.find(skinsfile);
+									if (found == objectanimsused.end())
+										objectanimsused.insert(pair);
+									else
+									{
+										auto& foundanims = found->second;
+										if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
+											foundanims.push_back(*pair.second.begin());
+									}
+								}
+								else
+									value = "";
+							}
+							else
+							{
+								doesMissingExist = true;
+								auto index = Util::toUIntegral<size_t>(value);
+								std::pair<Util::String, std::vector<UsedAnim>> pair;
+								pair.first = skinsfile;
+								pair.second.push_back({ Resources::getAnimations()[index], skinsfile, directions, index });
+								AnimObjectMap::iterator found = objectanimsused.find(skinsfile);
+								if (found == objectanimsused.end())
+									objectanimsused.insert(pair);
+								else
+								{
+									auto& foundanims = found->second;
+									if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
+										foundanims.push_back(*pair.second.begin());
+								}
+							}
 						}
+						else if (widgettype == "BOOL")
+							value = boolToKBool(value);
+						else if (widgettype == "VEC_2_POS")
+						{
+							/** #TODO(note) cheap. only so happens that this widgettype only appears in entities. otherwise, this would crash for tiles */
+							auto type = Assets::isParentType(section) ? section : Assets::getParentType(section);
+							auto layerindex = kry::Util::toUIntegral<size_t>(hardproperties[type]["floor"]);
+							if (layerindex >= getMap()->getLayers().size())
+								layerindex = 0;
+							value = coordToExpTileCoord(kry::Util::Vector2f::Vector(value), getMap()->getLayers()[layerindex]).toString();
+						}
+						else if (widgettype == "SOUND_ID")
+						{
+							if (value != "-1")
+							{
+								soundsused.insert(value);
+								auto path = Resources::getSounds()[Util::toUIntegral<size_t>(value)]->path;
+								value = "sounds/" + getPathFilename(qToKString(path));
+							}
+							else
+								value = "";
+						}
+						else if (widgettype == "MUSIC_ID")
+						{
+							if (value != "-1")
+							{
+								musicused.insert(value);
+								auto path = Resources::getMusic()[Util::toUIntegral<size_t>(value)]->path;
+								value = "sounds/" + getPathFilename(qToKString(path));
+							}
+							else
+								value = "";
+						}
+						else if (widgettype == "ITEM_ID")
+						{
+							if (value == "-1")
+								value = "";
+						}
+						if (!value.isEmpty())
+							lines.push_back(key + '=' + value);
+					}
+					else
+					{
+						if (widgettype == "ITEM_ARR" || widgettype == "ENTITY_GROUP_ARR" || widgettype == "ENTITY_ARR" || widgettype == "VEC_2_POS_ARR")
+							lines.push_back(key + '=' + value);
 					}
 				}
-			}
-			for (auto& key : prjconfig[section].getKeyNames())
-			{
-				if (!prjconfig[section][key].isEmpty())
-				{
-					lines.push_back(key + '=' + prjconfig[section][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())[section][key] == "ANIM_ID")
-					{
-						if (prjconfig[section][key] != "-1")
-						{
-							auto index = Util::toUIntegral<size_t>(prjconfig[section][key]);
-							std::pair<Util::String, std::set<UsedAnim>> pair;
-							pair.first = skinsfile;
-							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
-							objectanimsused.insert(pair);
-						}
-					}
-				}
-			}
-		}
-		/*
-		if (!prjconfig["player"]["floor"].isEmpty())
-			lines.push_back("floor=" + prjconfig["player"]["floor"]);
-		if (!prjconfig["player"]["position"].isEmpty())
-			lines.push_back("position=" + prjconfig["player"]["position"]);
-		if (!prjconfig["player"]["dimensions"].isEmpty())
-			lines.push_back("dimensions=" + prjconfig["player"]["dimensions"]);
-		if (!prjconfig["player"]["seeInFog"].isEmpty())
-			lines.push_back("seeInFog=" + prjconfig["player"]["seeInFog"]);
-		if (!prjconfig["player"]["directions"].isEmpty())
-			lines.push_back("directions=" + prjconfig["player"]["directions"]);
-		if (!prjconfig["player"]["maxHeuristic"].isEmpty())
-			lines.push_back("maxHeuristic=" + prjconfig["player"]["maxHeuristic"]);
-		if (!prjconfig["player"]["viewDistance"].isEmpty())
-			lines.push_back("viewDistance=" + prjconfig["player"]["viewDistance"]);
-		if (!prjconfig["player"]["moveAcceleration"].isEmpty())
-			lines.push_back("moveAcceleration=" + prjconfig["player"]["moveAcceleration"]);
-		if (!prjconfig["player"]["turnAcceleration"].isEmpty())
-			lines.push_back("turnAcceleration=" + prjconfig["player"]["turnAcceleration"]);
-		if (!prjconfig["player"]["maxMoveSpeed"].isEmpty())
-			lines.push_back("maxMoveSpeed=" + prjconfig["player"]["maxMoveSpeed"]);
-		if (!prjconfig["player"]["maxTurnSpeed"].isEmpty())
-			lines.push_back("maxTurnSpeed=" + prjconfig["player"]["maxTurnSpeed"]);
-		if (!prjconfig["player"]["skinIdle"].isEmpty() || !prjconfig["player"]["skinRun"].isEmpty() || !prjconfig["player"]["skinDead"].isEmpty())
-			if (prjconfig["player"]["skinIdle"] != "-1" || prjconfig["player"]["skinRun"] != "-1" || prjconfig["player"]["skinDead"] != "-1")
-				lines.push_back("skinConfig=PlayerSkins.txt");
-		if (!prjconfig["player"]["skinIdle"].isEmpty())
-			lines.push_back("skinIdle=" + prjconfig["player"]["skinIdle"]);
-		if (!prjconfig["player"]["skinRun"].isEmpty())
-			lines.push_back("skinRun=" + prjconfig["player"]["skinRun"]);
-		if (!prjconfig["player"]["skinDead"].isEmpty())
-			lines.push_back("skinDead=" + prjconfig["player"]["skinDead"]);
-		if (!prjconfig["player"]["health"].isEmpty())
-			lines.push_back("health=" + prjconfig["player"]["health"]);
-		if (!prjconfig["player"]["direction"].isEmpty())
-			lines.push_back("direction=" + prjconfig["player"]["direction"]);
-		if (!prjconfig["player"]["group"].isEmpty())
-			lines.push_back("group=" + prjconfig["player"]["group"]);
-		{
-			auto directions = 1;
-			if (!prjconfig["player"]["directions"].isEmpty())
-				directions = kry::Util::toUIntegral<unsigned>(prjconfig["player"]["directions"]);
-			auto skinsfile = prjconfig["player"]["directions"] + "EntitySkins.txt";
-			if (!prjconfig["player"]["skinIdle"].isEmpty() && prjconfig["player"]["skinIdle"] != "-1")
-			{
-				auto index = Util::toUIntegral<size_t>(prjconfig["player"]["skinIdle"]);
-				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
-			}
-			if (!prjconfig["player"]["skinRun"].isEmpty() && prjconfig["player"]["skinRun"] != "-1")
-			{
-				auto index = Util::toUIntegral<size_t>(prjconfig["player"]["skinRun"]);
-				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
-			}
-			if (!prjconfig["player"]["skinDead"].isEmpty() && prjconfig["player"]["skinDead"] != "-1")
-			{
-				auto index = Util::toUIntegral<size_t>(prjconfig["player"]["skinDead"]);
-				objectanimsused.insert({ Resources::getAnimations()[index], skinsfile, directions, index });
-			}
-		}
-		*/
+			};
+			writeObjectProps(prjconfig, "entity", playerskinsfile, playerdirections);
+			writeObjectProps(prjconfig, "player", playerskinsfile, playerdirections);
 
-		count = 0;
-		for (auto& object : objects)
-		{
-			auto section = object->properties["global"]["hardtype"];
-			lines.push_back("[entity" + Util::toString(count++) + ']');
-			lines.push_back("type=" + object->properties["global"]["hardtype"]);
-			auto skinsfile = object->hardproperties["entity"]["directions"] + "EntitySkins.txt";
-			object->hardproperties["entity"]["skinConfig"] = skinsfile;
-			auto directions = Util::toUIntegral<unsigned>(object->hardproperties["entity"]["directions"]);
-			for (auto& key : object->hardproperties["entity"].getKeyNames())
+			count = 0;
+			for (auto& object : objects)
 			{
-				if (!object->hardproperties["entity"][key].isEmpty())
-				{
-					lines.push_back(key + '=' + object->hardproperties["entity"][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())["entity"][key] == "ANIM_ID")
-					{
-						if (object->hardproperties["entity"][key] != "-1")
-						{
-							auto index = Util::toUIntegral<size_t>(object->hardproperties["entity"][key]);
-							std::pair<Util::String, std::set<UsedAnim>> pair;
-							pair.first = skinsfile;
-							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
-							objectanimsused.insert(pair);
-						}
-					}
-				}
+				auto section = object->properties["global"]["hardtype"];
+				lines.push_back("[entity" + Util::toString(count++) + ']');
+				lines.push_back("type=" + object->properties["global"]["hardtype"]);
+				auto skinsfile = object->hardproperties["entity"]["directions"] + "EntitySkins.txt";
+				object->hardproperties["entity"]["skinConfig"] = skinsfile;
+				auto directions = Util::toUIntegral<unsigned>(object->hardproperties["entity"]["directions"]);
+				writeObjectProps(object->hardproperties, "entity", skinsfile, directions);
+				writeObjectProps(object->hardproperties, section, skinsfile, directions);
 			}
-			for (auto& key : object->hardproperties[section].getKeyNames())
-			{
-				if (!object->hardproperties[section][key].isEmpty())
-				{
-					lines.push_back(key + '=' + object->hardproperties[section][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())[section][key] == "ANIM_ID")
-					{
-						if (object->hardproperties[section][key] != "-1")
-						{
-							auto index = Util::toUIntegral<size_t>(object->hardproperties[section][key]);
-							std::pair<Util::String, std::set<UsedAnim>> pair;
-							pair.first = skinsfile;
-							pair.second.insert({ Resources::getAnimations()[index], skinsfile, directions, index, false });
-							objectanimsused.insert(pair);
-						}
-					}
-				}
-			}
-		}
 // TILE/WALL DECLARATIONS
-		lines.push_back("[Tiles]");
-		count = 0;
-		for (auto& exptile : tilesused)
-		{
-			lines.push_back("tile" + Util::toString(count) + '=' + Util::toString(count));
-			++count;
-		}
+			lines.push_back("[Tiles]");
+			count = 0;
+			for (auto& exptile : tilesused)
+			{
+				lines.push_back("tile" + Util::toString(count) + '=' + Util::toString(count));
+				++count;
+			}
 // TILE/WALL SETTINGS 
-		count = 0;
-		for (auto& exptile : tilesused)
-		{
-			lines.push_back("[tile" + Util::toString(count++) + ']');
-			Object* object = exptile.wall != nullptr ? exptile.wall : exptile.tile;
-			auto type = object->properties["global"]["hardtype"];
-			Util::String skinsfile = "1TileSkins.txt";
-			object->hardproperties["floor"]["skinConfig"] = skinsfile;
-			if (type == "wall")
+			count = 0;
+			for (auto& exptile : tilesused)
 			{
-				ExpTile checkexptile { exptile.tile, nullptr };
-				unsigned expindex = 0;
-				for (auto& exptile : tilesused)
+				lines.push_back("[tile" + Util::toString(count++) + ']');
+				Object* object = exptile.wall != nullptr ? exptile.wall : exptile.tile;
+				auto type = object->properties["global"]["hardtype"];
+				lines.push_back("type=" + type);
+				Util::String skinsfile = gameskins;
+				object->hardproperties["floor"]["skinConfig"] = skinsfile;
+				if (type == "wall")
 				{
-					if (exptile == checkexptile)
-						break;
-					++expindex;
-				}
-				assert(expindex != tilesused.size());
-				object->hardproperties[type]["floorTile"] = Util::toString(expindex);
-				object->hardproperties["floor"]["sortDepth"] = "1"; /** #TODO(change) remove this from the final version */
-				object->hardproperties["floor"]["heuristic"] = "0";
-			}
-			for (auto& key : object->hardproperties["floor"].getKeyNames())
-			{
-				if (!object->hardproperties["floor"][key].isEmpty())
-				{
-					lines.push_back(key + '=' + object->hardproperties["floor"][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())["floor"][key] == "ANIM_ID")
+					ExpTile checkexptile { exptile.tile, nullptr };
+					unsigned expindex = 0;
+					for (auto& exptile : tilesused)
 					{
-						if (object->hardproperties["floor"][key] != "-1")
-						{
-							auto index = Util::toUIntegral<size_t>(object->hardproperties["floor"][key]);
-							std::pair<Util::String, std::set<UsedAnim>> pair;
-							pair.first = skinsfile;
-							pair.second.insert({ Resources::getAnimations()[index], skinsfile, 1, index, true });
-							objectanimsused.insert(pair);
-						}
+						if (exptile == checkexptile)
+							break;
+						++expindex;
 					}
+					assert(expindex != tilesused.size());
+					object->hardproperties[type]["floorTile"] = Util::toString(expindex);
 				}
-			}
-			for (auto& key : object->hardproperties[type].getKeyNames())
-			{
-				if (!object->hardproperties[type][key].isEmpty())
-				{
-					lines.push_back(key + '=' + object->hardproperties[type][key]);
-					if (const_cast<Media::Config&>(Assets::getHardTypes())[type][key] == "ANIM_ID")
-					{
-						if (object->hardproperties[type][key] != "-1")
-						{
-							auto index = Util::toUIntegral<size_t>(object->hardproperties[type][key]);
-							std::pair<Util::String, std::set<UsedAnim>> pair;
-							pair.first = skinsfile;
-							pair.second.insert({ Resources::getAnimations()[index], skinsfile, 1, index, true });
-							objectanimsused.insert(pair);
-						}
-					}
-				}
+				writeObjectProps(object->hardproperties, "floor", skinsfile, 1);
+				writeObjectProps(object->hardproperties, type, skinsfile, 1);
 			}
 		}
 
@@ -908,310 +1610,149 @@ void Map::exportToFile(const QString& name, kry::Media::Config& prjconfig) /** #
 				lines.push_back(line);
 			}
 
-			zipfile[""]["floor" + Util::toString(count++) + ".txt"] = linesToBin(lines);
+			zipfile["floors"]["floor" + Util::toString(count++) + ".txt"] = linesToBin(lines);
 			lines.clear();
 		}
 
 // SKIN FILES /** #TODO(change) allow -1s for anim_ids, just set the id of the missing tile skin to -1, also add a missing tile skin (hardcode) */
+		auto writeAnim = [&lines](UsedAnim& anim, const kry::Util::String& strid, unsigned dirindex)
+		{
+			auto name = anim.animation->properties[dirindex]["Skins"]["name"];
+			lines.push_back('[' + strid + ']');
+			for (auto& key : anim.animation->properties[dirindex][name].getKeyNames()) // actual animation sheet
+			{
+				auto value = anim.animation->properties[dirindex][name][key];
+				if (!value.isEmpty())
+				{
+					if (key == "sheetImage")
+					{
+						if (value.contains('/'))
+							value = value.substring(value.lastIndexOf('/') + 1);
+						value = "images/" + value;
+					}
+					lines.push_back(key + '=' + value);
+				}
+			}
+			unsigned framenum = 0;
+			for (auto& frame : anim.animation->frames[dirindex]) // frames
+			{
+				auto section = frame["Skins"]["name"];
+
+				bool empty = true;
+				for (auto& key : frame[section].getKeyNames())
+				{
+					auto ie = frame[section][key].trim().isEmpty();
+					if (!ie)
+					{
+						empty = false;
+						break;
+					}
+				}
+				if (!empty)
+				{
+					lines.push_back('[' + strid + ": " + Util::toString(framenum) + ']');
+					for (auto& key : frame[section].getKeyNames())
+					{
+						auto value = frame[name][key];
+						bool ie = value.isEmpty();
+						if (!ie)
+						{
+							if (key == "image")
+							{
+								if (value.contains('/'))
+									value = value.substring(value.lastIndexOf('/') + 1);
+								value = "images/" + value;
+							}
+							lines.push_back(key + '=' + value);
+						}
+					}
+				}
+				++framenum;
+			}
+		};
 		for (auto& pair : objectanimsused)
 		{
 			auto skinsfile = pair.first;
 			lines.push_back("[Skins]");
-			if (skinsfile == "1TileSkins.txt")
-			{
 // SKIN DECLARATIONS
-				for (auto& anim : pair.second)
-					lines.push_back(Util::toString(anim.animid) + '=');
-// SKIN DEFINITIONS
-				for (auto& anim : pair.second)
-				{
-					auto strid = Util::toString(anim.animid);
-					auto name = anim.animation->properties[0]["Skins"]["name"];
-					lines.push_back('[' + strid + ']');
-					for (auto& key : anim.animation->properties[0][name].getKeyNames()) // actual animation sheet
-						if (!anim.animation->properties[0][name][key].isEmpty())
-							lines.push_back(key + '=' + anim.animation->properties[0][name][key]);
-					for (auto& section : anim.animation->properties[0].getSectionNames()) // frames
-					{
-						if (section.isEmpty() || section == name)
-							continue;
-						auto framenum = getIdFromFrame(section);
-						lines.push_back('[' + strid + ": " + framenum + ']');
-						for (auto& key : anim.animation->properties[0][section].getKeyNames())
-							if (!anim.animation->properties[0][section][key].isEmpty())
-								lines.push_back(key + '=' + anim.animation->properties[0][section][key]);
-					}
-				}
-			}
-			else
+			char dirs = skinsfile[0];
+			for (auto& anim : pair.second)
 			{
-				for (auto& anim : pair.second)
+				if (anim.skinfile != gameskins)
 				{
-					
+					for (char i = 0; i < dirs - '0'; ++i)
+						lines.push_back((Util::toString(anim.animid) + char((dirs - (dirs - '0')) + i)) + '=');
 				}
+				else
+					lines.push_back(Util::toString(anim.animid) + '=');
+			}
+// SKIN DEFINITIONS
+			for (auto& anim : pair.second)
+			{
+				auto strid = Util::toString(anim.animid);
+				if (anim.skinfile != gameskins)
+				{
+					for (char i = 0; i < dirs - '0'; ++i)
+						writeAnim(const_cast<UsedAnim&>(anim), (strid + char((dirs - (dirs - '0')) + i)), static_cast<unsigned>(dirs == '4' ? (i * 2) : i));
+				}
+				else
+					writeAnim(const_cast<UsedAnim&>(anim), strid, 0);
 			}
 			zipfile[""][skinsfile] = linesToBin(lines);
 			lines.clear();
 		}
-		/** #TODO(note) if an object has 1 direction, export North(0), else if 4, export every second starting from 0, otherwise, export all. (section name end numbers must be sequential (0-8)) */
-#if 0
-		lines.push_back("[Settings]");
-		lines.push_back("name = " + qToKString(single->getName()));
-		lines.push_back("iconImage = icon.png");
-		lines.push_back("checksum = 0");
-		lines.push_back("tileDimensions = 700");
-		lines.push_back("fogOfWar = 1");
-		lines.push_back("playerSpawnFloor = " + prjconfig["player"]["layer"]);
-		lines.push_back("playerSpawnPosition = { " + prjconfig["player"]["tilex"] + ", " + prjconfig["player"]["tiley"] + " }");
-		lines.push_back("; just for prototype");
-		lines.push_back("[Objectives]");
-		//lines.push_back("objective1=0");
-		lines.push_back("objectives"); // wut?
-		lines.push_back("[objective1]");
-		lines.push_back("type = loot");
-		lines.push_back("minimumLootRequired = 100");
-		lines.push_back("[Floors]");
-		for (size_t i = 0; i < single->getLayers().size(); ++i)
+// IMAGE FILE COPIES
+		std::set<size_t> animindicies;
+		for (auto& pair : objectanimsused)
+			for (auto& anim : pair.second)
+				animindicies.insert(anim.animid);
+		for (auto index : animindicies)
 		{
-			auto str = Util::toString(i);
-			lines.push_back("floor" + str + '=' + str);
-		}
-		std::set<Asset<Graphics::Texture>*> tilesused;
-		std::set<Asset<Graphics::Texture>*> objectsused;
-		for (size_t i = 0; i < single->getLayers().size(); ++i)
-		{
-			std::shared_ptr<Layer>& layer = single->getLayers()[i];
-			lines.push_back("[floor" + Util::toString(i) + ']');
-			lines.push_back("dimensions={ " + Util::toString(layer->size[0]) + ", " + Util::toString(layer->size[1]) + " }");
-			lines.push_back("floorBinary=floor" + Util::toString(i) + ".txt");
-
-			for (Tile& tile : layer->tiles)
+			auto animation = Resources::getAnimations()[index];
+			for (unsigned int i = 0; i < Animation<>::MAX_DIRECTION_COUNT; ++i)
 			{
-				tilesused.insert(tile.asset);
-				for (std::shared_ptr<Object>& object : tile.objects)
+				auto name = animation->properties[i]["Skins"]["name"];
+				auto simage = animation->properties[i][name]["sheetImage"];
+				if (!simage.isEmpty())
 				{
-					if (object->asset->type == AssetType::STATIC_TILE_DECAL) // for now, just for walls
-						tilesused.insert(object->asset);
-					if (object->asset->type != AssetType::STATIC_TILE_DECAL)
-						objectsused.insert(object->asset);
+					auto filename = simage;
+					if (filename.contains('/'))
+						filename = filename.substring(filename.lastIndexOf('/') + 1);
+					zipfile["images"][filename] = fileToBin(kryToQString(simage));
 				}
-			}
-		}
-		size_t wallindex; // ffs
-		lines.push_back("[Tiles]"); // only one floor supported for now
-		unsigned index = 0;
-		size_t first = ~0;
-		for (Asset<Graphics::Texture>* asset : tilesused)
-		{
-			size_t assetindex = getAssetIndex(asset, Assets::getTiles());
-			if (first == ~0)
-				first = assetindex;
-			if (assetindex == ~0)
-				assetindex = (wallindex = getAssetIndex(asset, Assets::getObjects()) + Assets::getTiles().size());
-			lines.push_back("tile" + Util::toString(index++) + '=' + Util::toString(assetindex));
-		}
-		index = 0;
-		for (Asset<Graphics::Texture>* asset : tilesused)
-		{
-			lines.push_back("[tile" + Util::toString(index++) + ']');
-			if (asset->type != AssetType::STATIC_TILE_DECAL)
-				lines.push_back("type=solid");
-			else
-				lines.push_back("type=wall"); // change this to wall
-			lines.push_back("skinConfig=TileSkins.txt");
-			auto skin = qToKString(asset->resource->name);
-			lines.push_back("skin=" + skin.substring(0, skin.indexOf('.')));
-			if (asset->type != AssetType::STATIC_TILE_DECAL)
-				lines.push_back("heuristic = 1");
-			else
-				lines.push_back("heuristic = 0");
-			if (asset->type == AssetType::STATIC_TILE_DECAL)
-				lines.push_back("sortDepth=1");
-			else
-				lines.push_back("sortDepth=0");
-			lines.push_back("sortPivotOffset = { 0, 0 }");
-			if (asset->type == AssetType::STATIC_TILE_DECAL)
-				lines.push_back("floorTile=" + Util::toString(first));
-		}
-
-		lines.push_back("[Entities]"); // no entities supported for now
-		lines.push_back("player=0");
-		lines.push_back("exit=3");
-
-		index = 4;
-		for (auto& tile : single->getLayers()[0]->tiles)
-		{
-			for (auto& object : tile.objects)
-			{
-				if (object->asset->type != AssetType::STATIC_TILE_DECAL)
+				for (auto& frame : animation->frames[i])
 				{
-					lines.push_back("entity" + Util::toString(index) + "=" + Util::toString(index));
-					index++;
-				}
-			}
-		}
-
-		lines.push_back("[player]");
-		lines.push_back("type=player");
-		lines.push_back("spawnFloor = 0");
-		lines.push_back("position = { " + prjconfig["player"]["tiley"] + ".5, " + prjconfig["player"]["tilex"] + ".5 }");
-		lines.push_back("skinConfig = EntitySkins.txt");
-		lines.push_back("skin = player");
-		lines.push_back("[exit]");
-		lines.push_back("type = exit");
-		lines.push_back("spawnFloor = 0");
-		lines.push_back("position = { 0.5, 9.4 }");
-		lines.push_back("skinConfig = EntitySkins.txt");
-		lines.push_back("skin = exitPortal");
-
-		index = 4;
-		for (auto& tile : single->getLayers()[0]->tiles)
-		{
-			for (auto& object : tile.objects)
-			{
-				if (object->asset->type == AssetType::STATIC_TILE_DECAL)
-					continue;
-
-				lines.push_back("[entity" + Util::toString(index++) + ']');
-				if (object->asset->type == AssetType::STATIC_TILE_DECAL)
-					lines.push_back("type=smallGoldLoot");
-				else
-					lines.push_back("type=smallGoldLoot");
-				lines.push_back("spawnFloor=0");
-
-				kry::Util::Vector2f fpos = 0.5f;
-				if (object->asset->properties["object"].keyExists("relativex"))
-					fpos[0] = kry::Util::toDecimal<float>(object->asset->properties["object"]["relativex"]);
-				if (object->asset->properties["object"].keyExists("relativey"))
-					fpos[1] = kry::Util::toDecimal<float>(object->asset->properties["object"]["relativey"]);
-				auto pos = coordToTileCoord(object->sprite.position + fpos * object->sprite.dimensions);
-				lines.push_back("position= { " + Util::toString(pos[1]) + ", " +
-													Util::toString(pos[0]) + " }");
-				lines.push_back("skinConfig = EntitySkins.txt");
-				if (object->asset->type != AssetType::STATIC_TILE_DECAL)
-					lines.push_back("onCollectionPoints = 1");
-				auto skin = qToKString(object->asset->resource->name);
-				lines.push_back("skin=" + skin.substring(0, skin.indexOf('.')));
-			}
-		}
-
-		zipfile[""]["Map.txt"] = linesToBin(lines);
-		lines.clear();
-
-		for (size_t x = 0; x < static_cast<size_t>(single->getLayers()[0]->size[0]); ++x) // only one floor supported for now
-		{
-			Util::String line;
-			for (size_t y = 0; y < static_cast<size_t>(single->getLayers()[0]->size[1]); ++y)
-			{
-				size_t index = y * single->getLayers()[0]->size[0] + x;
-				bool haswall = false;
-				for (auto& object : single->getLayers()[0]->tiles[index].objects)
-				{
-					if (object->asset->type == AssetType::STATIC_TILE_DECAL)
+					auto fname = frame["Skins"]["name"];
+					auto fimage = frame[name]["image"];
+					if (!fimage.isEmpty())
 					{
-						wallindex = getAssetIndex(object->asset, Assets::getObjects()) + Assets::getTiles().size();
-						haswall = true;
-						break;
+						auto filename = fimage;
+						if (filename.contains('/'))
+							filename = filename.substring(filename.lastIndexOf('/') + 1);
+						zipfile["images"][filename] = fileToBin(kryToQString(fimage));
 					}
 				}
-				size_t assetindex = getAssetIndex(single->getLayers()[0]->tiles[index].asset, Assets::getTiles());
-				if (haswall)
-					assetindex = wallindex;
-				line += Util::toString(assetindex) + ' ';
 			}
-			line = line.substring(0, line.getLength() - 1);
-			lines.push_back(line);
 		}
-		zipfile[""]["floor0.txt"] = linesToBin(lines);
-		lines.clear();
-
-		lines.push_back("[Skins]");
-		for (Asset<Graphics::Texture>* asset : tilesused)
+		for (auto strindex : soundsused)
 		{
-			auto skin = qToKString(asset->resource->name);
-			lines.push_back(skin.substring(0, skin.indexOf('.')) + '=');
+			auto index = kry::Util::toUIntegral<size_t>(strindex);
+			zipfile["sounds"][getPathFilename(qToKString(Resources::getSounds()[index]->path))] = fileToBin(Resources::getAnimations()[index]->path);
 		}
-		for (Asset<Graphics::Texture>* asset : tilesused)
+		for (auto strindex : musicused)
 		{
-			auto skin = qToKString(asset->resource->name);
-			lines.push_back('[' + skin.substring(0, skin.indexOf('.')) + ']');
-			lines.push_back("frames=1"); // only 1 frame supported for now
-			lines.push_back("fps=1");
-			lines.push_back("sheetImage = images/" + skin);
-			if (asset->type != AssetType::STATIC_TILE_DECAL)
-				lines.push_back("framePivot= { " + Util::toString(asset->resource->rawresource->getDimensions()[0] * 0.5f) + ", " +
-					Util::toString(asset->resource->rawresource->getDimensions()[1] * 0.5f) + " }");
-			else
-				lines.push_back("framePivot= { " + Util::toString(asset->resource->rawresource->getDimensions()[0] * Util::toDecimal<float>(asset->properties["object"]["relativex"])) + ", " +
-					Util::toString(asset->resource->rawresource->getDimensions()[1] * Util::toDecimal<float>(asset->properties["object"]["relativey"])) + " }");
-			if (asset->type != AssetType::STATIC_TILE_DECAL)
-				lines.push_back("dimensions= { " + Util::toString(asset->resource->rawresource->getDimensions()[0]) + ", " +
-							Util::toString(asset->resource->rawresource->getDimensions()[1]) + " }");
+			auto index = kry::Util::toUIntegral<size_t>(strindex);
+			zipfile["music"][getPathFilename(qToKString(Resources::getMusic()[index]->path))] = fileToBin(Resources::getMusic()[index]->path);
 		}
-		zipfile[""]["TileSkins.txt"] = linesToBin(lines);
-		lines.clear();
 
-		lines.push_back("[Skins]");
-		lines.push_back("exitPortal=");
-		lines.push_back("player=");
-		for (Asset<Graphics::Texture>* asset : objectsused)
-		{
-			auto skin = qToKString(asset->resource->name);
-			lines.push_back(skin.substring(0, skin.indexOf('.')) + '=');
-		}
-		for (Asset<Graphics::Texture>* asset : objectsused)
-		{
-			auto skin = qToKString(asset->resource->name);
-			lines.push_back('[' + skin.substring(0, skin.indexOf('.')) + ']');
-			lines.push_back("frames=1");
-			lines.push_back("fps=1");
-			auto dims = asset->resource->rawresource->getDimensions();
-			lines.push_back("framePivot= { " +
-				Util::toString((asset->properties["object"].keyExists("relativex") ? Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) + ", " +
-					Util::toString((asset->properties["object"].keyExists("relativey") ? Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) + " }");
-			lines.push_back("sheetDimensions = { 1, 1 }");
-			lines.push_back("sheetImage = images/" + qToKString(asset->resource->name));
-		}
-		lines.push_back("[exitPortal]");
-		lines.push_back("frames=1");
-		lines.push_back("fps=1");
-		lines.push_back("framePivot= { 350.5, 179.5 }");
-		lines.push_back("sheetDimensions = { 1, 1 }");
-		lines.push_back("sheetImage = images/r_stair_down_y.png");
-		lines.push_back("[player]");
-		lines.push_back("frames=4");
-		lines.push_back("fps=0");
-		lines.push_back("[player: 0]");
-		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = images/Magnus_4.png");
-		lines.push_back("[player: 1]");
-		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = images/Magnus_2.png");
-		lines.push_back("[player: 2]");
-		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = images/Magnus_3.png");
-		lines.push_back("[player: 3]");
-		lines.push_back("pivot = { 119, 686 }");
-		lines.push_back("image = images/Magnus_1.png");
-
-		zipfile[""]["EntitySkins.txt"] = linesToBin(lines);
-		lines.clear();
-
-		for (Asset<Graphics::Texture>* asset : tilesused)
-			zipfile["images"][qToKString(asset->resource->name)] = fileToBin(asset->resource->path);
-		for (Asset<Graphics::Texture>* asset : objectsused)
-			zipfile["images"][qToKString(asset->resource->name)] = fileToBin(asset->resource->path);
-		zipfile["images"]["Magnus_1.png"] = fileToBin("assets\\resources\\images\\Magnus_1.png"); // hardcoded for now
-		zipfile["images"]["Magnus_2.png"] = fileToBin("assets\\resources\\images\\Magnus_2.png");
-		zipfile["images"]["Magnus_3.png"] = fileToBin("assets\\resources\\images\\Magnus_3.png");
-		zipfile["images"]["Magnus_4.png"] = fileToBin("assets\\resources\\images\\Magnus_4.png");
-#endif
-
+// WRITE ZIP TO FILE
 		zipfile.zipToFile(kname + ".zip");
+		window->getStatusMain()->setText("Map exported successfully!");
 	}
 	catch (const Util::Exception& e)
 	{
 		QMessageBox::information(nullptr, "Export Failure", e.what(), QMessageBox::Ok);
+		window->getStatusMain()->setText("Map failed to export.");
 	}
 }
 

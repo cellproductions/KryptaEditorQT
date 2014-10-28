@@ -10,6 +10,7 @@ struct ObjectListItem : public QListWidgetItem
 {
 	ObjectListItem(std::shared_ptr<Object> object, const QIcon& icon, const QString& text);
 	std::shared_ptr<Object> object;
+	QString path;
 };
 
 #endif

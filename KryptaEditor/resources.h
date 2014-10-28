@@ -41,9 +41,13 @@ struct Animation : public Resource<ResType>
 {
 	static const unsigned char MAX_DIRECTION_COUNT = 8;
 	kry::Media::Config properties[MAX_DIRECTION_COUNT];
+	std::vector<kry::Media::Config> frames[MAX_DIRECTION_COUNT];
 
 	static Animation<ResType>* createDefaultAnimation(const kry::Util::String& imagefile, const kry::Util::String& name = kry::Util::String());
 };
+
+Resource<kry::Audio::Buffer>* createDefaultSound(const kry::Util::String& soundfile);
+Resource<kry::Audio::Source>* createDefaultMusic(const kry::Util::String& musicfile);
 
 class Resources
 {
@@ -51,6 +55,9 @@ class Resources
 		static void loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>& assets);
 		static void loadAndAssignSounds(std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& assets);
 		static void loadAndAssignMusic(std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& assets);
+		static void reassignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>& assets);
+		static void reassignSounds(std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& assets);
+		static void reassignMusic(std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& assets);
 		inline static std::vector<std::shared_ptr<Animation<>>>& getAnimations();
 		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>>& getTextures(); /** #TODO(note) should this be replaced with Anim's? */
         inline static const std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>& getSounds();
@@ -59,6 +66,7 @@ class Resources
 		static void initEditorTextures();
 		inline static const std::vector<std::shared_ptr<Resource<kry::Graphics::Texture>>>& getEditorTextures();
 		inline static std::shared_ptr<Resource<kry::Graphics::Texture>> getEditorTexture(EditorResource texture);
+		inline static void eraseAll();
 
 	private:
 		Resources();
@@ -112,6 +120,13 @@ size_t Resources::getAnimationIndex(std::shared_ptr<Animation<>> animation)
 	}
 	assert(index != 0);
 	return index;
+}
+
+void Resources::eraseAll()
+{
+	animations.clear();
+	sounds.clear();
+	music.clear();
 }
 
 #endif // ASSETS_H

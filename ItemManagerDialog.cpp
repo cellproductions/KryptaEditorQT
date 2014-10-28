@@ -43,15 +43,17 @@ ItemManagerDialog::ItemManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 					box->setEditable(false);
 					box->addItem("loot"); /** #TODO(incomplete) add the rest of the types here */
 					box->addItem("key");
+					box->addItem("weapon");
 					void(QComboBox::* animsSignal)(int) = &QComboBox::currentIndexChanged;
 					connect(box, animsSignal, [this, item, section, key, box](int)
 					{
-						item->properties[section][key] = qToKString("item" + box->currentText());
+						item->properties[section][key] = qToKString(box->currentText() + "item");
 					});
 					int index = 0;
 					for (int i = 0; i < box->count(); ++i)
 					{
-						if (item->properties[section][key].substring(item->properties[section][key].indexOf('m') + 1) == qToKString(box->itemText(i))) // bit grub lol
+						auto val = item->properties[section][key];
+						if (val.substring(0, val.indexOf("item")) == qToKString(box->itemText(i)))
 						{
 							index = i;
 							break;
@@ -81,6 +83,7 @@ ItemManagerDialog::ItemManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 					connect(box, animsSignal, [this, item, section, key, box](int)
 					{
 						item->properties[section][key] = kry::Util::toString(box->currentIndex());
+						ui->lbItems->currentItem()->setIcon(QIcon(Resources::getAnimations()[box->currentIndex()]->path));
 					});
 					if (!item->properties[section][key].isEmpty())
 						box->setCurrentIndex(kry::Util::toIntegral<int>(item->properties[section][key]));
@@ -99,6 +102,7 @@ ItemManagerDialog::ItemManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 		QStringList list;
 		list.push_back("loot"); /** #TODO(incomplete) add the rest of the types here */
 		list.push_back("key");
+		list.push_back("weapon");
 		auto type = QInputDialog::getItem(this, "Create New Item", "Select a type for your item:", list, 0, false);
 		if (type.isNull() || type.trimmed().isEmpty())
 			return;
@@ -116,9 +120,9 @@ ItemManagerDialog::ItemManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 		item->name = name;
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["item"].getKeyNames())
 			item->properties["item"][key] = "";
+		type = type + "item";
 		item->properties["item"]["type"] = qToKString(type);
 		item->properties["item"]["inventorySkin"] = qToKString(anim);
-		type = "item" + type;
 		auto ktype = qToKString(type);
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[ktype].getKeyNames())
 			item->properties[ktype][key] = "";
@@ -160,17 +164,10 @@ ItemManagerDialog::~ItemManagerDialog()
 
 DialogResult ItemManagerDialog::showDialog()
 {
+	setup();
 	if (ui->lbItems->count() <= 0)
-	{
-		for (auto pair : Map::getMap()->getItems())
-		{
-			auto value = kryToQString(pair.second->properties["item"]["inventorySkin"]);
-			auto anim = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(qToKString(value))];
-			ui->lbItems->addItem(new QListWidgetItem(QIcon(anim->path), kryToQString(pair.first) + ':' + pair.second->name));
-		}
-	}
-	else
-		ui->lbItems->setCurrentRow(0);
+		ui->bDelete->setEnabled(false);
+	ui->lbItems->setCurrentRow(0);
 
 	this->exec();
 
@@ -179,5 +176,12 @@ DialogResult ItemManagerDialog::showDialog()
 
 void ItemManagerDialog::setup()
 {
-
+	while (ui->lbItems->count() > 0)
+		delete ui->lbItems->item(0);
+	for (auto pair : Map::getMap()->getItems())
+	{
+		auto value = kryToQString(pair.second->properties["item"]["inventorySkin"]);
+		auto anim = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(qToKString(value))];
+		ui->lbItems->addItem(new QListWidgetItem(QIcon(anim->path), kryToQString(pair.first) + ':' + pair.second->name));
+	}
 }

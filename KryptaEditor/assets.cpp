@@ -12,13 +12,14 @@ std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > > Assets::entities;
 std::vector<std::shared_ptr<Asset<kry::Audio::Buffer> > > Assets::sounds;
 std::vector<std::shared_ptr<Asset<kry::Audio::Source> > > Assets::music;
 kry::Media::Config Assets::hardtypes;
+kry::Media::Config Assets::requiredkeys;
 bool Assets::loaded(false);
 
 void Assets::loadAssets(const QString& rootdir)
 {
 	auto strrootdir = rootdir.toStdString(); // if they were all in one directory, could load them and place them based on their type?
 	hardtypes.fileToConfig(qToKString(rootdir + "\\types.ini"));
-
+	requiredkeys.fileToConfig(qToKString(rootdir + "\\required.ini"));
     auto assets = strrootdir + "\\tiles";
     for (kry::Util::String& path : kry::System::getAllFiles(kry::Util::String(assets.c_str(), assets.length())))
     {
@@ -83,8 +84,8 @@ void Assets::loadAssets(const QString& rootdir)
 
 		music.emplace_back(asset);
 	}
-
-	Resources::loadAndAssignAnimations(tiles); /** #TODO(incomplete) dont forget sounds/music */
+	
+	Resources::loadAndAssignAnimations(tiles);
 	Resources::loadAndAssignAnimations(entities);
 	Resources::loadAndAssignSounds(sounds);
 	Resources::loadAndAssignMusic(music);
@@ -138,7 +139,6 @@ std::shared_ptr<Asset<kry::Graphics::Texture>> Assets::getEntityByHardtype(const
 Assets::Assets()
 {
 }
-
 
 AssetType strToAssetType(const kry::Util::String& str)
 {

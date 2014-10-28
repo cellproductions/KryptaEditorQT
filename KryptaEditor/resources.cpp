@@ -20,7 +20,7 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 	Animation<>* animation = new Animation<>;
 	animation->type = ResourceType::ANIMATION;
 	animation->path = kryToQString(imagefile);
-	auto name = imagefile.substring(imagefile.lastIndexOf('/') + 1);
+	auto name = imagefile.contains('/') ? imagefile.substring(imagefile.lastIndexOf('/') + 1) : imagefile;
 	animation->name = kryToQString(animname.isEmpty() ? name : animname);
 	for (int i = 0; i < Animation<>::MAX_DIRECTION_COUNT; ++i)
 	{
@@ -29,7 +29,6 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 		animation->properties[i]["Skins"]["name"] = pname;
 		animation->properties[i][pname]["frames"] = "1";
 		animation->properties[i][pname]["fps"] = "1";
-		animation->properties[i][pname]["sheetDimensions"] = "{ 1, 1 }";
 		if (i == 0)
 		{
 			animation->properties[i][pname]["sheetImage"] = imagefile;
@@ -61,20 +60,44 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 		animation->properties[i][pname]["frameSortPivotOffset"] = "";
 		animation->properties[i][pname]["nextSkin"] = "";
 
-		pname += ": 0";
-		animation->properties[i][pname]["image"] = "";
-		animation->properties[i][pname]["pivot"] = "";
-		animation->properties[i][pname]["dimensions"] = "";
-		animation->properties[i][pname]["RGBA"] = "";
-		animation->properties[i][pname]["rotation"] = "";
-		animation->properties[i][pname]["UVposition"] = "";
-		animation->properties[i][pname]["UVdimensions"] = "";
-		animation->properties[i][pname]["linearFilter"] = "";
-		animation->properties[i][pname]["sortDepth"] = "";
-		animation->properties[i][pname]["sortPivotOffset"] = "";
+		animation->frames[i].push_back(kry::Media::Config());
+		animation->frames[i].at(0)["Skins"]["name"] = pname;
+		animation->frames[i].at(0)[pname]["image"] = "";
+		animation->frames[i].at(0)[pname]["pivot"] = "";
+		animation->frames[i].at(0)[pname]["dimensions"] = "";
+		animation->frames[i].at(0)[pname]["RGBA"] = "";
+		animation->frames[i].at(0)[pname]["rotation"] = "";
+		animation->frames[i].at(0)[pname]["UVposition"] = "";
+		animation->frames[i].at(0)[pname]["UVdimensions"] = "";
+		animation->frames[i].at(0)[pname]["linearFilter"] = "";
+		animation->frames[i].at(0)[pname]["sortDepth"] = "";
+		animation->frames[i].at(0)[pname]["sortPivotOffset"] = "";
 	}
 
 	return animation;
+}
+
+Resource<kry::Audio::Buffer>* createDefaultSound(const kry::Util::String& soundfile)
+{
+	Resource<kry::Audio::Buffer>* resource = new Resource<kry::Audio::Buffer>;
+	resource->name = kryToQString(soundfile.substring(soundfile.lastIndexOf('\\') + 1));
+	resource->path = kryToQString(soundfile);
+	resource->type = ResourceType::SOUND;
+	kry::Audio::Format format;
+	unsigned frequency;
+	auto pcm = kry::Media::mp3FileToPCM(soundfile, format, frequency);
+	resource->rawresource = new kry::Audio::Buffer(pcm, format, frequency);
+	return resource;
+}
+
+Resource<kry::Audio::Source>* createDefaultMusic(const kry::Util::String& musicfile)
+{
+	Resource<kry::Audio::Source>* resource = new Resource<kry::Audio::Source>;
+	resource->name = kryToQString(musicfile.substring(musicfile.lastIndexOf('\\') + 1));
+	resource->path = kryToQString(musicfile);
+	resource->type = ResourceType::MUSIC;
+	resource->rawresource = nullptr;
+	return resource;
 }
 
 void Resources::loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture> > >& assets)
@@ -125,16 +148,8 @@ void Resources::loadAndAssignSounds(std::vector<std::shared_ptr<Asset<kry::Audio
 	{
 		for (auto& asset : assets)
 		{
-			Resource<kry::Audio::Buffer>* resource = new Resource<kry::Audio::Buffer>;
-			auto name = asset->properties["global"]["resource"];
-			resource->name = kryToQString(name.substring(name.lastIndexOf('\\') + 1));
-			resource->path = kryToQString(name);
-			resource->type = ResourceType::SOUND;
-			kry::Audio::Format format;
-			unsigned frequency;
-			auto pcm = kry::Media::mp3FileToPCM(name, format, frequency);
-			resource->rawresource = new kry::Audio::Buffer(pcm, format, frequency);
 
+			Resource<kry::Audio::Buffer>* resource = createDefaultSound(asset->properties["global"]["resource"]);
 			sounds.emplace_back(resource);
 			asset->resource = resource;
 		}
@@ -149,16 +164,9 @@ void Resources::loadAndAssignMusic(std::vector<std::shared_ptr<Asset<kry::Audio:
 {
 	try
 	{
-		
 		for (auto& asset : assets)
 		{
-			Resource<kry::Audio::Source>* resource = new Resource<kry::Audio::Source>;
-			auto name = asset->properties["global"]["resource"];
-			resource->name = kryToQString(name.substring(name.lastIndexOf('\\') + 1));
-			resource->path = kryToQString(name);
-			resource->type = ResourceType::MUSIC;
-			resource->rawresource = nullptr;
-
+			Resource<kry::Audio::Source>* resource = createDefaultMusic(asset->properties["global"]["resource"]);
 			music.emplace_back(resource);
 			asset->resource = resource;
 		}
@@ -166,6 +174,124 @@ void Resources::loadAndAssignMusic(std::vector<std::shared_ptr<Asset<kry::Audio:
 	catch (const kry::Util::Exception& e)
 	{
 		QMessageBox::information(nullptr, "Music Loading Error", e.what(), QMessageBox::Ok);
+	}
+}
+
+void Resources::reassignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>& assets)
+{
+	try
+	{
+		for (auto& asset : assets)
+		{
+			std::shared_ptr<Animation<>> animation;
+			for (auto anim : animations) // look for an animation for it
+			{
+				if (asset->path == anim->path)
+				{
+					animation = anim;
+					break;
+				}
+			}
+			if (!animation) // if there was none, create a new one for it
+			{
+				Animation<>* animation = Animation<>::createDefaultAnimation(asset->properties["global"]["resource"]);
+				auto dims = animation->rawresource->getDimensions();
+				if (asset->properties.sectionExists("object"))
+				{
+					for (auto& properties : animation->properties)
+					{
+						properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
+							kry::Util::toString((asset->properties["object"].keyExists("relativex") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) +
+							", " +
+							kry::Util::toString((asset->properties["object"].keyExists("relativey") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) +
+							" }";
+					}
+				}
+				else if (asset->properties.sectionExists("entity"))
+				{
+					for (auto& properties : animation->properties)
+					{
+						properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
+								kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
+								kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
+					}
+				}
+				else
+					for (auto& properties : animation->properties)
+						properties[properties["Skins"]["name"]]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
+
+				animations.emplace_back(animation);
+				asset->resource = animation;
+			}
+			else // otherwise, set it and move on
+				asset->resource = animation.get();
+		}
+	}
+	catch (const kry::Util::Exception& e)
+	{
+		QMessageBox::information(nullptr, "Animation Re-Assign Error", e.what(), QMessageBox::Ok);
+	}
+}
+
+void Resources::reassignSounds(std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& assets)
+{
+	try
+	{
+		for (auto& asset : assets)
+		{
+			Resource<kry::Audio::Buffer>* resource;
+			for (auto sound : sounds) // look for a sound for it
+			{
+				if (asset->path == sound->path)
+				{
+					resource = sound.get();
+					break;
+				}
+			}
+			if (resource == nullptr)
+			{
+				Resource<kry::Audio::Buffer>* resource = createDefaultSound(asset->properties["global"]["resource"]);
+				sounds.emplace_back(resource);
+				asset->resource = resource;
+			}
+			else
+				asset->resource = resource;
+		}
+	}
+	catch (const kry::Util::Exception& e)
+	{
+		QMessageBox::information(nullptr, "Sound Re-Assign Error", e.what(), QMessageBox::Ok);
+	}
+}
+
+void Resources::reassignMusic(std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>& assets)
+{
+	try
+	{
+		for (auto& asset : assets)
+		{
+			Resource<kry::Audio::Source>* resource;
+			for (auto song : music) // look for a song for it
+			{
+				if (asset->path == song->path)
+				{
+					resource = song.get();
+					break;
+				}
+			}
+			if (resource == nullptr)
+			{
+				Resource<kry::Audio::Source>* resource = createDefaultMusic(asset->properties["global"]["resource"]);
+				music.emplace_back(resource);
+				asset->resource = resource;
+			}
+			else
+				asset->resource = resource;
+		}
+	}
+	catch (const kry::Util::Exception& e)
+	{
+		QMessageBox::information(nullptr, "Music Re-Assign Error", e.what(), QMessageBox::Ok);
 	}
 }
 

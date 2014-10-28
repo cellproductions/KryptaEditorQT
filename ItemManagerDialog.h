@@ -19,6 +19,7 @@ class ItemManagerDialog : public CSDialog
 		DialogResult showDialog();
 
 		static inline unsigned getIDCount();
+		static inline void setIDCount(unsigned newcount);
 
 	private:
 		void setup();
@@ -32,6 +33,11 @@ class ItemManagerDialog : public CSDialog
 unsigned ItemManagerDialog::getIDCount()
 {
 	return idcount;
+}
+
+void ItemManagerDialog::setIDCount(unsigned newcount)
+{
+	idcount = newcount;
 }
 
 #endif // ITEMMANAGERDIALOG_H

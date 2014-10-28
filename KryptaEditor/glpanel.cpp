@@ -275,7 +275,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		auto parent = Assets::getParentType(type);
 		if (parent == "entity")
 		{
-			/** #TODO(incomplete) update its position first if its position has changed */
+			/** #TODO(incomplete) update its position first if its position has changed (use the hardproperties position) */
 			auto floor = hardproperties[parent]["floor"];
 			if (!floor.isEmpty() && floor != object->hardproperties[parent]["floor"])
 			{
@@ -432,28 +432,8 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								tile.sprite.texture = follower.sprite.texture;
 								tile.properties = objectasset->asset->properties;
 								tile.hardproperties = objectasset->hardproperties;
-								/*
-								auto type = objectasset->asset->properties["global"]["hardtype"];
-								auto parenttype = Assets::getParentType(type);
-								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-									tile.hardproperties[type][key] = "";
-								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[parenttype].getKeyNames())
-									tile.hardproperties[parenttype][key] = "";
-								unsigned index = 0;
-								for (auto& resource : Resources::getAnimations())
-								{
-									if (resource.get() == asset->resource)
-										break;
-									++index;
-								}
-								if (parenttype == "entity")
-								{
-									tile.hardproperties[parenttype]["skinIdle"] = kry::Util::toString(index);
-									tile.hardproperties[parenttype]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
-								}
-								else
-									tile.hardproperties[parenttype]["skin"] = kry::Util::toString(index);
-									*/
+								tile.properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(note) this is for map save/load */
+								tile.properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
 							}
 							else
 							{
@@ -465,44 +445,23 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								object->asset = objectasset->asset;
 								object->properties = objectasset->asset->properties;
 								object->hardproperties = objectasset->hardproperties;
-								/*
 								auto type = object->properties["global"]["hardtype"];
 								auto parenttype = Assets::getParentType(type);
-								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-									object->hardproperties[type][key] = "";
-								for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[parenttype].getKeyNames())
-									object->hardproperties[parenttype][key] = "";
-								unsigned animindex = 0;
-								for (auto& resource : Resources::getAnimations())
-								{
-									if (resource.get() == asset->resource)
-										break;
-									++animindex;
-								}
-								auto parent = Assets::getParentType(object->properties["global"]["hardtype"]);
-								if (parent == "entity")
-								{
-									object->hardproperties[parent]["skinIdle"] = kry::Util::toString(animindex);
-									object->hardproperties[parent]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
-								}
-								else if (parent == "floor")
-									object->hardproperties[parent]["skin"] = kry::Util::toString(animindex);
-									*/
+								
 								//for (size_t i = 0; i < EventSystem::getSystem()->getEvents().size(); ++i)
 								//	object->events.push_back(parseEvent(EventSystem::getSystem()->getEvents()[i].name, object->properties["events"][kry::Util::toString(i)]));
 
 								object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
-								object->properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(change) this is for map save/load */
+								object->properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(note) this is for map save/load */
 								object->properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
-								if (Assets::getParentType(object->properties["global"]["hardtype"]) == "entity")
+								if (parenttype == "entity")
 								{
+									object->hardproperties[parenttype]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
 									try
 									{
-										kry::Util::Vector2f rel;
-										rel[0] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativex"]);
-										rel[1] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativey"]);
-										auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions, Map::getMap()->getCurrentLayer());
-										object->hardproperties["entity"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
+										auto rel = getObjectPivot(object);
+										auto pos = object->sprite.position + rel;
+										object->hardproperties["entity"]["position"] = pos.toString();
 									}
 									catch (const kry::Util::Exception& e)
 									{
@@ -543,6 +502,8 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								tile.properties = o->properties;
 								tile.hardproperties = o->hardproperties;
 								tile.properties["global"]["id"] = id;
+								tile.properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(note) this is for map save/load */
+								tile.properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
 								paintGL();
 							}
 							else
@@ -559,18 +520,17 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								//object->events = o->events;
 								object->asset = o->asset;
 
-								asset = object->asset;object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
+								asset = object->asset;
+								object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
 								object->properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(change) this is for map save/load */
 								object->properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
 								if (Assets::getParentType(object->properties["global"]["hardtype"]) == "entity")
 								{
 									try
 									{
-										kry::Util::Vector2f rel;
-										rel[0] = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]);
-										rel[1] = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
-										auto pos = coordToExpTileCoord(object->sprite.position + rel * object->sprite.dimensions, Map::getMap()->getCurrentLayer());
-										object->hardproperties["entity"]["position"] = "{ " + kry::Util::toString(pos[0]) + ", " + kry::Util::toString(pos[1]) + " }";
+										auto rel = getObjectPivot(object);
+										auto pos = object->sprite.position + rel;
+										object->hardproperties["entity"]["position"] = pos.toString();
 									}
 									catch (const kry::Util::Exception& e)
 									{
@@ -892,6 +852,8 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								addRemove(object.get(), objects.find(object.get()) == objects.end());
 						}
 					}
+					auto item = dynamic_cast<MainWindow*>(this->parent()->parent())->getToolbarItems()[0];
+					dynamic_cast<QLabel*>(item.widget)->setText("Objects selected: " + QString::number(objects.size()));
 				}
 			}
 		}
@@ -1133,7 +1095,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		kry::Util::Vector2f dim = layer->tilesize;
 		kry::Util::Vector2f halfdim = { static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f };
 
-		float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;  // black magic goin on here?
+		float x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;
 		float y = (coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f * -1;
 
 		return {x, y};

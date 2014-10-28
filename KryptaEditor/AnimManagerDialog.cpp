@@ -3,6 +3,7 @@
 #include "AnimationSetupWidget.h"
 #include "ui_AnimationSetupWidget.h"
 #include "Resources.h"
+#include "Map.h"
 #include "Utilities.h"
 #include <QListWidgetItem>
 #include <QFileDialog>
@@ -79,10 +80,22 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 		int currentindex = ui->cbAnims->currentIndex();
 		Animation<>* todelete = Resources::getAnimations()[currentindex].get();
 
+		auto missing = Resources::getEditorTexture(EditorResource::MISSING_TILE).get();
 		for (auto& asset : Assets::getAllTextureAssets())
 			if (asset->resource == todelete)
-				asset->resource = Resources::getEditorTexture(EditorResource::MISSING_TILE).get();
-
+				asset->resource = missing;
+		
+		for (auto layer : Map::getMap()->getLayers())
+		{
+			for (auto& tile : layer->tiles)
+			{
+				if (tile.sprite.texture == todelete->rawresource)
+					tile.sprite.texture = missing->rawresource;
+				for (auto object : tile.objects)
+					if (object->sprite.texture == todelete->rawresource)
+						object->sprite.texture = missing->rawresource;
+			}
+		}
 		Resources::getAnimations().erase(Resources::getAnimations().begin() + currentindex);
 		ui->cbAnims->clear();
 
@@ -91,12 +104,14 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 			unsigned index = 0;
 			for (auto anim : Resources::getAnimations())
 			{
-				ui->cbAnims->addItem(QString::number(index) + ':' + kryToQString(anim->properties[index]["Skins"]["name"]));
+				ui->cbAnims->addItem(QString::number(index) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
 				++index;
 			}
 			saveTabStates(lastindex);
 			ui->cbAnims->setCurrentIndex(currentindex < ui->cbAnims->count() ? currentindex : 0);
 		}
+		if (ui->cbAnims->count() <= 0)
+			ui->bDeleteAnim->setEnabled(false);
 	});
 	connect(ui->bAddAnim, &QPushButton::clicked, [this](bool)
 	{
@@ -123,6 +138,7 @@ AnimManagerDialog::AnimManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 			
 			saveTabStates(lastindex);
 			ui->cbAnims->setCurrentIndex(ui->cbAnims->count() - 1);
+			ui->bDeleteAnim->setEnabled(true);
 		}
 	});
 }
@@ -136,6 +152,7 @@ AnimManagerDialog::~AnimManagerDialog()
 
 DialogResult AnimManagerDialog::showDialog()
 {
+	ui->bDeleteAnim->setEnabled(false);
 	lastindex = -1;
 	if (firstLoad)
 	{
@@ -149,6 +166,8 @@ DialogResult AnimManagerDialog::showDialog()
 	}
 	if (!Resources::getAnimations().empty())
 		ui->dirTabs->setCurrentIndex(0);
+	if (ui->cbAnims->count() > 0)
+		ui->bDeleteAnim->setEnabled(true);
 
 	exec();
 
