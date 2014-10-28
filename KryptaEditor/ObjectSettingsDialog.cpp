@@ -491,7 +491,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 					}
 				}
 				data.object = object;
-				data.looping = table->item(2, 1)->text() == "true";
+				data.looping = dynamic_cast<QCheckBox*>(table->cellWidget(2, 1))->isChecked();
 				Tool<WaypointData>::getTool()->setData(data);
 				dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getUI()->glWidget->updateCanvas();
 				dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getStatusMain()->setText(message);
@@ -499,7 +499,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				lastresult = DialogResult::OK;
 				close();
 			});
-			table->setCellWidget(0, 0, button);
+			table->setCellWidget(0, 1, button);
 			button = new QPushButton("Clear Waypoints", table);
 			connect(button, &QPushButton::clicked, [this, table, &propobject](bool)
 			{
@@ -508,7 +508,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				propobject.hardtypesettings[propobject.type]["path"] = "";
 				propobject.hardtypesettings[propobject.type]["loopPath"] = "false";
 			});
-			table->setCellWidget(0, 1, button);
+			table->setCellWidget(0, 0, button);
 			table->insertRow(1);
 			table->insertRow(2);
 			table->setItem(1, 0, new QTableWidgetItem("path"));
@@ -523,7 +523,6 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				if (!propobject.hardtypesettings[propobject.type]["loopPath"].isEmpty())
 					box->setChecked(propobject.hardtypesettings[propobject.type]["loopPath"] == "true");
 				table->setCellWidget(2, 1, box);
-				table->item(2, 1)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 			}
 		}
 	}

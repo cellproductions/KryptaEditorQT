@@ -565,7 +565,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							if (data.waypoints.size() > 1)
 							{
 								kry::Util::Vector2f pivot = { 0.09f, 1.0f };
-								auto startpoint = data.waypoints[0].position + follower.sprite.dimensions * pivot;
+								auto startpoint = data.waypoints[0].position;
 								if (kry::Util::boxPointIntersect(cursorpos, startpoint, follower.sprite.dimensions))
 								{
 									data.looping = true;
