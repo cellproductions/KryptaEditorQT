@@ -12,7 +12,7 @@ TODO HIGH(absolutely required):
 [x] finish object/tile copy option
 [x] add tool pane
 [x] add brush tool
-[ ] complete project saving/loading [DOING]
+[x] complete project saving/loading
 [x] complete project save/load dialogs
 [x] finish opengl panel
 [x] complete map structure
@@ -43,11 +43,13 @@ TODO HIGH(absolutely required):
 [x] after adding a second frame, update the first's image key
 [x] after adding/removing a frame, update the sheet's "frames" key
 [x] make sure the animation manager selects the first direction when it starts up for the first time
-[ ] add an exportTo button (export to location)
+[x] add an exportTo button (export to location)
+[ ] add a centre camera button
+[ ] finish checksum thing
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
-[ ] when tile size is changed, update the layer tilesize
+[x] when tile size is changed, update the layer tilesize
 [ ] tint the background a bit while in waypoint mode (except for the object being edited)
 [ ] finish that heuristics thing
 [ ] add lines to waypoints in waypoint mode (and maybe a number above each line?)
@@ -58,20 +60,20 @@ TODO MEDIUM(will pass fine without being added):
 [ ] add objectives (add exit here too?)/objective settings (is this still a thing?)
 [x] move pivoting to the skins manager
 [ ] add map uploading (requires login)
-[ ] finish the COUNT/VEC_2/etc type for hardtypes in the ObjectSettingsDialog
+[ ] finish the VEC_2/etc type for hardtypes in the ObjectSettingsDialog
 [ ] finish layer editing (can already delete/add layers)
 [ ] add boundingbox overlay
 [ ] undo history/command
 [ ] add keyboard shortcuts
-[ ] add a clone button for the layer browser
-[ ] add a centre camera button
-[ ] give the selection tool the ability to select everything inside a box
+[x] give the selection tool the ability to select everything inside a box
 [ ] add a basic ai that checks if the player can reach the end of the map
 [ ] add a "test in game" button that launches the map in the game with debug on
 [ ] create a file for animation keys similar to types.ini
-[ ] finish export button for animations
+[ ] finish export/import button for animations
+[ ] add icon to the .exe
 
 TODO LOW(extra fluff for polish):
+[ ] add a clone button for the layer browser
 [ ] add grid overlay/toggle
 [ ] finish grid toggle action
 [ ] add placement follower as a sorted renderable
@@ -84,11 +86,11 @@ TODO LOW(extra fluff for polish):
 [ ] add debug overlay
 [ ] cursor change to tool type
 [ ] change border as well when clicking an entity/env in the main window
-[ ] add object browser
+[ ] add all objects browser
 [ ] add better spritesheet support for animation manager
 [ ] add an add/remove button for entity browser as well for consistency
 [ ] upon deleting the last animation, update everything so that it's all cleared
-[ ] the audio manager could check the paths of tracks and reuse resources, just to be more efficients
+[ ] the audio manager could check the paths of tracks and reuse resources, just to be more efficient
 [ ] add map renaming
 
 BUGS:

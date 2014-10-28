@@ -1211,7 +1211,7 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 					value = boolToKBool(value);
 				else if (widgettype == "ITEM_TYPE")
 					value = value.substring(0, value.indexOf("item"));
-				if (!value.isEmpty())
+				if (!value.isEmpty() || const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[section].keyExists(key))
 					lines.push_back(key + '=' + value);
 			}
 		};
@@ -1368,7 +1368,7 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 					else
 					{
 						if (widgettype == "ITEM_ARR" || widgettype == "ENTITY_GROUP_ARR" || widgettype == "ENTITY_ARR" || widgettype == "VEC_2_POS_ARR" || 
-							const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[section].keyExists(key) )
+							const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[section].keyExists(key))
 							lines.push_back(key + '=' + value);
 					}
 				}
