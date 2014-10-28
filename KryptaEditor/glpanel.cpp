@@ -38,6 +38,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		this->setMouseTracking(true);
 		follower.asset = nullptr;
 		selection.rgba = 0.0f;
+		canvas.scale = 0.25f;
     }
 
     void GLPanel::updateCanvas()
@@ -133,8 +134,11 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 
 	void GLPanel::resetCamera()
 	{
-		canvas.pan = { -(static_cast<float>(Map::getMap()->getCurrentLayer()->size[0] *
-					   Map::getMap()->getCurrentLayer()->tilesize[0]) * 0.5f), 0.0f };
+		auto layer = Map::getMap()->getCurrentLayer();
+		kry::Util::Vector2f framesize = { static_cast<float>(width()), static_cast<float>(height()) };
+		canvas.pan[0] = -((layer->tilesize[0] * layer->size[0]) * 0.5f) * canvas.scale[0] + (framesize[0] * 0.5f);
+		canvas.pan[1] = framesize[1] * 0.5f;
+
 		paintGL();
 	}
 

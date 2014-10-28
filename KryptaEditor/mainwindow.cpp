@@ -66,10 +66,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	});
 	connect(ui->miViewGrid, &QAction::triggered, [this](bool triggered)
 	{
+		if (!Map::getMap())
+			return;
 		/** #TODO(incomplete) show/hide grid */
 	});
 	connect(ui->miViewWaypoint, &QAction::triggered, [this]()
 	{
+		if (!Map::getMap())
+			return;
 		QString message;
 		Tool<>::switchTool(ToolType::WAYPOINT, message);
 		WaypointData data;
@@ -78,6 +82,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		Tool<WaypointData>::getTool()->setData(data);
 		ui->glWidget->updateCanvas();
 		getStatusMain()->setText("Waypoint viewing mode.");
+	});
+	connect(ui->miViewCentre, &QAction::triggered, [this]()
+	{
+		if (!Map::getMap())
+			return;
+		ui->glWidget->resetCamera();
 	});
 	connect(ui->miProjectSettings, &QAction::triggered, [this]()
 	{
@@ -350,6 +360,7 @@ void MainWindow::onNewTrigger()
 			ui->miFileExportTo->setEnabled(true);
 			ui->miViewGrid->setEnabled(true);
 			ui->miViewWaypoint->setEnabled(true);
+			ui->miViewCentre->setEnabled(true);
 			ui->miProjectSettings->setEnabled(true);
 			ui->miProjectAnims->setEnabled(true);
 			ui->miProjectAudio->setEnabled(true);
@@ -404,6 +415,7 @@ void MainWindow::onOpenTrigger()
 		ui->miFileExportTo->setEnabled(true);
 		ui->miViewGrid->setEnabled(true);
 		ui->miViewWaypoint->setEnabled(true);
+		ui->miViewCentre->setEnabled(true);
 		ui->miProjectSettings->setEnabled(true);
 		ui->miProjectAnims->setEnabled(true);
 		ui->miProjectAudio->setEnabled(true);

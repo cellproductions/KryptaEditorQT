@@ -425,6 +425,7 @@
     </property>
     <addaction name="miViewGrid"/>
     <addaction name="miViewWaypoint"/>
+    <addaction name="miViewCentre"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -589,6 +590,14 @@
    </property>
    <property name="text">
     <string>Export To...</string>
+   </property>
+  </action>
+  <action name="miViewCentre">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Centre Camera</string>
    </property>
   </action>
  </widget>

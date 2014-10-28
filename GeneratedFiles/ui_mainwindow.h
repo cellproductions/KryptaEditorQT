@@ -54,6 +54,7 @@ public:
     QAction *miViewGrid;
     QAction *miViewWaypoint;
     QAction *miFileExportTo;
+    QAction *miViewCentre;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QHBoxLayout *mainLayout;
@@ -149,6 +150,9 @@ public:
         miFileExportTo = new QAction(MainWindow);
         miFileExportTo->setObjectName(QStringLiteral("miFileExportTo"));
         miFileExportTo->setEnabled(false);
+        miViewCentre = new QAction(MainWindow);
+        miViewCentre->setObjectName(QStringLiteral("miViewCentre"));
+        miViewCentre->setEnabled(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
@@ -429,6 +433,7 @@ public:
         menuProject->addAction(miProjectItems);
         menuView->addAction(miViewGrid);
         menuView->addAction(miViewWaypoint);
+        menuView->addAction(miViewCentre);
 
         retranslateUi(MainWindow);
 
@@ -457,6 +462,7 @@ public:
         miViewGrid->setText(QApplication::translate("MainWindow", "Toggle Grid", 0));
         miViewWaypoint->setText(QApplication::translate("MainWindow", "Waypoint Mode", 0));
         miFileExportTo->setText(QApplication::translate("MainWindow", "Export To...", 0));
+        miViewCentre->setText(QApplication::translate("MainWindow", "Centre Camera", 0));
         bPaint->setText(QApplication::translate("MainWindow", "...", 0));
         bPointer->setText(QApplication::translate("MainWindow", "...", 0));
         bSelect->setText(QString());

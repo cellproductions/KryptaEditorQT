@@ -44,7 +44,7 @@ TODO HIGH(absolutely required):
 [x] after adding/removing a frame, update the sheet's "frames" key
 [x] make sure the animation manager selects the first direction when it starts up for the first time
 [x] add an exportTo button (export to location)
-[ ] add a centre camera button
+[x] add a centre camera button
 [ ] finish checksum thing
 [ ] finish diaries
 
@@ -73,6 +73,7 @@ TODO MEDIUM(will pass fine without being added):
 [ ] add icon to the .exe
 
 TODO LOW(extra fluff for polish):
+[ ] fix the sensitivity of the move keyboard keys
 [ ] add a clone button for the layer browser
 [ ] add grid overlay/toggle
 [ ] finish grid toggle action
@@ -95,8 +96,6 @@ TODO LOW(extra fluff for polish):
 
 BUGS:
 * apply all is broken in the object settings dialog (hasn't been updated, remove? its a bit rubbish now that the selection editor is in)
-* creating a new map while there is already a map makes everything disappear (wot)
-* wall icons appear as missing.png only on the first time editing it (wot)
 * right clicking on waypoints is off by a hundred or so? not sure
 * can set a pivot in animations without being in pivot mode
 * after cancelling an environment piece creation, it still gets added
