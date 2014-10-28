@@ -67,20 +67,35 @@ Map::Layer* Map::createLayer(const Tile& defaulttile, LayerOptionsItem* layerite
 			break;
 		++resourceindex;
 	}
+	auto dim = layer->tilesize;
+	auto halfdim = dim / 2;
+	kry::Util::Vector2f startpos = { 0.0f, static_cast<float>(-halfdim[1]) };
+	kry::Util::Vector2f pos;
 	unsigned index = 0;
-	for (Tile& tile : layer->tiles)
+	for (int y = 0; y < layer->size[1]; ++y)
 	{
-		tile.properties = defaulttile.asset->properties;
-		tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(id) * 10000u + (index++));
-		auto type = tile.properties["global"]["hardtype"];
-		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
-			tile.hardproperties["floor"][key] = "";
-		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-			tile.hardproperties[type][key] = "";
-		tile.hardproperties["floor"]["skin"] = kry::Util::toString(resourceindex);
-		tile.hardproperties["floor"]["heuristic"] = type == "solid" ? kry::Util::String("1") : kry::Util::String("0");
-		tile.hardproperties["floor"]["sortDepth"] = type == "wall" ? kry::Util::String("1") : kry::Util::String("0");
-		tile.hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }";
+		pos = { static_cast<float>(halfdim[0] * y), static_cast<float>(-(halfdim[1] * y)) };
+		pos = startpos + pos;
+
+		for (int x = 0; x < layer->size[0]; ++x)
+		{
+			auto& tile = layer->tiles[y * layer->size[0] + x];
+			tile.sprite.position = pos;
+			tile.properties = defaulttile.asset->properties;
+			tile.properties["global"]["id"] = kry::Util::toString(static_cast<unsigned>(id) * 10000u + (index++));
+			auto type = tile.properties["global"]["hardtype"];
+			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())["floor"].getKeyNames())
+				tile.hardproperties["floor"][key] = "";
+			for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+				tile.hardproperties[type][key] = "";
+			tile.hardproperties["floor"]["skin"] = kry::Util::toString(resourceindex);
+			tile.hardproperties["floor"]["heuristic"] = type == "solid" ? kry::Util::String("1") : kry::Util::String("0");
+			tile.hardproperties["floor"]["sortDepth"] = type == "wall" ? kry::Util::String("1") : kry::Util::String("0");
+			tile.hardproperties["floor"]["sortPivotOffset"] = "{ 0, 0 }";
+
+			pos[0] += halfdim[0];
+			pos[1] += halfdim[1];
+		}
 	}
 	return layer;
 }
@@ -1532,7 +1547,7 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 			{
 				auto section = object->properties["global"]["hardtype"];
 				lines.push_back("[entity" + Util::toString(count++) + ']');
-				lines.push_back("type=" + object->properties["global"]["hardtype"]);
+				lines.push_back("type=" + (section == "itementity" ? Util::String("item") : section));
 				auto skinsfile = object->hardproperties["entity"]["directions"] + "EntitySkins.txt";
 				object->hardproperties["entity"]["skinConfig"] = skinsfile;
 				auto directions = Util::toUIntegral<unsigned>(object->hardproperties["entity"]["directions"]);

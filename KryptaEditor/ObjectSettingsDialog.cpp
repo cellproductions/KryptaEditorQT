@@ -474,7 +474,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 			table->insertRow(0);
 			QPushButton* button = new QPushButton("Edit Waypoints", table); /** #TODO(note) 2 options for waypointcanvas. remove it from the renderer if its not needed, or place the waypoints in the normal canvas instead (after everything else), updateCanvas instead of waypointcanvas */
 			button->setToolTip("Saves and closes the Object Settings window and begins recording of waypoint placement.");
-			connect(button, &QPushButton::clicked, [this, table, object](bool)
+			connect(button, &QPushButton::clicked, [this, table, object, &propobject](bool)
 			{
 				QString message;
 				Tool<>::switchTool(ToolType::WAYPOINT, message); // follow on from here. follower isnt rendering and neither are the waypoints >:|
@@ -492,6 +492,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				}
 				data.object = object;
 				data.looping = dynamic_cast<QCheckBox*>(table->cellWidget(2, 1))->isChecked();
+				propobject.hardtypesettings[propobject.type]["loopPath"] = data.looping ? kry::Util::String("true") : kry::Util::String("false");
 				Tool<WaypointData>::getTool()->setData(data);
 				dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getUI()->glWidget->updateCanvas();
 				dynamic_cast<MainWindow*>(this->parent()->parent()->parent())->getStatusMain()->setText(message);

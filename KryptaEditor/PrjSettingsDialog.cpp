@@ -120,6 +120,17 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 		saveHard(ui->playerProperties, "entity");
 		saveHard(ui->playerProperties, "player");
 
+		if (!settings["project"]["tileDimensions"].isEmpty())
+		{
+			auto w = kry::Util::toIntegral<int>(settings["project"]["tileDimensions"]);
+			auto h = w / 2;
+			for (auto layer : Map::getMap()->getLayers())
+			{
+				layer->tilesize[0] = w;
+				layer->tilesize[1] = h;
+			}
+		}
+
 		lastresult = DialogResult::OK;
 		this->close();
 	});

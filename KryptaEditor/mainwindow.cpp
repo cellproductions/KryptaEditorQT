@@ -189,6 +189,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		}
 		else
 			return;
+		if (Tool<>::getTool()->getType() != ToolType::POINTER)
+		{
+			ui->glWidget->handleToolSwitch(nullptr, false);
+			for (auto item : toolbarItems)
+				ui->toolMain->removeAction(item.action);
+			toolbarItems.clear();
+			QString message;
+			Tool<>::switchTool(ToolType::POINTER, message);
+			getStatusMain()->setText(message);
+		}
 		Map::getMap()->setCurrentLayer(index);
 		ui->glWidget->updateCanvas();
 	});

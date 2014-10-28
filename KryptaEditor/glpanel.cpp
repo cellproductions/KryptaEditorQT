@@ -51,8 +51,6 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		auto dim = Map::getMap()->getCurrentLayer()->tilesize;
 		auto halfdim = dim / 2;
 		kry::Util::Vector2f startpos = { 0.0f, static_cast<float>(-halfdim[1]) };
-		//kry::Util::Vector2f startpos = { static_cast<float>(dim[0]), static_cast<float>(-halfdim[1]) };
-		//kry::Util::Vector2f startpos = { static_cast<float>(0.0f), static_cast<float>(dim[1] * (size[1] / 2)) };
 
 		std::map<kry::Util::Vector3f, Object*> zorder;
         for (int y = 0; y < size[1]; ++y)
@@ -307,7 +305,6 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		auto parent = Assets::getParentType(type);
 		if (parent == "entity")
 		{
-			/** #TODO(incomplete) update its position first if its position has changed (use the hardproperties position) */
 			auto position = hardproperties[parent]["position"];
 			if (!position.isEmpty() && position != object->hardproperties[parent]["position"])
 			{
@@ -375,9 +372,15 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 						if (newcoord[1] >= layer->size[1])
 							newcoord[1] = layer->size[1] - 1;
 
-						switchLayer(tileCoordToIndex(newcoord, layer));
-						object->sprite.position = tileCoordToCoord(newcoord, layer);
-						/** #TODO(incomplete) actually set the objects sprite position to the new pos */
+						auto newindex = tileCoordToIndex(newcoord, layer);
+						switchLayer(newindex);
+
+						Object tmp;
+						tmp.properties["global"]["hardtype"] = object->properties["global"]["hardtype"];
+						tmp.hardproperties = hardproperties;
+						auto pivot = getObjectPivot(&tmp);
+						auto newpos = layer->tiles[newindex].sprite.position;
+						object->sprite.position = newpos + ((layer->tilesize / 2) - pivot);
 					}
 				}
 			}
@@ -843,9 +846,19 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							auto results = objsettingsDialog->getAllProperties();
 							auto properties = (*results.begin()).settings;
 							auto hardproperties = (*results.begin()).hardtypesettings;
-							updateObject(coord, tile, object, properties["global"]["hardtype"], hardproperties);
+							auto type = properties["global"]["hardtype"];
+							updateObject(coord, tile, object, type, hardproperties);
 							object->properties = properties;
 							object->hardproperties = hardproperties;
+							if (hardproperties[type].keyExists("loopPath"))
+							{
+								auto looping = hardproperties[type]["loopPath"] == "true";
+								for (auto& waypoint : object->waypoints)
+									waypoint.texture = Resources::getEditorTexture(looping ? EditorResource::FLAG_GREEN : EditorResource::FLAG_RED)->rawresource;
+								if (waypoints.find(object) != waypoints.end())
+									for (auto& sprite : waypoints[object])
+										sprite.texture = Resources::getEditorTexture(looping ? EditorResource::FLAG_GREEN : EditorResource::FLAG_RED)->rawresource;
+							}
 							updateCanvas();
 						}
 					}
@@ -988,26 +1001,15 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							follower.sprite.dimensions = follower.sprite.texture->getDimensions();
 							follower.asset = objectasset->asset;
 
-							//if (asset->type == AssetType::ENTITY)
-							{
-								bool snap = true;
-								if (objectasset->asset->properties["global"]["gridsnap"] == "false")
-									snap = false;
-								/*
-								{
-								kry::Util::Vector2f pos = 0.5f;
-								pos[0] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativex"]);
-								pos[1] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativey"]);
-								pos = follower.sprite.dimensions * pos; // texture pivot
-								qDebug() << pos.toString().getData();
-								}*/
-								auto pos = getObjectPivot(objectasset.get());
-								qDebug() << pos.toString().getData();
-								if (snap)
-									follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
-								else
-									follower.sprite.position = canvas.getCoord(canvascoord) - pos;
-							}
+							bool snap = true;
+							if (objectasset->asset->properties["global"]["gridsnap"] == "false")
+								snap = false;
+
+							auto pivot = getObjectPivot(objectasset.get());
+							if (snap)
+								follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pivot;
+							else
+								follower.sprite.position = canvas.getCoord(canvascoord) - pivot;
 						}
 						redraw = true;
 					}
@@ -1033,17 +1035,12 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							bool snap = true;
 							if (follower.asset->properties["global"]["gridsnap"] == "false")
 								snap = false;
-							/*
-							kry::Util::Vector2f pos = 0.5f;
-							pos[0] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativex"]);
-							pos[1] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativey"]);
-							pos = follower.sprite.dimensions * pos; // texture pivot
-							*/
-							auto pos = getObjectPivot(object);
+
+							auto pivot = getObjectPivot(object);
 							if (snap)
-								follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
+								follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pivot;
 							else
-								follower.sprite.position = canvas.getCoord(canvascoord) - pos;
+								follower.sprite.position = canvas.getCoord(canvascoord) - pivot;
 						}
 						redraw = true;
 					}

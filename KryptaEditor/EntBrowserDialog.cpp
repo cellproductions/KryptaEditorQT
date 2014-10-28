@@ -34,29 +34,9 @@ namespace
 		item->object->hardproperties["entity"]["maxHeuristic"] = "0";
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type].getKeyNames())
 		{
-			auto widgettype = const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type][key];
-			if (widgettype.isEmpty())
-				item->object->hardproperties[type][key] = "";
-			else if (widgettype == "FLOAT")
-				item->object->hardproperties[type][key] = "1.0";
-			else if (widgettype == "INT")
-				item->object->hardproperties[type][key] = "1";
-			else if (widgettype == "ENTITY_GROUP_ARR")
-				item->object->hardproperties[type][key] = "-1";
-			else if (widgettype == "ENTITY_ARR")
-				item->object->hardproperties[type][key] = "";
-			else if (widgettype == "WEAPONS")
-				item->object->hardproperties[type][key] = "melee";
-			else if (widgettype == "BOOL")
-				item->object->hardproperties[type][key] = "false";
-			else if (widgettype == "ITEM_ID")
-				item->object->hardproperties[type][key] = "-1";
-			else if (widgettype == "ITEM_ARR")
-				item->object->hardproperties[type][key] = "";
-			else if (widgettype == "VEC_2_POS_ARR")
-				item->object->hardproperties[type][key] = "";
-			else if (widgettype == "VEC_2_POS")
-				item->object->hardproperties[type][key] = "{ 100, 100 }";
+			auto widgettype = const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key];
+			auto widgetvalue = const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type][key];
+			item->object->hardproperties[type][key] = widgetvalue;
 		}
 		item->path = asset->resource->path;
 		return item;
