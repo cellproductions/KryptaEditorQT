@@ -249,12 +249,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		{
 			ui->glWidget->handleSelectionEdit();
 		});
+		QToolButton* bRemove = new QToolButton(ui->toolMain);
+		bRemove->setText("Remove Selected Objects");
+		connect(bRemove, &QToolButton::clicked, [this](bool)
+		{
+			ui->glWidget->handleSelectionRemove();
+		});
 		ToolBarItem item1 { ui->toolMain->addWidget(lObjCount), lObjCount };
 		ToolBarItem item2 { ui->toolMain->addSeparator(), nullptr };
 		ToolBarItem item3 { ui->toolMain->addWidget(bEdit), bEdit };
+		ToolBarItem item4 { ui->toolMain->addWidget(bRemove), bRemove };
 		toolbarItems.push_back(item1);
 		toolbarItems.push_back(item2);
 		toolbarItems.push_back(item3);
+		toolbarItems.push_back(item4);
 		getStatusMain()->setText(message);
 	});
 }

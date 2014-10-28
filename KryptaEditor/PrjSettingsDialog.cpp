@@ -28,18 +28,6 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 
 	connect(ui->bSave, &QPushButton::clicked, [this](bool)
 	{
-		/*
-		settings["project"]["name"] = qToKString(ui->projectProperties->item(0, 1)->text());
-		settings["project"]["path"] = qToKString(ui->projectProperties->item(1, 1)->text());
-		settings["project"]["iconImage"] = qToKString(ui->projectProperties->item(2, 1)->text());
-		settings["project"]["fogOfWar"] = qToKString(ui->projectProperties->item(3, 1)->text());
-		settings["project"]["revealOfWar"] = qToKString(ui->projectProperties->item(4, 1)->text());
-		settings["project"]["fogTint"] = qToKString(ui->projectProperties->item(5, 1)->text());
-		settings["project"]["floorFadeTime"] = qToKString(ui->projectProperties->item(6, 1)->text());
-		settings["project"]["tileDimensions"] = qToKString(ui->projectProperties->item(7, 1)->text());
-		settings["project"]["soudtrackSize"] = qToKString(ui->projectProperties->item(8, 1)->text());
-		settings["project"]["randomizeSoundtrack"] = qToKString(ui->projectProperties->item(9, 1)->text());*/
-		
 		auto saveHard = [this](QTableWidget* table, const kry::Util::String& section)
 		{
 			for (auto& key : settings[section].getKeyNames())
@@ -55,7 +43,7 @@ PrjSettingsDialog::PrjSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new
 				}
 
 				auto tvalue = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_POS" || tvalue == "VEC_4" || tvalue == "VEC_2_ARR" || tvalue == "ITEM_ID" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
+				if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_POS" || tvalue == "VEC_4" || tvalue == "VEC_2_ARR" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
 					tvalue == "ENTITY_GROUP_ARR" || tvalue == "ITEM_ARR") /** #TODO(change) add these types as widgets instead */
 					settings[section][key] = qToKString(table->item(rowindex, 1)->text());
 				else if (tvalue == "FLOOR_ID")
@@ -244,20 +232,6 @@ void PrjSettingsDialog::setTableData()
 	while (ui->projectProperties->rowCount() > 0)
 		ui->projectProperties->removeRow(0);
 	settings["project"]["soundtrackSize"] = kry::Util::toString(Assets::getMusic().size());
-	/*
-	ui->projectProperties->setItem(0, 1, new QTableWidgetItem(kryToQString(settings["project"]["name"])));
-	ui->projectProperties->item(0, 1)->setFlags(Qt::ItemIsSelectable);
-	ui->projectProperties->setItem(1, 1, new QTableWidgetItem(kryToQString(settings["project"]["path"])));
-	ui->projectProperties->item(1, 1)->setFlags(Qt::ItemIsSelectable);
-	ui->projectProperties->setItem(2, 1, new QTableWidgetItem(kryToQString(settings["project"]["iconImage"])));
-	ui->projectProperties->setItem(3, 1, new QTableWidgetItem(kryToQString(settings["project"]["fogOfWar"])));
-	ui->projectProperties->setItem(4, 1, new QTableWidgetItem(kryToQString(settings["project"]["revealOfWar"])));
-	ui->projectProperties->setItem(5, 1, new QTableWidgetItem(kryToQString(settings["project"]["fogTint"])));
-	ui->projectProperties->setItem(6, 1, new QTableWidgetItem(kryToQString(settings["project"]["floorFadeTime"])));
-	ui->projectProperties->setItem(7, 1, new QTableWidgetItem(kryToQString(settings["project"]["tileDimensions"])));
-	ui->projectProperties->setItem(8, 1, new QTableWidgetItem(kryToQString(settings["project"]["soundTrackSize"])));
-	ui->projectProperties->setItem(9, 1, new QTableWidgetItem(kryToQString(settings["project"]["randomizeSoundtrack"])));
-	*/
 
 	while (ui->playerProperties->rowCount() > 0)
 		ui->playerProperties->removeRow(0);
@@ -270,7 +244,7 @@ void PrjSettingsDialog::setTableData()
 			table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 			table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 			auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-			if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_4" || type == "VEC_2_ARR" || type == "ITEM_ID" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
+			if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_4" || type == "VEC_2_ARR" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
 				table->setItem(index, 1, new QTableWidgetItem(kryToQString(settings[section][key])));
 			else if (type == "BLOCK")
 			{

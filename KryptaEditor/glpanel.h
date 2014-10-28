@@ -25,6 +25,7 @@ namespace Kryed
 			void resetCamera();
 			bool handleToolSwitch(QMouseEvent* event = nullptr, bool switchtopointer = true);
 			void handleSelectionEdit();
+			void handleSelectionRemove();
 			void updateObject(const kry::Util::Vector2i& coord, Tile& tile, Object* object, const kry::Util::String& type, kry::Media::Config& hardproperties);
 
         protected:

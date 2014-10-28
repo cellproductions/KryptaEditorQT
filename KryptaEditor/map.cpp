@@ -43,7 +43,7 @@ kry::Util::Vector2f getObjectPivot(Object* object)
 	auto anim = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(stranim)];
 	auto name = anim->properties[0]["Skins"]["name"];
 	auto strpivot = anim->properties[0][name]["framePivot"];
-	kry::Util::Vector2f pivot(0.5f, 0.5f);
+	kry::Util::Vector2f pivot(Map::getMap()->getCurrentLayer()->tilesize[0] * 0.5f, Map::getMap()->getCurrentLayer()->tilesize[1] * 0.5f);
 	if (!strpivot.isEmpty())
 		pivot = kry::Util::Vector2f::Vector(strpivot);
 	return pivot;

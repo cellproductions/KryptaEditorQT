@@ -504,7 +504,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 			connect(button, &QPushButton::clicked, [this, table, &propobject](bool)
 			{
 				table->item(1, 1)->setText("");
-				table->item(2, 1)->setText("false");
+				dynamic_cast<QCheckBox*>(table->cellWidget(2, 1))->setChecked(false);
 				propobject.hardtypesettings[propobject.type]["path"] = "";
 				propobject.hardtypesettings[propobject.type]["loopPath"] = "false";
 			});

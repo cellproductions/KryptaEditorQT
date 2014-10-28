@@ -40,8 +40,8 @@ Animation<ResType>* Animation<ResType>::createDefaultAnimation(const kry::Util::
 			else
 			{
 				animation->rawresource = new kry::Graphics::Texture(kry::Media::imageFileToTexture(imagefile, Configuration::getConfig()["editor"]["mipmapping"] == "true"));
-				auto dims = animation->rawresource->getDimensions();
-				animation->properties[i][pname]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
+				auto dims = animation->rawresource->getDimensions() * 0.5f;
+				animation->properties[i][pname]["framePivot"] = dims.toString();
 			}
 		}
 		else
@@ -108,29 +108,12 @@ void Resources::loadAndAssignAnimations(std::vector<std::shared_ptr<Asset<kry::G
 		{
 			Animation<>* animation = Animation<>::createDefaultAnimation(asset->properties["global"]["resource"]);
 			auto dims = animation->rawresource->getDimensions();
-			if (asset->properties.sectionExists("object"))
+			for (auto& properties : animation->properties)
 			{
-				for (auto& properties : animation->properties)
-				{
-					properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
-						kry::Util::toString((asset->properties["object"].keyExists("relativex") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) +
-						", " +
-						kry::Util::toString((asset->properties["object"].keyExists("relativey") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) +
-						" }";
-				}
+				auto px = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]);
+				auto py = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
+				properties[properties["Skins"]["name"]]["framePivot"] = (kry::Util::Vector2f(px, py) * dims).toString();
 			}
-			else if (asset->properties.sectionExists("entity"))
-			{
-				for (auto& properties : animation->properties)
-				{
-					properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
-							kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
-							kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
-				}
-			}
-			else
-				for (auto& properties : animation->properties)
-					properties[properties["Skins"]["name"]]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
 
 			animations.emplace_back(animation);
 			asset->resource = animation;

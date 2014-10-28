@@ -46,6 +46,7 @@ TODO HIGH(absolutely required):
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
+[ ] when tile size is changed, update the layer tilesize
 [ ] tint the background a bit while in waypoint mode (except for the object being edited)
 [ ] finish that heuristics thing
 [ ] add lines to waypoints in waypoint mode (and maybe a number above each line?)
@@ -100,6 +101,7 @@ BUGS:
 * selection quad wont dissapear when releasing the mouse button
 * opening the object settings dialog in the env browser causes the group icon to be small
 * cancelling making a new env crash
+* painting after selection mode makes the follower dissappear
 
 OPTIMIZATIONS:
 * object placement during painting (especially on large maps, investigate)

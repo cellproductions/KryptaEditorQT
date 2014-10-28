@@ -42,7 +42,7 @@ namespace
 			else if (widgettype == "INT")
 				item->object->hardproperties[type][key] = "1";
 			else if (widgettype == "ENTITY_GROUP_ARR")
-				item->object->hardproperties[type][key] = "";
+				item->object->hardproperties[type][key] = "-1";
 			else if (widgettype == "ENTITY_ARR")
 				item->object->hardproperties[type][key] = "";
 			else if (widgettype == "WEAPONS")

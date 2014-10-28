@@ -270,12 +270,74 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 		}
 	}
 
+	void GLPanel::handleSelectionRemove()
+	{
+		if (!Map::getMap() || Tool<SelectionData>::getTool()->getData().objects.empty())
+			return;
+		auto& objects = Tool<SelectionData>::getTool()->getData().objects;
+		std::set<Object*> toremove;
+		for (auto object : objects)
+		{
+			if (object->asset->type == AssetType::TILE)
+				continue;
+			auto pivot = getObjectPivot(object);
+			auto oldtilecoord = coordToTileCoord(object->sprite.position + pivot, Map::getMap()->getCurrentLayer());
+			auto oldtileindex = tileCoordToIndex(oldtilecoord, Map::getMap()->getCurrentLayer());
+			auto &oldobjectslist = Map::getMap()->getCurrentLayer()->tiles[oldtileindex].objects;
+			auto toerase = std::find_if(oldobjectslist.begin(), oldobjectslist.end(), [object](const std::shared_ptr<Object>& obj)
+			{
+				return object == obj.get();
+			});
+			assert(toerase != oldobjectslist.end());
+			for (auto& waypoint : object->waypoints)
+				if (waypoints.find(object) != waypoints.end())
+					waypoints.erase(object);
+			oldobjectslist.erase(toerase);
+			toremove.insert(object);
+		}
+		for (auto object : toremove)
+			objects.erase(object);
+		auto item = dynamic_cast<MainWindow*>(this->parent()->parent())->getToolbarItems()[0];
+		dynamic_cast<QLabel*>(item.widget)->setText("Objects selected: " + QString::number(objects.size()));
+		updateCanvas();
+	}
+
 	void GLPanel::updateObject(const kry::Util::Vector2i& coord, Tile& tile, Object* object, const kry::Util::String& type, kry::Media::Config& hardproperties)
 	{
 		auto parent = Assets::getParentType(type);
 		if (parent == "entity")
 		{
 			/** #TODO(incomplete) update its position first if its position has changed (use the hardproperties position) */
+			auto position = hardproperties[parent]["position"];
+			if (!position.isEmpty() && position != object->hardproperties[parent]["position"])
+			{
+				Object tmp;
+				tmp.properties["global"]["hardtype"] = object->properties["global"]["hardtype"];
+				tmp.hardproperties = hardproperties;
+				auto pivot = getObjectPivot(&tmp);
+				auto oldtilecoord = coordToTileCoord(object->sprite.position + pivot, Map::getMap()->getCurrentLayer());
+				auto oldtileindex = tileCoordToIndex(oldtilecoord, Map::getMap()->getCurrentLayer());
+				auto &oldobjectslist = Map::getMap()->getCurrentLayer()->tiles[oldtileindex].objects;
+				std::shared_ptr<Object> tmpshared;
+				unsigned oldindex = 0;
+				auto toerase = std::find_if(oldobjectslist.begin(), oldobjectslist.end(), [&tmpshared, object, &oldindex](const std::shared_ptr<Object>& obj)
+				{
+					if (object == obj.get())
+					{
+						tmpshared = obj;
+						return true;
+					}
+					++oldindex;
+					return false;
+				});
+				assert(toerase != oldobjectslist.end());
+				oldobjectslist.erase(toerase);
+				object->sprite.position = kry::Util::Vector2f::Vector(position) - pivot;
+				auto newtilecoord = coordToTileCoord(object->sprite.position + pivot, Map::getMap()->getCurrentLayer());
+				auto newtileindex = tileCoordToIndex(newtilecoord, Map::getMap()->getCurrentLayer());
+				auto &newobjectslist = Map::getMap()->getCurrentLayer()->tiles[newtileindex].objects;
+				newobjectslist.insert(newobjectslist.begin() + oldindex, tmpshared);
+			}
 			auto floor = hardproperties[parent]["floor"];
 			if (!floor.isEmpty() && floor != object->hardproperties[parent]["floor"])
 			{
@@ -566,6 +628,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							{
 								kry::Util::Vector2f pivot = { 0.09f, 1.0f };
 								auto startpoint = data.waypoints[0].position;
+								qDebug() << cursorpos.toString().getData();
+								qDebug() << startpoint.toString().getData();
+								qDebug() << follower.sprite.dimensions.toString().getData();
+								qDebug() << (startpoint + follower.sprite.dimensions).toString().getData();
 								if (kry::Util::boxPointIntersect(cursorpos, startpoint, follower.sprite.dimensions))
 								{
 									data.looping = true;
@@ -798,6 +864,9 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							for (; removeitr != end; ++removeitr)
 								if ((*removeitr).get() == toremove->getObject())
 									break;
+							for (auto& waypoint : (*removeitr)->waypoints)
+								if (waypoints.find(removeitr->get()) != waypoints.end())
+									waypoints.erase(removeitr->get());
 							Map::getMap()->getCurrentLayer()->tiles[index].objects.erase(removeitr);
 							stack->removeAction(tileaction);
 
@@ -924,11 +993,16 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								bool snap = true;
 								if (objectasset->asset->properties["global"]["gridsnap"] == "false")
 									snap = false;
-
+								/*
+								{
 								kry::Util::Vector2f pos = 0.5f;
-								pos[0] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativex"]); /** #TODO(incomplete) use pivot here */
+								pos[0] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativex"]);
 								pos[1] = kry::Util::toDecimal<float>(objectasset->asset->properties["global"]["relativey"]);
 								pos = follower.sprite.dimensions * pos; // texture pivot
+								qDebug() << pos.toString().getData();
+								}*/
+								auto pos = getObjectPivot(objectasset.get());
+								qDebug() << pos.toString().getData();
 								if (snap)
 									follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
 								else
@@ -959,11 +1033,13 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 							bool snap = true;
 							if (follower.asset->properties["global"]["gridsnap"] == "false")
 								snap = false;
-
+							/*
 							kry::Util::Vector2f pos = 0.5f;
-							pos[0] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativex"]); /** #TODO(change) should probably use the pivot from the animation? */
+							pos[0] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativex"]);
 							pos[1] = kry::Util::toDecimal<float>(follower.asset->properties["global"]["relativey"]);
 							pos = follower.sprite.dimensions * pos; // texture pivot
+							*/
+							auto pos = getObjectPivot(object);
 							if (snap)
 								follower.sprite.position += (Map::getMap()->getCurrentLayer()->tilesize / 2) - pos;
 							else
