@@ -1,12 +1,11 @@
 #include "EntBrowserDialog.h"
 #include "ui_EntBrowserDialog.h"
 #include "Resources.h"
-#include "Map.h"
 #include "Utilities.h"
 
 namespace
 {
-	ObjectListItem* createListItem(Asset<kry::Graphics::Texture>* asset, const QString& imagefile, const QString& name)
+	std::shared_ptr<Object> createDefaultObject(Asset<kry::Graphics::Texture>* asset)
 	{
 		std::shared_ptr<Object> object(new Object);
 		object->asset = asset;
@@ -17,27 +16,33 @@ namespace
 			object->hardproperties[parent][key] = "";
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
 			object->hardproperties[type][key] = "";
-		auto item = new ObjectListItem(object, QIcon(imagefile), name);unsigned index = 0;
+		unsigned index = 0;
 		for (auto& resource : Resources::getAnimations())
 		{
 			if (resource.get() == asset->resource)
 				break;
 			++index;
 		}
-		item->object->hardproperties["entity"]["skinIdle"] = kry::Util::toString(index);
-		item->object->hardproperties["entity"]["floor"] = "0";
-		item->object->hardproperties["entity"]["directions"] = "1";
-		item->object->hardproperties["entity"]["dimensions"] = "{ 1, 1 }";
-		item->object->hardproperties["entity"]["direction"] = "0";
-		item->object->hardproperties["entity"]["seeInFog"] = "false";
-		item->object->hardproperties["entity"]["group"] = "0";
-		item->object->hardproperties["entity"]["maxHeuristic"] = "0";
+		object->hardproperties["entity"]["skinIdle"] = kry::Util::toString(index);
+		object->hardproperties["entity"]["floor"] = "0";
+		object->hardproperties["entity"]["directions"] = "1";
+		object->hardproperties["entity"]["dimensions"] = "{ 1, 1 }";
+		object->hardproperties["entity"]["direction"] = "0";
+		object->hardproperties["entity"]["seeInFog"] = "false";
+		object->hardproperties["entity"]["group"] = "0";
+		object->hardproperties["entity"]["maxHeuristic"] = "0";
 		for (auto& key : const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type].getKeyNames())
 		{
 			auto widgettype = const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key];
 			auto widgetvalue = const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type][key];
-			item->object->hardproperties[type][key] = widgetvalue;
+			object->hardproperties[type][key] = widgetvalue;
 		}
+		return object;
+	}
+
+	ObjectListItem* createListItem(Asset<kry::Graphics::Texture>* asset, const QString& imagefile, const QString& name)
+	{
+		auto item = new ObjectListItem(createDefaultObject(asset), QIcon(imagefile), name);
 		item->path = asset->resource->path;
 		return item;
 	}
@@ -98,6 +103,7 @@ DialogResult EntBrowserDialog::showDialog()
 			ui->lbIcons->addItem(item);
 		}
 		firstLoad = false;
+		return lastresult;
 	}
 
 	this->exec();

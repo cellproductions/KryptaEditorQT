@@ -167,9 +167,10 @@ void Resources::reassignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphi
 		for (auto& asset : assets)
 		{
 			std::shared_ptr<Animation<>> animation;
+			auto path = kryToQString(asset->properties["global"]["resource"]).replace('\\', '/');
 			for (auto anim : animations) // look for an animation for it
 			{
-				if (asset->path == anim->path)
+				if (path == anim->path)
 				{
 					animation = anim;
 					break;
@@ -179,29 +180,12 @@ void Resources::reassignAnimations(std::vector<std::shared_ptr<Asset<kry::Graphi
 			{
 				Animation<>* animation = Animation<>::createDefaultAnimation(asset->properties["global"]["resource"]);
 				auto dims = animation->rawresource->getDimensions();
-				if (asset->properties.sectionExists("object"))
+				for (auto& properties : animation->properties)
 				{
-					for (auto& properties : animation->properties)
-					{
-						properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
-							kry::Util::toString((asset->properties["object"].keyExists("relativex") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativex"]) : 0.5f) * dims[0]) +
-							", " +
-							kry::Util::toString((asset->properties["object"].keyExists("relativey") ? kry::Util::toDecimal<float>(asset->properties["object"]["relativey"]) : 0.5f) * dims[1]) +
-							" }";
-					}
+					auto px = kry::Util::toDecimal<float>(asset->properties["global"]["relativex"]);
+					auto py = kry::Util::toDecimal<float>(asset->properties["global"]["relativey"]);
+					properties[properties["Skins"]["name"]]["framePivot"] = (kry::Util::Vector2f(px, py) * dims).toString();
 				}
-				else if (asset->properties.sectionExists("entity"))
-				{
-					for (auto& properties : animation->properties)
-					{
-						properties[properties["Skins"]["name"]]["framePivot"] = "{ " +
-								kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativex"]) * dims[0]) + ", " +
-								kry::Util::toString(kry::Util::toDecimal<float>(asset->properties["entity"]["relativey"]) * dims[1]) + " }";
-					}
-				}
-				else
-					for (auto& properties : animation->properties)
-						properties[properties["Skins"]["name"]]["framePivot"] = "{ " + kry::Util::toString(dims[0] * 0.5f) + ", " + kry::Util::toString(dims[1] * 0.5f) + " }";
 
 				animations.emplace_back(animation);
 				asset->resource = animation;

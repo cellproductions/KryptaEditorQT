@@ -5,6 +5,7 @@
 #include "Utilities.h"
 #include "GLPanel.h"
 #include "MainWindow.h"
+#include "ui_MainWindow.h"
 #include "EnvBrowserDialog.h"
 #include "ui_EnvBrowserDialog.h"
 #include "ObjectListItem.h"
@@ -28,7 +29,7 @@ struct TextElement
 {
 	QString name;
 	QString text;
-	QString attrVal;
+	std::vector<QString> attrVal;
 };
 
 std::shared_ptr<Map> Map::single;
@@ -52,14 +53,15 @@ kry::Util::Vector2f getObjectPivot(Object* object)
 void Map::resetMap()
 {
     layers.clear();
+	getItems().clear();
+	getCurrentLayer().reset();
     name.clear();
-	currentLayer.reset();
 }
 
-Map::Layer* Map::createLayer(const Tile& defaulttile, LayerOptionsItem* layeritem, unsigned id)
+Map::Layer* Map::createLayer(const Tile& defaulttile, const QSize& size, const QString& description, unsigned id)
 {
-	Layer* layer = new Layer { std::move(std::vector<Tile>(layeritem->getWidth() * layeritem->getHeight(), defaulttile)), layeritem->getDescription(),
-								{layeritem->getWidth(), layeritem->getHeight()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(id) };
+	Layer* layer = new Layer { std::move(std::vector<Tile>(size.width() * size.height(), defaulttile)), description,
+								{size.width(), size.height()}, defaulttile.asset->resource->rawresource->getDimensions(), static_cast<unsigned>(id) };
 	unsigned resourceindex = 0;
 	for (auto& resource : Resources::getAnimations())
 	{
@@ -109,7 +111,7 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
 		if (layerList->item(i)->type() != LayerOptionsItem::LayerOptionType)
             continue;
 		LayerOptionsItem* option = dynamic_cast<LayerOptionsItem*>(layerList->item(i));
-		Layer* layer = createLayer(defaulttile, option, i);
+		Layer* layer = createLayer(defaulttile, QSize(option->getWidth(), option->getHeight()), option->getDescription(), i);
 
         single->layers.emplace_back(layer);
     }
@@ -133,11 +135,25 @@ TextElement readElement(QXmlStreamReader& reader)
 	element.name = reader.name().toString();
 	if (reader.isEndElement())
 		return element;
-	if (reader.attributes().size() > 0)
-		element.attrVal = reader.attributes()[0].value().toString();
+	for (auto attr : reader.attributes())
+		element.attrVal.push_back(attr.value().toString());
 	reader.readNext();
 	element.text = reader.text().toString();
+	if (reader.isEndElement())
+		return element;
 	reader.readNext();
+	return element;
+}
+
+TextElement readNameAttr(QXmlStreamReader& reader)
+{
+	TextElement element;
+	reader.readNext();
+	element.name = reader.name().toString();
+	if (reader.isEndElement())
+		return element;
+	for (auto attr : reader.attributes())
+		element.attrVal.push_back(attr.value().toString());
 	return element;
 }
 
@@ -153,582 +169,375 @@ std::shared_ptr<Map> Map::loadFromFile(MainWindow* window, const QString& path, 
 	TextElement element;
 	QXmlStreamReader reader(&file);
 	reader.readNext();
-
 	reader.readNext(); // projectfile
-		reader.readNext();
 // MAP
-		reader.readNext();
-			reader.readNext();
-			element = readElement(reader);
-			QString name = element.text;
-			reader.readNext();
-			element = readElement(reader);
-			unsigned objectidcount = element.text.toUInt();
-			reader.readNext();
-			element = readElement(reader);
-			unsigned itemidcount = element.text.toUInt();
-			reader.readNext();
-			reader.readNext();
-		reader.readNext();
+	reader.readNext(); // map
+	element = readElement(reader);
+	auto prjname = element.text;
+	element = readElement(reader);
+	unsigned objectidcount = element.text.toUInt();
+	element = readElement(reader);
+	unsigned itemidcount = element.text.toUInt();
+	Object::increment = objectidcount;
+	ItemManagerDialog::setIDCount(itemidcount);
+	reader.readNext(); // end map
 // ANIMATIONS
-		reader.readNext();
-			unsigned count = reader.attributes()[0].value().toString().toUInt();
-			reader.readNext();
-			if (count > 0)
-			{
-				for (unsigned i = 0; i < count; ++i)
-				{
-					reader.readNext();
-					reader.readNext();
-					element = readElement(reader);
-					auto name = element.text;
-					reader.readNext();
-					element = readElement(reader);
-					auto path = element.text;
-					auto animation = Animation<>::createDefaultAnimation(qToKString(path));
-					for (unsigned dircount = 0; dircount < Animation<>::MAX_DIRECTION_COUNT; ++dircount) // properties for each dir
-					{
-							auto str = reader.name().toString();
-						reader.readNext();
-						str = reader.name().toString();
-						reader.readNext(); // properties
-						str = reader.name().toString();
-						{
-							unsigned dir = reader.attributes()[0].value().toString().toUInt();
-							unsigned sections = reader.attributes()[1].value().toString().toUInt();
-							for (unsigned j = 0; j < sections; ++j)
-							{
-								reader.readNext();
-								reader.readNext(); // section
-								{
-									auto section = qToKString(reader.name().toString());
-									unsigned keys = reader.attributes()[0].value().toString().toUInt();
-									for (unsigned k = 0; k < keys; ++k)
-									{
-										reader.readNext();
-										element = readElement(reader); // key/value
-										animation->properties[dir][section][qToKString(element.name)] = qToKString(element.text);
-									}
-									if (keys > 0)
-									{
-										reader.readNext();
-										str = reader.name().toString();
-										reader.readNext();
-										str = reader.name().toString();
-									}
-								}
-							}
-						}
-						reader.readNext();
-						str = reader.name().toString();
-					}
-					for (unsigned dircount = 0; dircount < Animation<>::MAX_DIRECTION_COUNT; ++dircount) // frames for each dir
-					{
-						reader.readNext();
-						reader.readNext(); // frames
-						{
-							unsigned dir = reader.attributes()[0].value().toString().toUInt();
-							unsigned framecount = reader.attributes()[1].value().toString().toUInt();
-							animation->frames[dir].resize(framecount);
-							for (unsigned n = 0; n < framecount; ++n)
-							{
-								reader.readNext();
-								reader.readNext(); // frame
-								{
-									unsigned sections = reader.attributes()[0].value().toString().toUInt();
-									for (unsigned j = 0; j < sections; ++j)
-									{
-										reader.readNext();
-										reader.readNext(); // section
-										{
-											auto section = qToKString(reader.name().toString());
-											unsigned keys = reader.attributes()[0].value().toString().toUInt();
-											for (unsigned k = 0; k < keys; ++k)
-											{
-												reader.readNext();
-												element = readElement(reader); // key/value
-												animation->frames[dir][n][section][qToKString(element.name)] = qToKString(element.text);
-											}
-											if (keys > 0)
-											{
-												reader.readNext();
-												reader.readNext();
-											}
-										}
-									}
-								}
-								reader.readNext();
-								reader.readNext();
-							}
-						}
-						reader.readNext();
-						reader.readNext();
-					}
-					if (i >= Resources::getAnimations().size())
-						Resources::getAnimations().emplace_back(animation);
-					else
-						Resources::getAnimations()[i].reset(animation);
-					reader.readNext();
-					reader.readNext();
-					reader.readNext();
-				}
-				reader.readNext();
-				reader.readNext();
-			}
-		reader.readNext();
-// SOUNDS
-		reader.readNext();
-			count = reader.attributes()[0].value().toString().toUInt();
-			reader.readNext();
-			if (count > 0)
-			{
-				for (unsigned i = 0; i < count; ++i)
-				{
-					reader.readNext();
-					reader.readNext();
-						element = readElement(reader);
-						auto name = element.text;
-						reader.readNext();
-						element = readElement(reader);
-						reader.readNext();
-						auto path = element.text;
-					reader.readNext();
-					reader.readNext();
-					Resource<kry::Audio::Buffer>* resource = createDefaultSound(qToKString(path));
-					if (i >= Resources::getSounds().size())
-						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>&>(Resources::getSounds()).emplace_back(resource);
-					else
-						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>&>(Resources::getSounds())[i].reset(resource);
-				}
-				reader.readNext();
-				reader.readNext();
-			}
-		reader.readNext();
-// MUSIC
-		reader.readNext();
-			count = reader.attributes()[0].value().toString().toUInt();
-			reader.readNext();
-			if (count > 0)
-			{
-				for (unsigned i = 0; i < count; ++i)
-				{
-					reader.readNext();
-					reader.readNext();
-						element = readElement(reader);
-						auto name = element.text;
-						reader.readNext();
-						element = readElement(reader);
-						reader.readNext();
-						auto path = element.text;
-					reader.readNext();
-					reader.readNext();
-					Resource<kry::Audio::Source>* resource = createDefaultMusic(qToKString(path));
-					if (i >= Resources::getMusic().size())
-						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>&>(Resources::getMusic()).emplace_back(resource);
-					else
-						const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>&>(Resources::getMusic())[i].reset(resource);
-				}
-				reader.readNext();
-				reader.readNext();
-			}
-		reader.readNext();
-// SET UP ASSETS
-			Resources::reassignAnimations(const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getTiles()));
-			Resources::reassignAnimations(const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getEntities()));
-			Resources::reassignSounds(const_cast<std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>&>(Assets::getSounds()));
-			Resources::reassignMusic(const_cast<std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>&>(Assets::getMusic()));
-// ENV BROWSER
-		reader.readNext();
+	element = readNameAttr(reader); // animations
+	unsigned count = element.attrVal[0].toUInt();
+	for (unsigned i = 0; i < count; ++i)
+	{
+		reader.readNext(); // anim
+		element = readElement(reader);
+		auto name = element.text;
+		element = readElement(reader);
+		auto path = element.text;
+		auto animation = Animation<>::createDefaultAnimation(qToKString(path));
+		for (unsigned dircount = 0; dircount < Animation<>::MAX_DIRECTION_COUNT; ++dircount) // properties for each dir
 		{
-			count = reader.attributes()[0].value().toString().toUInt();
-			reader.readNext();
-			if (count > 0)
+			element = readNameAttr(reader); // properties
+			unsigned dir = element.attrVal[0].toUInt();
+			unsigned sections = element.attrVal[1].toUInt();
+			for (unsigned j = 0; j < sections; ++j)
 			{
-				for (unsigned i = 0; i < count; ++i)
+				element = readNameAttr(reader); // section
+				auto section = qToKString(element.name);
+				unsigned keys = element.attrVal[0].toUInt();
+				for (unsigned k = 0; k < keys; ++k)
 				{
-					reader.readNext();
-					reader.readNext();
-						element = readElement(reader);
-						auto name = element.text;
-						reader.readNext();
-						element = readElement(reader);
-						auto path = element.text;
-						reader.readNext();
-						element = readElement(reader);
-						auto type = qToKString(element.text);
-						auto asset = Assets::getTileByHardtype(type);
-						std::shared_ptr<Object> object(new Object);
-						object->asset = asset.get();
-						reader.readNext();
-						reader.readNext(); // properties
+					element = readElement(reader); // key/value
+					animation->properties[dir][section][qToKString(element.name)] = qToKString(element.text);
+				}
+				reader.readNext(); // end section
+			}
+			reader.readNext(); // end properties
+		}
+		for (unsigned dircount = 0; dircount < Animation<>::MAX_DIRECTION_COUNT; ++dircount) // frames for each dir
+		{
+			element = readNameAttr(reader); // frames
+			unsigned dir = element.attrVal[0].toUInt();
+			unsigned framecount = element.attrVal[1].toUInt();
+			for (unsigned n = 0; n < framecount; ++n)
+			{
+				element = readNameAttr(reader); // frame
+				unsigned sections = element.attrVal[0].toUInt();
+				for (unsigned j = 0; j < sections; ++j)
+				{
+					element = readNameAttr(reader); // section
+					auto section = qToKString(element.name);
+					unsigned keys = element.attrVal[0].toUInt();
+					for (unsigned k = 0; k < keys; ++k)
+					{
+						element = readElement(reader); // key/value
+						animation->frames[dir][n][section][qToKString(element.name)] = qToKString(element.text);
+					}
+					reader.readNext(); // end section
+				}
+				reader.readNext(); // end frame
+			}
+			reader.readNext(); // end frames
+		}
+		reader.readNext(); // end anim
+		if (i >= Resources::getAnimations().size())
+			const_cast<std::vector<std::shared_ptr<Animation<>>>&>(Resources::getAnimations()).emplace_back(animation);
+		else
+			const_cast<std::vector<std::shared_ptr<Animation<>>>&>(Resources::getAnimations())[i].reset(animation);
+	}
+	reader.readNext(); // end animations
+// SOUNDS
+	element = readNameAttr(reader); // sounds
+	count = element.attrVal[0].toUInt();
+	for (unsigned i = 0; i < count; ++i)
+	{
+		reader.readNext(); // sound
+		{
+			element = readElement(reader);
+			auto name = element.text;
+			element = readElement(reader);
+			auto path = element.text;
+			Resource<kry::Audio::Buffer>* resource = createDefaultSound(qToKString(path));
+			if (i >= Resources::getSounds().size())
+				const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>&>(Resources::getSounds()).emplace_back(resource);
+			else
+				const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Buffer>>>&>(Resources::getSounds())[i].reset(resource);
+		}
+		reader.readNext(); // end sound
+	}
+	reader.readNext(); // end sounds
+// MUSIC
+	element = readNameAttr(reader); // musics
+	count = element.attrVal[0].toUInt();
+	for (unsigned i = 0; i < count; ++i)
+	{
+		reader.readNext(); // music
+		{
+			element = readElement(reader);
+			auto name = element.text;
+			element = readElement(reader);
+			auto path = element.text;
+			Resource<kry::Audio::Source>* resource = createDefaultMusic(qToKString(path));
+			if (i >= Resources::getMusic().size())
+				const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>&>(Resources::getMusic()).emplace_back(resource);
+			else
+				const_cast<std::vector<std::shared_ptr<Resource<kry::Audio::Source>>>&>(Resources::getMusic())[i].reset(resource);
+		}
+		reader.readNext(); // end music
+	}
+	reader.readNext(); // end musics
+// SET UP ASSETS
+	Resources::reassignAnimations(const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getTiles()));
+	Resources::reassignAnimations(const_cast<std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>&>(Assets::getEntities()));
+	Resources::reassignSounds(const_cast<std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>&>(Assets::getSounds()));
+	Resources::reassignMusic(const_cast<std::vector<std::shared_ptr<Asset<kry::Audio::Source>>>&>(Assets::getMusic()));
+// ENV BROWSER
+	element = readNameAttr(reader); // env browser
+	count = element.attrVal[0].toUInt();
+	for (unsigned i = 0; i < count; ++i)
+	{
+		reader.readNext(); // env
+		{
+			element = readElement(reader);
+			auto name = element.text; 
+			element = readElement(reader);
+			auto path = element.text;
+			element = readElement(reader);
+			auto type = qToKString(element.text);
+			auto asset = Assets::getTileByHardtype(type);
+			kry::Media::Config properties;
+			kry::Media::Config hardproperties;
+			element = readNameAttr(reader); // properties
+			unsigned sections = element.attrVal[0].toUInt();
+			for (unsigned j = 0; j < sections; ++j)
+			{
+				element = readNameAttr(reader); // section
+				auto section = qToKString(element.name);
+				unsigned keys = element.attrVal[0].toUInt();
+				for (unsigned k = 0; k < keys; ++k)
+				{
+					element = readElement(reader); // key/value
+					properties[section][qToKString(element.name)] = qToKString(element.text);
+				}
+				reader.readNext(); // end section
+			}
+			reader.readNext(); // end properties
+			element = readNameAttr(reader); // hardproperties
+			sections = element.attrVal[0].toUInt();
+			for (unsigned j = 0; j < sections; ++j)
+			{
+				element = readNameAttr(reader); // section
+				auto section = qToKString(element.name);
+				unsigned keys = element.attrVal[0].toUInt();
+				for (unsigned k = 0; k < keys; ++k)
+				{
+					element = readElement(reader); // key/value
+					hardproperties[section][qToKString(element.name)] = qToKString(element.text);
+				}
+				reader.readNext(); // end section
+			}
+			reader.readNext(); // end hardproperties
+			auto item = EnvBr::createListItem(asset.get(), path, name);
+			window->getEnvBrowser()->getUI()->lbIcons->addItem(item);
+			window->getEnvBrowser()->overrideFirstLoad(false);
+		}
+		reader.readNext(); // end env
+	}
+	reader.readNext(); // end env browser
+// PROJECT SETTINGS
+	element = readNameAttr(reader); // project settings
+	count = element.attrVal[0].toUInt();
+	for (unsigned i = 0; i < count; ++i)
+	{
+		element = readNameAttr(reader); // section
+		auto section = qToKString(element.name);
+		unsigned keys = element.attrVal[0].toUInt();
+		for (unsigned k = 0; k < keys; ++k)
+		{
+			element = readElement(reader); // key/value
+			prjsettings[section][qToKString(element.name)] = qToKString(element.text);
+		}
+		reader.readNext(); // end section
+	}
+	reader.readNext(); // end project settings
+// FLOORS
+	element = readNameAttr(reader); // floors
+	count = element.attrVal[0].toUInt();
+	single.reset(new Map(prjname.left(prjname.lastIndexOf('.')), count)); // reset the map
+	single->setProjectName(prjname);
+	for (unsigned i = 0; i < count; ++i)
+	{
+		element = readNameAttr(reader); // floor
+		auto id = element.attrVal[0];
+		{
+			element = readElement(reader); // name
+			auto description = element.text;
+			element = readElement(reader); // width
+			auto width = element.text;
+			element = readElement(reader); // height
+			auto height = element.text;
+			element = readElement(reader); // tilewidth
+			auto tilewidth = element.text;
+			element = readElement(reader); // tileheight
+			auto tileheight = element.text;
+
+			Tile defaulttile;
+			defaulttile.asset = Assets::getTiles()[0].get(); /** #TODO(bug) there might not be any assets */
+			auto layer = createLayer(defaulttile, QSize(width.toInt(), height.toInt()), description, i);
+			single->layers.emplace_back(layer);
+		}
+		reader.readNext(); // end floor
+	}
+	reader.readNext(); // end floors
+// ITEMS
+	element = readNameAttr(reader); // items
+	count = element.attrVal[0].toUInt();
+	for (unsigned i = 0; i < count; ++i)
+	{
+		element = readNameAttr(reader); // item
+		auto id = element.attrVal[0];
+		{
+			element = readElement(reader); // name
+			auto name = element.text;
+			Item* item = new Item;
+			item->name = name;
+			element = readNameAttr(reader); // properties
+			unsigned sections = element.attrVal[0].toUInt();
+			for (unsigned j = 0; j < sections; ++j)
+			{
+				element = readNameAttr(reader); // section
+				auto section = qToKString(element.name);
+				unsigned keys = element.attrVal[0].toUInt();
+				for (unsigned k = 0; k < keys; ++k)
+				{
+					element = readElement(reader); // key/value
+					item->properties[section][qToKString(element.name)] = qToKString(element.text);
+				}
+				reader.readNext(); // end section
+			}
+			reader.readNext(); // end properties
+			single->getItems().insert(std::pair<Util::String, std::shared_ptr<Item>>(Util::toString(i), std::make_shared<Item>(*item)));
+		}
+		reader.readNext(); // end item
+	}
+	reader.readNext(); // end items
+// TILE DATA
+	reader.readNext(); // tiledata
+	{
+		for (size_t i = 0; i < single->layers.size(); ++i)
+		{
+			std::shared_ptr<Layer>& layer = single->layers[i];
+			for (size_t j = 0; j < layer->tiles.size(); ++j)
+			{
+				Tile& tile = layer->tiles[j];
+// TILE
+				element = readNameAttr(reader); // tile
+				{
+					element = readElement(reader); // layer id
+					element = readElement(reader); // type
+					tile.asset = Assets::getTileByHardtype(qToKString(element.text)).get();
+					element = readElement(reader); // object count
+					auto objcount = element.text.toUInt();
+					tile.objects.reserve(objcount);
+					element = readElement(reader); // position
+					tile.sprite.position = Util::Vector2f::Vector(qToKString(element.text));
+					element = readNameAttr(reader); // properties
+					unsigned sections = element.attrVal[0].toUInt();
+					for (unsigned k = 0; k < sections; ++k)
+					{
+						element = readNameAttr(reader); // section
+						auto section = qToKString(element.name);
+						unsigned keys = element.attrVal[0].toUInt();
+						for (unsigned n = 0; n < keys; ++n)
 						{
-							unsigned sections = reader.attributes()[0].value().toString().toUInt();
-							for (unsigned j = 0; j < sections; ++j)
+							element = readElement(reader); // key/value
+							tile.properties[section][qToKString(element.name)] = qToKString(element.text);
+						}
+						reader.readNext(); // end section
+					}
+					reader.readNext(); // end properties
+					element = readNameAttr(reader); // hardproperties
+					sections = element.attrVal[0].toUInt();
+					for (unsigned k = 0; k < sections; ++k)
+					{
+						element = readNameAttr(reader); // section
+						auto section = qToKString(element.name);
+						unsigned keys = element.attrVal[0].toUInt();
+						for (unsigned n = 0; n < keys; ++n)
+						{
+							element = readElement(reader); // key/value
+							tile.hardproperties[section][qToKString(element.name)] = qToKString(element.text);
+						}
+						reader.readNext(); // end section
+					}
+					reader.readNext(); // end hardproperties
+// OBJECTS
+					reader.readNext(); // objects
+					{
+						for (unsigned k = 0; k < objcount; ++k)
+						{
+							element = readNameAttr(reader); // object
 							{
-								reader.readNext();
-								reader.readNext(); // section
+								Object* object = new Object;
+								element = readElement(reader); // tile id
+								element = readElement(reader); // type
+								object->asset = (element.text == "wall" ? Assets::getTileByHardtype(qToKString(element.text)) : Assets::getEntityByHardtype(qToKString(element.text))).get();
+								element = readElement(reader); // position
+								object->sprite.position = Util::Vector2f::Vector(qToKString(element.text));
+								element = readNameAttr(reader); // properties
+								sections = element.attrVal[0].toUInt();
+								for (unsigned n = 0; n < sections; ++n)
 								{
-									auto section = qToKString(reader.name().toString());
-									unsigned keys = reader.attributes()[0].value().toString().toUInt();
-									for (unsigned k = 0; k < keys; ++k)
+									element = readNameAttr(reader); // section
+									auto section = qToKString(element.name);
+									unsigned keys = element.attrVal[0].toUInt();
+									for (unsigned m = 0; m < keys; ++m)
 									{
-										reader.readNext();
 										element = readElement(reader); // key/value
 										object->properties[section][qToKString(element.name)] = qToKString(element.text);
 									}
-									if (keys > 0)
-									{
-										reader.readNext();
-										reader.readNext();
-									}
+									reader.readNext(); // end section
 								}
-							}
-						}
-						reader.readNext();
-						reader.readNext();
-						reader.readNext();
-						reader.readNext(); // hardproperties
-						{
-							unsigned sections = reader.attributes()[0].value().toString().toUInt();
-							for (unsigned j = 0; j < sections; ++j)
-							{
-								reader.readNext();
-								reader.readNext(); // section
+								reader.readNext(); // end properties
+								element = readNameAttr(reader); // hardproperties
+								sections = element.attrVal[0].toUInt();
+								for (unsigned n = 0; n < sections; ++n)
 								{
-									auto section = qToKString(reader.name().toString());
-									unsigned keys = reader.attributes()[0].value().toString().toUInt();
-									for (unsigned k = 0; k < keys; ++k)
+									element = readNameAttr(reader); // section
+									auto section = qToKString(element.name);
+									unsigned keys = element.attrVal[0].toUInt();
+									for (unsigned m = 0; m < keys; ++m)
 									{
-										reader.readNext();
 										element = readElement(reader); // key/value
 										object->hardproperties[section][qToKString(element.name)] = qToKString(element.text);
 									}
-									if (keys > 0)
-									{
-										reader.readNext();
-										reader.readNext();
-									}
+									reader.readNext(); // end section
 								}
+								reader.readNext(); // end hardproperties
+								element = readNameAttr(reader); // waypoints
+								unsigned waypoints = element.attrVal[0].toUInt();
+								for (int n = 0; n < waypoints; ++n)
+								{
+									kry::Graphics::Sprite way;
+									element = readElement(reader); // position
+									way.position = Util::Vector2f::Vector(qToKString(element.text));
+									element = readElement(reader); // flag
+									way.texture = Resources::getEditorTexture(element.text == "FLAG_RED" ? EditorResource::FLAG_RED : EditorResource::FLAG_GREEN)->rawresource;
+									way.dimensions = way.texture->getDimensions();
+									object->waypoints.push_back(way);
+								}
+								window->getUI()->glWidget->getWaypoints().insert(std::pair<Object*, std::vector<Graphics::Sprite>>(object, object->waypoints));
+								tile.objects.emplace_back(object);
+								reader.readNext(); // end waypoints
 							}
+							reader.readNext(); // end object
 						}
-						reader.readNext();
-						reader.readNext();
-						ObjectListItem* item = new ObjectListItem(object, QIcon(path), name);
-						unsigned index = 0;
-						for (auto& resource : Resources::getAnimations())
-						{
-							if (resource.get() == asset->resource)
-								break;
-							++index;
-						}
-						item->object->hardproperties["floor"]["skin"] = kry::Util::toString(index);
-						window->getEnvBrowser()->getUI()->lbIcons->addItem(item);
-						window->getEnvBrowser()->overrideFirstLoad(false);
-					reader.readNext();
-					reader.readNext();
+					}
+					reader.readNext(); // end objects
 				}
-				reader.readNext();
-				reader.readNext();
+				reader.readNext(); // end tile
 			}
 		}
-		reader.readNext();
-// PROJECT SETTINGS
-		reader.readNext();
-		{
-			unsigned sections = reader.attributes()[0].value().toString().toUInt();
-			for (unsigned j = 0; j < sections; ++j)
-			{
-				reader.readNext();
-				reader.readNext(); // section
-				{
-					auto section = qToKString(reader.name().toString());
-					unsigned keys = reader.attributes()[0].value().toString().toUInt();
-					for (unsigned k = 0; k < keys; ++k)
-					{
-						reader.readNext();
-						element = readElement(reader); // key/value
-						prjsettings[section][qToKString(element.name)] = qToKString(element.text);
-					}
-					if (keys > 0)
-					{
-						reader.readNext();
-						reader.readNext();
-					}
-				}
-			}
-			reader.readNext();
-			reader.readNext();
-		}
-		reader.readNext();
-// ITEMS
-		reader.readNext();
-		{
-			count = reader.attributes()[0].value().toString().toUInt();
-			if (count > 0)
-			{
-				for (unsigned i = 0; i < count; ++i)
-				{
-					reader.readNext();
-					reader.readNext();
-					{
-						reader.readNext();
-						element = readElement(reader); // name
-						reader.readNext();
-						auto name = element.text;
-						reader.readNext(); // properties
-						unsigned sections = reader.attributes()[0].value().toString().toUInt();
-						for (unsigned j = 0; j < sections; ++j)
-						{
-							reader.readNext();
-							reader.readNext(); // section
-							{
-								auto section = qToKString(reader.name().toString());
-								unsigned keys = reader.attributes()[0].value().toString().toUInt();
-								for (unsigned k = 0; k < keys; ++k)
-								{
-									reader.readNext();
-									element = readElement(reader); // key/value
-									prjsettings[section][qToKString(element.name)] = qToKString(element.text);
-								}
-								if (keys > 0)
-								{
-									reader.readNext();
-									reader.readNext();
-								}
-							}
-						}
-						reader.readNext();
-						reader.readNext();
-					}
-					reader.readNext();
-					reader.readNext();
-				}
+	}
+	reader.readNext(); // end tiledata
 
-				reader.readNext();
-				reader.readNext();
-			}
-		}
-		reader.readNext();
-// FLOORS
-		reader.readNext();
-		{
-			count = reader.attributes()[0].value().toString().toUInt();
-			for (int i = 0; i < count; ++i)
-			{
-				reader.readNext();
-				reader.readNext();
-				{
-					reader.readNext();
-					element = readElement(reader);
-					auto description = element.text;
-					reader.readNext();
-					element = readElement(reader);
-					auto width = element.text.toInt();
-					reader.readNext();
-					element = readElement(reader);
-					auto height = element.text.toInt();
-					reader.readNext();
-					element = readElement(reader);
-					auto tilewidth = element.text.toInt();
-					reader.readNext();
-					element = readElement(reader);
-					auto tileheight = element.text.toInt();
-					Layer* layer = new Layer { std::move(std::vector<Tile>(width * height, Tile())), description, {width, height}, {tilewidth, tileheight}, i};
-					single->layers.emplace_back(layer);
-				}
-				reader.readNext();
-				reader.readNext();
-			}
-		}
-		reader.readNext();
-// TILE DATA
-		reader.readNext(); // tiledata
-			for (size_t i = 0; i < single->layers.size(); ++i)
-			{
-				std::shared_ptr<Layer>& layer = single->layers[i];
-
-				for (size_t j = 0; j < layer->tiles.size(); ++j)
-				{
-					Tile& tile = layer->tiles[j];
-					reader.readNext();
-					reader.readNext(); // tile
-					{
-						reader.readNext(); // layerid
-						element = readElement(reader);
-						reader.readNext();
-						element = readElement(reader);
-						tile.asset = Assets::getTileByHardtype(qToKString(element.text)).get();
-						reader.readNext();
-						element = readElement(reader);
-						size_t objectcount = element.text.toUInt();
-						tile.objects.reserve(objectcount == 0 ? 1 : objectcount);
-						reader.readNext();
-						reader.readNext(); // properties
-						{
-							unsigned sections = reader.attributes()[0].value().toString().toUInt();
-							for (unsigned j = 0; j < sections; ++j)
-							{
-								reader.readNext();
-								reader.readNext(); // section
-								{
-									auto section = qToKString(reader.name().toString());
-									unsigned keys = reader.attributes()[0].value().toString().toUInt();
-									for (unsigned k = 0; k < keys; ++k)
-									{
-										reader.readNext();
-										element = readElement(reader); // key/value
-										tile.properties[section][qToKString(element.name)] = qToKString(element.text);
-									}
-									if (keys > 0)
-									{
-										reader.readNext();
-										reader.readNext();
-									}
-								}
-							}
-							reader.readNext();
-							reader.readNext();
-						}
-						reader.readNext();
-						reader.readNext(); // hardproperties
-						{
-							unsigned sections = reader.attributes()[0].value().toString().toUInt();
-							for (unsigned j = 0; j < sections; ++j)
-							{
-								reader.readNext();
-								reader.readNext(); // section
-								{
-									auto section = qToKString(reader.name().toString());
-									unsigned keys = reader.attributes()[0].value().toString().toUInt();
-									for (unsigned k = 0; k < keys; ++k)
-									{
-										reader.readNext();
-										element = readElement(reader); // key/value
-										tile.hardproperties[section][qToKString(element.name)] = qToKString(element.text);
-									}
-									if (keys > 0)
-									{
-										reader.readNext();
-										reader.readNext();
-									}
-								}
-							}
-							reader.readNext();
-							reader.readNext();
-						}
-						reader.readNext();
-						reader.readNext(); // objects
-						if (objectcount == 0)
-							reader.readNext();
-						else
-						{
-							for (size_t n = 0; n < objectcount; ++n)
-							{
-								reader.readNext();
-								reader.readNext(); // object
-								{
-									Object* object = new Object;
-
-									reader.readNext();
-									element = readElement(reader); // tileid
-									reader.readNext();
-									element = readElement(reader);
-									auto assetpath = element.text;
-									object->asset = assetpath == "wall" ? Assets::getTileByHardtype(qToKString(assetpath)).get() : Assets::getEntityByHardtype(qToKString(assetpath)).get();
-									reader.readNext();
-									reader.readNext(); // properties
-									int sections = reader.attributes()[0].value().toInt();
-									object->properties = object->asset->properties;
-										for (int section = 0; section < sections; ++section)
-										{
-											reader.readNext();
-											reader.readNext(); // section
-											int keys = reader.attributes()[0].value().toInt();
-											kry::Util::String strsection = qToKString(reader.name().toString());
-											for (int key = 0; key < keys; ++key)
-											{
-												reader.readNext();
-												element = readElement(reader); // key
-												kry::Util::String strkey = qToKString(element.name);
-												object->properties[strsection][strkey] = qToKString(element.text);
-											}
-											if (keys > 0)
-											{
-												reader.readNext();
-												reader.readNext();
-											}
-										}
-										reader.readNext();
-										reader.readNext();
-									reader.readNext();
-									reader.readNext(); // hardproperties
-									sections = reader.attributes()[0].value().toInt();
-										for (int section = 0; section < sections; ++section)
-										{
-											reader.readNext();
-											reader.readNext(); // section
-											int keys = reader.attributes()[0].value().toInt();
-											kry::Util::String strsection = qToKString(reader.name().toString());
-											for (int key = 0; key < keys; ++key)
-											{
-												reader.readNext();
-												element = readElement(reader); // key
-												kry::Util::String strkey = qToKString(element.name);
-												object->hardproperties[strsection][strkey] = qToKString(element.text);
-											}
-											if (keys > 0)
-											{
-												reader.readNext();
-												reader.readNext();
-											}
-										}
-										reader.readNext();
-										reader.readNext();
-									auto parent = Assets::getParentType(qToKString(assetpath));
-									auto key = parent == "entity" ? kry::Util::String("skinIdle") : kry::Util::String("skin");
-									object->sprite.texture = Resources::getAnimations()[kry::Util::toUIntegral<size_t>(object->hardproperties[parent][key])]->rawresource;
-									object->sprite.dimensions = object->sprite.texture->getDimensions();
-									object->sprite.position = {kry::Util::toDecimal<float>(object->properties["global"]["posx"]),
-																kry::Util::toDecimal<float>(object->properties["global"]["posy"])};
-										reader.readNext(); // waypoints
-										unsigned waypoints = reader.attributes()[0].value().toUInt();
-										if (waypoints > 0)
-										{
-											for (unsigned point = 0; point < waypoints; ++point)
-											{
-												reader.readNext();
-												reader.readNext(); // waypoint
-												kry::Graphics::Sprite sprite;
-												reader.readNext();
-												element = readElement(reader);
-												auto pos = element.text;
-												reader.readNext();
-												element = readElement(reader);
-												auto rgba = element.text;
-												sprite.position = kry::Util::Vector2f::Vector(qToKString(pos));
-												sprite.rgba = kry::Util::Vector4f::Vector(qToKString(rgba));
-												sprite.texture = Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource;
-												sprite.dimensions = sprite.texture->getDimensions();
-												object->waypoints.push_back(sprite);
-												reader.readNext();
-												reader.readNext();
-											}
-											reader.readNext();
-											reader.readNext();
-										}
-									tile.objects.emplace_back(object);
-									reader.readNext();
-									reader.readNext();
-								}
-							}
-							reader.readNext();
-							reader.readNext();
-						}
-						reader.readNext();
-						reader.readNext();
-					}
-				}
-			}
 	file.close();
 
 	single->currentLayer = single->layers[0];
@@ -744,7 +553,7 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 	file.open(QIODevice::WriteOnly);
 
 	QXmlStreamWriter writer(&file);
-	writer.setAutoFormatting(true);
+	writer.setAutoFormatting(false);
 	writer.writeStartDocument();
 
 	writer.writeStartElement("projectfile");
@@ -927,6 +736,26 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 			}
 		}
 		writer.writeEndElement();
+// FLOORS
+		writer.writeStartElement("floors");
+		writer.writeAttribute("count", QString::number(single->layers.size()));
+		{
+			for (size_t i = 0; i < single->layers.size(); ++i)
+			{
+				std::shared_ptr<Layer>& layer = single->layers[i];
+				writer.writeStartElement("floor");
+				writer.writeAttribute("id", QString::number(layer->index));
+				{
+					writer.writeTextElement("description", layer->description);
+					writer.writeTextElement("width", QString::number(layer->size[0]));
+					writer.writeTextElement("height", QString::number(layer->size[1]));
+					writer.writeTextElement("tilewidth", QString::number(layer->tilesize[0]));
+					writer.writeTextElement("tileheight", QString::number(layer->tilesize[1]));
+				}
+				writer.writeEndElement();
+			}
+		}
+		writer.writeEndElement();
 // ITEMS
 		writer.writeStartElement("items");
 		writer.writeAttribute("count", QString::number(single->getItems().size()));
@@ -960,26 +789,6 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 			}
 		}
 		writer.writeEndElement();
-// FLOORS
-		writer.writeStartElement("floors");
-		writer.writeAttribute("id", QString::number(single->layers.size()));
-		{
-			for (size_t i = 0; i < single->layers.size(); ++i)
-			{
-				std::shared_ptr<Layer>& layer = single->layers[i];
-				writer.writeStartElement("floors");
-				writer.writeAttribute("id", QString::number(layer->index));
-				{
-					writer.writeTextElement("description", layer->description);
-					writer.writeTextElement("width", QString::number(layer->size[0]));
-					writer.writeTextElement("height", QString::number(layer->size[1]));
-					writer.writeTextElement("tilewidth", QString::number(layer->tilesize[0]));
-					writer.writeTextElement("tileheight", QString::number(layer->tilesize[1]));
-				}
-				writer.writeEndElement();
-			}
-		}
-		writer.writeEndElement();
 // TILE DATA
 		writer.writeStartElement("tiledata");
 		{
@@ -995,8 +804,9 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 					writer.writeAttribute("id", kryToQString(tile.properties["global"]["id"]));
 					{
 						writer.writeTextElement("layerid", QString::number(i));
-						writer.writeTextElement("asset", kryToQString(tile.asset->properties["global"]["type"]));
+						writer.writeTextElement("asset", kryToQString(tile.asset->properties["global"]["hardtype"]));
 						writer.writeTextElement("objectcount", QString::number(tile.objects.size()));
+						writer.writeTextElement("position", kryToQString(tile.sprite.position.toString()));
 						writer.writeStartElement("properties");
 						writer.writeAttribute("sections", QString::number(tile.properties.sectionExists("") ? tile.properties.getSectionNames().size() - 1 : tile.properties.getSectionNames().size()));
 						{
@@ -1041,7 +851,8 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 								writer.writeAttribute("id", kryToQString(object->properties["global"]["id"]));
 								{
 									writer.writeTextElement("tileid", kryToQString(tile.properties["global"]["id"]));
-									writer.writeTextElement("asset", kryToQString(object->asset->properties["global"]["type"]));
+									writer.writeTextElement("asset", kryToQString(object->asset->properties["global"]["hardtype"]));
+									writer.writeTextElement("position", kryToQString(object->sprite.position.toString()));
 									writer.writeStartElement("properties");
 									writer.writeAttribute("sections", QString::number(object->properties.sectionExists("") ? object->properties.getSectionNames().size() - 1 : object->properties.getSectionNames().size()));
 									{
@@ -1084,7 +895,7 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 											writer.writeStartElement("waypoint");
 											{
 												writer.writeTextElement("position", kryToQString(waypoint.position.toString()));
-												writer.writeTextElement("rgba", kryToQString(waypoint.rgba.toString()));
+												writer.writeTextElement("texture", waypoint.texture == Resources::getEditorTexture(EditorResource::FLAG_RED)->rawresource ? QString("FLAG_RED") : QString("FLAG_GREEN"));
 											}
 											writer.writeEndElement();
 										}
@@ -1285,6 +1096,25 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 			lines.push_back("gameOverSkin = " + prjconfig["project"]["gameOverSkin"]);
 			hasskin = true;
 		}
+		if (!prjconfig["project"]["lifeSkin"].isEmpty() && prjconfig["project"]["lifeSkin"] != "-1")
+		{
+			doesMissingExist = true;
+			auto index = Util::toUIntegral<size_t>(prjconfig["project"]["lifeSkin"]);
+			std::pair<Util::String, std::vector<UsedAnim>> pair;
+			pair.first = gameskins;
+			pair.second.push_back({ Resources::getAnimations()[index], gameskins, 1, index });
+			AnimObjectMap::iterator found = objectanimsused.find(gameskins);
+			if (found == objectanimsused.end())
+				objectanimsused.insert(pair);
+			else
+			{
+				auto& foundanims = found->second;
+				if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
+					foundanims.push_back(*pair.second.begin());
+			}
+			lines.push_back("lifeSkin = " + prjconfig["project"]["lifeSkin"]);
+			hasskin = true;
+		}
 		if (hasskin)
 			lines.push_back("overlaySkinConfig = " + gameskins);
 		prjconfig["project"]["soundtrackSize"] = Util::toString(Assets::getMusic().size()); /** #TODO(change) would prefer this not to be here, but meh for now */
@@ -1297,6 +1127,9 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 			musicused.insert(Util::toString(i));
 		}
 		lines.push_back("randomizeSoundtrack = " + boolToKBool(prjconfig["project"]["randomizeSoundtrack"]));
+		lines.push_back("inventoryTextSize = " + boolToKBool(prjconfig["project"]["inventoryTextSize"]));
+		lines.push_back("inventoryIconDimensions = " + boolToKBool(prjconfig["project"]["inventoryIconDimensions"]));
+		lines.push_back("inventoryIconGap = " + boolToKBool(prjconfig["project"]["inventoryIconGap"]));
 // OBJECTIVE SETTINGS
 		lines.push_back("[Objectives]");
 // ITEM DECLARATIONS
@@ -1306,10 +1139,10 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 // ITEM DEFINITIONS
 		auto writeItemProps = [&lines, &objectanimsused, &doesMissingExist, &soundsused, &musicused](Item* item, const kry::Util::String& section, const kry::Util::String& skinsfile)
 		{
-			for (auto& key : item->properties["item"].getKeyNames())
+			for (auto& key : item->properties[section].getKeyNames())
 			{
-				auto value = item->properties["item"][key];
-				auto widgettype = const_cast<Media::Config&>(Assets::getHardTypes())["item"][key];
+				auto value = item->properties[section][key];
+				auto widgettype = const_cast<Media::Config&>(Assets::getHardTypes())[section][key];
 				if (widgettype == "ANIM_ID" || widgettype == "ANIM_ID_FORCE")
 				{
 					if (widgettype == "ANIM_ID")
@@ -1529,12 +1362,13 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 							if (value == "-1")
 								value = "";
 						}
-						if (!value.isEmpty())
+						if (!value.isEmpty() || const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[section].keyExists(key))
 							lines.push_back(key + '=' + value);
 					}
 					else
 					{
-						if (widgettype == "ITEM_ARR" || widgettype == "ENTITY_GROUP_ARR" || widgettype == "ENTITY_ARR" || widgettype == "VEC_2_POS_ARR")
+						if (widgettype == "ITEM_ARR" || widgettype == "ENTITY_GROUP_ARR" || widgettype == "ENTITY_ARR" || widgettype == "VEC_2_POS_ARR" || 
+							const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[section].keyExists(key) )
 							lines.push_back(key + '=' + value);
 					}
 				}

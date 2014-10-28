@@ -171,9 +171,13 @@ void PrjSettingsDialog::resetSettings()
 	settings["project"]["floorFadeTime"] = "250";
 	settings["project"]["cameraScale"] = "0.2";
 	settings["project"]["deathFadeTime"] = "5000";
-	settings["project"]["gameOverSkin"] = "0";
+	settings["project"]["gameOverSkin"] = "-1";
+	settings["project"]["lifeSkin"] = "-1";
 	settings["project"]["soundtrackSize"] = "0";
 	settings["project"]["randomizeSoundtrack"] = "true";
+	settings["project"]["inventoryTextSize"] = "20";
+	settings["project"]["inventoryIconDimensions"] = "{ 80, 80 }";
+	settings["project"]["inventoryIconGap"] = "{ 40, 50 }";
 	
 	if (!settings["entity"].keyExists("skinConfig"))
 		settings["entity"]["skinConfig"] = "";
@@ -188,7 +192,7 @@ void PrjSettingsDialog::resetSettings()
 	if (!settings["entity"].keyExists("dimensions"))
 		settings["entity"]["dimensions"] = "{ 1, 1 }";
 	if (!settings["entity"].keyExists("floor"))
-		settings["entity"]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
+		settings["entity"]["floor"] = "0";
 	if (!settings["entity"].keyExists("direction"))
 		settings["entity"]["direction"] = "0";
 	if (!settings["entity"].keyExists("directions"))

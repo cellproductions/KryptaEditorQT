@@ -58,7 +58,7 @@ class Map
         inline const QString& getName() const;
         void resetMap();
 
-		static Layer* createLayer(const Tile& defaulttile, LayerOptionsItem* layeritem, unsigned id);
+		static Layer* createLayer(const Tile& defaulttile, const QSize& size, const QString& description, unsigned id);
 		inline static void setProjectName(const QString& name);
 		inline static const QString& getProjectName();
         static std::shared_ptr<Map> createMap(const QString& name, const Tile& defaulttile, QListWidget* layerList);

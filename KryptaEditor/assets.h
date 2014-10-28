@@ -33,7 +33,7 @@ struct Asset
 class Assets
 {
     public:
-		static void loadAssets(const QString& rootdir);
+		static void loadAssets(const QString& rootdir, bool assign);
         inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>& getTiles();
 		inline static const std::vector<std::shared_ptr<Asset<kry::Graphics::Texture>>>& getEntities();
         inline static const std::vector<std::shared_ptr<Asset<kry::Audio::Buffer>>>& getSounds();

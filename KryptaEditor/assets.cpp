@@ -15,7 +15,7 @@ kry::Media::Config Assets::hardtypes;
 kry::Media::Config Assets::requiredkeys;
 bool Assets::loaded(false);
 
-void Assets::loadAssets(const QString& rootdir)
+void Assets::loadAssets(const QString& rootdir, bool assign)
 {
 	auto strrootdir = rootdir.toStdString(); // if they were all in one directory, could load them and place them based on their type?
 	hardtypes.fileToConfig(qToKString(rootdir + "\\types.ini"));
@@ -85,10 +85,13 @@ void Assets::loadAssets(const QString& rootdir)
 		music.emplace_back(asset);
 	}
 	
-	Resources::loadAndAssignAnimations(tiles);
-	Resources::loadAndAssignAnimations(entities);
-	Resources::loadAndAssignSounds(sounds);
-	Resources::loadAndAssignMusic(music);
+	if (assign)
+	{
+		Resources::loadAndAssignAnimations(tiles);
+		Resources::loadAndAssignAnimations(entities);
+		Resources::loadAndAssignSounds(sounds);
+		Resources::loadAndAssignMusic(music);
+	}
 
     loaded = true;
 }

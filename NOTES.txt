@@ -43,6 +43,7 @@ TODO HIGH(absolutely required):
 [x] after adding a second frame, update the first's image key
 [x] after adding/removing a frame, update the sheet's "frames" key
 [x] make sure the animation manager selects the first direction when it starts up for the first time
+[ ] add an exportTo button (export to location)
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
@@ -69,7 +70,6 @@ TODO MEDIUM(will pass fine without being added):
 [ ] add a "test in game" button that launches the map in the game with debug on
 [ ] create a file for animation keys similar to types.ini
 [ ] finish export button for animations
-[ ] add an exportTo button (export to location)
 
 TODO LOW(extra fluff for polish):
 [ ] add grid overlay/toggle

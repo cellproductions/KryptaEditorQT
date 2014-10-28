@@ -6,7 +6,7 @@
 #include "Utilities.h"
 #include <QInputDialog>
 
-namespace
+namespace EnvBr
 {
 	ObjectListItem* createListItem(Asset<kry::Graphics::Texture>* asset, const QString& imagefile, const QString& name)
 	{
@@ -97,7 +97,7 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 		auto animation = Resources::getAnimations()[stranim.left(stranim.indexOf(':')).toUInt()];
 
 		auto asset = Assets::getTileByHardtype(qToKString(type));
-		auto item = createListItem(asset.get(), animation->path, name);
+		auto item = EnvBr::createListItem(asset.get(), animation->path, name);
 		item->object->hardproperties["floor"]["skin"] = kry::Util::toString(Resources::getAnimationIndex(animation));
 
 		ObjectSettingsDialog dialog(this);
@@ -140,10 +140,11 @@ DialogResult EnvBrowserDialog::showDialog()
 	{
         for (auto& asset : Assets::getTiles())
 		{
-			auto item = createListItem(asset.get(), asset->resource->path, kryToQString(asset->properties["global"]["name"]));
+			auto item = EnvBr::createListItem(asset.get(), asset->resource->path, kryToQString(asset->properties["global"]["name"]));
             ui->lbIcons->addItem(item);
 		}
 		firstLoad = false;
+		return lastresult;
 	}
 	if (ui->lbIcons->count() <= 0)
 		ui->bRemove->setEnabled(false);

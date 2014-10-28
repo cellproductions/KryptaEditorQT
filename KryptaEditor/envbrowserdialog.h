@@ -2,12 +2,18 @@
 #define ENVBROWSERDIALOG_H
 
 #include "ObjectListItem.h"
+#include "assets.h"
 #include "DialogResult.h"
 #include <QDialog>
 
 namespace Ui
 {
     class EnvBrowserDialog;
+}
+
+namespace EnvBr
+{
+	ObjectListItem* createListItem(Asset<kry::Graphics::Texture>* asset, const QString& imagefile, const QString& name);
 }
 
 class EnvBrowserDialog : public QDialog

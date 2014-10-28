@@ -164,7 +164,7 @@ LayerBrowserDialog::LayerBrowserDialog(QWidget *parent) : QDialog(parent), ui(ne
 			{
 				Tile tile;
 				tile.asset = Assets::getTiles()[0].get(); /** #TODO(bug) there might not be any assets */
-				Map::Layer* layer = Map::createLayer(tile, item, i);
+				Map::Layer* layer = Map::createLayer(tile, QSize(item->getWidth(), item->getHeight()), item->getDescription(), i);
 				Map::getMap()->getLayers().emplace_back(layer);
 			}
 		}

@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
 	ui->setupUi(this);
 
+	setWindowIcon(QIcon("editor\\kicon.png"));
 	ui->bPointer->setIcon(QIcon("editor\\pointer.png"));
 	ui->bPaint->setIcon(QIcon("editor\\paint.png"));
 	ui->bSelect->setIcon(QIcon("editor\\select.png"));
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	connect(ui->miFileSave, SIGNAL(triggered()), this, SLOT(onSaveTrigger()));
 	connect(ui->miFileSaveAs, SIGNAL(triggered()), this, SLOT(onSaveAsTrigger()));
 	connect(ui->miFileExport, SIGNAL(triggered()), this, SLOT(onExportTrigger()));
+	connect(ui->miFileExportTo, SIGNAL(triggered()), this, SLOT(onExportToTrigger()));
     connect(ui->miFileExit, SIGNAL(triggered()), this, SLOT(onExitTrigger()));
 	connect(ui->miPreferences, &QAction::triggered, [this]()
 	{
@@ -318,8 +320,10 @@ void MainWindow::onNewTrigger()
 
             if (!Assets::isLoaded())
 			{
-                Assets::loadAssets("assets");
+                Assets::loadAssets("assets", true);
 				Resources::initEditorTextures();
+				envbrowseDialog->showDialog();
+				entbrowseDialog->showDialog();
 			}
 
             if (Map::getMap())
@@ -339,6 +343,17 @@ void MainWindow::onNewTrigger()
             ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));
 			ui->glWidget->resetCamera();
             ui->glWidget->updateCanvas();
+
+			ui->miFileSave->setEnabled(true);
+			ui->miFileSaveAs->setEnabled(true);
+			ui->miFileExport->setEnabled(true);
+			ui->miFileExportTo->setEnabled(true);
+			ui->miViewGrid->setEnabled(true);
+			ui->miViewWaypoint->setEnabled(true);
+			ui->miProjectSettings->setEnabled(true);
+			ui->miProjectAnims->setEnabled(true);
+			ui->miProjectAudio->setEnabled(true);
+			ui->miProjectItems->setEnabled(true);
         }
         catch (const kry::Util::Exception& e)
         {
@@ -358,7 +373,7 @@ void MainWindow::onOpenTrigger()
 
 	if (!Assets::isLoaded()) // first time loading the map
 	{
-		Assets::loadAssets("assets");
+		Assets::loadAssets("assets", false);
 		Resources::initEditorTextures();
 	}
 	else // map's been loaded before, clear it all
@@ -371,15 +386,28 @@ void MainWindow::onOpenTrigger()
 	try
 	{
 		Map::setProjectName(prjname);
+		prjsettingsDialog->resetSettings();
 		auto map = Map::loadFromFile(this, file, prjsettingsDialog->getAllSettings());
+		saved = false;
 		ui->cbLayers->clear();
-		for (auto& layer : map->getLayers())
-			ui->cbLayers->addItem( layer->description);
+		for (auto layer : map->getLayers())
+			ui->cbLayers->addItem(QString::number(layer->index) + ':' + layer->description);
 		ui->layerProperties->setItem(0, 1, new QTableWidgetItem(map->getCurrentLayer()->description));
 		ui->layerProperties->setItem(1, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[0])));
 		ui->layerProperties->setItem(2, 1, new QTableWidgetItem(QString::number(map->getCurrentLayer()->size[1])));
 		ui->glWidget->resetCamera();
 		ui->glWidget->updateCanvas();
+
+		ui->miFileSave->setEnabled(true);
+		ui->miFileSaveAs->setEnabled(true);
+		ui->miFileExport->setEnabled(true);
+		ui->miFileExportTo->setEnabled(true);
+		ui->miViewGrid->setEnabled(true);
+		ui->miViewWaypoint->setEnabled(true);
+		ui->miProjectSettings->setEnabled(true);
+		ui->miProjectAnims->setEnabled(true);
+		ui->miProjectAudio->setEnabled(true);
+		ui->miProjectItems->setEnabled(true);
 	}
 	catch (const kry::Util::Exception& e)
 	{
@@ -400,7 +428,7 @@ void MainWindow::onSaveAsTrigger()
 	if (!Map::getMap())
 		return;
 	QString file = QFileDialog::getSaveFileName(this, "Save Project", QApplication::applicationDirPath(), "Project files (*.kryprj)");
-	if (file.isNull())
+	if (file.isNull() || file.trimmed().isEmpty())
 		return;
 	int index = file.lastIndexOf('/') + 1;
 	auto prjname = file.mid(index, file.lastIndexOf('.') - index);
@@ -414,9 +442,19 @@ void MainWindow::onExportTrigger()
 {
 	if (!Map::getMap())
 		return;
-	if (!saved)
-		onSaveTrigger();
-	Map::getMap()->exportToFile(this, Map::getMap()->getName(), prjsettingsDialog->getAllSettings()); /** #TODO(change) change all .txt to .map */
+
+	Map::getMap()->exportToFile(this, Map::getMap()->getName(), prjsettingsDialog->getAllSettings());
+}
+
+void MainWindow::onExportToTrigger()
+{
+	if (!Map::getMap())
+		return;
+
+	QString path = QFileDialog::getExistingDirectory(this, "Export Project", QApplication::applicationDirPath());
+	if (path.isNull() || path.trimmed().isEmpty())
+		return;
+	Map::getMap()->exportToFile(this, path + '\\' + Map::getMap()->getName(), prjsettingsDialog->getAllSettings());
 }
 
 void MainWindow::onExitTrigger()
