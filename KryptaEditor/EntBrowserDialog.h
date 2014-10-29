@@ -11,10 +11,7 @@ namespace Ui
 	class EntBrowserDialog;
 }
 
-namespace
-{
-	extern std::shared_ptr<Object> createDefaultObject(Asset<kry::Graphics::Texture>* asset);
-}
+std::shared_ptr<Object> createDefaultObject(Asset<kry::Graphics::Texture>* asset);
 
 class EntBrowserDialog : public QDialog
 {

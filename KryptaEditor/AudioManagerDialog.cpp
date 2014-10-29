@@ -122,8 +122,9 @@ AudioManagerDialog::AudioManagerDialog(QWidget *parent) : CSDialog(parent), ui(n
 			if (name.trimmed().isEmpty() || nameinput.result() == QDialog::Rejected)
 				return;
 
-			QString type = QInputDialog::getItem(this, "Create New Audio", "Select a type for your audio:", {"Sound", "Music"}, 0, false);
-			if (type.isNull() || type.isEmpty())
+			bool ok = false;
+			QString type = QInputDialog::getItem(this, "Create New Audio", "Select a type for your audio:", {"Sound", "Music"}, 0, false, &ok);
+			if (!ok || type.isNull() || type.isEmpty())
 				return;
 			if (type == "Sound")
 			{

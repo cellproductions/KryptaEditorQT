@@ -3,43 +3,43 @@
 #include "Resources.h"
 #include "Utilities.h"
 
+std::shared_ptr<Object> createDefaultObject(Asset<kry::Graphics::Texture>* asset)
+{
+	std::shared_ptr<Object> object(new Object);
+	object->asset = asset;
+	object->properties = asset->properties;
+	auto type = asset->properties["global"]["hardtype"];
+	auto parent = Assets::getParentType(type);
+	for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[parent].getKeyNames())
+		object->hardproperties[parent][key] = "";
+	for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
+		object->hardproperties[type][key] = "";
+	unsigned index = 0;
+	for (auto& resource : Resources::getAnimations())
+	{
+		if (resource.get() == asset->resource)
+			break;
+		++index;
+	}
+	object->hardproperties["entity"]["skinIdle"] = kry::Util::toString(index);
+	object->hardproperties["entity"]["floor"] = "0";
+	object->hardproperties["entity"]["directions"] = "1";
+	object->hardproperties["entity"]["dimensions"] = "{ 1, 1 }";
+	object->hardproperties["entity"]["direction"] = "0";
+	object->hardproperties["entity"]["seeInFog"] = "false";
+	object->hardproperties["entity"]["group"] = "0";
+	object->hardproperties["entity"]["maxHeuristic"] = "0";
+	for (auto& key : const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type].getKeyNames())
+	{
+		auto widgettype = const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key];
+		auto widgetvalue = const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type][key];
+		object->hardproperties[type][key] = widgetvalue;
+	}
+	return object;
+}
+
 namespace
 {
-	std::shared_ptr<Object> createDefaultObject(Asset<kry::Graphics::Texture>* asset)
-	{
-		std::shared_ptr<Object> object(new Object);
-		object->asset = asset;
-		object->properties = asset->properties;
-		auto type = asset->properties["global"]["hardtype"];
-		auto parent = Assets::getParentType(type);
-		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[parent].getKeyNames())
-			object->hardproperties[parent][key] = "";
-		for (auto& key : const_cast<kry::Media::Config&>(Assets::getHardTypes())[type].getKeyNames())
-			object->hardproperties[type][key] = "";
-		unsigned index = 0;
-		for (auto& resource : Resources::getAnimations())
-		{
-			if (resource.get() == asset->resource)
-				break;
-			++index;
-		}
-		object->hardproperties["entity"]["skinIdle"] = kry::Util::toString(index);
-		object->hardproperties["entity"]["floor"] = "0";
-		object->hardproperties["entity"]["directions"] = "1";
-		object->hardproperties["entity"]["dimensions"] = "{ 1, 1 }";
-		object->hardproperties["entity"]["direction"] = "0";
-		object->hardproperties["entity"]["seeInFog"] = "false";
-		object->hardproperties["entity"]["group"] = "0";
-		object->hardproperties["entity"]["maxHeuristic"] = "0";
-		for (auto& key : const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type].getKeyNames())
-		{
-			auto widgettype = const_cast<kry::Media::Config&>(Assets::getHardTypes())[type][key];
-			auto widgetvalue = const_cast<kry::Media::Config&>(Assets::getRequiredKeys())[type][key];
-			object->hardproperties[type][key] = widgetvalue;
-		}
-		return object;
-	}
-
 	ObjectListItem* createListItem(Asset<kry::Graphics::Texture>* asset, const QString& imagefile, const QString& name)
 	{
 		auto item = new ObjectListItem(createDefaultObject(asset), QIcon(imagefile), name);

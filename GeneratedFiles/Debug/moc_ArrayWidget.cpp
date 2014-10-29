@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_ArrayWidget_t {
     QByteArrayData data[6];
-    char stringdata[54];
+    char stringdata[53];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,11 +33,11 @@ QT_MOC_LITERAL(0, 0, 11),
 QT_MOC_LITERAL(1, 12, 10),
 QT_MOC_LITERAL(2, 23, 0),
 QT_MOC_LITERAL(3, 24, 10),
-QT_MOC_LITERAL(4, 35, 4),
-QT_MOC_LITERAL(5, 40, 13)
+QT_MOC_LITERAL(4, 35, 3),
+QT_MOC_LITERAL(5, 39, 13)
     },
-    "ArrayWidget\0addClicked\0\0QLineEdit*\0"
-    "edit\0removeClicked"
+    "ArrayWidget\0addClicked\0\0QComboBox*\0"
+    "ids\0removeClicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -70,21 +70,21 @@ void ArrayWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
     if (_c == QMetaObject::InvokeMetaMethod) {
         ArrayWidget *_t = static_cast<ArrayWidget *>(_o);
         switch (_id) {
-        case 0: _t->addClicked((*reinterpret_cast< QLineEdit*(*)>(_a[1]))); break;
-        case 1: _t->removeClicked((*reinterpret_cast< QLineEdit*(*)>(_a[1]))); break;
+        case 0: _t->addClicked((*reinterpret_cast< QComboBox*(*)>(_a[1]))); break;
+        case 1: _t->removeClicked((*reinterpret_cast< QComboBox*(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (ArrayWidget::*_t)(QLineEdit * );
+            typedef void (ArrayWidget::*_t)(QComboBox * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ArrayWidget::addClicked)) {
                 *result = 0;
             }
         }
         {
-            typedef void (ArrayWidget::*_t)(QLineEdit * );
+            typedef void (ArrayWidget::*_t)(QComboBox * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&ArrayWidget::removeClicked)) {
                 *result = 1;
             }
@@ -129,14 +129,14 @@ int ArrayWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void ArrayWidget::addClicked(QLineEdit * _t1)
+void ArrayWidget::addClicked(QComboBox * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
-void ArrayWidget::removeClicked(QLineEdit * _t1)
+void ArrayWidget::removeClicked(QComboBox * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);

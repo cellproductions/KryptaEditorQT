@@ -80,19 +80,22 @@ EnvBrowserDialog::EnvBrowserDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     });
 	connect(ui->bAdd, &QPushButton::clicked, [this]()
 	{
-		auto name = QInputDialog::getText(this, "Create New Environment Piece", "Enter a name for the piece:");
-		if (name.isNull() || name.trimmed().isEmpty())
+		bool ok = false;
+		auto name = QInputDialog::getText(this, "Create New Environment Piece", "Enter a name for the piece:", QLineEdit::Normal, QString(), &ok);
+		if (!ok || name.isNull() || name.trimmed().isEmpty())
 			return;
 		QStringList list { "solid", "void", "wall" };
-		auto type = QInputDialog::getItem(this, "Create New Environment Piece", "Select a type for your piece:", list, 0, false);
-		if (type.isNull() || type.trimmed().isEmpty())
+		ok = false;
+		auto type = QInputDialog::getItem(this, "Create New Environment Piece", "Select a type for your piece:", list, 0, false, &ok);
+		if (!ok || type.isNull() || type.trimmed().isEmpty())
 			return;
 		list.clear();
 		unsigned index = 0;
 		for (auto& anim : Resources::getAnimations())
 			list.push_back(QString::number(index++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
-		auto stranim = QInputDialog::getItem(this, "Create New Environment Piece", "Select an animation for your piece:", list, 0, false);
-		if (stranim.isNull() || stranim.trimmed().isEmpty())
+		ok = false;
+		auto stranim = QInputDialog::getItem(this, "Create New Environment Piece", "Select an animation for your piece:", list, 0, false, &ok);
+		if (!ok || stranim.isNull() || stranim.trimmed().isEmpty())
 			return;
 		auto animation = Resources::getAnimations()[stranim.left(stranim.indexOf(':')).toUInt()];
 

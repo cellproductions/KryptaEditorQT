@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class QLineEdit;
+class QComboBox;
 class QPushButton;
 
 class ArrayWidget : public QWidget
@@ -14,14 +14,22 @@ class ArrayWidget : public QWidget
 		ArrayWidget(QWidget *parent);
 		~ArrayWidget();
 
+		inline QComboBox* getIDs();
+
 	signals:
-		void addClicked(QLineEdit* edit);
-		void removeClicked(QLineEdit* edit);
+		void addClicked(QComboBox* ids);
+		void removeClicked(QComboBox* ids);
 
 	private:
-		QLineEdit* tbEdit;
+		QComboBox* cbIds;
 		QPushButton* bAdd;
 		QPushButton* bRemove;
 };
+
+
+QComboBox* ArrayWidget::getIDs()
+{
+	return cbIds;
+}
 
 #endif // SPAWNWIDGET_H

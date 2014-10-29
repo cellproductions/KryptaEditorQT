@@ -22,6 +22,7 @@ struct Object
 	std::vector<kry::Graphics::Sprite> waypoints;
 	kry::Graphics::Sprite sprite;
 	Asset<kry::Graphics::Texture>* asset;
+	std::vector<std::shared_ptr<Object>> spawns; /** #TODO(incomplete) add this to save/load */
 };
 
 struct Tile : public Object
@@ -30,6 +31,7 @@ struct Tile : public Object
 };
 
 kry::Util::Vector2f getObjectPivot(Object* object);
+std::shared_ptr<Object> getObjectByID(const kry::Util::String& id);
 
 struct Item
 {
@@ -78,6 +80,8 @@ class Map
         static std::shared_ptr<Map> single;
 		static QString projectname;
 };
+
+Tile& getObjectOwner(Object* object, std::shared_ptr<Map::Layer> layer);
 
 
 void Map::setCurrentLayer(size_t index)

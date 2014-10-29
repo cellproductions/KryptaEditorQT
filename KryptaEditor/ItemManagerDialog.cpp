@@ -96,22 +96,25 @@ ItemManagerDialog::ItemManagerDialog(QWidget *parent) : CSDialog(parent), ui(new
 	});
 	connect(ui->bAdd, &QPushButton::clicked, [this](bool)
 	{
-		auto name = QInputDialog::getText(this, "Create New Item", "Enter a name for your item:");
-		if (name.isNull() || name.trimmed().isEmpty())
+		bool ok = false;
+		auto name = QInputDialog::getText(this, "Create New Item", "Enter a name for your item:", QLineEdit::Normal, QString(), &ok);
+		if (!ok || name.isNull() || name.trimmed().isEmpty())
 			return;
 		QStringList list;
 		list.push_back("loot"); /** #TODO(incomplete) add the rest of the types here */
 		list.push_back("key");
 		list.push_back("weapon");
-		auto type = QInputDialog::getItem(this, "Create New Item", "Select a type for your item:", list, 0, false);
-		if (type.isNull() || type.trimmed().isEmpty())
+		ok = false;
+		auto type = QInputDialog::getItem(this, "Create New Item", "Select a type for your item:", list, 0, false, &ok);
+		if (!ok || type.isNull() || type.trimmed().isEmpty())
 			return;
 		list.clear();
 		unsigned index = 0;
 		for (auto anim : Resources::getAnimations())
 			list.push_back(QString::number(index++) + ':' + kryToQString(anim->properties[0]["Skins"]["name"]));
-		auto anim = QInputDialog::getItem(this, "Create New Item", "Select an animation for your item:", list, 0, false);
-		if (anim.isNull() || anim.trimmed().isEmpty())
+		ok = false;
+		auto anim = QInputDialog::getItem(this, "Create New Item", "Select an animation for your item:", list, 0, false, &ok);
+		if (!ok || anim.isNull() || anim.trimmed().isEmpty())
 			return;
 		anim = anim.left(anim.indexOf(':'));
 

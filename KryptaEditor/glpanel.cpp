@@ -267,6 +267,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 				auto& tile = Map::getMap()->getCurrentLayer()->tiles[tileindex];
 				updateObject(coord, tile, object, result.type, result.hardtypesettings);
 				object->hardproperties = result.hardtypesettings;
+				object->spawns = result.spawns;
 			}
 			updateCanvas();
 		}
@@ -521,8 +522,6 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								//	object->events.push_back(parseEvent(EventSystem::getSystem()->getEvents()[i].name, object->properties["events"][kry::Util::toString(i)]));
 
 								object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
-								object->properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(note) this is for map save/load */
-								object->properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
 								if (parenttype == "entity")
 								{
 									object->hardproperties[parenttype]["floor"] = kry::Util::toString(Map::getMap()->getCurrentLayer()->index);
@@ -542,7 +541,6 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 										follower.sprite.rgba = 0.0f;
 									}
 								}
-								/** #TODO(incomplete) also add this to map loading */
 
 								Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
 								updateCanvas();
@@ -571,8 +569,6 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								tile.properties = o->properties;
 								tile.hardproperties = o->hardproperties;
 								tile.properties["global"]["id"] = id;
-								tile.properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(note) this is for map save/load */
-								tile.properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
 								paintGL();
 							}
 							else
@@ -588,11 +584,10 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 								object->waypoints = o->waypoints;
 								//object->events = o->events;
 								object->asset = o->asset;
+								object->spawns = o->spawns;
 
 								asset = object->asset;
 								object->properties["global"]["id"] = kry::Util::toString(Object::increment++);
-								object->properties["global"]["posx"] = kry::Util::toString(follower.sprite.position[0]); /** #TODO(change) this is for map save/load */
-								object->properties["global"]["posy"] = kry::Util::toString(follower.sprite.position[1]);
 								if (Assets::getParentType(object->properties["global"]["hardtype"]) == "entity")
 								{
 									try
@@ -611,7 +606,6 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 										follower.sprite.rgba = 0.0f;
 									}
 								}
-								/** #TODO(incomplete) also add this to map loading */
 
 								Map::getMap()->getCurrentLayer()->tiles[index].objects.emplace_back(object);
 								updateCanvas();
@@ -863,6 +857,7 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 									for (auto& sprite : waypoints[object])
 										sprite.texture = Resources::getEditorTexture(looping ? EditorResource::FLAG_GREEN : EditorResource::FLAG_RED)->rawresource;
 							}
+							object->spawns = (*results.begin()).spawns;
 							updateCanvas();
 						}
 					}

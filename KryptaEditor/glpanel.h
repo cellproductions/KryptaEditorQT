@@ -27,6 +27,14 @@ namespace Kryed
 			void handleSelectionEdit();
 			void handleSelectionRemove();
 			void updateObject(const kry::Util::Vector2i& coord, Tile& tile, Object* object, const kry::Util::String& type, kry::Media::Config& hardproperties);
+			
+			static size_t tileCoordToIndex(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
+			static kry::Util::Vector2i coordToTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
+			static kry::Util::Vector2f coordToExpTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
+			static kry::Util::Vector2f expTileCoordToCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
+			static kry::Util::Vector2f tileCoordToCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
+			static bool isValidTileCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
+			static bool isValidIndex(size_t index, const std::shared_ptr<Map::Layer>& layer);
 
         protected:
             void initializeGL();
@@ -42,14 +50,6 @@ namespace Kryed
 			void leaveEvent(QEvent* event);
 
         private:
-			size_t tileCoordToIndex(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
-			kry::Util::Vector2i coordToTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
-			kry::Util::Vector2f coordToExpTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
-			kry::Util::Vector2f expTileCoordToCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer);
-			kry::Util::Vector2f tileCoordToCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
-			bool isValidTileCoord(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer);
-			bool isValidIndex(size_t index, const std::shared_ptr<Map::Layer>& layer);
-
 			ObjectSettingsDialog* objsettingsDialog;
             bool empty;
             bool gridmode;

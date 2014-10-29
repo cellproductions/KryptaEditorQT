@@ -18,6 +18,7 @@ struct ObjectProperties
 	kry::Util::String type;
 	mutable kry::Media::Config settings;
 	mutable kry::Media::Config hardtypesettings;
+	mutable std::vector<std::shared_ptr<Object>> spawns;
 };
 
 inline bool operator<(const ObjectProperties& left, const ObjectProperties& right);
@@ -37,6 +38,9 @@ class ObjectSettingsDialog : public CSDialog
 		std::set<ObjectProperties> objectprops;
 		Ui::ObjectSettingsDialog *ui;
 		bool ingroup;
+
+		// spawn only
+		bool isspawn = false;
 };
 
 

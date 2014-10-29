@@ -36,7 +36,7 @@ TODO HIGH(absolutely required):
 [x] add item dialog
 [x] add sound/music
 [x] add sound/music dialogs
-[ ] add object spawn options using the ObjectSettingsDialog
+[x] add object spawn options using the ObjectSettingsDialog
 [x] include add button for environment
 [x] add a selection tool for mass editing (add all common settings from each type as tabs, save+close applies to each selected)
 [x] add a setting to choose an icon for the map

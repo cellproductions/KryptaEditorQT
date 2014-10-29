@@ -1,30 +1,38 @@
 #include "ArrayWidget.h"
-#include <QLineEdit>
+#include <QComboBox>
 #include <QPushButton>
 #include <QBoxLayout>
 
-ArrayWidget::ArrayWidget(QWidget *parent) : QWidget(parent), tbEdit(new QLineEdit(this)), bAdd(new QPushButton("+", this)),
-											bRemove(new QPushButton("-", this))
+ArrayWidget::ArrayWidget(QWidget *parent) : QWidget(parent), cbIds(new QComboBox(this)), bAdd(new QPushButton("+", this)), bRemove(new QPushButton("-", this))
 {
-	tbEdit->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-	auto layout = new QVBoxLayout(this);
-	this->setLayout(layout);
-	layout->addWidget(tbEdit);
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	cbIds->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+	bAdd->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+	bRemove->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+	auto layout = new QHBoxLayout(this);
+	layout->addWidget(cbIds);
 	layout->addWidget(bAdd);
 	layout->addWidget(bRemove);
+	layout->setMargin(0);
+	layout->setStretch(0, 80);
+	layout->setStretch(1, 10);
+	layout->setStretch(2, 10);
+	layout->setSpacing(0);
+	setLayout(layout);
+	cbIds->setEditable(false);
 	connect(bAdd, &QPushButton::clicked, [this](bool)
 	{
-		emit addClicked(tbEdit);
+		emit addClicked(cbIds);
 	});
 	connect(bRemove, &QPushButton::clicked, [this](bool)
 	{
-		emit removeClicked(tbEdit);
+		emit removeClicked(cbIds);
 	});
 }
 
 ArrayWidget::~ArrayWidget()
 {
-	delete tbEdit;
+	delete cbIds;
 	delete bAdd;
 	delete bRemove;
 }

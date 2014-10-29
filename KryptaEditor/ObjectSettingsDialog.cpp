@@ -20,10 +20,10 @@
 #include <QDebug>
 
 
-kry::Util::String getValue(QTableWidget* table, unsigned rowindex, const kry::Util::String& section, kry::Util::String& key) /** #TODO(incomplete) add parts for whatever else that comes along */
+kry::Util::String getValue(QTableWidget* table, unsigned rowindex, const kry::Util::String& section, kry::Util::String& key, bool isspawn) /** #TODO(incomplete) add parts for whatever else that comes along */
 {
 	auto tvalue = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-	if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_POS" || tvalue == "VEC_2_ARR" || tvalue == "ENTITY_ARR" || tvalue == "ITEM_TYPE" || 
+	if (tvalue.isEmpty() || tvalue == "VEC_2" || tvalue == "VEC_2_POS" || tvalue == "VEC_2_ARR" || tvalue == "ITEM_TYPE" || 
 		tvalue == "ENTITY_GROUP_ARR" || tvalue == "ITEM_ARR") /** #TODO(change) add these types as widgets instead */
 		return qToKString(table->item(rowindex, 1)->text());
 	else if (tvalue == "FLOOR_ID")
@@ -88,6 +88,23 @@ kry::Util::String getValue(QTableWidget* table, unsigned rowindex, const kry::Ut
 		auto text = dynamic_cast<QComboBox*>(table->cellWidget(rowindex, 1))->currentText();
 		return qToKString(text);
 	}
+	else if (tvalue == "SPAWN_ENTITY_ARR" || tvalue == "ENTITY_ARR")
+	{
+		if (isspawn && tvalue == "SPAWN_ENTITY_ARR")
+			return kry::Util::String();
+		auto ids = dynamic_cast<ArrayWidget*>(table->cellWidget(rowindex, 1))->getIDs();
+		QString value;
+		for (int i = 0; i < ids->count(); ++i)
+		{
+			auto text = ids->itemText(i);
+			if (!text.isEmpty())
+			{
+				text = text.left(text.indexOf(':'));
+				value += text + ", ";
+			}
+		}
+		return qToKString(value);
+	}
 	return kry::Util::String();
 }
 
@@ -125,7 +142,7 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : CSDialog(parent), 
 						}
 					}
 
-					object.hardtypesettings[section][key] = getValue(table, rowindex, section, key);
+					object.hardtypesettings[section][key] = getValue(table, rowindex, section, key, isspawn);
 				}
 			};
 			saveHard(parent);
@@ -134,7 +151,7 @@ ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : CSDialog(parent), 
 
 		// ignore events stuff for now
 		
-		if (!ingroup)
+		if (!ingroup && !isspawn)
 		{
 			auto& object = *objectprops.begin();
 			auto type = object.type;
@@ -184,7 +201,7 @@ DialogResult ObjectSettingsDialog::showDialog(const kry::Util::String& title, st
 	objectprops.clear();
 	for (auto object : objects)
 	{
-		ObjectProperties o = { object->properties["global"]["hardtype"], object->properties, object->hardproperties };
+		ObjectProperties o = { object->properties["global"]["hardtype"], object->properties, object->hardproperties, object->spawns };
 		objectprops.insert(o);
 	}
 	if (!ingroup)
@@ -242,7 +259,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 				table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 				auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_2_ARR" || type == "ITEM_TYPE" || type == "ENTITY_ARR" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
+				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_2_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
 					table->setItem(index, 1, new QTableWidgetItem(kryToQString(object.hardtypesettings[section][key])));
 				else if (type == "INT")
 				{
@@ -402,27 +419,164 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 					}
 					table->setCellWidget(index, 1, box);
 				}
-				else if (type == "SPAWN_ENTITY_ARR")
+				else if (type == "SPAWN_ENTITY_ARR" && !isspawn)
 				{
 					ArrayWidget* arr = new ArrayWidget(table);
-					connect(arr, &ArrayWidget::addClicked, [this, &object](QLineEdit* edit)
+					connect(arr, &ArrayWidget::addClicked, [this, &object](QComboBox* ids)
 					{
-						QStringList types;
-						for (auto type : Assets::getHardTypes().getSectionNames())
-						{
-							if (Assets::isParentType(type))
-								continue;
-							if (Assets::getParentType(type) != "entity")
-								continue;
-							types.push_back(kryToQString(type));
-						}
-						auto type = QInputDialog::getItem(this, "Add Entity", "Select a type for your entity:", types, 0, false);
-						if (type.isNull() || type.isEmpty())
+						QStringList list;
+						list.push_back("New");
+						list.push_back("Existing");
+						bool ok = false;
+						auto choice = QInputDialog::getItem(this, "Add Entity", "Add a new entity or an existing entity?", list, 0, false, &ok);
+						if (!ok || choice.isNull() || choice.isEmpty())
 							return;
-						auto object = createDefaultObject(Assets::getEntityByHardtype(qToKString(type)).get());
+						if (choice == "New")
+						{
+							list.clear();
+							for (auto type : Assets::getHardTypes().getSectionNames())
+							{
+								if (type.isEmpty() || Assets::isParentType(type))
+									continue;
+								if (Assets::getParentType(type) != "entity")
+									continue;
+								list.push_back(kryToQString(type));
+							}
+							ok = false;
+							auto type = QInputDialog::getItem(this, "Add New Entity", "Select a type for your entity:", list, 0, false, &ok);
+							if (!ok || type.isNull() || type.isEmpty())
+								return;
 
+							auto obj = ::createDefaultObject(Assets::getEntityByHardtype(qToKString(type)).get());
+
+							ObjectSettingsDialog dialog(this);
+							dialog.isspawn = true;
+							std::set<Object*> tmp = { obj.get() };
+							if (dialog.showDialog("Choose settings for the entity:", tmp, true) == DialogResult::OK)
+							{
+								auto results = dialog.getAllProperties();
+								obj->hardproperties = (*results.begin()).hardtypesettings;
+								obj->spawns = (*results.begin()).spawns;
+								obj->properties["global"]["id"] = kry::Util::toString(Object::increment++);
+								obj->hardproperties["entity"]["floor"] = "";
+								ids->addItem(kryToQString(obj->properties["global"]["id"] + ':' + obj->properties["global"]["name"]));
+								object.spawns.push_back(obj);
+							}
+						}
+						else // Existing
+						{
+							list.clear();
+							std::vector<std::shared_ptr<Object>> allobjects;
+							for (auto layer : Map::getMap()->getLayers())
+							{
+								for (auto& tile : layer->tiles)
+								{
+									for (auto obj : tile.objects)
+									{
+										if (!ingroup && obj->properties["global"]["id"] == object.settings["global"]["id"]) // entities can no longer spawn themselves
+											continue;
+										list.push_back(kryToQString(obj->properties["global"]["id"] + ':' + obj->properties["global"]["name"]));
+										allobjects.push_back(obj);
+									}
+								}
+							}
+							ok = false;
+							auto objid = QInputDialog::getItem(this, "Add Existing Entity", "Select an entity to include:", list, 0, false, &ok);
+							if (!ok || objid.isNull() || objid.isEmpty())
+								return;
+							ids->addItem(objid);
+							objid = objid.left(objid.indexOf(':'));
+							auto kobjid = qToKString(objid);
+							auto found = std::find_if(allobjects.begin(), allobjects.end(), [&kobjid, &object](const std::shared_ptr<Object>& obj)
+							{
+								return obj->properties["global"]["id"] == kobjid;
+							});
+							if (found != allobjects.end())
+								object.spawns.push_back(*found);
+						}
 					});
+					connect(arr, &ArrayWidget::removeClicked, [this, &object](QComboBox* ids)
+					{
+						if (ids->currentIndex() < 0 || ids->currentIndex() >= ids->count())
+							return;
+						auto id = qToKString(ids->currentText());
+						ids->removeItem(ids->currentIndex());
+						auto found = std::find_if(object.spawns.begin(), object.spawns.end(), [&id](const std::shared_ptr<Object>& obj)
+						{
+							return obj->properties["global"]["id"] == id;
+						});
+						if (found != object.spawns.end())
+							object.spawns.erase(found);
+					});
+					for (auto obj : object.spawns)
+						arr->getIDs()->addItem(kryToQString(obj->properties["global"]["id"] + ':' + obj->properties["global"]["name"]));
+					table->setCellWidget(index, 1, arr);
 				}
+				else if (type == "ENTITY_ARR")
+				{
+					ArrayWidget* arr = new ArrayWidget(table);
+					connect(arr, &ArrayWidget::addClicked, [this, &object, arr](QComboBox* ids)
+					{
+						auto contains = [arr](const kry::Util::String& value) // dont wanna double up on the same ids
+						{
+							auto qvalue = kryToQString(value);
+							for (int i = 0; i < arr->getIDs()->count(); ++i)
+							{
+								auto text = arr->getIDs()->itemText(i);
+								if (text == qvalue)
+									return true;
+							}
+							return false;
+						};
+						QStringList list;
+						if (!contains("-1:Player"))
+							list.push_back("-1:Player");
+						for (auto layer : Map::getMap()->getLayers())
+						{
+							for (auto& tile : layer->tiles)
+							{
+								for (auto obj : tile.objects)
+								{
+									if (!ingroup && obj->properties["global"]["id"] == object.settings["global"]["id"]) // entities cant include themselves
+											continue;
+									auto value = obj->properties["global"]["id"] + ':' + obj->properties["global"]["name"];
+									if (!contains(value))
+										list.push_back(kryToQString(value));
+								}
+							}
+						}
+						bool ok = false;
+						auto objid = QInputDialog::getItem(this, "Add Entity", "Select an entity to include:", list, 0, false, &ok);
+						if (!ok || objid.isNull() || objid.isEmpty())
+							return;
+						ids->addItem(objid);
+					});
+					connect(arr, &ArrayWidget::removeClicked, [this](QComboBox* ids)
+					{
+						if (ids->currentIndex() < 0 || ids->currentIndex() >= ids->count())
+							return;
+						ids->removeItem(ids->currentIndex());
+					});
+					auto ids = object.hardtypesettings[section][key];
+					if (!ids.trim().isEmpty())
+					{
+						auto vecids = ids.explode(", ");
+						for (auto id : vecids)
+						{
+							if (!id.trim().isEmpty())
+							{
+								auto value = kryToQString(id);
+								if (id != "-1")
+									value = kryToQString(id + ':' + getObjectByID(id)->properties["global"]["name"]);
+								else
+									value = "-1:Player";
+								arr->getIDs()->addItem(value);
+							}
+						}
+					}
+					table->setCellWidget(index, 1, arr);
+				}
+
 				/** #TODO(incomplete) add parts for whatever else that comes along */
 				/*
 				if (!ingroup)
@@ -486,7 +640,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 	}
 #endif
 
-	if (!ingroup)
+	if (!ingroup && !isspawn)
 	{
 		auto object = *objects.begin();
 		auto type = object->properties["global"]["hardtype"];

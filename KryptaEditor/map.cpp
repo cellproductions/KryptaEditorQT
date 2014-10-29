@@ -50,6 +50,24 @@ kry::Util::Vector2f getObjectPivot(Object* object)
 	return pivot;
 }
 
+std::shared_ptr<Object> getObjectByID(const kry::Util::String& id)
+{
+	for (auto layer : Map::getMap()->getLayers())
+		for (auto& tile : layer->tiles)
+			for (auto obj : tile.objects)
+				if (obj->properties["global"]["id"] == id)
+					return obj;
+	return std::shared_ptr<Object>();
+}
+
+Tile& getObjectOwner(Object* object, std::shared_ptr<Map::Layer> layer)
+{
+	auto pivot = getObjectPivot(object);
+	auto tilecoord = Kryed::GLPanel::coordToTileCoord(object->sprite.position + pivot, layer);
+	auto tileindex = Kryed::GLPanel::tileCoordToIndex(tilecoord, layer);
+	return layer->tiles[tileindex];
+}
+
 void Map::resetMap()
 {
     layers.clear();
@@ -419,6 +437,7 @@ std::shared_ptr<Map> Map::loadFromFile(MainWindow* window, const QString& path, 
 	}
 	reader.readNext(); // end items
 // TILE DATA
+	std::map<Object*, std::set<QString>> spawnids;
 	reader.readNext(); // tiledata
 	{
 		for (size_t i = 0; i < single->layers.size(); ++i)
@@ -512,8 +531,8 @@ std::shared_ptr<Map> Map::loadFromFile(MainWindow* window, const QString& path, 
 								}
 								reader.readNext(); // end hardproperties
 								element = readNameAttr(reader); // waypoints
-								unsigned waypoints = element.attrVal[0].toUInt();
-								for (int n = 0; n < waypoints; ++n)
+								unsigned wcount = element.attrVal[0].toUInt();
+								for (int n = 0; n < wcount; ++n)
 								{
 									kry::Graphics::Sprite way;
 									element = readElement(reader); // position
@@ -524,8 +543,63 @@ std::shared_ptr<Map> Map::loadFromFile(MainWindow* window, const QString& path, 
 									object->waypoints.push_back(way);
 								}
 								window->getUI()->glWidget->getWaypoints().insert(std::pair<Object*, std::vector<Graphics::Sprite>>(object, object->waypoints));
-								tile.objects.emplace_back(object);
 								reader.readNext(); // end waypoints
+								element = readNameAttr(reader); // spawns
+								wcount = element.attrVal[0].toUInt();
+								for (int n = 0; n < wcount; ++n)
+								{
+									element = readNameAttr(reader); // spawn
+									auto spawnid = element.attrVal[0];
+									auto isnew = element.attrVal[1] == "true";
+									if (isnew)
+									{
+										element = readElement(reader); // asset
+										Object* obj = new Object;
+										obj->asset = Assets::getEntityByHardtype(qToKString(element.text)).get();
+										element = readNameAttr(reader); // properties
+										sections = element.attrVal[0].toUInt();
+										for (unsigned n = 0; n < sections; ++n)
+										{
+											element = readNameAttr(reader); // section
+											auto section = qToKString(element.name);
+											unsigned keys = element.attrVal[0].toUInt();
+											for (unsigned m = 0; m < keys; ++m)
+											{
+												element = readElement(reader); // key/value
+												obj->properties[section][qToKString(element.name)] = qToKString(element.text);
+											}
+											reader.readNext(); // end section
+										}
+										reader.readNext(); // end properties
+										element = readNameAttr(reader); // hardproperties
+										sections = element.attrVal[0].toUInt();
+										for (unsigned n = 0; n < sections; ++n)
+										{
+											element = readNameAttr(reader); // section
+											auto section = qToKString(element.name);
+											unsigned keys = element.attrVal[0].toUInt();
+											for (unsigned m = 0; m < keys; ++m)
+											{
+												element = readElement(reader); // key/value
+												obj->hardproperties[section][qToKString(element.name)] = qToKString(element.text);
+											}
+											reader.readNext(); // end section
+										}
+										reader.readNext(); // end hardproperties
+										object->spawns.emplace_back(obj);
+									}
+									else
+									{
+										auto found = spawnids.find(object);
+										if (found == spawnids.end())
+											spawnids[object].insert(spawnid);
+										else
+											found->second.insert(spawnid);
+									}
+									reader.readNext(); // end spawn
+								}
+								reader.readNext(); // end spawns
+								tile.objects.emplace_back(object);
 							}
 							reader.readNext(); // end object
 						}
@@ -537,6 +611,9 @@ std::shared_ptr<Map> Map::loadFromFile(MainWindow* window, const QString& path, 
 		}
 	}
 	reader.readNext(); // end tiledata
+	for (auto pair : spawnids)
+		for (auto id : pair.second)
+			pair.first->spawns.push_back(getObjectByID(qToKString(id))); // add existing spawn entities to their owners
 
 	file.close();
 
@@ -560,7 +637,7 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 	{
 		writer.writeStartElement("map");
 		{
-			writer.writeTextElement("name", name);
+			writer.writeTextElement("name", name.left(name.indexOf('.')));
 			writer.writeTextElement("objectid", QString::number(Object::increment));
 			writer.writeTextElement("itemid", QString::number(ItemManagerDialog::getIDCount()));
 		}
@@ -901,6 +978,58 @@ void Map::saveToFile(MainWindow* window, const QString& name, kry::Media::Config
 										}
 									}
 									writer.writeEndElement();
+									writer.writeStartElement("spawns");
+									writer.writeAttribute("count", QString::number(object->spawns.size()));
+									{
+										for (size_t n = 0; n < object->spawns.size(); ++n)
+										{
+											std::shared_ptr<Object> obj = object->spawns[n];
+											writer.writeStartElement("spawn");
+											writer.writeAttribute("id", kryToQString(obj->properties["global"]["id"]));
+											bool isnew = kryToQString(obj->hardproperties["entity"]["floor"]).isEmpty();
+											writer.writeAttribute("new", isnew ? QString("true") : QString("false"));
+											if (isnew)
+											{
+												writer.writeTextElement("asset", kryToQString(obj->asset->properties["global"]["hardtype"]));
+												writer.writeStartElement("properties");
+												writer.writeAttribute("sections", QString::number(obj->properties.sectionExists("") ? obj->properties.getSectionNames().size() - 1 : obj->properties.getSectionNames().size()));
+												{
+													for (auto& section : obj->properties.getSectionNames())
+													{
+														if (section.isEmpty())
+															continue;
+														writer.writeStartElement(kryToQString(section));
+														writer.writeAttribute("keys", QString::number(obj->properties[section].getKeyNames().size()));
+														{
+															for (auto& key : obj->properties[section].getKeyNames())
+																writer.writeTextElement(kryToQString(key), kryToQString(obj->properties[section][key]));
+														}
+														writer.writeEndElement();
+													}
+												}
+												writer.writeEndElement();
+												writer.writeStartElement("hardproperties");
+												writer.writeAttribute("sections", QString::number(obj->hardproperties.sectionExists("") ? obj->hardproperties.getSectionNames().size() - 1 : obj->hardproperties.getSectionNames().size()));
+												{
+													for (auto& section : obj->hardproperties.getSectionNames())
+													{
+														if (section.isEmpty())
+															continue;
+														writer.writeStartElement(kryToQString(section));
+														writer.writeAttribute("keys", QString::number(obj->hardproperties[section].getKeyNames().size()));
+														{
+															for (auto& key : obj->hardproperties[section].getKeyNames())
+																writer.writeTextElement(kryToQString(key), kryToQString(obj->hardproperties[section][key]));
+														}
+														writer.writeEndElement();
+													}
+												}
+												writer.writeEndElement();
+											}
+											writer.writeEndElement();
+										}
+									}
+									writer.writeEndElement();
 								}
 								writer.writeEndElement();
 							}
@@ -1130,8 +1259,6 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 		lines.push_back("inventoryTextSize = " + boolToKBool(prjconfig["project"]["inventoryTextSize"]));
 		lines.push_back("inventoryIconDimensions = " + boolToKBool(prjconfig["project"]["inventoryIconDimensions"]));
 		lines.push_back("inventoryIconGap = " + boolToKBool(prjconfig["project"]["inventoryIconGap"]));
-// OBJECTIVE SETTINGS
-		lines.push_back("[Objectives]");
 // ITEM DECLARATIONS
 		lines.push_back("[Items]");
 		for (auto itempair : Map::getMap()->getItems())
