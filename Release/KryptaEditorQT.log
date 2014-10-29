@@ -1,0 +1,61 @@
+﻿Build started 10/30/2014 2:29:30 AM.
+     1>Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Release\\KryptaEditorQT.exe" /NOLOGO /LIBPATH:C:\Qt5.3.1\5.3\msvc2013_opengl\lib qtmain.lib Qt5Core.lib Qt5Gui.lib Qt5Network.lib Qt5OpenGL.lib opengl32.lib glu32.lib Qt5Widgets.lib Qt5Xml.lib Krypta2D.lib freetype253.lib glew32.lib libmpg123.lib openAL32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Release\KryptaEditorQT.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Release\KryptaEditorQT.lib" /MACHINE:X86 /SAFESEH Release\KryptaEditorQT.res
+         Release\moc_AnimationSetupWidget.obj
+         Release\moc_AnimManagerDialog.obj
+         Release\moc_ArrayWidget.obj
+         Release\moc_AudioManagerDialog.obj
+         Release\moc_ClickableLabel.obj
+         Release\moc_ConfigDialog.obj
+         Release\moc_CSDialog.obj
+         Release\moc_EntBrowserDialog.obj
+         Release\moc_EnvBrowserDialog.obj
+         Release\moc_glpanel.obj
+         Release\moc_ItemManagerDialog.obj
+         Release\moc_LayerBrowserDialog.obj
+         Release\moc_MainWindow.obj
+         Release\moc_ObjectAction.obj
+         Release\moc_PivotView.obj
+         Release\moc_PrjSettingsDialog.obj
+         Release\moc_PrjSetupDialog.obj
+         Release\moc_SaveDialog.obj
+         Release\AnimationSetupWidget.obj
+         Release\AnimManagerDialog.obj
+         Release\ArrayWidget.obj
+         Release\AssetListItem.obj
+         Release\assets.obj
+         Release\AudioManagerDialog.obj
+         Release\ClickableLabel.obj
+         Release\ConfigDialog.obj
+         Release\Configuration.obj
+         Release\CSDialog.obj
+         Release\EntBrowserDialog.obj
+         Release\envbrowserdialog.obj
+         Release\GLPanel.obj
+         Release\ItemManagerDialog.obj
+         Release\LayerBrowserDialog.obj
+         Release\LayerOptionsItem.obj
+         Release\main.obj
+         Release\MainWindow.obj
+         Release\Map.obj
+         Release\MapProject.obj
+         Release\ObjectAction.obj
+         Release\ObjectListItem.obj
+         Release\ObjectSettingsDialog.obj
+         Release\PivotView.obj
+         Release\PrjSettingsDialog.obj
+         Release\PrjSetupDialog.obj
+         Release\Resources.obj
+         Release\SaveDialog.obj
+         Release\Utilities.obj
+         Krypta2D.lib(Exception.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
+     1>LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+         Generating code
+         Finished generating code
+         KryptaEditorQT.vcxproj -> C:\Qt5.3.1\Projects\KryptaEditorQT\Win32\Release\KryptaEditorQT.exe
+     1>Done Building Project "C:\Qt5.3.1\Projects\KryptaEditorQT\KryptaEditorQT.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.40

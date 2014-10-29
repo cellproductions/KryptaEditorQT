@@ -45,7 +45,7 @@ TODO HIGH(absolutely required):
 [x] make sure the animation manager selects the first direction when it starts up for the first time
 [x] add an exportTo button (export to location)
 [x] add a centre camera button
-[ ] finish checksum thing
+[x] finish checksum thing
 [ ] finish diaries
 
 TODO MEDIUM(will pass fine without being added):
@@ -98,10 +98,8 @@ BUGS:
 * apply all is broken in the object settings dialog (hasn't been updated, remove? its a bit rubbish now that the selection editor is in)
 * right clicking on waypoints is off by a hundred or so? not sure
 * can set a pivot in animations without being in pivot mode
-* after cancelling an environment piece creation, it still gets added
 * selection quad wont dissapear when releasing the mouse button
 * opening the object settings dialog in the env browser causes the group icon to be small
-* cancelling making a new env crash
 * painting after selection mode makes the follower dissappear
 
 OPTIMIZATIONS:

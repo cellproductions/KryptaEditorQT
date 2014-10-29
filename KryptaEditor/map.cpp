@@ -12,6 +12,7 @@
 #include "ItemManagerDialog.h"
 #include <System/Filesystem.h>
 #include <Utilities/StringConvert.h>
+#include <Utilities\MD5.h>
 #include <Media/Zip.h>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
@@ -20,8 +21,6 @@
 #include <QDebug>
 #include <set>
 #include <fstream>
-
-#define KRY_DEVELOPER
 
 unsigned Object::increment(0);
 
@@ -1172,32 +1171,40 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 		std::set<Util::String> musicused;
 
 		std::vector<Util::String> lines;
+		Media::Config mapSettings; 
 // MAP SETTINGS
 		lines.push_back("[Settings]");
-		lines.push_back("name = " + qToKString(single->getName()));
+		lines.push_back("name=" + qToKString(single->getName()));
+		//mapSettings["Settings"]["name"] = qToKString(single->getName());
 		auto iconpath = prjconfig["project"]["iconImage"];
 		if (!iconpath.isEmpty())
 		{
 			iconpath = getPathFilename(iconpath);
-			lines.push_back("iconImage = images/" + iconpath);
+			lines.push_back("iconImage=images/" + iconpath);
+			//mapSettings["Settings"]["iconImage"] = "images/" + iconpath;
 			zipfile["images"][iconpath] = fileToBin(kryToQString(prjconfig["project"]["iconImage"]));
 		}
-#if defined(KRY_DEVELOPER)
-		lines.push_back("checksum = ce114e4501d2f4e2dcea3e17b546f339");
-#else
-		lines.push_back("checksum = "); /** #TODO(incomplete) load this at the end somehow */
-#endif
-		lines.push_back("fogOfWar = " + boolToKBool(prjconfig["project"]["fogOfWar"]));
-		lines.push_back("revealOfWar = " + boolToKBool(prjconfig["project"]["revealOfWar"]));
-		lines.push_back("fogTint = " + prjconfig["project"]["fogTint"]);
-		lines.push_back("fogThroughWalls = " + boolToKBool(prjconfig["project"]["fogThroughWalls"]));
-		lines.push_back("fogTillLastWall = " + boolToKBool(prjconfig["project"]["fogTillLastWall"]));
-		lines.push_back("tileDimensions = " + prjconfig["project"]["tileDimensions"]);
-		lines.push_back("floorFadeTime = " + prjconfig["project"]["floorFadeTime"]);
-		lines.push_back("cameraScale = " + prjconfig["project"]["cameraScale"]);
-		lines.push_back("deathFadeTime = " + prjconfig["project"]["deathFadeTime"]);
+		lines.push_back("fogOfWar=" + boolToKBool(prjconfig["project"]["fogOfWar"]));
+		//mapSettings["Settings"]["fogOfWar"] = boolToKBool(prjconfig["project"]["fogOfWar"]);
+		lines.push_back("revealOfWar=" + boolToKBool(prjconfig["project"]["revealOfWar"]));
+		//mapSettings["Settings"]["revealOfWar"] = boolToKBool(prjconfig["project"]["revealOfWar"]);
+		lines.push_back("fogTint=" + prjconfig["project"]["fogTint"]);
+		//mapSettings["Settings"]["fogTint"] = prjconfig["project"]["fogTint"];
+		lines.push_back("fogThroughWalls=" + boolToKBool(prjconfig["project"]["fogThroughWalls"]));
+		//mapSettings["Settings"]["fogThroughWalls"] = boolToKBool(prjconfig["project"]["fogThroughWalls"]);
+		lines.push_back("fogTillLastWall=" + boolToKBool(prjconfig["project"]["fogTillLastWall"]));
+		//mapSettings["Settings"]["fogTillLastWall"] = boolToKBool(prjconfig["project"]["fogTillLastWall"]);
+		lines.push_back("tileDimensions=" + prjconfig["project"]["tileDimensions"]);
+		//mapSettings["Settings"]["tileDimensions"] = prjconfig["project"]["tileDimensions"];
+		lines.push_back("floorFadeTime=" + prjconfig["project"]["floorFadeTime"]);
+		//mapSettings["Settings"]["floorFadeTime"] = prjconfig["project"]["floorFadeTime"];
+		lines.push_back("cameraScale=" + prjconfig["project"]["cameraScale"]);
+		//mapSettings["Settings"]["cameraScale"] = prjconfig["project"]["cameraScale"];
+		lines.push_back("deathFadeTime=" + prjconfig["project"]["deathFadeTime"]);
+		//mapSettings["Settings"]["deathFadeTime"] = prjconfig["project"]["deathFadeTime"];
 		kry::Util::String gameskins = "GameSkins.txt";
-		lines.push_back("overlaySkinConfig = " + gameskins);
+		lines.push_back("overlaySkinConfig=" + gameskins);
+		//mapSettings["Settings"]["overlaySkinConfig"] = gameskins;
 		bool hasskin = false;
 		if (!prjconfig["project"]["gameOverSkin"].isEmpty() && prjconfig["project"]["gameOverSkin"] != "-1")
 		{
@@ -1215,7 +1222,8 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 				if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
 					foundanims.push_back(*pair.second.begin());
 			}
-			lines.push_back("gameOverSkin = " + prjconfig["project"]["gameOverSkin"]);
+			lines.push_back("gameOverSkin=" + prjconfig["project"]["gameOverSkin"]);
+			//mapSettings["Settings"]["gameOverSkin"] = prjconfig["project"]["gameOverSkin"];
 			hasskin = true;
 		}
 		if (!prjconfig["project"]["lifeSkin"].isEmpty() && prjconfig["project"]["lifeSkin"] != "-1")
@@ -1234,24 +1242,36 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 				if (std::find(foundanims.begin(), foundanims.end(), *pair.second.begin()) == foundanims.end())
 					foundanims.push_back(*pair.second.begin());
 			}
-			lines.push_back("lifeSkin = " + prjconfig["project"]["lifeSkin"]);
+			lines.push_back("lifeSkin=" + prjconfig["project"]["lifeSkin"]);
+			//mapSettings["Settings"]["lifeSkin"] = prjconfig["project"]["lifeSkin"];
 			hasskin = true;
 		}
 		if (hasskin)
-			lines.push_back("overlaySkinConfig = " + gameskins);
+		{
+			lines.push_back("overlaySkinConfig=" + gameskins);
+			//mapSettings["Settings"]["overlaySkinConfig"] = gameskins;
+		}
 		prjconfig["project"]["soundtrackSize"] = Util::toString(Assets::getMusic().size()); /** #TODO(change) would prefer this not to be here, but meh for now */
-		lines.push_back("soundtrackSize = " + prjconfig["project"]["soundtrackSize"]);
+		lines.push_back("soundtrackSize=" + prjconfig["project"]["soundtrackSize"]);
+		//mapSettings["Settings"]["soundtrackSize"] = prjconfig["project"]["soundtrackSize"];
 		auto soundtracksize = Util::toUIntegral<unsigned>(prjconfig["project"]["soundtrackSize"]);
 		for (unsigned i = 0; i < soundtracksize; ++i)
 		{
 			auto music = Assets::getMusic()[i];
 			lines.push_back("soundtrack" + Util::toString(i) + "=sounds/" + getPathFilename(qToKString(music->resource->path)));
+			//mapSettings["Settings"]["soundtrack" + Util::toString(i)] = "sounds/" + getPathFilename(qToKString(music->resource->path));
 			musicused.insert(Util::toString(i));
 		}
-		lines.push_back("randomizeSoundtrack = " + boolToKBool(prjconfig["project"]["randomizeSoundtrack"]));
-		lines.push_back("inventoryTextSize = " + boolToKBool(prjconfig["project"]["inventoryTextSize"]));
-		lines.push_back("inventoryIconDimensions = " + boolToKBool(prjconfig["project"]["inventoryIconDimensions"]));
-		lines.push_back("inventoryIconGap = " + boolToKBool(prjconfig["project"]["inventoryIconGap"]));
+		lines.push_back("randomizeSoundtrack=" + boolToKBool(prjconfig["project"]["randomizeSoundtrack"]));
+		//mapSettings["Settings"]["randomizeSoundtrack"] = boolToKBool(prjconfig["project"]["randomizeSoundtrack"]);
+		lines.push_back("inventoryTextSize=" + prjconfig["project"]["inventoryTextSize"]);
+		//mapSettings["Settings"]["inventoryTextSize"] = prjconfig["project"]["inventoryTextSize"];
+		lines.push_back("inventoryIconDimensions=" + prjconfig["project"]["inventoryIconDimensions"]);
+		//mapSettings["Settings"]["inventoryIconDimensions"] = prjconfig["project"]["inventoryIconDimensions"];
+		lines.push_back("inventoryIconGap=" + prjconfig["project"]["inventoryIconGap"]);
+		//mapSettings["Settings"]["inventoryIconGap"] = prjconfig["project"]["inventoryIconGap"];
+		unsigned insertpoint = lines.size();
+
 // ITEM DECLARATIONS
 		lines.push_back("[Items]");
 		for (auto itempair : Map::getMap()->getItems())
@@ -1370,8 +1390,11 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 						exptilewall.wall = object.get(); /** #TODO(note) cheeky as, only takes the last wall from the tile, might change this one day */
 					else
 					{
-						objects.push_back(object.get());
-						std::sort(objects.begin(), objects.end(), [](Object* left, Object* right) -> bool { return left->properties["global"]["id"] < right->properties["global"]["id"]; });
+						if (std::find_if(objects.begin(), objects.end(), [&object](Object* o) { return o->properties["global"]["id"] == object->properties["global"]["id"]; }) == objects.end())
+							objects.push_back(object.get());
+						for (auto& spawn : object->spawns)
+							if (std::find_if(objects.begin(), objects.end(), [&spawn](Object* o) { return o->properties["global"]["id"] == spawn->properties["global"]["id"]; }) == objects.end())
+								objects.push_back(spawn.get());
 					}
 				}
 				if (std::find(tilesused.rbegin(), tilesused.rend(), exptile) == tilesused.rend())
@@ -1380,6 +1403,7 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 					tilesused.push_back(exptilewall); // add the tile and the wall (if any)
 			}
 		}
+		std::sort(objects.begin(), objects.end(), [](Object* left, Object* right) -> bool { return left->properties["global"]["id"] < right->properties["global"]["id"]; });
 // ENTITY DECLARATIONS 
 		count = 0;
 		lines.push_back("[Entities]");
@@ -1543,6 +1567,29 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 				writeObjectProps(object->hardproperties, type, skinsfile, 1);
 			}
 		}
+
+		mapSettings.dataToConfig(linesToBin(lines));
+		mapSettings["Settings"]["checksum"] = "Krypta Game { sm795-4066595 jb964-4071839 cn496-4069407 lk424-4060659 sc994-4068312 }";
+		std::vector<unsigned char> mapData;
+		auto& mapSections = mapSettings.getSectionNames();
+		for (auto& section : mapSections)
+		{
+			mapData.insert(mapData.end(), section.getData(), section.getData() + section.getLength());
+			mapData.push_back('{');
+			auto& sectionKeys = mapSettings[section].getKeyNames();
+			for (auto& key : sectionKeys)
+			{
+				mapData.insert(mapData.end(), key.getData(), key.getData() + key.getLength());
+				mapData.push_back('=');
+				Util::String& value = mapSettings[section][key];
+				mapData.insert(mapData.end(), value.getData(), value.getData() + value.getLength());
+				mapData.push_back('\n');
+			}
+			mapData.push_back('}');
+		}
+		mapSettings["Settings"]["checksum"] = Util::dataToMD5(mapData);
+		lines.insert(lines.begin() + insertpoint, "checksum = " + mapSettings["Settings"]["checksum"]);
+		//lines.push_back("checksum = " + mapSettings["Settings"]["checksum"]);
 
 		zipfile[""]["Map.txt"] = linesToBin(lines);
 		lines.clear();
@@ -1715,7 +1762,7 @@ void Map::exportToFile(MainWindow* window, const QString& name, kry::Media::Conf
 		}
 
 // WRITE ZIP TO FILE
-		zipfile.zipToFile(kname + ".zip");
+		zipfile.zipToFile(kname + ".kmap");
 		window->getStatusMain()->setText("Map exported successfully!");
 	}
 	catch (const Util::Exception& e)

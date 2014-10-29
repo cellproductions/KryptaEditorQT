@@ -111,6 +111,7 @@ kry::Util::String getValue(QTableWidget* table, unsigned rowindex, const kry::Ut
 ObjectSettingsDialog::ObjectSettingsDialog(QWidget *parent) : CSDialog(parent), ui(new Ui::ObjectSettingsDialog)
 {
 	ui->setupUi(this);
+	ui->bApply->setEnabled(false);
 
 	connect(ui->bCancel, &QPushButton::clicked, [this]()
 	{

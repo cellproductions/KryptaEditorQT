@@ -212,8 +212,8 @@ AnimationSetupWidget::AnimationSetupWidget(QWidget *parent) : QWidget(parent), u
 		for (unsigned i = 0; i < ui->tabs->count(); ++i)
 			ui->tabs->tabBar()->setTabText(i, "Frame: " + QString::number(i));
 
-		index = dynamic_cast<AnimManagerDialog*>(this->parent()->parent()->parent()->parent())->getUI()->cbAnims->currentIndex();
-		Resources::getAnimations()[index]->frames[currdir].erase(Resources::getAnimations()[index]->frames[currdir].begin() + index);
+		auto cindex = dynamic_cast<AnimManagerDialog*>(this->parent()->parent()->parent()->parent())->getUI()->cbAnims->currentIndex();
+		Resources::getAnimations()[cindex]->frames[currdir].erase(Resources::getAnimations()[cindex]->frames[currdir].begin() + index);
 		updateFramesKey(ui->tSheetProps, ui->tabs->count());
 	});
 	connect(ui->bAnimate, &QPushButton::clicked, [this](bool)
@@ -280,13 +280,13 @@ void AnimationSetupWidget::setup(std::shared_ptr<Animation<kry::Graphics::Textur
 		table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 		table->setItem(index, 1, new QTableWidgetItem(kryToQString(animation->properties[currdir][sectionname][key])));
 	}
-	/*
+	
 	connect(table, &QTableWidget::itemChanged, [this, table, animation, sectionname, tabindex](QTableWidgetItem* item)
 	{
 		if (item->column() == 0)
 			return;
 		animation->properties[tabindex][sectionname][qToKString(table->item(item->row(), 0)->text())] = qToKString(item->text().trimmed());
-	});*/
+	});
 
 	ui->lbImages->clear();
 	while (ui->tabs->count() > 0)
