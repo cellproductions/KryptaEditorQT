@@ -7,13 +7,16 @@
 #include "ui_MainWindow.h"
 #include "glpanel.h"
 #include "Resources.h"
+#include "EntBrowserDialog.h"
 #include "Tool.h"
 #include "Utilities.h"
+#include "ArrayWidget.h"
 #include <QTableWidget>
 #include <QComboBox>
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QLineEdit>
+#include <QInputDialog>
 #include <QDebug>
 
 
@@ -239,7 +242,7 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 				table->setItem(index, 0, new QTableWidgetItem(kryToQString(key)));
 				table->item(index, 0)->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 				auto type = const_cast<kry::Media::Config&>(Assets::getHardTypes())[section][key];
-				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_2_ARR" || type == "ENTITY_ARR" || type == "ITEM_TYPE" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
+				if (type.isEmpty() || type == "VEC_2" || type == "VEC_2_POS" || type == "VEC_2_ARR" || type == "ITEM_TYPE" || type == "ENTITY_ARR" || type == "ENTITY_GROUP_ARR" || type == "ITEM_ARR")
 					table->setItem(index, 1, new QTableWidgetItem(kryToQString(object.hardtypesettings[section][key])));
 				else if (type == "INT")
 				{
@@ -398,6 +401,27 @@ void ObjectSettingsDialog::updateTables(std::set<Object*>& objects)
 							box->setCurrentIndex(3);
 					}
 					table->setCellWidget(index, 1, box);
+				}
+				else if (type == "SPAWN_ENTITY_ARR")
+				{
+					ArrayWidget* arr = new ArrayWidget(table);
+					connect(arr, &ArrayWidget::addClicked, [this, &object](QLineEdit* edit)
+					{
+						QStringList types;
+						for (auto type : Assets::getHardTypes().getSectionNames())
+						{
+							if (Assets::isParentType(type))
+								continue;
+							if (Assets::getParentType(type) != "entity")
+								continue;
+							types.push_back(kryToQString(type));
+						}
+						auto type = QInputDialog::getItem(this, "Add Entity", "Select a type for your entity:", types, 0, false);
+						if (type.isNull() || type.isEmpty())
+							return;
+						auto object = createDefaultObject(Assets::getEntityByHardtype(qToKString(type)).get());
+
+					});
 				}
 				/** #TODO(incomplete) add parts for whatever else that comes along */
 				/*
