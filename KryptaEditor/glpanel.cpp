@@ -1147,14 +1147,13 @@ namespace Kryed /** #TODO(change) remove the qDebugs from here */
 
 	size_t GLPanel::tileCoordToIndex(const kry::Util::Vector2i& coord, const std::shared_ptr<Map::Layer>& layer)
 	{
-		return coord[1] * layer->size[1] + coord[0];
+		return coord[1] * layer->size[0] + coord[0];
     }
 
 	kry::Util::Vector2i GLPanel::coordToTileCoord(const kry::Util::Vector2f& coord, const std::shared_ptr<Map::Layer>& layer)
 	{
 		kry::Util::Vector2f dim = layer->tilesize;
 		kry::Util::Vector2f halfdim = {static_cast<float>(dim[0]) * 0.5f, static_cast<float>(dim[1]) * 0.5f};
-		//kry::Util::Vector2f screen = canvas.getCoord(coord);
 
 		int x = (coord[0] / halfdim[0] + coord[1] / halfdim[1]) * 0.5f;
 		int y = ((coord[1] / halfdim[1] - coord[0] / halfdim[0]) * 0.5f) * -1;

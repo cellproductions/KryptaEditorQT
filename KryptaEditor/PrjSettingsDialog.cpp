@@ -184,7 +184,7 @@ void PrjSettingsDialog::resetSettings()
 	if (!settings["entity"].keyExists("skinIdle"))
 		settings["entity"]["skinIdle"] = "0";
 	if (!settings["entity"].keyExists("skinRun"))
-		settings["entity"]["skinRun"] = "-1";
+		settings["entity"]["skinMove"] = "-1";
 	if (!settings["entity"].keyExists("skinDead"))
 		settings["entity"]["skinDead"] = "-1";
 	if (!settings["entity"].keyExists("position"))
@@ -219,7 +219,7 @@ void PrjSettingsDialog::resetSettings()
 	if (!settings["player"].keyExists("idleSound"))
 		settings["player"]["idleSound"] = "-1";
 	if (!settings["player"].keyExists("runSound"))
-		settings["player"]["runSound"] = "-1";
+		settings["player"]["moveSound"] = "-1";
 	if (!settings["player"].keyExists("deadSound"))
 		settings["player"]["deadSound"] = "-1";
 	if (!settings["player"].keyExists("inventory"))
@@ -229,17 +229,11 @@ void PrjSettingsDialog::resetSettings()
 	if (!settings["player"].keyExists("invincibilityFlickerTime"))
 		settings["player"]["invincibilityFlickerTime"] = "75";
 	if (!settings["player"].keyExists("dieingTime"))
-		settings["player"]["dieingTime"] = "1000";
+		settings["player"]["dyingTime"] = "1000";
 	if (!settings["player"].keyExists("idleSound"))
-		settings["player"]["idleSound"] = "-1";
-	if (!settings["player"].keyExists("runSound"))
-		settings["player"]["runSound"] = "-1";
-	if (!settings["player"].keyExists("deadSound"))
-		settings["player"]["deadSound"] = "-1";
-	if (!settings["player"].keyExists("hurtSound"))
 		settings["player"]["hurtSound"] = "-1";
 	if (!settings["player"].keyExists("dieingSound"))
-		settings["player"]["dieingSound"] = "-1";
+		settings["player"]["dyingSound"] = "-1";
 }
 
 void PrjSettingsDialog::setTableData()

@@ -134,13 +134,6 @@ std::shared_ptr<Map> Map::createMap(const QString& name, const Tile& defaulttile
         single->layers.emplace_back(layer);
     }
 
-	Item* item = new Item;
-	item->name = "Example";
-	item->properties["item"]["type"] = "lootitem";
-	item->properties["item"]["inventorySkin"] = "0";
-	item->properties["lootitem"];
-	single->getItems().insert(std::pair<kry::Util::String, std::shared_ptr<Item>>(kry::Util::toString(single->getItems().size()), std::make_shared<Item>(*item)));
-
     layerList->clear();
 	single->currentLayer = single->layers[0];
     return single;
